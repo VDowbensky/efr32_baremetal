@@ -1,0 +1,2 @@
+# efr32_baremetal
+ 
