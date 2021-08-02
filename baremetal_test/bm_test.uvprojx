@@ -17,7 +17,7 @@
         <TargetCommonOption>
           <Device>EFR32FG1V131F128GM32</Device>
           <Vendor>Silicon Labs</Vendor>
-          <PackID>SiliconLabs.GeckoPlatform_EFR32FG1V_DFP.3.1.0</PackID>
+          <PackID>SiliconLabs.GeckoPlatform_EFR32FG1V_DFP.3.2.0</PackID>
           <PackURL>https://www.silabs.com/documents/public/cmsis-packs/</PackURL>
           <Cpu>IRAM(0x20000000,0x00004000) IROM(0x00000000,0x00020000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -420,21 +420,6 @@
               <FilePath>.\src\myi2c.c</FilePath>
             </File>
             <File>
-              <FileName>spi_ram.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\spi_ram.c</FilePath>
-            </File>
-            <File>
-              <FileName>si7210.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\si7210.c</FilePath>
-            </File>
-            <File>
-              <FileName>sfh7771.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\sfh7771.c</FilePath>
-            </File>
-            <File>
               <FileName>adc.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\adc.c</FilePath>
@@ -443,11 +428,6 @@
               <FileName>leds.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\leds.c</FilePath>
-            </File>
-            <File>
-              <FileName>atten.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\atten.c</FilePath>
             </File>
             <File>
               <FileName>radio_proc.c</FileName>
@@ -495,21 +475,6 @@
               <FilePath>.\inc\myi2c.h</FilePath>
             </File>
             <File>
-              <FileName>spi_ram.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\spi_ram.h</FilePath>
-            </File>
-            <File>
-              <FileName>si7210.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\si7210.h</FilePath>
-            </File>
-            <File>
-              <FileName>sfh7771.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\sfh7771.h</FilePath>
-            </File>
-            <File>
               <FileName>adc.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\inc\adc.h</FilePath>
@@ -518,11 +483,6 @@
               <FileName>leds.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\inc\leds.h</FilePath>
-            </File>
-            <File>
-              <FileName>atten.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\atten.h</FilePath>
             </File>
             <File>
               <FileName>radio_proc.h</FileName>

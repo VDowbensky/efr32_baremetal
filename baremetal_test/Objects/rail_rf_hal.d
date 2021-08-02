@@ -1,14 +1,15 @@
 ./objects/rail_rf_hal.o: radio\src\rail_rf_hal.c radio\inc\rail.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdint.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdbool.h \
-  radio\inc\rail_types.h C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stddef.h \
+  C:\Keil_v534\ARM\ARMCLANG\Bin\..\include\stdint.h \
+  C:\Keil_v534\ARM\ARMCLANG\Bin\..\include\stdbool.h \
+  radio\inc\rail_types.h \
+  C:\Keil_v534\ARM\ARMCLANG\Bin\..\include\stddef.h \
   radio\inc\rail_chip_specific.h radio\inc\rail_rf_hal.h \
   device\em_device.h device\efr32fg1v131f128gm32.h startup\core_cm4.h \
   startup\cmsis_version.h startup\cmsis_compiler.h \
   startup\cmsis_armclang.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\arm_compat.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\arm_acle.h startup\mpu_armv7.h \
-  device\system_efr32fg1v.h device\efr32fg1v_msc.h \
+  C:\Keil_v534\ARM\ARMCLANG\Bin\..\include\arm_compat.h \
+  C:\Keil_v534\ARM\ARMCLANG\Bin\..\include\arm_acle.h \
+  startup\mpu_armv7.h device\system_efr32fg1v.h device\efr32fg1v_msc.h \
   device\efr32fg1v_emu.h device\efr32fg1v_rmu.h device\efr32fg1v_cmu.h \
   device\efr32fg1v_crypto.h device\efr32fg1v_gpio_p.h \
   device\efr32fg1v_gpio.h device\efr32fg1v_prs_ch.h \
@@ -34,7 +35,7 @@
   radio\inc\rf_test.h radio\inc\ir_cal.h radio\inc\rail.h \
   radio\inc\generic_phy.h radio\inc\protimer.h radio\inc\tempcal.h \
   radio\inc\rfsense.h radio\inc\pa.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdio.h radio\inc\radio.h \
+  C:\Keil_v534\ARM\ARMCLANG\Bin\..\include\stdio.h radio\inc\radio.h \
   radio\inc\radio_pti.h radio\inc\pti.h lib\inc\em_gpio.h \
   lib\inc\em_bus.h lib\inc\em_assert.h radio\inc\synth.h \
   radio\inc\rail_calibration.h

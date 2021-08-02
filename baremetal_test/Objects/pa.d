@@ -1,15 +1,15 @@
 ./objects/pa.o: radio\src\pa.c radio\inc\pa.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdio.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdint.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdbool.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stddef.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\string.h lib\inc\em_bus.h \
+  C:\Keil_v534\ARM\ARMCLANG\Bin\..\include\stdio.h \
+  C:\Keil_v534\ARM\ARMCLANG\Bin\..\include\stdint.h \
+  C:\Keil_v534\ARM\ARMCLANG\Bin\..\include\stdbool.h \
+  C:\Keil_v534\ARM\ARMCLANG\Bin\..\include\stddef.h \
+  C:\Keil_v534\ARM\ARMCLANG\Bin\..\include\string.h lib\inc\em_bus.h \
   device\em_device.h device\efr32fg1v131f128gm32.h startup\core_cm4.h \
   startup\cmsis_version.h startup\cmsis_compiler.h \
   startup\cmsis_armclang.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\arm_compat.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\arm_acle.h startup\mpu_armv7.h \
-  device\system_efr32fg1v.h device\efr32fg1v_msc.h \
+  C:\Keil_v534\ARM\ARMCLANG\Bin\..\include\arm_compat.h \
+  C:\Keil_v534\ARM\ARMCLANG\Bin\..\include\arm_acle.h \
+  startup\mpu_armv7.h device\system_efr32fg1v.h device\efr32fg1v_msc.h \
   device\efr32fg1v_emu.h device\efr32fg1v_rmu.h device\efr32fg1v_cmu.h \
   device\efr32fg1v_crypto.h device\efr32fg1v_gpio_p.h \
   device\efr32fg1v_gpio.h device\efr32fg1v_prs_ch.h \
