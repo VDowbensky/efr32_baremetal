@@ -21,12 +21,7 @@ void init_radio(void)
   //RAIL_CalPend = 0;
   //RAIL_CalEnable = cal;
   //INT_Enable();
-	
-	 //RAIL_RfHalInit(&railInit);
-	//GENERIC_PHY_Init(void)
-	
-	
-	//clocks RADIO_CLKEnable();
+
 	CMU_ClockEnable(0x63400,true); //3
   CMU_ClockEnable(0x60400,true); //0 - PROTIMER
   CMU_ClockEnable(0x64400,true); //4
@@ -54,9 +49,7 @@ void init_radio(void)
 
  // DAT_000109d8 = RADIO_BUFCIrqHandler;
 
-  //_DAT_e000e280 = 0x80;
   NVIC_ClearPendingIRQ(FRC_IRQn);
-  //_DAT_e000e100 = 0x80;
   NVIC_EnableIRQ(FRC_IRQn);
 
   RADIO_BUFCClear(0);
@@ -68,19 +61,13 @@ void init_radio(void)
   MODEM->DCCOMP |= 3; //DCESTIEN, DCCOMPEN
   RAC->SR3 = 0;
   RADIO_DccalEnable();
-  //_DAT_4308019c = 1; //bit 7
   RAC->CTRL |= 0x80; //ACTIVEPOL
-  //_DAT_430801a0 = 1;  //400D bit 0 - 400C bit 8
   RAC->CTRL |= 0x00010000; //PAENPOL
-  //_DAT_430801a4 = 1; //400D //bit 2 - 400C bit 10
   RAC->CTRL |= 0x00040000; //PRSRXDIS	
-/////	RADIO_init
-  //_DAT_e000e280 = 0x40000000;
+	
   NVIC_ClearPendingIRQ(SYNTH_IRQn);
-  //_DAT_e000e180 = 0x40000000;
   NVIC_DisableIRQ(SYNTH_IRQn);
-	//
-//GENERIC_PHY_RACConfig();
+
 	RADIO_SeqInit(&genericSeqProg, GENERIC_SEQPROG_SIZE);
   memset((void*)0x21000efc,0,0x70); //clear sequencer variables
   RAC->SR0 = 0;
@@ -95,18 +82,11 @@ void init_radio(void)
   RADIO_RxToTxTimeSet(100);
   RADIO_TxWarmTimeSet(100); //GENERIC_PHY_RACConfig
 	
-	
+
 	FRC->TRAILRXDATA = 0x1b;
-  //FRC->RXCTRL = 0x60;
 	FRC->RXCTRL = FRC_RXCTRL_BUFRESTORERXABORTED_Msk | FRC_RXCTRL_BUFRESTOREFRAMEERROR_Msk;
 //  RADIO_PTI_Enable();
-  //if ((int)(RAC->CTRL << 0x1f) < 0)
-  //if (RAC->CTRL & 0x01)
-	if (RAC->CTRL & RAC_CTRL_FORCEDISABLE_Msk)
-  {
-    //_DAT_43080180 = 0;
-		RAC->CTRL &= ~RAC_CTRL_FORCEDISABLE_Msk; //FORCEDISABLE
-  }
+	if (RAC->CTRL & RAC_CTRL_FORCEDISABLE_Msk) RAC->CTRL &= ~RAC_CTRL_FORCEDISABLE_Msk; //FORCEDISABLE
 //  RADIO_RegisterIrqCallback(1,GENERIC_PHY_FRC_IRQCallback);
 //  RADIO_RegisterIrqCallback(2,GENERIC_PHY_MODEM_IRQCallback);
 //  RADIO_RegisterIrqCallback(5,GENERIC_PHY_RAC_IRQCallback);
@@ -120,7 +100,6 @@ void init_radio(void)
   PROTIMER_CCTimerCapture(1,0x200000);
 //  RFRAND_SeedProtimerRandom();
   SYNTH_DCDCRetimeEnable();
-  //_DAT_21000f70 = 0;
   SEQ->REG070 = 0; //GENERIC_PHY_Init
 	////
 //  _enabledCallbacks = _enabledCallbacks & 0xff000000 | (uint)(uint3)((uint3)_enabledCallbacks | 7) | 0x80000;
@@ -272,8 +251,6 @@ painit.offset = 0;
 painit.rampTime = 10;
 RADIO_PA_Init(&painit);
 PA_OutputPowerSet(150);
-//PA_PowerModeConfigSet();
-//PA_CTuneSet(9, 8);
 uint32_t tmp;
 tmp = *(uint32_t *) (DEVID_ADDR + 0x104);
 
@@ -295,26 +272,19 @@ tmp = *(uint32_t *) (DEVID_ADDR + 0x104);
 
 void BM_TxOn(void)
 {
-	//RAC->CTRL = 0x380;
 	RAC->CTRL = RAC_CTRL_LNAENPOL_Msk | RAC_CTRL_PAENPOL_Msk | RAC_CTRL_ACTIVEPOL_Msk;
-	//RAC->SYNTHENCTRL = 0x0000EF39;
 	RAC->SYNTHENCTRL = RAC_SYNTHENCTRL_VCODIVEN_Msk | RAC_SYNTHENCTRL_VCOLDOEN_Msk | RAC_SYNTHENCTRL_MMDLDOEN_Msk | RAC_SYNTHENCTRL_LODIVSYNCCLKEN_Msk | RAC_SYNTHENCTRL_CHPLDOEN_Msk 
 	| RAC_SYNTHENCTRL_SYNTHSTARTREQ_Msk	| RAC_SYNTHENCTRL_SYNTHCLKEN_Msk | RAC_SYNTHENCTRL_LPFEN_Msk | RAC_SYNTHENCTRL_CHPEN_Msk | RAC_SYNTHENCTRL_LODIVEN_Msk | RAC_SYNTHENCTRL_VCOEN_Msk;
 	//At this point - normal current consumption !!!!!!
 	//while (1) {};
 	
 	RAC->LPFCTRL = 0x0003C000;
-	//RAC->SYNTHCTRL = 0x04;
 	//RAC->SYNTHCTRL = RAC_SYNTHCTRL_LODIVTXEN_Msk;
 	SYNTH->CMD = SYNTH_CMD_SYNTHSTART_Msk;
 	RAC->MMDCTRL = 0x0001147B;
-	//RAC->RFENCTRL = 0x1000;
 	RAC->RFENCTRL = RAC_RFENCTRL_DEMEN_Msk; //???
 	RAC->LNAMIXCTRL1 = 0x00000880;
 	RAC->IFPGACTRL = 0x000087F6;
-	//RAC->PACTRL0 = 0x0000000C;
-	//RAC->PACTRL0 = RAC_PACTRL0_BOOTSTRAP_Msk | RAC_PACTRL0_RF2P4RFVDDSEL_Msk; //???
-	//RAC->PABIASCTRL0 = 0x00000445;
 	//RAC->SGRFENCTRL0 = 0x000F0000;
 	RAC->PACTRL0 = 0;
 	RAC->PABIASCTRL0 = 0x0;
@@ -334,8 +304,6 @@ void BM_TxOff(void)
 	RAC->SGPACTRL0 = 0;
 	RAC->SGRFENCTRL0 = 0;
 	RAC->PAENCTRL = 0;
-	//RAC->IFPGACTRL = 0;
-	//RAC->LNAMIXCTRL1 = 0x00000880;
 	RAC->SGPABIASCTRL0 = 0;
 	//RAC->RFENCTRL = RAC_RFENCTRL_DEMEN_Msk;
 	RAC->MMDCTRL = 0x0001147B;

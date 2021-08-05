@@ -75,7 +75,7 @@ void RADIO_BUFCConfig(int param_1,uint32_t param_2,uint32_t param_3,uint32_t par
 void RADIO_TxBufferSet(uint8_t * param_1,int param_2,uint8_t * param_3,uint32_t param_4);
 void RADIO_FrameControlDescrConfigSet(int param_1,uint32_t param_2,int param_3,int param_4,uint8_t param_5,uint8_t param_6);
 void RADIO_FrameDescsConfig (uint32_t param_1,uint32_t param_2,uint32_t param_3,uint32_t param_4);
-void RADIO_BUFCReadContASync(int param_1,uint8_t *param_2,int param_3);
+void RADIO_BUFCReadContASync(int buf,uint8_t *param_2,int param_3);
 void RADIO_RxBufferReadBytes(uint8_t *param_1,uint32_t param_2);
 
 void RADIO_RxBufferDropBytes(uint32_t param_1,uint32_t param_2,uint32_t param_3,uint32_t param_4);

@@ -57,23 +57,14 @@ int RFSENSE_CalcPeriod(uint32_t param_1,uint32_t param_2,char *param_3,uint32_t 
   default:
     return 0;
   }
-  if (freq == 0)
-  {
-    return 0;
-  }
+  if (freq == 0) return 0;
  //uVar4 = freq >> 1;
 //	uVar4 = freq/2;
 //  uVar2 = __aeabi_uldivmod(uVar4 + 0xa1200000,(0x5edfffff < uVar4) + 10,uVar1,0,param_4);
 //  uVar1 = (uVar4 + 3000000) / freq;
 	
-//  if (uVar1 < param_2)
-//  {
-//    param_2 = param_2 - uVar1;
-//  }
-//  else
- // {
-//    param_2 = 0;
- // }
+//  if (uVar1 < param_2) param_2 = param_2 - uVar1;
+//  else param_2 = 0;
 //  cVar3 = '\x0f';
 //  while ((param_2 < uVar2 - (uVar2 >> 2) && (cVar3 != '\0')))
 //  {
@@ -94,9 +85,7 @@ void RFSENSE_ReInit(void)
 {
   RFSENSE_Disable();
   RFSENSE->IFC = 1;
-  //_DAT_e000e184 = 1;
   NVIC_DisableIRQ(RFSENSE_IRQn);
-  //_DAT_e000e284 = 1;
   NVIC_ClearPendingIRQ(RFSENSE_IRQn);
 }
 
@@ -130,10 +119,7 @@ bool RFSENSE_Sensed(void)
 //      (*pcVar1)();
 //    }
 //  }
-//  if (iVar2 == 0)
-//  {
-//    _DAT_43c81904 = iVar2;
-//  }
+//  if (iVar2 == 0) _DAT_43c81904 = iVar2;
   return flag;
 }
 
@@ -145,16 +131,13 @@ void RFSENSE_IRQHandler(void)
 
 {
   //code *pcVar1;
-  int iVar2;
-  uint32_t uVar3;
+//  int iVar2;
+//  uint32_t uVar3;
 //
 //  iVar2 = _DAT_43c81904;
 //  _DAT_43c81904 = 1;
 //  uVar3 = RFSENSE->IF;
-//  if (uVar3 != 0)
-//  {
-//    uVar3 = 1;
-//  }
+//  if (uVar3 != 0) uVar3 = 1;
 //  if (uVar3 != 0)
 //  {
 //    INT_Disable();
@@ -162,15 +145,9 @@ void RFSENSE_IRQHandler(void)
 //    RFSENSE_Cb = NULL;
 //    INT_Enable();
 //    RFSENSE_Disable();
-//    if (pcVar1 != NULL)
-//    {
-//      (*pcVar1)();
-//    }
+//    if (pcVar1 != NULL) (*pcVar1)();
 //  }
-//  if (iVar2 == 0)
-//  {
-//    _DAT_43c81904 = iVar2;
-//  }
+//  if (iVar2 == 0) _DAT_43c81904 = iVar2;
  // return uVar3;
 }
 
@@ -215,22 +192,15 @@ uint32_t RFSENSE_Init(uint32_t *param_1,uint32_t param_2,uint32_t param_3)
 //  if ((((bVar1 & 3) == 0) || (param_1[1] == 0)) ||
 //     (uVar2 = RFSENSE_CalcPeriod(uVar5,param_1[1],&stack0xffffffe6), uVar2 == 0)) goto LAB_00010196;
 //  if (((bVar1 & 0xc) == 0) && (uVar3 = param_1[1], 100000 < uVar3)) {
-//    if (uVar3 < uVar2) {
-//      uVar6 = uVar2 - uVar3;
-//    }
-//    else {
-//      uVar6 = uVar3 - uVar2;
-//    }
+//    if (uVar3 < uVar2) uVar6 = uVar2 - uVar3; 
+//    else uVar6 = uVar3 - uVar2; 
 //    if ((uVar6 != 0) &&
 //       (uVar3 = RFSENSE_CalcPeriod(0xc,uVar3,&stack0xffffffe7,100000,puVar7,param_2), uVar3 != 0)) {
 //      uVar4 = param_1[1];
-//      if (uVar4 < uVar3) {
-//        uVar4 = uVar3 - uVar4;
-//      }
-//      else {
-//        uVar4 = uVar4 - uVar3;
-//      }
-//      if (uVar4 < uVar6) {
+//      if (uVar4 < uVar3) uVar4 = uVar3 - uVar4; 
+//      else uVar4 = uVar4 - uVar3;
+//      if (uVar4 < uVar6) 
+//			{
 //        param_2 = (param_2 >> 0x18) << 0x10;
 //        uVar5 = uVar5 | 0xc;
 //        uVar2 = uVar3;
@@ -244,23 +214,26 @@ uint32_t RFSENSE_Init(uint32_t *param_1,uint32_t param_2,uint32_t param_3)
 //  if (uVar3 == 8) {
 //    uVar3 = EMU->EM4CTRL;
 //    if (-1 < (int)(uVar3 << 0x1d))
-//	{
+//		{
 //      uVar3 = 4;
 //      goto LAB_00010254;
 //    }
 //  }
-//  else {
-//    if (uVar3 == 0xc) {
+//  else 
+//		{
+//    if (uVar3 == 0xc) 
+//		{
 //      uVar3 = EMU->EM4CTRL;
 //      if (-1 < (int)(uVar3 << 0x1c))
-//	  {
+//	  	{
 //        uVar3 = 8;
 //        goto LAB_00010254;
 //      }
 //    }
-//    else {
-//      if ((uVar3 == 4) &&
-//         (-1 < (int)(EMU->EM4CTRL << 0x1e))) {
+//    else 
+//		{
+//      if ((uVar3 == 4) && (-1 < (int)(EMU->EM4CTRL << 0x1e))) 
+//			{
 //        uVar3 = 2;
 //LAB_00010254:
 //        INT_Disable();
@@ -317,10 +290,7 @@ int RFSENSE_CalRfOscFreq(int param_1)
 //    iVar2 = uVar1 + 1;
 //    RFSENSE_DeInit();
 //  }
-//  else
-//  {
-//    iVar2 = 0;
-//  }
+//  else iVar2 = 0;
   return iVar2;
 }
 

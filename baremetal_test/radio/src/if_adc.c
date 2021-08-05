@@ -29,7 +29,6 @@ void IF_ADC_Calibrate(void)
 	{
 		RAC->RCTUNE |= j;
     PHY_UTILS_DelayUs(100);
-		//if(!(RAC->IFADCCAL & 0x20)) RAC->RCTUNE &= ~j;
 		if(!(RAC->IFADCCAL & RAC_IFADCCAL_RCCALOUT_Msk)) BUS_RegMaskedClear(&RAC->RCTUNE, j);
 		j >>= 1;
 	}

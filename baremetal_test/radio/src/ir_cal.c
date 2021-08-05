@@ -23,54 +23,34 @@ uint8_t IRCAL_Configure(uint8_t type)
   {
   case 0:
     cVar1 = rcIrCalData[8];
-    if (rcIrCalData[8] == '\x01')
+    if (rcIrCalData[8] == 1)
     {
-      if (rcIrCalData[5] == '\0')
-      {
-        return 0;
-      }
+      if (rcIrCalData[5] == 0) return 0;
     }
     else
     {
-      if (rcIrCalData[8] == '\x02')
+      if (rcIrCalData[8] == 2)
       {
-        if (rcIrCalData[6] == '\0')
-        {
-          return 0;
-        }
+        if (rcIrCalData[6] == 0) return 0;
       }
-      else {
-        if (rcIrCalData[8] != '\x03')
-        {
-          return 0;
-        }
-        if (rcIrCalData[7] == '\0')
-        {
-          return 0;
-        }
+      else 
+			{
+        if (rcIrCalData[8] != 3) return 0;
+        if (rcIrCalData[7] == 0) return 0;
       }
     }
     break;
   case 1:
-    if (rcIrCalData[5] == '\0')
-    {
-      return 0;
-    }
-    cVar1 = '\x01';
+    if (rcIrCalData[5] == 0) return 0;
+    cVar1 = 1;
     break;
   case 2:
-    if (rcIrCalData[6] == '\0')
-    {
-      return 0;
-    }
-    cVar1 = '\x02';
+    if (rcIrCalData[6] == 0) return 0;
+    cVar1 = 2;
     break;
   case 3:
-    if (rcIrCalData[7] == '\0')
-    {
-      return 0;
-    }
-    cVar1 = '\x03';
+    if (rcIrCalData[7] == 0) return 0;
+    cVar1 = 3;
     break;
   default:
     return 0;
@@ -85,7 +65,6 @@ void IRCAL_SetGlobalCalType(uint8_t type)
 
 {
   globalCalType = type;
-  return;
 }
 
 
@@ -107,7 +86,6 @@ void IRCAL_Set(uint32_t pgacal)
     RAC->IFPGACAL &= 0xffff0000;
     RAC->IFPGACAL |= pgacal & 0xffff;
   }
-  return;
 }
 
 //typedef struct RAIL_CalInit {
@@ -188,7 +166,6 @@ void IRCAL_SaveRegStates(void)
   reg_save[18] = SYNTH_ChSpacingGet();
   FRC->CTRL |= 1;
   RAC->CTRL |= 0x40;
-  return;
 }
 
 void IRCAL_Teardown(void)
@@ -218,7 +195,6 @@ void IRCAL_Teardown(void)
 
   FRC->CTRL &= 0xfffffffe; //RANDOMTX
   RAC->CTRL &= 0xffffffbf; //TXPOSTPONE
-  return;
 }
 
 
@@ -274,7 +250,6 @@ void IRCAL_StopRx(void)
   RAC->RXENSRCEN &= 0xffffff00;
   FRC->CMD = 1;
   while (RAC->STATUS & 0xf000000);
-  return;
 }
 
 
@@ -339,7 +314,6 @@ void IRCAL_SetSubGhzPaLoopback(void)
   MODEM->RAMPCTRL &= 0x7fffff;
   MODEM->RAMPCTRL |= 0x800000 | (uint32_t)rcIrCalData[2] << 0x18;
   PHY_UTILS_DelayUs(20);
-  return;
 }
 
 
@@ -360,16 +334,10 @@ int32_t IRCAL_Setup(int32_t param_1,uint32_t param_2,uint32_t param_3,uint32_t p
     if(IRCAL_SetRxFrequency(iVar2) != -1)
     {
       IRCAL_StartRx();
-      if (param_1 == 2)
-      {
-        IRCAL_SetSubGhzPllLoopback();
-      }
+      if (param_1 == 2) IRCAL_SetSubGhzPllLoopback();
       else
       {
-        if (param_1 != 3)
-        {
-          return -1;
-        }
+        if (param_1 != 3) return -1;
         IRCAL_SetSubGhzPaLoopback();
       }
       return 0;
@@ -383,11 +351,8 @@ int32_t IRCAL_Setup(int32_t param_1,uint32_t param_2,uint32_t param_3,uint32_t p
 uint32_t IRCAL_TranslateToRssiIndex(uint32_t param_1)
 
 {
-  if (param_1 < 0x40)
-  {
-    param_1 = 0x40 - param_1 & 0xff;
-  }
-  return param_1;
+  if (param_1 < 0x40) return 0x40 - param_1 & 0xff;
+	else return param_1;
 }
 
 
@@ -402,14 +367,8 @@ int16_t IRCAL_ReadRssi(uint32_t param_1,uint32_t param_2,uint32_t param_3,uint32
   uint32_t uVar5;
   uint32_t uVar6;
   
-  if ((param_1 & 0x80) != 0)
-  {
-    param_1 = 0x7f;
-  }
-  if ((param_2 & 0x80) != 0)
-  {
-    param_2 = 0x7f;
-  }
+  if ((param_1 & 0x80) != 0) param_1 = 0x7f;
+  if ((param_2 & 0x80) != 0) param_2 = 0x7f;
   if (param_3 < 0x10)
   {
     //uVar4 = read_volatile_4(RAC->IFPGACAL);
@@ -560,10 +519,7 @@ uint32_t IRCAL_Search(int32_t param_1,uint32_t param_2,uint32_t param_3,uint32_t
     iVar3 = IRCAL_SearchLinear2Stage(uVar2,1,param_2,param_3,param_4);
     uVar2 = uVar2 | iVar3 << 8;
   }
-  else
-  {
-    uVar2 = 0xffffffff;
-  }
+  else uVar2 = 0xffffffff;
   return uVar2;
 }
 
@@ -589,17 +545,10 @@ uint16_t IRCAL_GetDiValue(void)
   uint32_t puVar2;
   
   uVar1 = SYNTH_RfFreqGet();
-  if (uVar1 == 0)
-  {
-    uVar1 = 0xffffffff;
-  }
+  if (uVar1 == 0) uVar1 = 0xffffffff;
   else
   {
-    if (uVar1 < 1000000000)
-    {
-      //puVar2 = *(uint32_t *)0x0fe081c8; //DEVINFO reg 018
-			puVar2 = DEVINFO->RESERVED0[3];
-    }
+    if (uVar1 < 1000000000) puVar2 = DEVINFO->RESERVED0[3]; //puVar2 = *(uint32_t *)0x0fe081c8; //DEVINFO reg 018
     else
     {
       //uVar1 = read_volatile_4(MODEM->CTRL0);
@@ -614,10 +563,7 @@ uint16_t IRCAL_GetDiValue(void)
       }
     }
     uVar1 = puVar2;
-    if (uVar1 != 0xffffffff)
-    {
-      return uVar1 & 0xffff;
-    }
+    if (uVar1 != 0xffffffff) return uVar1 & 0xffff;
   }
   return uVar1;
 }
@@ -644,17 +590,11 @@ uint32_t IRCAL_PerformSubfunction(uint32_t param_1,uint32_t param_2,uint32_t par
   }
   else
   {
-    if ((param_1 == 0) || (3 < param_1))
-    {
-      uVar2 = 0xffffffff;
-    }
+    if ((param_1 == 0) || (3 < param_1)) uVar2 = 0xffffffff;
     else
     {
      // uVar2 = IRCAL_Setup(param_1); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      if (uVar2 != 0xffffffff)
-      {
-        uVar2 = IRCAL_Search(param_2,param_3,param_4,param_5);
-      }
+      if (uVar2 != 0xffffffff) uVar2 = IRCAL_Search(param_2,param_3,param_4,param_5);
       IRCAL_Teardown();
     }
   }
@@ -663,18 +603,9 @@ uint32_t IRCAL_PerformSubfunction(uint32_t param_1,uint32_t param_2,uint32_t par
 //  uVar7 = __aeabi_uldivmod((int)(lVar6 - lVar5),(int)((uint64_t)(lVar6 - lVar5) >> 0x20),1000,0);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   iVar1 = (int)((uint64_t)uVar7 >> 0x20);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   bVar4 = iVar1 == 0;
-  if (iVar1 == 0)
-  {
-    bVar4 = (uint32_t)uVar7 < 0xffff;
-  }
-  if (bVar4)
-  {
-    uVar3 = (uint32_t)uVar7 & 0xfffe;
-  }
-  else
-  {
-    uVar3 = 0;
-  }
+  if (iVar1 == 0) bVar4 = (uint32_t)uVar7 < 0xffff;
+  if (bVar4) uVar3 = (uint32_t)uVar7 & 0xfffe;
+  else uVar3 = 0;
   if (uVar2 != 0xffffffff)
   {
     IRCAL_Set(uVar2);
@@ -692,10 +623,7 @@ uint32_t IRCAL_Perform(void)
   uint32_t uVar2;
   
   iVar1 = IRCAL_GetGlobalCalType();
-  if (iVar1 == 0xff)
-  {
-    uVar2 = 0xffffffff;
-  }
+  if (iVar1 == 0xff) uVar2 = 0xffffffff;
   else
   {
   //  uVar2 = IRCAL_PerformSubfunction(iVar1,2,rcIrCalData[10],rcIrCalData._12_2_,rcIrCalData._14_2_,param_2,param_3); //!!!!!!!!!!!!!!!!!!!!!!!!!!!

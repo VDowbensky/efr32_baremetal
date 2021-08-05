@@ -1,10 +1,10 @@
 ./objects/generic_seq.o: radio\src\generic_seq.c radio\inc\generic_seq.h \
   device\em_device.h device\efr32fg1v131f128gm32.h startup\core_cm4.h \
-  C:\Keil_v534\ARM\ARMCLANG\Bin\..\include\stdint.h \
+  C:\Keil_v535\ARM\ARMCLANG\Bin\..\include\stdint.h \
   startup\cmsis_version.h startup\cmsis_compiler.h \
   startup\cmsis_armclang.h \
-  C:\Keil_v534\ARM\ARMCLANG\Bin\..\include\arm_compat.h \
-  C:\Keil_v534\ARM\ARMCLANG\Bin\..\include\arm_acle.h \
+  C:\Keil_v535\ARM\ARMCLANG\Bin\..\include\arm_compat.h \
+  C:\Keil_v535\ARM\ARMCLANG\Bin\..\include\arm_acle.h \
   startup\mpu_armv7.h device\system_efr32fg1v.h device\efr32fg1v_msc.h \
   device\efr32fg1v_emu.h device\efr32fg1v_rmu.h device\efr32fg1v_cmu.h \
   device\efr32fg1v_crypto.h device\efr32fg1v_gpio_p.h \
@@ -27,4 +27,4 @@
   device\efr32fg1v_devinfo.h device\efr32fg1v_romtable.h \
   device\efr32fg1v_prs_signals.h device\efr32fg1v_dmareq.h \
   device\efr32fg1v_af_ports.h device\efr32fg1v_af_pins.h \
-  C:\Keil_v534\ARM\ARMCLANG\Bin\..\include\stdbool.h
+  C:\Keil_v535\ARM\ARMCLANG\Bin\..\include\stdbool.h

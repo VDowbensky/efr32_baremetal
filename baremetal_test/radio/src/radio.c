@@ -67,10 +67,10 @@ void RADIO_WaitForSetSync(uint32_t *addr,uint32_t data)
 uint32_t RADIO_UsToStimerTickCalc(uint32_t us)
 
 {
-  uint64_t lVar1;
+//  uint64_t lVar1;
 
-  us = us & ~((int)us >> 0x1f);
-  lVar1 = RADIOCMU_ClockFreqGet(0x75160) * (uint64_t)us;
+//  us = us & ~((int)us >> 0x1f);
+//  lVar1 = RADIOCMU_ClockFreqGet(0x75160) * (uint64_t)us;
   return ((uint64_t)us * RADIOCMU_ClockFreqGet(0x75160))/8000000;
   
  // __aeabi_uldivmod((int)lVar1,uVar2 * ((int)us >> 0x1f) + (int)((us)lVar1 >> 0x20),
@@ -190,7 +190,7 @@ void RADIO_CLKEnable(void)
 
 
 
-void RADIO_Config(void *radioConfig)
+void RADIO_Config(void *radioConfig) //omitted
 {
   uint32_t uVar1;
   void *__dest;
@@ -443,17 +443,16 @@ void RADIO_BUFCIrqHandler(void)
   uint32_t uVar2;
   uint32_t uVar3;
   uint8_t * iVar4;
-  uint32_t uVar5;
+  uint32_t flags;
   
   //uVar2 = read_volatile_4(BUFC->IF);
-  uVar3 = BUFC->IEN;
+  //uVar3 = BUFC->IEN;
   //write_volatile_4(BUFC->IFC,uVar2 & uVar3);
-  BUFC->IFC = BUFC->IF & BUFC->IEN;
-  uVar5 = BUFC->IEN;
-  uVar5 = uVar5 & uVar2 & uVar3;
+	flags = BUFC->IEN & BUFC->IF;
+  BUFC->IFC = flags;
   
   //if ((int)(uVar5 << 0x1d) < 0)
-	  if(uVar5 & 0x04)
+	  if(flags & 0x04)
     {
  //   iVar4 = DAT_00010b88 + (uint32_t)DAT_00010b8c;
  //   if (((uint)DAT_00010b82 - (uint32_t)DAT_00010b8c & 0xffff) < 0xe1) {
@@ -468,28 +467,15 @@ void RADIO_BUFCIrqHandler(void)
  //     DAT_00010b8c = uVar1;
     }
   //if ((int)(uVar5 << 0x15) < 0)
-  if(uVar5 & 0x400)
-  {
-    RFTEST_BerEmptyBufcAndUpdateStats();
-  }
-  if (uVar5 & 0xa0a00)
-  {
-    RADIO_RxBufferReset();
-  }
-  //if ((uVar5 & 9) != 0)
-  if(uVar5 & 0x9)
+  if(flags & 0x400) RFTEST_BerEmptyBufcAndUpdateStats();
+  if (flags & 0xa0a00) RADIO_RxBufferReset();
+  if(flags & 0x9)
   {
     //_DAT_43080114 = 1;
     RAC->CMD |= 0x20; //TXDIS
     RADIO_TxBufferReset();
   }
-  //if ((int)(uVar5 << 0x1e) < 0)
-   if(uVar5 & 0x02)
-  {
-    RADIO_TxBufferReset();
-    return;
-  }
-  return;
+   if(flags & 0x02) RADIO_TxBufferReset();
 }
 
 
@@ -504,11 +490,11 @@ int RADIO_RxTrailDataLength(void)
   t1 = FRC->TRAILRXDATA;
   if ((t1 & 0x20) == 0) t2 = 0;
   else t2 = 4;
-  if(t1 & 0x08000000) t2 = t2 + 2;
-  if(t1 & 0x10000000) t2 = t2 + 2;
-  if(t1 & 0x20000000) t2 = t2 + 2;
-  if(t1 & 0x40000000) t2 = t2 + 1;
-  if(t1 & 0x80000000) t2 = t2 + 1;
+  if(t1 & 0x08000000) t2 += 2;
+  if(t1 & 0x10000000) t2 += 2;
+  if(t1 & 0x20000000) t2 += 2;
+  if(t1 & 0x40000000) t2 += 1;
+  if(t1 & 0x80000000) t2 += 1;
   return t2;
 }
 
@@ -591,7 +577,7 @@ uint8_t RADIO_BUFCRead(int buf)
 
 
 
-void RADIO_BUFCReadContASync(int param_1,uint8_t *param_2,int param_3)
+void RADIO_BUFCReadContASync(int buf,uint8_t *param_2,int param_3)
 
 {
   uint8_t *puVar1;
@@ -599,7 +585,7 @@ void RADIO_BUFCReadContASync(int param_1,uint8_t *param_2,int param_3)
   puVar1 = param_2;
   while (puVar1 != param_2 + param_3)
   {
-    *puVar1 = (char)(&BUFC->BUF0_READDATA)[param_1 * 12];
+    *puVar1 = (char)(&BUFC->BUF0_READDATA)[buf * 12];
     puVar1++;
   }
 }
@@ -625,7 +611,6 @@ void RADIO_RxBufferDropBytes(uint32_t param_1,uint32_t param_2,uint32_t param_3,
     // RADIO_RxBufferReadBytes(&stack0xfffffff7,1,param_3,param_4,uVar1,param_2); //!!!!!!!!!!!!!!!!!
     param_1 = param_1 - 1 & 0xffff;
   }
-  return;
 }
 
 
@@ -633,21 +618,16 @@ void RADIO_RxBufferDropBytes(uint32_t param_1,uint32_t param_2,uint32_t param_3,
 uint32_t RADIO_RxLengthReadNext(uint32_t param_1,uint32_t param_2,uint32_t param_3,uint32_t param_4)
 
 {
-  int iVar1;
   uint32_t local_c;
   uint32_t uStack8;
   
   local_c = param_2;
   uStack8 = param_3;
-  iVar1 = RADIO_RxBufferPacketAvailable();
-  if (iVar1 == 0)
-  {
-    local_c = 0xffff;
-  }
+  if (RADIO_RxBufferPacketAvailable() == 0) local_c = 0xffff;
   else
   {
 //    RADIO_BUFCReadContASync(2,&local_c,2,param_4,param_1); //!!!!!!!!!!!!!!!!!!!!!
-    local_c = local_c & 0xff;
+    local_c &= 0xff;
   }
   return local_c;
 }
@@ -683,7 +663,6 @@ void RADIO_FRCErrorHandle(void)
  // bufcRxStreaming = 0; //!!!!!!!!!!!!!!!
   RADIO_BUFCClear(1);
   RADIO_BUFCClear(2);
-  return;
 }
 
 
@@ -736,9 +715,7 @@ void RADIO_Init(void)
 
  // DAT_000109d8 = RADIO_BUFCIrqHandler;
 
-  //_DAT_e000e280 = 0x80;
   NVIC_ClearPendingIRQ(FRC_IRQn);
-  //_DAT_e000e100 = 0x80;
   NVIC_EnableIRQ(FRC_IRQn);
 
   RADIO_BUFCClear(0);
@@ -750,11 +727,8 @@ void RADIO_Init(void)
   MODEM->DCCOMP |= 3; //DCESTIEN, DCCOMPEN
   RAC->SR3 = 0;
   RADIO_DccalEnable();
-  //_DAT_4308019c = 1; //bit 7
   RAC->CTRL |= 0x80; //ACTIVEPOL
-  //_DAT_430801a0 = 1;  //400D bit 0 - 400C bit 8
   RAC->CTRL |= 0x00010000; //PAENPOL
-  //_DAT_430801a4 = 1; //400D //bit 2 - 400C bit 10
   RAC->CTRL |= 0x00040000; //PRSRXDIS
 }
 
@@ -864,7 +838,6 @@ void RADIO_TxToRxSearchTimeSet(uint32_t us)
 uint32_t RADIO_ComputeTxBaudrate(void)
 
 {
-  //return (((MODEM->TXBR << 8) >> 0x18) * (CMU_ClockFreqGet(0x11) >> 3)) / (MODEM->TXBR & 0xffff);
   return ((MODEM->TXBR & 0xFF) * (CMU_ClockFreqGet(0x11) >> 3)) / (MODEM->TXBR & 0xffff);
 }
 
@@ -874,14 +847,8 @@ uint32_t RADIO_ComputeTxSymbolRate(void)
 
 {
   uint32_t tsr;
-  
   tsr = RADIO_ComputeTxBaudrate();
-  //uVar1 = MODEM->CTRL0;
-  if ((MODEM->CTRL0 & 0x30) == 0x20) 
-  {
-	  //tsr = RADIO_ComputeTxBaudrate() / (((MODEM->CTRL0 << 0x10) >> 0x1b) + 1); //bits 4,5
-	  tsr = RADIO_ComputeTxBaudrate() / ((MODEM->CTRL0 >> 0x0b) + 1);
-  }
+  if ((MODEM->CTRL0 & MODEM_CTRL0_CODING_Msk) == 0x20) tsr /= (((MODEM->CTRL0 & MODEM_CTRL0_DSSSLEN_Msk) >> MODEM_CTRL0_DSSSLEN_Pos) + 1); //DSSS coding
   return tsr;
 }
 
@@ -890,38 +857,21 @@ uint32_t RADIO_ComputeTxSymbolRate(void)
 uint32_t RADIO_ComputeTxBitRate(void)
 
 {
-  //uint uVar1;
-  //int iVar2;
   uint32_t uVar3;
-  
-  //uVar1 = MODEM->CTRL0;
-  if ((MODEM->CTRL0 & 0x30) == 0x20) //4,5 = bit 4 set - CODING
+  if ((MODEM->CTRL0 & MODEM_CTRL0_CODING_Msk) == 0x20) //4,5 = bit 4 set - CODING
   {
-    //uVar3 = ((MODEM->CTRL0 << 0x10) >> 0x1b) / ((MODEM->CTRL0 << 0xd) >> 0x1d);
-    uVar3 = (MODEM->CTRL0 & 0x1F) / (MODEM->CTRL0 & 0x7); //not correct
-    if ((MODEM->CTRL0 & 0x180000) != 0) //19, 20 - DSSSDOUBLE
-    {
-      uVar3 = uVar3 << 1;
-    }
+    uVar3 = ((MODEM->CTRL0 << 0x10) >> 0x1b) / ((MODEM->CTRL0 << 0xd) >> 0x1d);
+		//uVar3 = (MODEM->CTRL0 & MODEM_CTRL0_DSSSLEN_Msk) >> MODEM_CTRL0_DSSSLEN_Pos) / 
+    //uVar3 = (MODEM->CTRL0 & 0x1F) / (MODEM->CTRL0 & 0x7); //not correct
+    if (MODEM->CTRL0 & MODEM_CTRL0_DSSSDOUBLE_Msk) uVar3 = uVar3 << 1; //19, 20 - DSSSDOUBLE
     uVar3 = uVar3 >> 1;
-    if (2 < uVar3)
-    {
-      uVar3 = 4;
-    }
+    if (2 < uVar3) uVar3 = 4;
   }
   else
   {
-    //uVar1 = MODEM->CTRL0;
-    if (((MODEM->CTRL0 & 0x1c0) == 0x40) || ((MODEM->CTRL0 & 0x1c0) == 0x100))// bit 6 or bit  8 MODFORMAT
-    {
-      uVar3 = 2;
-    }
-    else
-    {
-      uVar3 = 1;
-    }
+    if (((MODEM->CTRL0 & MODEM_CTRL0_MODFORMAT_Msk) == 0x40) || ((MODEM->CTRL0 & MODEM_CTRL0_MODFORMAT_Msk) == 0x100)) uVar3 = 2;// bit 6 or bit  8 MODFORMAT
+    else uVar3 = 1;
   }
-  //iVar2 = RADIO_ComputeTxSymbolRate();
   return uVar3 * RADIO_ComputeTxSymbolRate();
 }
 
@@ -933,7 +883,7 @@ int16_t RADIO_GetRSSI(void)
   bool bVar1;
   uint32_t uVar2;
   uint32_t uVar3;
-  int16_t sVar4;
+  int16_t result;
   bool bVar6;
   uint32_t uVar5;
   
@@ -945,19 +895,17 @@ int16_t RADIO_GetRSSI(void)
     bVar6 = (uVar2 & 0xff) == 0;
     bVar1 = (uVar5 & 0xff) == 0;
     //uVar5 = (int32_t)(uVar3 << 0x10) >> 0x16 & 0xffff;
-    uVar5 = (int32_t)(uVar3 & 0x03ff);
-    sVar4 = (uint16_t)uVar5;
+    //uVar5 = (int32_t)(uVar3 & 0x03ff);
+		uVar5 = (int32_t)(AGC->RSSI & 0x03ff);
+    result = (int16_t)uVar5;
     INT_Enable();
     if (uVar5 != 0xfe00)
     {
-      if (bVar6 || bVar1)
-      {
-        sVar4 = -0x200; //-128 dBm
-      }
+      if (bVar6 || bVar1) result = -0x200; //-128 dBm
       break;
     }
   } while (!bVar6 && !bVar1);
-  return (int)sVar4;
+  return (int)result;
 }
 
 

@@ -154,9 +154,7 @@ void RFTEST_StartStreamTx(void)
   FRC->SNIFFCTRL = 0;
   FRC->DFLCTRL = 5;
 	BUS_RegMaskedSet(&FRC->CTRL, FRC_CTRL_RANDOMTX_Msk);
-	
   RAC->CMD = 0x01; //TXEN
-	
 	//RAC->SEQCMD = RAC_SEQCMD_HALT_Msk;
 	BM_TxOn(); //for test only
 }
@@ -189,7 +187,6 @@ void RFTEST_StopTx(void)
 	BUS_RegMaskedSet(&FRC->IFC, FRC_IFC_TXABORTED_Msk);
 	//RAC->SEQCMD = RAC_SEQCMD_RESUME_Msk;
   RAC->CMD = 0x20; //TXDIS
-	
 	BM_TxOff(); //for test only
 }
 

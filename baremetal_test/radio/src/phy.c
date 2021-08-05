@@ -43,7 +43,7 @@ uint16_t validateSetTiming(uint16_t *timing)
  * The radioConfig passed into this function should be generated for you, and
  * not created or edited by hand.
  */
-uint8_t RAIL_RadioConfig(void *radioConfig)
+uint8_t RAIL_RadioConfig(void *radioConfig) //currently not used
 
 {
   RADIO_Config(&radioConfig); //!!!
@@ -72,7 +72,11 @@ uint8_t RAIL_RadioConfig(void *radioConfig)
 uint8_t RAIL_ChannelConfig(const RAIL_ChannelConfig_t * config)
 
 {
-  if (SYNTH_Is2p4GHz() == 0) SYNTH_DCDCRetimeClkSet(3500000);
+    
+	//RAILInt_TrackChannelConfig();
+  //SYNTH_Config(*(undefined4 *)(*config + 8),*(undefined4 *)(*config + 4));
+	
+	if (SYNTH_Is2p4GHz() == 0) SYNTH_DCDCRetimeClkSet(3500000);
   else SYNTH_DCDCRetimeClkSet(7000000);
   if (forceIrCal != 0)
   {
@@ -104,10 +108,9 @@ void RAIL_DirectModeConfig(bool enable)
 {
 //  uint8_t *p;
   
-//  if (enable == false) // p = directModeDisableConfig; //!!!!!!!!!!!!!!!!
-//  else // p = directModeEnableConfig; //!!!!!!!!!!!!!!!!
+//  if (enable == false)  p = directModeDisableConfig; //!!!!!!!!!!!!!!!!
+//  else  p = directModeEnableConfig; //!!!!!!!!!!!!!!!!
 //  GENERIC_PHY_DirectModeConfig(p); //!!!!!!!!!!!!!!!!
-  return;
 }
 
 
@@ -171,7 +174,7 @@ uint8_t RAIL_TxToneStop(void)
 uint8_t RAIL_TxStreamStart(uint8_t channel, RAIL_StreamMode_t mode)
 {
   char *pcVar1;
- // if ((mode == 1) && (pcVar1 = (char *)RAILInt_SetChannelConfig(), pcVar1 != NULL)) //!!!!!!!!!!!!!!!!
+ // if ((mode == 1) && ((char *)RAILInt_SetChannelConfig() != NULL)) //!!!!!!!!!!!!!!!!
   {
     RFTEST_SaveRadioConfiguration();
     RFTEST_StartStreamTx();
@@ -371,21 +374,17 @@ RAIL_Status_t RAIL_SetTime(uint32_t time)
 RAIL_Status_t RAIL_SetStateTiming(RAIL_StateTiming_t *timings)
 
 {
-  //validateSetTiming(timings->idleToRx);
   RADIO_RxWarmTimeSet(timings->idleToRx);
-  //validateSetTiming(timings->txToRx);
   RADIO_TxToRxTimeSet(timings->txToRx); //it's not full correct
-  //validateSetTiming(timings +  4);
   RADIO_TxWarmTimeSet(timings->idleToTx);
-  //validateSetTiming(timings);
   RADIO_RxFrameToTxTimeSet(timings->rxToTx);
   return RAIL_STATUS_NO_ERROR;
 }
 
-uint16_t idleToRx; /**<Transition time from IDLE to RX */
-uint16_t txToRx; /**<Transition time from TX to RX */
-uint16_t idleToTx; /**<Transition time from IDLE to RX */
-uint16_t rxToTx; /**<Transition time from RX to TX */
+//uint16_t idleToRx; /**<Transition time from IDLE to RX */
+//uint16_t txToRx; /**<Transition time from TX to RX */
+//uint16_t idleToTx; /**<Transition time from IDLE to RX */
+//uint16_t rxToTx; /**<Transition time from RX to TX */
 
 
 /**
@@ -411,25 +410,24 @@ bool RAIL_AddressFilterConfig(RAIL_AddrConfig_t *addrConfig)
   uint32_t local_14;
   
 //  bVar1 = *param_1;//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  if (bVar1 < 3) {
+  if (bVar1 < 3) 
+	{
 //    local_1c = param_2;
 //    local_18 = param_3;
 //    local_14 = param_4;
     memset((void*)local_1c,0,0xc);
     iVar3 = 0;
-  //  while (iVar3 < (int)(uint32_t)bVar1) {
+  //  while (iVar3 < (int)(uint32_t)bVar1) 
+//	{
   //    *(uint8_t *)((int)&local_1c + iVar3) = *(uint8_t *)(*(int *)(param_1 + 4) + iVar3);
   //    *(uint8_t *)((int)&local_1c + iVar3 + 2) = *(uint8_t *)(*(int *)(param_1 + 8) + iVar3);
   //    iVar3 = iVar3 + 1;
   //  }
   //  local_18 = *(uint32_t *)(param_1 + 0xc);
 //    local_14 = CONCAT31(local_14._1_3_,0xff);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    uVar2 = GENERIC_PHY_ConfigureAddressFiltering(local_1c);
+    return  GENERIC_PHY_ConfigureAddressFiltering(local_1c);
   }
-  else {
-    uVar2 = 0;
-  }
-  return uVar2;
+  else return false;
 }
 
 

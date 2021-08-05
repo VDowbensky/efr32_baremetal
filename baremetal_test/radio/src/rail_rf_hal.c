@@ -60,13 +60,7 @@ void frameDet0(void)
 void sequencerInterrupt(int param_1)
 
 {
-  //if (param_1 << 0xb < 0)
-  if(param_1 & 0x00100000)
-  {
-    RAILCb_RxRadioStatus(0x40);
-    return;
-  }
-  return;
+  if(param_1 & 0x00100000) RAILCb_RxRadioStatus(0x40);
 }
 
 
@@ -121,7 +115,6 @@ void protmrLbtEvt(int param_1)
   uint32_t uVar1;
   
   PROTIMER_CCTimerStop(4);
-  //if (param_1 << 9 < 0)
   if(param_1 & 0x00400000)
   {
     RADIO_PTI_AuxdataOutput(0x27);
@@ -234,7 +227,6 @@ void pktRxDoneEvt(void)
     RAILCb_RxPacketReceived((void*)uVar3);
     RAILCb_FreeMemory((void*)uVar3);
   }
-  return;
 }
 
 
@@ -244,8 +236,6 @@ void pktRxDoneEvt(void)
 void pktRxFrmErr(void)
 
 {
-  //_DAT_43000d1c = 1;
-	//FRC->IFC |= 0x80; //BLOCKERROR
 	BUS_RegMaskedSet(&FRC->IFC, FRC_IFC_BLOCKERROR_Msk);
   RAILCb_RxRadioStatus(0x10);
 }
@@ -747,9 +737,7 @@ RAIL_Status_t RAIL_TimerSet(uint32_t time, RAIL_TimeMode_t mode)
 uint32_t RAIL_TimerGet(void)
 
 {
-  uint32_t cnt;
-  cnt = GENERIC_PHY_TimerGetTimeout();
-  return PROTIMER_PrecntOverflowToUs(cnt);
+  return PROTIMER_PrecntOverflowToUs(GENERIC_PHY_TimerGetTimeout());
 }
 
 
@@ -982,7 +970,6 @@ void RFHAL_ResetBerStats(uint32_t bytes)
 
 {
   RFTEST_ResetBerStats(bytes);
-  return;
 }
 
 
@@ -1028,7 +1015,6 @@ void RFHAL_GetBerStatus (RAIL_BerStatus_t *status)
 //  param_1[1] = local_14;
 //  param_1[2] = local_10;
 //  *(undefined *)(param_1 + 3) = (undefined)local_c;
-  return;
 }
 
 

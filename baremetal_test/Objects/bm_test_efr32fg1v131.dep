@@ -1,9 +1,9 @@
 Dependencies for Project 'bm_test', Target 'efr32fg1v131': (DO NOT MODIFY !)
 CompilerVersion: 6160000::V6.16::ARMCLANG
-F (.\src\main.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/main.o -MD)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdio.h)(0x6035EAF8)
+F (.\src\main.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/main.o -MD)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdio.h)(0x60354E24)
 I (inc\bsp.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (inc\mcu_memory.h)(0x60E8554D)
 I (lib\inc\em_chip.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
@@ -12,8 +12,8 @@ I (startup\core_cm4.h)(0x60E8554D)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -63,7 +63,7 @@ I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
 I (lib\inc\em_system.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_gpio.h)(0x60E8554D)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
@@ -87,34 +87,34 @@ I (inc\radio_proc.h)(0x60E8554D)
 I (radio\inc\synth.h)(0x60E8554D)
 I (radio\inc\rf_test.h)(0x60E8554D)
 I (radio\inc\rail_types.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stddef.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stddef.h)(0x60354E20)
 I (radio\inc\rail_chip_specific.h)(0x60E8554D)
 I (radio\inc\pa.h)(0x60E8554D)
 I (radio\inc\phy.h)(0x60E8554D)
 I (radio\inc\rail_rf.h)(0x60E8554D)
-I (radio\inc\radio.h)(0x60E8554D)
+I (radio\inc\radio.h)(0x610BD5CF)
 I (radio\inc\generic_seq.h)(0x60E8554D)
 I (radio\inc\protimer.h)(0x60E8554D)
-I (radio\inc\phy_utils.h)(0x60E8554D)
-F (.\src\command_interpreter.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/command_interpreter.o -MD)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdio.h)(0x6035EAF8)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdlib.h)(0x6035EAF8)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
-I (C:\Keil_v534\ARM\ARMCLANG\include\string.h)(0x6035EAF8)
-I (C:\Keil_v534\ARM\ARMCLANG\include\errno.h)(0x6035EAF0)
+I (radio\inc\phy_utils.h)(0x610BE2E0)
+F (.\src\command_interpreter.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/command_interpreter.o -MD)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdio.h)(0x60354E24)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdlib.h)(0x60354E20)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
+I (C:\Keil_v535\ARM\ARMCLANG\include\string.h)(0x60354E20)
+I (C:\Keil_v535\ARM\ARMCLANG\include\errno.h)(0x60354E06)
 I (inc\command_interpreter.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
-F (.\src\retargetserial.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/retargetserial.o -MD)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdio.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
+F (.\src\retargetserial.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/retargetserial.o -MD)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdio.h)(0x60354E24)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -164,7 +164,7 @@ I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
 I (lib\inc\em_cmu.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_assert.h)(0x60E8554D)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_gpio.h)(0x60E8554D)
@@ -180,13 +180,13 @@ I (lib\inc\em_msc.h)(0x60E8554D)
 I (lib\inc\em_ramfunc.h)(0x60E8554D)
 I (lib\inc\em_core.h)(0x60E8554D)
 I (lib\inc\em_usart.h)(0x60E8554D)
-F (.\src\app_cli.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/app_cli.o -MD)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdio.h)(0x6035EAF8)
+F (.\src\app_cli.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/app_cli.o -MD)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdio.h)(0x60354E24)
 I (inc\app_cli.h)(0x60E8554D)
 I (inc\retargetserial.h)(0x60E8554D)
 I (inc\retargetserialconfig.h)(0x60E8554D)
 I (inc\bsp.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (inc\mcu_memory.h)(0x60E8554D)
 I (lib\inc\em_chip.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
@@ -195,8 +195,8 @@ I (startup\core_cm4.h)(0x60E8554D)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -246,7 +246,7 @@ I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
 I (lib\inc\em_system.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_gpio.h)(0x60E8554D)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
@@ -265,18 +265,18 @@ I (inc\radio_proc.h)(0x60E8554D)
 I (radio\inc\synth.h)(0x60E8554D)
 I (radio\inc\rf_test.h)(0x60E8554D)
 I (radio\inc\rail_types.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stddef.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stddef.h)(0x60354E20)
 I (radio\inc\rail_chip_specific.h)(0x60E8554D)
 I (radio\inc\pa.h)(0x60E8554D)
 I (radio\inc\phy.h)(0x60E8554D)
 I (radio\inc\rail_rf.h)(0x60E8554D)
 I (lib\inc\em_cmu.h)(0x60E8554D)
-I (radio\inc\radio.h)(0x60E8554D)
+I (radio\inc\radio.h)(0x610BD5CF)
 I (radio\inc\generic_seq.h)(0x60E8554D)
 I (radio\inc\protimer.h)(0x60E8554D)
-I (radio\inc\phy_utils.h)(0x60E8554D)
-F (.\src\mcu_memory.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/mcu_memory.o -MD)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (radio\inc\phy_utils.h)(0x610BE2E0)
+F (.\src\mcu_memory.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/mcu_memory.o -MD)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (inc\mcu_memory.h)(0x60E8554D)
 I (lib\inc\em_chip.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
@@ -285,8 +285,8 @@ I (startup\core_cm4.h)(0x60E8554D)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -336,7 +336,7 @@ I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
 I (lib\inc\em_system.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_gpio.h)(0x60E8554D)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
@@ -344,9 +344,9 @@ I (lib\inc\em_msc.h)(0x60E8554D)
 I (lib\inc\em_ramfunc.h)(0x60E8554D)
 I (lib\inc\em_core.h)(0x60E8554D)
 I (lib\inc\em_common.h)(0x60E8554D)
-F (.\src\myspi.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/myspi.o -MD)
+F (.\src\myspi.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/myspi.o -MD)
 I (inc\myspi.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (lib\inc\em_usart.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
@@ -354,8 +354,8 @@ I (startup\core_cm4.h)(0x60E8554D)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -404,7 +404,7 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_gpio.h)(0x60E8554D)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
@@ -417,9 +417,9 @@ I (lib\inc\em_system.h)(0x60E8554D)
 I (lib\inc\em_msc.h)(0x60E8554D)
 I (lib\inc\em_ramfunc.h)(0x60E8554D)
 I (lib\inc\em_core.h)(0x60E8554D)
-F (.\src\myi2c.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/myi2c.o -MD)
+F (.\src\myi2c.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/myi2c.o -MD)
 I (inc\bsp.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (inc\mcu_memory.h)(0x60E8554D)
 I (lib\inc\em_chip.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
@@ -428,8 +428,8 @@ I (startup\core_cm4.h)(0x60E8554D)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -479,7 +479,7 @@ I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
 I (lib\inc\em_system.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_gpio.h)(0x60E8554D)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
@@ -487,17 +487,17 @@ I (lib\inc\em_msc.h)(0x60E8554D)
 I (lib\inc\em_ramfunc.h)(0x60E8554D)
 I (lib\inc\em_core.h)(0x60E8554D)
 I (lib\inc\em_common.h)(0x60E8554D)
-F (.\src\adc.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/adc.o -MD)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdio.h)(0x6035EAF8)
+F (.\src\adc.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/adc.o -MD)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdio.h)(0x60354E24)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -548,7 +548,7 @@ I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
 I (lib\inc\em_chip.h)(0x60E8554D)
 I (lib\inc\em_system.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_gpio.h)(0x60E8554D)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
@@ -567,10 +567,10 @@ I (inc\app_cli.h)(0x60E8554D)
 I (inc\retargetserial.h)(0x60E8554D)
 I (inc\retargetserialconfig.h)(0x60E8554D)
 I (inc\command_interpreter.h)(0x60E8554D)
-F (.\src\leds.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/leds.o -MD)
+F (.\src\leds.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/leds.o -MD)
 I (inc\leds.h)(0x60E8554D)
 I (inc\bsp.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (inc\mcu_memory.h)(0x60E8554D)
 I (lib\inc\em_chip.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
@@ -579,8 +579,8 @@ I (startup\core_cm4.h)(0x60E8554D)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -630,7 +630,7 @@ I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
 I (lib\inc\em_system.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_gpio.h)(0x60E8554D)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
@@ -638,18 +638,18 @@ I (lib\inc\em_msc.h)(0x60E8554D)
 I (lib\inc\em_ramfunc.h)(0x60E8554D)
 I (lib\inc\em_core.h)(0x60E8554D)
 I (lib\inc\em_common.h)(0x60E8554D)
-F (.\src\radio_proc.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/radio_proc.o -MD)
+F (.\src\radio_proc.c)(0x610BA82A)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/radio_proc.o -MD)
 I (inc\radio_proc.h)(0x60E8554D)
 I (radio\inc\synth.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -698,13 +698,13 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (radio\inc\rf_test.h)(0x60E8554D)
 I (radio\inc\rail_types.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stddef.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stddef.h)(0x60354E20)
 I (radio\inc\rail_chip_specific.h)(0x60E8554D)
 I (radio\inc\pa.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdio.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdio.h)(0x60354E24)
 I (radio\inc\phy.h)(0x60E8554D)
 I (radio\inc\rail_rf.h)(0x60E8554D)
 I (lib\inc\em_cmu.h)(0x60E8554D)
@@ -712,17 +712,17 @@ I (lib\inc\em_assert.h)(0x60E8554D)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_gpio.h)(0x60E8554D)
 I (lib\inc\em_common.h)(0x60E8554D)
-I (radio\inc\radio.h)(0x60E8554D)
+I (radio\inc\radio.h)(0x610BD5CF)
 I (radio\inc\generic_seq.h)(0x60E8554D)
 I (radio\inc\protimer.h)(0x60E8554D)
-I (radio\inc\phy_utils.h)(0x60E8554D)
+I (radio\inc\phy_utils.h)(0x610BE2E0)
 I (inc\mcu_memory.h)(0x60E8554D)
 I (lib\inc\em_chip.h)(0x60E8554D)
 I (lib\inc\em_system.h)(0x60E8554D)
 I (lib\inc\em_msc.h)(0x60E8554D)
 I (lib\inc\em_ramfunc.h)(0x60E8554D)
 I (lib\inc\em_core.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\string.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\string.h)(0x60354E20)
 F (.\inc\radio_types.h)(0x60E8554D)()
 F (.\inc\bsp.h)(0x60E8554D)()
 F (.\inc\command_interpreter.h)(0x60E8554D)()
@@ -733,17 +733,17 @@ F (.\inc\myi2c.h)(0x60E8554D)()
 F (.\inc\adc.h)(0x60E8554D)()
 F (.\inc\leds.h)(0x60E8554D)()
 F (.\inc\radio_proc.h)(0x60E8554D)()
-F (.\lib\src\em_cmu.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/em_cmu.o -MD)
+F (.\lib\src\em_cmu.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/em_cmu.o -MD)
 I (lib\inc\em_cmu.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -792,27 +792,27 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_assert.h)(0x60E8554D)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_gpio.h)(0x60E8554D)
 I (lib\inc\em_common.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stddef.h)(0x6035EAF8)
-I (C:\Keil_v534\ARM\ARMCLANG\include\limits.h)(0x6035EAF6)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stddef.h)(0x60354E20)
+I (C:\Keil_v535\ARM\ARMCLANG\include\limits.h)(0x60354E1A)
 I (lib\inc\em_emu.h)(0x60E8554D)
 I (lib\inc\em_system.h)(0x60E8554D)
-F (.\lib\src\em_emu.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/em_emu.o -MD)
-I (C:\Keil_v534\ARM\ARMCLANG\include\limits.h)(0x6035EAF6)
+F (.\lib\src\em_emu.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/em_emu.o -MD)
+I (C:\Keil_v535\ARM\ARMCLANG\include\limits.h)(0x60354E1A)
 I (lib\inc\em_emu.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -861,7 +861,7 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
 I (lib\inc\em_cmu.h)(0x60E8554D)
@@ -870,18 +870,18 @@ I (lib\inc\em_common.h)(0x60E8554D)
 I (lib\inc\em_core.h)(0x60E8554D)
 I (lib\inc\em_system.h)(0x60E8554D)
 I (lib\inc\em_ramfunc.h)(0x60E8554D)
-F (.\lib\src\em_system.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/em_system.o -MD)
+F (.\lib\src\em_system.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/em_system.o -MD)
 I (lib\inc\em_system.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -931,18 +931,18 @@ I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stddef.h)(0x6035EAF8)
-F (.\lib\src\em_gpio.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/em_gpio.o -MD)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stddef.h)(0x60354E20)
+F (.\lib\src\em_gpio.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/em_gpio.o -MD)
 I (lib\inc\em_gpio.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -991,20 +991,20 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
-F (.\lib\src\em_usart.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/em_usart.o -MD)
+F (.\lib\src\em_usart.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/em_usart.o -MD)
 I (lib\inc\em_usart.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -1053,14 +1053,14 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_cmu.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_gpio.h)(0x60E8554D)
 I (lib\inc\em_common.h)(0x60E8554D)
-F (.\lib\src\em_int.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/em_int.o -MD)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+F (.\lib\src\em_int.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/em_int.o -MD)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (lib\inc\em_int.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
@@ -1068,8 +1068,8 @@ I (startup\core_cm4.h)(0x60E8554D)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -1118,17 +1118,17 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-F (.\lib\src\em_msc.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/em_msc.o -MD)
+F (.\lib\src\em_msc.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/em_msc.o -MD)
 I (lib\inc\em_msc.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -1177,7 +1177,7 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_ramfunc.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
@@ -1186,17 +1186,17 @@ I (lib\inc\em_gpio.h)(0x60E8554D)
 I (lib\inc\em_common.h)(0x60E8554D)
 I (lib\inc\em_core.h)(0x60E8554D)
 I (lib\inc\em_system.h)(0x60E8554D)
-F (.\lib\src\em_i2c.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/em_i2c.o -MD)
+F (.\lib\src\em_i2c.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/em_i2c.o -MD)
 I (lib\inc\em_i2c.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -1245,24 +1245,24 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_cmu.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_gpio.h)(0x60E8554D)
 I (lib\inc\em_common.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\limits.h)(0x6035EAF6)
-F (.\lib\src\em_adc.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/em_adc.o -MD)
+I (C:\Keil_v535\ARM\ARMCLANG\include\limits.h)(0x60354E1A)
+F (.\lib\src\em_adc.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/em_adc.o -MD)
 I (lib\inc\em_adc.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -1311,25 +1311,25 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_assert.h)(0x60E8554D)
 I (lib\inc\em_cmu.h)(0x60E8554D)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_gpio.h)(0x60E8554D)
 I (lib\inc\em_common.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stddef.h)(0x6035EAF8)
-F (.\lib\src\em_letimer.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/em_letimer.o -MD)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stddef.h)(0x60354E20)
+F (.\lib\src\em_letimer.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/em_letimer.o -MD)
 I (lib\inc\em_letimer.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -1383,16 +1383,16 @@ I (lib\inc\em_assert.h)(0x60E8554D)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_gpio.h)(0x60E8554D)
 I (lib\inc\em_common.h)(0x60E8554D)
-F (.\lib\src\tempdrv.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/tempdrv.o -MD)
+F (.\lib\src\tempdrv.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/tempdrv.o -MD)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -1442,23 +1442,23 @@ I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
 I (lib\inc\em_system.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_emu.h)(0x60E8554D)
 I (lib\inc\em_bus.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\string.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\string.h)(0x60354E20)
 I (lib\inc\tempdrv.h)(0x60E8554D)
 I (lib\inc\ecode.h)(0x60E8554D)
 I (lib\inc\tempdrv_config.h)(0x60E8554D)
-F (.\startup\system_efr32fg1v.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/system_efr32fg1v.o -MD)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+F (.\startup\system_efr32fg1v.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/system_efr32fg1v.o -MD)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -1507,18 +1507,18 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-F (.\startup\startup_efr32fg1v.s)(0x60E8554D)(--target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -masm=auto -c-gdwarf-3-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-Wa,armasm,--pd,"__UVISION_VERSION SETA 534" -Wa,armasm,--pd,"_RTE_ SETA 1" -Wa,armasm,--pd,"EFR32FG1V131F128GM32 SETA 1" -Wa,armasm,--pd,"_RTE_ SETA 1"-o ./objects/startup_efr32fg1v.o)
-F (.\radio\src\generic_phy.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/generic_phy.o -MD)
+F (.\startup\startup_efr32fg1v.s)(0x60E8554D)(--target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -masm=auto -c-gdwarf-3-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-Wa,armasm,--pd,"__UVISION_VERSION SETA 535" -Wa,armasm,--pd,"_RTE_ SETA 1" -Wa,armasm,--pd,"EFR32FG1V131F128GM32 SETA 1" -Wa,armasm,--pd,"_RTE_ SETA 1"-o ./objects/startup_efr32fg1v.o)
+F (.\radio\src\generic_phy.c)(0x610BD87D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/generic_phy.o -MD)
 I (radio\inc\generic_phy.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -1567,18 +1567,18 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (radio\inc\rail_types.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stddef.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stddef.h)(0x60354E20)
 I (radio\inc\rail_chip_specific.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\string.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\string.h)(0x60354E20)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_int.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
 I (radio\inc\protimer.h)(0x60E8554D)
 I (radio\inc\pa.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdio.h)(0x6035EAF8)
-I (radio\inc\radio.h)(0x60E8554D)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdio.h)(0x60354E24)
+I (radio\inc\radio.h)(0x610BD5CF)
 I (radio\inc\RADIO_pti.h)(0x60E8554D)
 I (radio\inc\pti.h)(0x60E8554D)
 I (lib\inc\em_gpio.h)(0x60E8554D)
@@ -1589,17 +1589,17 @@ I (radio\inc\rf_rand.h)(0x60E8554D)
 I (lib\inc\em_cmu.h)(0x60E8554D)
 I (lib\inc\em_common.h)(0x60E8554D)
 I (radio\inc\radio_cmu.h)(0x60E8554D)
-F (.\radio\src\generic_seq.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/generic_seq.o -MD)
+F (.\radio\src\generic_seq.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/generic_seq.o -MD)
 I (radio\inc\generic_seq.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -1648,18 +1648,18 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
-F (.\radio\src\if_adc.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/if_adc.o -MD)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
+F (.\radio\src\if_adc.c)(0x610BD8B4)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/if_adc.o -MD)
 I (radio\inc\if_adc.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -1708,21 +1708,21 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
-I (radio\inc\phy_utils.h)(0x60E8554D)
-F (.\radio\src\ir_cal.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/ir_cal.o -MD)
+I (radio\inc\phy_utils.h)(0x610BE2E0)
+F (.\radio\src\ir_cal.c)(0x610B95C5)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/ir_cal.o -MD)
 I (radio\inc\ir_cal.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -1771,29 +1771,29 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (radio\inc\rail.h)(0x60E8554D)
 I (radio\inc\rail_types.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stddef.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stddef.h)(0x60354E20)
 I (radio\inc\rail_chip_specific.h)(0x60E8554D)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
-I (radio\inc\radio.h)(0x60E8554D)
+I (radio\inc\radio.h)(0x610BD5CF)
 I (radio\inc\aux_pll.h)(0x60E8554D)
 I (radio\inc\synth.h)(0x60E8554D)
-I (radio\inc\phy_utils.h)(0x60E8554D)
+I (radio\inc\phy_utils.h)(0x610BE2E0)
 I (radio\inc\protimer.h)(0x60E8554D)
-F (.\radio\src\lna.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/lna.o -MD)
+F (.\radio\src\lna.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/lna.o -MD)
 I (radio\inc\lna.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -1842,16 +1842,16 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
-F (.\radio\src\pa.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/pa.o -MD)
+F (.\radio\src\pa.c)(0x610BDBA5)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/pa.o -MD)
 I (radio\inc\pa.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdio.h)(0x6035EAF8)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stddef.h)(0x6035EAF8)
-I (C:\Keil_v534\ARM\ARMCLANG\include\string.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdio.h)(0x60354E24)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stddef.h)(0x60354E20)
+I (C:\Keil_v535\ARM\ARMCLANG\include\string.h)(0x60354E20)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
@@ -1859,8 +1859,8 @@ I (startup\core_cm4.h)(0x60E8554D)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -1911,22 +1911,22 @@ I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
 I (radio\inc\synth.h)(0x60E8554D)
-I (radio\inc\radio.h)(0x60E8554D)
+I (radio\inc\radio.h)(0x610BD5CF)
 I (radio\inc\radio_cmu.h)(0x60E8554D)
 I (lib\inc\em_cmu.h)(0x60E8554D)
 I (lib\inc\em_gpio.h)(0x60E8554D)
 I (lib\inc\em_common.h)(0x60E8554D)
-F (.\radio\src\aux_pll.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/aux_pll.o -MD)
+F (.\radio\src\aux_pll.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/aux_pll.o -MD)
 I (radio\inc\aux_pll.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -1975,21 +1975,21 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
-I (radio\inc\phy_utils.h)(0x60E8554D)
-F (.\radio\src\phy.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/phy.o -MD)
+I (radio\inc\phy_utils.h)(0x610BE2E0)
+F (.\radio\src\phy.c)(0x610BE075)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/phy.o -MD)
 I (radio\inc\phy.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -2038,15 +2038,15 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (radio\inc\rail_types.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stddef.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stddef.h)(0x60354E20)
 I (radio\inc\rail_chip_specific.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\string.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\string.h)(0x60354E20)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
 I (radio\inc\rail_rf.h)(0x60E8554D)
-I (radio\inc\radio.h)(0x60E8554D)
+I (radio\inc\radio.h)(0x610BD5CF)
 I (radio\inc\rail.h)(0x60E8554D)
 I (radio\inc\synth.h)(0x60E8554D)
 I (radio\inc\generic_phy.h)(0x60E8554D)
@@ -2054,23 +2054,23 @@ I (radio\inc\rf_test.h)(0x60E8554D)
 I (radio\inc\protimer.h)(0x60E8554D)
 I (radio\inc\ir_cal.h)(0x60E8554D)
 I (radio\inc\pa.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdio.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdio.h)(0x60354E24)
 I (lib\inc\em_cmu.h)(0x60E8554D)
 I (lib\inc\em_gpio.h)(0x60E8554D)
 I (lib\inc\em_common.h)(0x60E8554D)
 I (radio\inc\rf_rand.h)(0x60E8554D)
 I (radio\inc\rail_calibration.h)(0x60E8554D)
-F (.\radio\src\phy_utils.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/phy_utils.o -MD)
-I (radio\inc\phy_utils.h)(0x60E8554D)
+F (.\radio\src\phy_utils.c)(0x610BE2E0)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/phy_utils.o -MD)
+I (radio\inc\phy_utils.h)(0x610BE2E0)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -2119,16 +2119,16 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
 I (radio\inc\protimer.h)(0x60E8554D)
 I (radio\inc\rail_types.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stddef.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stddef.h)(0x60354E20)
 I (radio\inc\rail_chip_specific.h)(0x60E8554D)
-F (.\radio\src\protimer.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/protimer.o -MD)
+F (.\radio\src\protimer.c)(0x610B98FC)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/protimer.o -MD)
 I (radio\inc\pti.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (lib\inc\em_gpio.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
@@ -2136,8 +2136,8 @@ I (startup\core_cm4.h)(0x60E8554D)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -2186,30 +2186,30 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
 I (radio\inc\protimer.h)(0x60E8554D)
 I (radio\inc\rail_types.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stddef.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stddef.h)(0x60354E20)
 I (radio\inc\rail_chip_specific.h)(0x60E8554D)
 I (lib\inc\em_int.h)(0x60E8554D)
 I (radio\inc\radio_cmu.h)(0x60E8554D)
 I (lib\inc\em_cmu.h)(0x60E8554D)
 I (lib\inc\em_common.h)(0x60E8554D)
 I (radio\inc\RADIO_pti.h)(0x60E8554D)
-I (radio\inc\radio.h)(0x60E8554D)
-F (.\radio\src\radio.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/radio.o -MD)
-I (radio\inc\radio.h)(0x60E8554D)
+I (radio\inc\radio.h)(0x610BD5CF)
+F (.\radio\src\radio.c)(0x610BE7D7)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/radio.o -MD)
+I (radio\inc\radio.h)(0x610BD5CF)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -2258,8 +2258,8 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
-I (C:\Keil_v534\ARM\ARMCLANG\include\string.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
+I (C:\Keil_v535\ARM\ARMCLANG\include\string.h)(0x60354E20)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_int.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
@@ -2268,25 +2268,25 @@ I (radio\inc\radio_cmu.h)(0x60E8554D)
 I (lib\inc\em_cmu.h)(0x60E8554D)
 I (lib\inc\em_gpio.h)(0x60E8554D)
 I (lib\inc\em_common.h)(0x60E8554D)
-I (radio\inc\phy_utils.h)(0x60E8554D)
+I (radio\inc\phy_utils.h)(0x610BE2E0)
 I (lib\inc\em_system.h)(0x60E8554D)
 I (radio\inc\pa.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdio.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdio.h)(0x60354E24)
 I (radio\inc\rf_test.h)(0x60E8554D)
 I (radio\inc\rail_types.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stddef.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stddef.h)(0x60354E20)
 I (radio\inc\rail_chip_specific.h)(0x60E8554D)
-F (.\radio\src\radio_cmu.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/radio_cmu.o -MD)
+F (.\radio\src\radio_cmu.c)(0x610B9DA0)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/radio_cmu.o -MD)
 I (radio\inc\radio_cmu.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -2335,25 +2335,25 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_cmu.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_gpio.h)(0x60E8554D)
 I (lib\inc\em_common.h)(0x60E8554D)
-F (.\radio\src\RADIO_pti.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/radio_pti.o -MD)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stddef.h)(0x6035EAF8)
+F (.\radio\src\RADIO_pti.c)(0x610B9DEC)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/radio_pti.o -MD)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stddef.h)(0x60354E20)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -2410,17 +2410,17 @@ I (lib\inc\em_common.h)(0x60E8554D)
 I (radio\inc\rail_types.h)(0x60E8554D)
 I (radio\inc\rail_chip_specific.h)(0x60E8554D)
 I (radio\inc\pti.h)(0x60E8554D)
-F (.\radio\src\rail_calibration.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/rail_calibration.o -MD)
+F (.\radio\src\rail_calibration.c)(0x610B9E65)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/rail_calibration.o -MD)
 I (radio\inc\rail_calibration.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -2469,9 +2469,9 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (radio\inc\rail_types.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stddef.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stddef.h)(0x60354E20)
 I (radio\inc\rail_chip_specific.h)(0x60E8554D)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
@@ -2479,17 +2479,17 @@ I (lib\inc\em_int.h)(0x60E8554D)
 I (radio\inc\ir_cal.h)(0x60E8554D)
 I (radio\inc\rail.h)(0x60E8554D)
 I (radio\inc\rail_rf_hal.h)(0x60E8554D)
-F (.\radio\src\rail_diagnostic.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/rail_diagnostic.o -MD)
+F (.\radio\src\rail_diagnostic.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/rail_diagnostic.o -MD)
 I (radio\inc\rail_diagnostic.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -2538,25 +2538,25 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (radio\inc\rail_types.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stddef.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stddef.h)(0x60354E20)
 I (radio\inc\rail_chip_specific.h)(0x60E8554D)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
 I (radio\inc\rail_rf.h)(0x60E8554D)
 I (radio\inc\rail_rf_hal.h)(0x60E8554D)
-F (.\radio\src\rail_rf.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/rail_rf.o -MD)
+F (.\radio\src\rail_rf.c)(0x610BA024)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/rail_rf.o -MD)
 I (radio\inc\rail_rf.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -2605,20 +2605,20 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (radio\inc\rail_types.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stddef.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stddef.h)(0x60354E20)
 I (radio\inc\rail_chip_specific.h)(0x60E8554D)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
 I (radio\inc\rail_rf_hal.h)(0x60E8554D)
 I (radio\inc\rail_calibration.h)(0x60E8554D)
-F (.\radio\src\rail_rf_hal.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/rail_rf_hal.o -MD)
+F (.\radio\src\rail_rf_hal.c)(0x610BA147)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/rail_rf_hal.o -MD)
 I (radio\inc\rail.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (radio\inc\rail_types.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stddef.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stddef.h)(0x60354E20)
 I (radio\inc\rail_chip_specific.h)(0x60E8554D)
 I (radio\inc\rail_rf_hal.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
@@ -2627,8 +2627,8 @@ I (startup\core_cm4.h)(0x60E8554D)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -2687,24 +2687,24 @@ I (radio\inc\protimer.h)(0x60E8554D)
 I (radio\inc\tempcal.h)(0x60E8554D)
 I (radio\inc\rfsense.h)(0x60E8554D)
 I (radio\inc\pa.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdio.h)(0x6035EAF8)
-I (radio\inc\radio.h)(0x60E8554D)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdio.h)(0x60354E24)
+I (radio\inc\radio.h)(0x610BD5CF)
 I (radio\inc\radio_pti.h)(0x60E8554D)
 I (radio\inc\pti.h)(0x60E8554D)
 I (lib\inc\em_gpio.h)(0x60E8554D)
 I (radio\inc\synth.h)(0x60E8554D)
 I (radio\inc\rail_calibration.h)(0x60E8554D)
-F (.\radio\src\rail_rx.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/rail_rx.o -MD)
+F (.\radio\src\rail_rx.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/rail_rx.o -MD)
 I (radio\inc\rail_rx.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -2753,25 +2753,25 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stddef.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stddef.h)(0x60354E20)
 I (radio\inc\rail_rf.h)(0x60E8554D)
 I (radio\inc\rail_types.h)(0x60E8554D)
 I (radio\inc\rail_chip_specific.h)(0x60E8554D)
 I (radio\inc\rail_rf_hal.h)(0x60E8554D)
-F (.\radio\src\rail_tx.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/rail_tx.o -MD)
+F (.\radio\src\rail_tx.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/rail_tx.o -MD)
 I (radio\inc\rail_tx.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -2820,25 +2820,25 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (radio\inc\rail_types.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stddef.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stddef.h)(0x60354E20)
 I (radio\inc\rail_chip_specific.h)(0x60E8554D)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
 I (radio\inc\rail_rf_hal.h)(0x60E8554D)
 I (radio\inc\rail_rf.h)(0x60E8554D)
-F (.\radio\src\rf_rand.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/rf_rand.o -MD)
+F (.\radio\src\rf_rand.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/rf_rand.o -MD)
 I (radio\inc\rf_rand.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -2887,20 +2887,20 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
-F (.\radio\src\rf_test.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/rf_test.o -MD)
+F (.\radio\src\rf_test.c)(0x610BDF0C)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/rf_test.o -MD)
 I (radio\inc\rf_test.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -2949,17 +2949,17 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (radio\inc\rail_types.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stddef.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stddef.h)(0x60354E20)
 I (radio\inc\rail_chip_specific.h)(0x60E8554D)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
-I (radio\inc\radio.h)(0x60E8554D)
+I (radio\inc\radio.h)(0x610BD5CF)
 I (inc\radio_proc.h)(0x60E8554D)
 I (radio\inc\synth.h)(0x60E8554D)
 I (radio\inc\pa.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdio.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdio.h)(0x60354E24)
 I (radio\inc\phy.h)(0x60E8554D)
 I (radio\inc\rail_rf.h)(0x60E8554D)
 I (lib\inc\em_cmu.h)(0x60E8554D)
@@ -2967,24 +2967,24 @@ I (lib\inc\em_gpio.h)(0x60E8554D)
 I (lib\inc\em_common.h)(0x60E8554D)
 I (radio\inc\generic_seq.h)(0x60E8554D)
 I (radio\inc\protimer.h)(0x60E8554D)
-I (radio\inc\phy_utils.h)(0x60E8554D)
+I (radio\inc\phy_utils.h)(0x610BE2E0)
 I (inc\mcu_memory.h)(0x60E8554D)
 I (lib\inc\em_chip.h)(0x60E8554D)
 I (lib\inc\em_system.h)(0x60E8554D)
 I (lib\inc\em_msc.h)(0x60E8554D)
 I (lib\inc\em_ramfunc.h)(0x60E8554D)
 I (lib\inc\em_core.h)(0x60E8554D)
-F (.\radio\src\rfsense.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/rfsense.o -MD)
+F (.\radio\src\rfsense.c)(0x610BA313)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/rfsense.o -MD)
 I (radio\inc\rfsense.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -3033,22 +3033,22 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stddef.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stddef.h)(0x60354E20)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_int.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
-F (.\radio\src\rtccsync.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/rtccsync.o -MD)
+F (.\radio\src\rtccsync.c)(0x610BA386)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/rtccsync.o -MD)
 I (radio\inc\rtccsync.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -3097,23 +3097,23 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
 I (lib\inc\em_cmu.h)(0x60E8554D)
 I (lib\inc\em_gpio.h)(0x60E8554D)
 I (lib\inc\em_common.h)(0x60E8554D)
-F (.\radio\src\synth.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/synth.o -MD)
+F (.\radio\src\synth.c)(0x610BA41F)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/synth.o -MD)
 I (radio\inc\synth.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -3162,22 +3162,22 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
 I (lib\inc\em_emu.h)(0x60E8554D)
 I (radio\inc\nibblebits.h)(0x60E8554D)
-F (.\radio\src\tempcal.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/tempcal.o -MD)
+F (.\radio\src\tempcal.c)(0x610BA489)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/tempcal.o -MD)
 I (radio\inc\tempcal.h)(0x60E8554D)
 I (device\em_device.h)(0x60E8554D)
 I (device\efr32fg1v131f128gm32.h)(0x60E8554D)
 I (startup\core_cm4.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (startup\cmsis_version.h)(0x60E8554D)
 I (startup\cmsis_compiler.h)(0x60E8554D)
 I (startup\cmsis_armclang.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_compat.h)(0x5EE17BA2)
-I (C:\Keil_v534\ARM\ARMCLANG\include\arm_acle.h)(0x6035EAF4)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_compat.h)(0x602A81CE)
+I (C:\Keil_v535\ARM\ARMCLANG\include\arm_acle.h)(0x60354E14)
 I (startup\mpu_armv7.h)(0x60E8554D)
 I (device\system_efr32fg1v.h)(0x60E8554D)
 I (device\efr32fg1v_msc.h)(0x60E8554D)
@@ -3226,24 +3226,24 @@ I (device\efr32fg1v_prs_signals.h)(0x60E8554D)
 I (device\efr32fg1v_dmareq.h)(0x60E8554D)
 I (device\efr32fg1v_af_ports.h)(0x60E8554D)
 I (device\efr32fg1v_af_pins.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (lib\inc\em_bus.h)(0x60E8554D)
 I (lib\inc\em_assert.h)(0x60E8554D)
-F (.\src\rail_callbacks.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/rail_callbacks.o -MD)
+F (.\src\rail_callbacks.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/rail_callbacks.o -MD)
 I (radio\inc\rail.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdbool.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (radio\inc\rail_types.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stddef.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stddef.h)(0x60354E20)
 I (radio\inc\rail_chip_specific.h)(0x60E8554D)
-F (.\radio\src\nibblebits.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/nibblebits.o -MD)
+F (.\radio\src\nibblebits.c)(0x60E8554D)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/nibblebits.o -MD)
 I (radio\inc\nibblebits.h)(0x60E8554D)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
-F (C:\Keil_v534\Packs\Keil\ARM_Compiler\1.6.3\Source\retarget_io.c)(0x584E700E)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Keil_v534/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-IC:/Keil_v534/ARM/CMSIS/Include-D__UVISION_VERSION="534" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/retarget_io.o -MD)
-I (C:\Keil_v534\ARM\ARMCLANG\include\string.h)(0x6035EAF8)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdint.h)(0x6035EAF8)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdio.h)(0x6035EAF8)
-I (C:\Keil_v534\ARM\ARMCLANG\include\stdlib.h)(0x6035EAF8)
-I (C:\Keil_v534\ARM\ARMCLANG\include\assert.h)(0x6035EAF6)
-I (C:\Keil_v534\ARM\ARMCLANG\include\rt_sys.h)(0x6035EAF8)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
+F (C:\Users\Admin\AppData\Local\Arm\Packs\Keil\ARM_Compiler\1.6.3\Source\retarget_io.c)(0x584E700E)(-xc -std=gnu99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./startup -I ./src -I ./inc -I ./lib/src -I ./lib/inc -I ./device -I ./periph -I ./radio/src -I ./radio/inc-I./RTE/_efr32fg1v131-IC:/Users/Admin/AppData/Local/Arm/Packs/SiliconLabs/GeckoPlatform_EFR32FG1V_DFP/3.2.0/Device/SiliconLabs/EFR32FG1V/Include-D__UVISION_VERSION="535" -D_RTE_ -DEFR32FG1V131F128GM32 -D_RTE_ -DEFR32FG1V131F128GM32-o ./objects/retarget_io.o -MD)
+I (C:\Keil_v535\ARM\ARMCLANG\include\string.h)(0x60354E20)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdio.h)(0x60354E24)
+I (C:\Keil_v535\ARM\ARMCLANG\include\stdlib.h)(0x60354E20)
+I (C:\Keil_v535\ARM\ARMCLANG\include\assert.h)(0x60354E20)
+I (C:\Keil_v535\ARM\ARMCLANG\include\rt_sys.h)(0x60354E24)
 I (RTE\_efr32fg1v131\RTE_Components.h)(0x60E8554D)

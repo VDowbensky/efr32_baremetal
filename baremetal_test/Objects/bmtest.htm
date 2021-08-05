@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\bmtest.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\bmtest.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6160001: Last Updated: Mon Aug  2 10:11:47 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6160001: Last Updated: Thu Aug  5 16:30:01 2021
 <BR><P>
 <H3>Maximum Stack Usage =        336 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1378,7 +1378,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_radio
 </UL>
 
-<P><STRONG><a name="[125]"></a>PA_PowerLevelSet</STRONG> (Thumb, 380 bytes, Stack size 8 bytes, pa.o(.text.PA_PowerLevelSet))
+<P><STRONG><a name="[125]"></a>PA_PowerLevelSet</STRONG> (Thumb, 376 bytes, Stack size 8 bytes, pa.o(.text.PA_PowerLevelSet))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = PA_PowerLevelSet
 </UL>
 <BR>[Called By]<UL><LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_radio
@@ -1421,7 +1421,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_radio
 </UL>
 
-<P><STRONG><a name="[d2]"></a>PROTIMER_DelayUs</STRONG> (Thumb, 192 bytes, Stack size 8 bytes, protimer.o(.text.PROTIMER_DelayUs))
+<P><STRONG><a name="[d2]"></a>PROTIMER_DelayUs</STRONG> (Thumb, 188 bytes, Stack size 8 bytes, protimer.o(.text.PROTIMER_DelayUs))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = PROTIMER_DelayUs
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GENERIC_PHY_RadioEnable
@@ -1505,8 +1505,8 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_radio
 </UL>
 
-<P><STRONG><a name="[df]"></a>RADIO_RxSearchTimeSet</STRONG> (Thumb, 56 bytes, Stack size 16 bytes, radio.o(.text.RADIO_RxSearchTimeSet))
-<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = RADIO_RxSearchTimeSet &rArr; __aeabi_uldivmod
+<P><STRONG><a name="[df]"></a>RADIO_RxSearchTimeSet</STRONG> (Thumb, 46 bytes, Stack size 8 bytes, radio.o(.text.RADIO_RxSearchTimeSet))
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = RADIO_RxSearchTimeSet &rArr; __aeabi_uldivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
 <LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RADIOCMU_ClockFreqGet
@@ -1514,7 +1514,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_radio
 </UL>
 
-<P><STRONG><a name="[e1]"></a>RADIO_RxToTxTimeSet</STRONG> (Thumb, 114 bytes, Stack size 24 bytes, radio.o(.text.RADIO_RxToTxTimeSet))
+<P><STRONG><a name="[e1]"></a>RADIO_RxToTxTimeSet</STRONG> (Thumb, 96 bytes, Stack size 24 bytes, radio.o(.text.RADIO_RxToTxTimeSet))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = RADIO_RxToTxTimeSet &rArr; __aeabi_uldivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
@@ -1524,8 +1524,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_radio
 </UL>
 
-<P><STRONG><a name="[e3]"></a>RADIO_RxWarmTimeSet</STRONG> (Thumb, 68 bytes, Stack size 16 bytes, radio.o(.text.RADIO_RxWarmTimeSet))
-<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = RADIO_RxWarmTimeSet &rArr; __aeabi_uldivmod
+<P><STRONG><a name="[e3]"></a>RADIO_RxWarmTimeSet</STRONG> (Thumb, 56 bytes, Stack size 8 bytes, radio.o(.text.RADIO_RxWarmTimeSet))
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = RADIO_RxWarmTimeSet &rArr; __aeabi_uldivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
 <LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RADIOCMU_ClockFreqGet
@@ -1533,7 +1533,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_radio
 </UL>
 
-<P><STRONG><a name="[e4]"></a>RADIO_SeqInit</STRONG> (Thumb, 168 bytes, Stack size 24 bytes, radio.o(.text.RADIO_SeqInit))
+<P><STRONG><a name="[e4]"></a>RADIO_SeqInit</STRONG> (Thumb, 160 bytes, Stack size 24 bytes, radio.o(.text.RADIO_SeqInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72 + Unknown Stack Size
 <LI>Call Chain = RADIO_SeqInit &rArr; __aeabi_uldivmod
 </UL>
@@ -1553,8 +1553,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_radio
 </UL>
 
-<P><STRONG><a name="[e6]"></a>RADIO_TxToRxSearchTimeSet</STRONG> (Thumb, 56 bytes, Stack size 16 bytes, radio.o(.text.RADIO_TxToRxSearchTimeSet))
-<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = RADIO_TxToRxSearchTimeSet &rArr; __aeabi_uldivmod
+<P><STRONG><a name="[e6]"></a>RADIO_TxToRxSearchTimeSet</STRONG> (Thumb, 46 bytes, Stack size 8 bytes, radio.o(.text.RADIO_TxToRxSearchTimeSet))
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = RADIO_TxToRxSearchTimeSet &rArr; __aeabi_uldivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
 <LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RADIOCMU_ClockFreqGet
@@ -1562,8 +1562,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_radio
 </UL>
 
-<P><STRONG><a name="[e7]"></a>RADIO_TxToRxTimeSet</STRONG> (Thumb, 58 bytes, Stack size 16 bytes, radio.o(.text.RADIO_TxToRxTimeSet))
-<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = RADIO_TxToRxTimeSet &rArr; __aeabi_uldivmod
+<P><STRONG><a name="[e7]"></a>RADIO_TxToRxTimeSet</STRONG> (Thumb, 46 bytes, Stack size 8 bytes, radio.o(.text.RADIO_TxToRxTimeSet))
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = RADIO_TxToRxTimeSet &rArr; __aeabi_uldivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
 <LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RADIOCMU_ClockFreqGet
@@ -1571,7 +1571,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_radio
 </UL>
 
-<P><STRONG><a name="[e8]"></a>RADIO_TxToTxTimeSet</STRONG> (Thumb, 114 bytes, Stack size 24 bytes, radio.o(.text.RADIO_TxToTxTimeSet))
+<P><STRONG><a name="[e8]"></a>RADIO_TxToTxTimeSet</STRONG> (Thumb, 96 bytes, Stack size 24 bytes, radio.o(.text.RADIO_TxToTxTimeSet))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = RADIO_TxToTxTimeSet &rArr; __aeabi_uldivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
@@ -1581,7 +1581,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_radio
 </UL>
 
-<P><STRONG><a name="[e9]"></a>RADIO_TxWarmTimeSet</STRONG> (Thumb, 114 bytes, Stack size 24 bytes, radio.o(.text.RADIO_TxWarmTimeSet))
+<P><STRONG><a name="[e9]"></a>RADIO_TxWarmTimeSet</STRONG> (Thumb, 96 bytes, Stack size 24 bytes, radio.o(.text.RADIO_TxWarmTimeSet))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = RADIO_TxWarmTimeSet &rArr; __aeabi_uldivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod

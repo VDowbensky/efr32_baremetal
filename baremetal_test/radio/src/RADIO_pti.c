@@ -26,9 +26,6 @@ void RADIO_PTI_Init(RADIO_PTIInit_t *ptiInit)
     FRC->ROUTEPEN = 7;
 
     GPIO_PinModeSet(ptiInit->dclkPort, ptiInit->dclkPin, gpioModePushPull,0);
-    //bVar1 = ptiInit[0xf];
-    //bVar2 = ptiInit[0x10];
-    //uVar3 = uVar4;
   }
   else
   {
@@ -51,15 +48,11 @@ void RADIO_PTI_Init(RADIO_PTIInit_t *ptiInit)
       GPIO_PinModeSet(ptiInit->doutPort, ptiInit->doutPin, gpioModePushPull,1);
       return;
     }
-    //bVar1 = param_1[0xf];
     FRC->ROUTEPEN = 5;
-    //bVar2 = param_1[0x10];
-    //uVar3 = 0;
     sniffMode = ptiInit->mode;
   }
   GPIO_PinModeSet(ptiInit->dframePort, ptiInit->dframePin, gpioModePushPull, 0);
   GPIO_PinModeSet(ptiInit->doutPort, ptiInit->doutPin, gpioModePushPull, 1);
-  return;
 }
 
 

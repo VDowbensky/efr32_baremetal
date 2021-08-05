@@ -284,8 +284,6 @@ bool PROTIMER_SetTime(uint32_t time)
 void PROTIMER_LBTCfgSet(uint32_t param_1,int param_2,uint32_t param_3,int param_4,uint8_t param_5)
 
 {
-  //uint32_t uVar1;
-
   PROTIMER->CTRL &= 0xff0fffff;
   PROTIMER->CTRL |= 0x900000;
   if (param_3 == 0) 
@@ -294,7 +292,6 @@ void PROTIMER_LBTCfgSet(uint32_t param_1,int param_2,uint32_t param_3,int param_
     param_1 = param_3;
   }
   PROTIMER->LBTCTRL = (uint32_t)param_5 << 8 | param_4 << 0x18 | param_2 << 4 | param_3 << 0x10 | param_1;
-  //uVar1 = PROTIMER->BASECNTTOP;
   PROTIMER->TOUT0CNTTOP = PROTIMER->BASECNTTOP; 
   if (param_3 != 0) 
   {
@@ -302,7 +299,6 @@ void PROTIMER_LBTCfgSet(uint32_t param_1,int param_2,uint32_t param_3,int param_
     PROTIMER->RXCTRL = 0x18011b01;
   }
   PROTIMER->TXCTRL = 0x1401;
-  return;
 }
 
 
@@ -324,11 +320,13 @@ void PROTIMER_DelayUs(uint32_t us)
   {
     while(true)
     {
-      uVar7 = cnt;
-			if (PROTIMER->WRAPCNTTOP >> 1 <= cnt) uVar7 = PROTIMER->WRAPCNTTOP >> 1;
-      do {
-        uVar5 = PROTIMER_ElapsedTime(starttime,PROTIMER->WRAPCNT);
-      } while (uVar5 < uVar7);
+      //uVar7 = cnt;
+			//if (PROTIMER->WRAPCNTTOP >> 1 <= cnt) uVar7 = PROTIMER->WRAPCNTTOP >> 1;
+			if (PROTIMER->WRAPCNTTOP >> 1 <= cnt) cnt = PROTIMER->WRAPCNTTOP >> 1;
+      //do {
+      //  uVar5 = PROTIMER_ElapsedTime(starttime,PROTIMER->WRAPCNT);
+      //} while (uVar5 < uVar7);
+			while(PROTIMER_ElapsedTime(starttime,PROTIMER->WRAPCNT) < cnt);
 			if (cnt <= PROTIMER_ElapsedTime(starttime,PROTIMER->WRAPCNT)) break;
       cnt = cnt - PROTIMER_ElapsedTime(starttime,PROTIMER->WRAPCNT);
       starttime = PROTIMER->WRAPCNT;

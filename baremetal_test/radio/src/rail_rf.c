@@ -193,22 +193,12 @@ uint32_t RAIL_DebugModeGet(void)
 RAIL_Status_t RAIL_SetTxTransitions(RAIL_RadioState_t success, RAIL_RadioState_t error)
 
 {
-  RAIL_Status_t iVar2;
-	RAIL_RadioState_t iVar1;
-  
-  if ((success == RAIL_RF_STATE_TX) || (error == RAIL_RF_STATE_TX))
-  {
-    iVar2 = 1; //RAIL_STATUS_INVALID_PARAMETER
+  if ((success == RAIL_RF_STATE_TX) || (error == RAIL_RF_STATE_TX)) return RAIL_STATUS_INVALID_PARAMETER;
+  else 
+	{
+    if (RAIL_RfHalStateGet() != RAIL_RF_STATE_TX) return RAIL_RfHalSetTxTransitions(success,error);
   }
-  else {
-    iVar1 = RAIL_RfHalStateGet();
-    if (iVar1 != RAIL_RF_STATE_TX) 
-			{
-      iVar2 = RAIL_RfHalSetTxTransitions(success,error);
-      return iVar2;
-			}
-  }
-  return iVar2;
+	return 0; //???
 }
 
 
@@ -231,26 +221,21 @@ RAIL_Status_t RAIL_SetTxTransitions(RAIL_RadioState_t success, RAIL_RadioState_t
 RAIL_Status_t RAIL_SetRxTransitions(RAIL_RadioState_t success,  RAIL_RadioState_t error,  uint8_t ignoreErrors)
 
 {
-  RAIL_Status_t iVar1;
+  RAIL_Status_t status;
   
-  if (error == 2)
-  {
-    return 1;
-  }
+  if (error == 2) return 1;
   //iVar1 = RAIL_RfHalStateGet();
-  if (RAIL_RfHalStateGet() == 1)
-  {
-    iVar1 = 2;
-  }
+  if (RAIL_RfHalStateGet() == 1) status = 2;
   else
   {
-    iVar1 = RAIL_RfHalSetRxTransitions(success,error);
-    if (iVar1 == 0) {
-      iVar1 = RAIL_RfHalErrorConfig(ignoreErrors);
-      return iVar1;
+    status = RAIL_RfHalSetRxTransitions(success,error);
+    if (status == 0) 
+		{
+      status = RAIL_RfHalErrorConfig(ignoreErrors);
+      return status;
     }
   }
-  return iVar1;
+  return status;
 }
 
 

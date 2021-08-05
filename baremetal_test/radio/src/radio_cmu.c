@@ -66,11 +66,8 @@ uint32_t RADIOCMU_ClockFreqGet(CMU_Clock_TypeDef clock)
 uint32_t RADIOCMU_ClockPrescGet(CMU_Clock_TypeDef clock)
 
 {
-  if ((uint32_t)(clock << 0x18) >> 0x1c != 6)
-  {
-    return CMU_ClockPrescGet(clock);
-  }
-  return (CMU->HFRADIOPRESC >> 8) & 0x1FF;
+  if ((uint32_t)(clock << 0x18) >> 0x1c != 6) return CMU_ClockPrescGet(clock);
+  else return (CMU->HFRADIOPRESC >> 8) & 0x1FF;
 //  return (uint32_t)(presc << 0xf) >> 0x17;
 }
 

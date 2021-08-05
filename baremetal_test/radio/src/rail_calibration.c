@@ -91,12 +91,12 @@ uint32_t RAIL_RfHalCalibrationPendingGet(void)
 RAIL_CalMask_t RAIL_CalPendingGet(void)
 
 {
-  uint32_t uVar1;
+  uint32_t tmp;
   
   INT_Disable();
-  uVar1 = RAIL_CalPend;
+  tmp = RAIL_CalPend;
   INT_Enable();
-  return uVar1;
+  return tmp;
 }
 
 
@@ -139,21 +139,11 @@ void RAIL_CalStart(RAIL_CalValues_t *calValues, RAIL_CalMask_t calForce, bool ca
   {
    // c = (RAIL_CalValues_t)0xffffffff; //!!!!!!!!!!!!!!!!!!!!
   }
-  else
-  {
-    c = *calValues;
-  }
-  if (calForce == 0)
-  {
-	  calForce = RAIL_RfHalCalibrationPendingGet();
-  }
+  else c = *calValues;
+  if (calForce == 0) calForce = RAIL_RfHalCalibrationPendingGet();
   RAIL_RfHalCalibrationClear(calForce);
 //  RAIL_RfHalCalibrationRun(c,calForce);//!!!!!!!!!!!!!!!!!!!!
-  if ((calSave != 0) && (calValues != NULL))
-  {
-    *calValues = c;
-  }
-  return;
+  if ((calSave != 0) && (calValues != NULL)) *calValues = c;
 }
 
 

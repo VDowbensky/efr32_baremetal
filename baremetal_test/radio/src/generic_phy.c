@@ -294,47 +294,16 @@ void GENERIC_PHY_ConfigureCallbacks(uint32_t callbacks)
 //  _enabledCallbacks = callbacks & availableCallbacks;
 //  cbs = _enabledCallbacks & 0xff;
 //  interrupts = 0x101;
-//  if (_enabledCallbacks & 1)
-//  {
-//	  interrupts = 0x103;
-//  }
-//  //if ((int)(uVar2 << 0x1e) < 0)
-//  if(cbs & 0x02)
-//  {
-//	  interrupts = interrupts | 0xc;
-//  }
-//  //if ((int)(uVar2 << 0x1d) < 0)
-//  if(cbs & 0x04)
-//  {
-//	  interrupts = interrupts | 0x10;
-//  }
-//  //if ((int)(uVar2 << 0x1c) < 0)
-//  if(cbs & 0x08)
-//  {
-//	  interrupts = interrupts | 0x40;
-//  }
-//  //if ((int)(uVar2 << 0x1b) < 0)
-//  if(cbs & 0x10)
-//  {
-//	  interrupts = interrupts | 0x120;
-//  }
-//  //if ((int)(uVar2 << 0x1a) < 0)
-//  if(cbs & 0x20)
-//  {
-//	  interrupts = interrupts | 0x4000;
-//  }
-//
-//  //if ((int)(uVar2 << 0x19) < 0)
-//  if(cbs & 0x40)
-//  {
-//	  interrupts = interrupts | 0x2000;
-//  }
-//
+//  if (_enabledCallbacks & 1) interrupts = 0x103;
+//  if(cbs & 0x02) interrupts |= 0xc;
+//  if(cbs & 0x04) interrupts |= 0x10;
+//  if(cbs & 0x08) interrupts |= 0x40;
+//  if(cbs & 0x10) interrupts |= 0x120;
+//  if(cbs & 0x20) interrupts |= 0x4000;
+//  if(cbs & 0x40) interrupts |= 0x2000;
 //  tmp = FRC->IEN;
 //  uVar3 = tmp & (interrupts ^ tmp);
 //  FRC->IFC = uVar3;
-//
-//
 // // uVar2 = FRC->IEN;
 //  interrupts = interrupts & (interrupts ^ tmp);
 //  FRC->IEN = FRC->IEN & ~uVar3;
@@ -346,30 +315,12 @@ void GENERIC_PHY_ConfigureCallbacks(uint32_t callbacks)
 //  local_c = (char)_enabledCallbacks;
 //  bStack11 = (byte)(_enabledCallbacks >> 8);
 //  uVar2 = (uint)bStack11;
-//  if (local_c < '\0')
-//  {
-//	  interrupts = 0x2000;
-//  }
-//  else
-//  {
-//	  interrupts = 0;
-//  }
-//  //if ((int)(uVar2 << 0x1f) < 0)
-//  if(uVar2 & 0x01)
-//  {
-//	  interrupts = interrupts | 0x200;
-//  }
-//  //if ((int)(uVar2 << 0x1e) < 0)
-//  if(uVar2 & 0x02)
-//  {
-//	  interrupts = interrupts | 0x400;
-//  }
+//  if (local_c < 0) interrupts = 0x2000;
+//  else interrupts = 0;
+//  if(uVar2 & 0x01) interrupts |= 0x200;
+//  if(uVar2 & 0x02) interrupts |= 0x400;
 //  uVar1 = MODEM->IEN;
-//  //if ((int)(uVar2 << 0x1d) < 0)
-//  if(uVar2 & 04)
-//  {
-//    uVar4 = uVar4 | 0x800;
-//  }
+//  if(uVar2 & 04) uVar4 = uVar4 | 0x800;
 //  uVar3 = uVar1 & (interrupts ^ uVar1);
 //  MODEM->IFC = uVar3;
 //  uVar2 = MODEM->IEN;
@@ -378,30 +329,13 @@ void GENERIC_PHY_ConfigureCallbacks(uint32_t callbacks)
 //  MODEM->IFC= interrupts;
 //  uVar2 = MODEM->IEN;
 //  MODEM->IEN = interrupts | uVar2;
-//  if ((_enabledCallbacks & 0x800) == 0)
-//  {
-//    uVar2 = 0;
-//  }
-//  else {
-//    uVar2 = 4;
-//  }
+//  if ((_enabledCallbacks & 0x800) == 0) uVar2 = 0;
+//  else uVar2 = 4; 
 //  bStack10 = (byte)(_enabledCallbacks >> 0x10);
-//  //if ((int)((uint)bStack11 << 0x1b) < 0)
-//  if(bStack11 & 0x10)
-//  {
-//    uVar2 = uVar2 | 1;
-//  }
-//  //if ((int)((uint)bStack10 << 0x1f) < 0)
-//  if(bStack10 & 0x01)
-//  {
-//    uVar2 = uVar2 | 0x800000;
-//  }
+//  if(bStack11 & 0x10) uVar2 |= 1;
+//  if(bStack10 & 0x01) uVar2 |= 0x800000;
 //  uVar4 = RAC->IEN;
-//  //if ((int)((uint)bStack10 << 0x1e) < 0)
-//  if(bStack10 & 0x02)
-//  {
-//    uVar2 = uVar2 | 0xff0000;
-//  }
+//  if(bStack10 & 0x02) uVar2 |= 0xff0000;
 //  uVar3 = uVar4 & (uVar2 ^ uVar4);
 //  RAC->IFC = uVar3;
 //  uVar1 = RAC->IEN;
@@ -411,16 +345,9 @@ void GENERIC_PHY_ConfigureCallbacks(uint32_t callbacks)
 //  uVar4 = RAC->IEN;
 //  RAC->IEN = uVar2 | uVar4;
 //  uVar2 = 0x501000;
-//  if ((_enabledCallbacks & 0x80000) == 0)
-//  {
-//    uVar2 = 0;
-//  }
+//  if ((_enabledCallbacks & 0x80000) == 0) uVar2 = 0;
 //  uVar4 = PROTIMER->IEN;
-//  //if ((int)((uint)bStack10 << 0x1b) < 0)
-//  if(bStack10 & 0x10)
-//  {
-//    uVar2 = uVar2 | 0x400;
-//  }
+//  if(bStack10 & 0x10) uVar2 |= 0x400;
 //  uVar3 = uVar4 & (uVar2 ^ uVar4);
 //  PROTIMER->IFC = uVar3;
 //  uVar1 = PROTIMER->IEN;
@@ -656,7 +583,7 @@ void GENERIC_PHY_PacketRxGet(uint16_t *param_1)
 
 {
   uint16_t uVar1;
-  uint32_t uVar2;
+  uint32_t rxaddr;
   int iVar3;
   uint32_t local_24;
   uint32_t uStack32;
@@ -666,8 +593,8 @@ void GENERIC_PHY_PacketRxGet(uint16_t *param_1)
   
   if (param_1 != NULL)
   {
-    uVar2 = RADIO_RxBufferGet();
- //   iVar3 = RADIO_RxLengthReadNext(); //!!!!!!!!!!!!!!!!!!!!
+    rxaddr = RADIO_RxBufferGet();
+//    iVar3 = RADIO_RxLengthReadNext(); //!!!!!!!!!!!!!!!!!!!!
     if (iVar3 == 0xffff)
     {
       *(uint32_t *)(param_1 + 2) = 0;
@@ -676,7 +603,7 @@ void GENERIC_PHY_PacketRxGet(uint16_t *param_1)
     else
     {
 //      uVar1 = GENERIC_PHY_PacketRxHelper(iVar3,uVar2,&local_24);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      *(uint32_t *)(param_1 + 2) = uVar2;
+      *(uint32_t *)(param_1 + 2) = rxaddr;
       *param_1 = uVar1;
       *(uint32_t *)(param_1 + 4) = local_24;
       *(uint32_t *)(param_1 + 6) = uStack32;
@@ -687,7 +614,7 @@ void GENERIC_PHY_PacketRxGet(uint16_t *param_1)
  //     {
  //       uVar2 = (**(code **)(currentCallbacks + 0x48))();
  //     }
-      RADIO_RxBufferSet(uVar2);
+      RADIO_RxBufferSet(rxaddr);
     }
   }
   return;

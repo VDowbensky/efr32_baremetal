@@ -166,11 +166,8 @@ void SYNTH_Config(uint32_t base_freg, uint32_t spacing)
   vcofreq = currRfFrequency * lodiv;
   SYNTH->FREQ = ((uint64_t)vcofreq * 524288)/xofreq;
   currIfFrequency = SYNTH_IfFreqCompute();
-	//currIfFrequency = 450000; //!!!!!
   k_ifreq = ((uint64_t)currIfFrequency * lodiv * 524288)/xofreq;
-  //SYNTH->IFFREQ &= 0x100000; //keep LOSIDE bit
   SYNTH->IFFREQ &= SYNTH_IFFREQ_LOSIDE_Msk;
-  //SYNTH->IFFREQ |= (k_ifreq & 0xfffff);
   SYNTH->IFFREQ |= (k_ifreq & SYNTH_IFFREQ_IFFREQ_Msk);
 
   currChSpacing = spacing;
@@ -255,10 +252,7 @@ void SYNTH_KvnFreqCompensationDisable(void)
 
 {
   RAC->SR3 &= 0xffffffef;
-  if (vcoGainPte != 0)
-  {
-    SYNTH->VCOGAIN = (uint32_t)vcoGainPte;
-  }
+  if (vcoGainPte != 0) SYNTH->VCOGAIN = (uint32_t)vcoGainPte;
 }
 
 
