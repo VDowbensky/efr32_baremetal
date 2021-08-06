@@ -140,10 +140,9 @@ void RFTEST_StartCwTx(void)
 	BUS_RegMaskedSet(&MODEM->CTRL0, MODEM_PRE_TXBASES_Msk);
   FRC->DFLCTRL = 5;
 	BUS_RegMaskedSet(&FRC->CTRL, FRC_CTRL_RANDOMTX_Msk);
+	RAC->IFPGACTRL = 0x000087F6; //!!!
 	RAC->CMD = 0x01; //TXEN
-			//!!!!stop sequencer
-	//RAC->SEQCMD = RAC_SEQCMD_HALT_Msk;
-	BM_TxOn(); //for test only
+	//BM_TxOn(); //for test only
 	
 }
 
@@ -154,9 +153,9 @@ void RFTEST_StartStreamTx(void)
   FRC->SNIFFCTRL = 0;
   FRC->DFLCTRL = 5;
 	BUS_RegMaskedSet(&FRC->CTRL, FRC_CTRL_RANDOMTX_Msk);
+	RAC->IFPGACTRL = 0x000087F6; //!!!
   RAC->CMD = 0x01; //TXEN
-	//RAC->SEQCMD = RAC_SEQCMD_HALT_Msk;
-	BM_TxOn(); //for test only
+	//BM_TxOn(); //for test only
 }
 
 
@@ -185,9 +184,8 @@ void RFTEST_StopTx(void)
 //			}
 //		} while(FRC->IF & 0x04);
 	BUS_RegMaskedSet(&FRC->IFC, FRC_IFC_TXABORTED_Msk);
-	//RAC->SEQCMD = RAC_SEQCMD_RESUME_Msk;
   RAC->CMD = 0x20; //TXDIS
-	BM_TxOff(); //for test only
+	//BM_TxOff(); //for test only
 }
 
 

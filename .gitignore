@@ -1,0 +1,9 @@
+
+*.o
+*.d
+*.htm
+*.dep
+*.map
+*.Admin
+*.lnp
+*.uvoptx
