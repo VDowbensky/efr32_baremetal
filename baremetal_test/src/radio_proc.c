@@ -266,7 +266,7 @@ tmp = *(uint32_t *) (DEVID_ADDR + 0x104);
       rxpactune = (tmp >> 8) & 0x000000FF;
     }
 		PA_CTuneSet(txpactune, rxpactune); //default
-		PA_PowerLevelSet(100);
+		PA_PowerLevelSet(75);
 }
 
 
