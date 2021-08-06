@@ -140,7 +140,7 @@ void RFTEST_StartCwTx(void)
 	BUS_RegMaskedSet(&MODEM->CTRL0, MODEM_PRE_TXBASES_Msk);
   FRC->DFLCTRL = 5;
 	BUS_RegMaskedSet(&FRC->CTRL, FRC_CTRL_RANDOMTX_Msk);
-	//RAC->CMD = 0x01; //TXEN
+	RAC->CMD = 0x01; //TXEN
 			//!!!!stop sequencer
 	//RAC->SEQCMD = RAC_SEQCMD_HALT_Msk;
 	BM_TxOn(); //for test only

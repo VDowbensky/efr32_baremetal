@@ -710,10 +710,11 @@ void RADIO_Init(void)
   RADIO_FrameControlDescrBufferIdSet(1,0);
   RADIO_FrameControlDescrBufferIdSet(2,1);
   RADIO_FrameControlDescrBufferIdSet(3,1);
-  FRC->CTRL &= 0xffffff0f; //reset TXFCDMODE, RXFCDMODE
-  FRC->CTRL |= 0xa0; //5, 7 - TXFCDMODE, RXFCDMODE
-
- // DAT_000109d8 = RADIO_BUFCIrqHandler;
+  //FRC->CTRL &= 0xffffff0f; //reset TXFCDMODE, RXFCDMODE
+	BUS_RegMaskedClear(&FRC->CTRL, 0xf0);
+  //FRC->CTRL |= 0xa0; //5, 7 - TXFCDMODE, RXFCDMODE
+	BUS_RegMaskedSet(&FRC->CTRL, 0xa0);
+ // DAT_000109d8 = RADIO_BUFCIrqHandler; //!!!!!!!
 
   NVIC_ClearPendingIRQ(FRC_IRQn);
   NVIC_EnableIRQ(FRC_IRQn);
@@ -721,15 +722,19 @@ void RADIO_Init(void)
   RADIO_BUFCClear(0);
   RADIO_BUFCClear(1);
   RADIO_BUFCClear(2);
-  BUFC->IEN |= 0xb0a0b; //
+  //BUFC->IEN |= 0xb0a0b; //
+	BUS_RegMaskedSet(&BUFC->IEN, 0xb0a0b); 
   RADIO_RXBufferDisableThrInt();
   RADIO_SetAndForgetWrite();
-  MODEM->DCCOMP |= 3; //DCESTIEN, DCCOMPEN
+  //MODEM->DCCOMP |= 3; //DCESTIEN, DCCOMPEN
+	BUS_RegMaskedSet(&MODEM->DCCOMP, MODEM_DCCOMP_DCESTIEN_Msk | MODEM_DCCOMP_DCCOMPEN_Msk);
   RAC->SR3 = 0;
   RADIO_DccalEnable();
-  RAC->CTRL |= 0x80; //ACTIVEPOL
-  RAC->CTRL |= 0x00010000; //PAENPOL
-  RAC->CTRL |= 0x00040000; //PRSRXDIS
+  //RAC->CTRL |= 0x80; //ACTIVEPOL
+  //RAC->CTRL |= 0x00010000; //PAENPOL
+  //RAC->CTRL |= 0x00040000; //PRSRXDIS
+	//write_volatile_4(Peripherals::RAC_SET.CTRL,0x380);
+	BUS_RegMaskedSet(&RAC->CTRL, RAC_CTRL_LNAENPOL_Msk | RAC_CTRL_PAENPOL_Msk | RAC_CTRL_ACTIVEPOL_Msk); 
 }
 
 
@@ -750,10 +755,6 @@ void RADIO_TxWarmTimeSet(uint16_t us)
   SEQ->REG0AC = RADIO_UsToStimerTickCalc(us - PA_RampTimeGet());
   SEQ->REG0AC += (RADIO_UsToStimerTickCalc((us - PA_RampTimeGet()) -20)) << 16;
 }
-
-
-
-
 
 void RADIO_RxToTxTimeSet(uint16_t us)
 
