@@ -47,7 +47,10 @@ int main(void)
 	printf("\r\nHello, Lamer!\r\n");
 	init_peripherals();
 	init_radio();
-	printf("Let's crack EFR32 radio!\r\n");
+	printf("Starting. Idle mode\r\n");
+	//stert receiving
+	RAIL_RxStart(0);
+	printf("Receiver on\r\n");
 	cli_init();
 
 

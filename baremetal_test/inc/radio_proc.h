@@ -20,6 +20,7 @@
 #include "synth.h"
 #include "phy_utils.h"
 #include "mcu_memory.h"
+#include "rail_rx.h"
 
 void init_radio(void);
 
