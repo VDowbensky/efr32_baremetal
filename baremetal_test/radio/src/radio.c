@@ -472,7 +472,8 @@ void RADIO_BUFCIrqHandler(void)
   if(flags & 0x9)
   {
     //_DAT_43080114 = 1;
-    RAC->CMD |= 0x20; //TXDIS
+    //RAC->CMD |= 0x20; //TXDIS
+		BUS_RegMaskedSet(&RAC->CMD, RAC_CMD_TXDIS_Msk);
     RADIO_TxBufferReset();
   }
    if(flags & 0x02) RADIO_TxBufferReset();
@@ -697,10 +698,10 @@ void RADIO_Init(void)
 
 {
   RADIO_CLKEnable();
-  BUFC->BUF1_CTRL = 2; //
+  BUFC->BUF1_CTRL = 2; //256 bytes?
 //  BUFC->BUF1_ADDR = (uint32_t)&RADIO_rxBuffer;
   BUFC->BUF1_THRESHOLDCTRL = 0xaf;
-  BUFC->BUF0_CTRL = 2;
+  BUFC->BUF0_CTRL = 2; //256 bytes?
 //  BUFC->BUF0_ADDR = (uint32_t)&RADIO_txBuffer;
   BUFC->BUF0_THRESHOLDCTRL = 0x2020;
   BUFC->BUF2_CTRL = 0;
@@ -711,7 +712,8 @@ void RADIO_Init(void)
   RADIO_FrameControlDescrBufferIdSet(2,1);
   RADIO_FrameControlDescrBufferIdSet(3,1);
   //FRC->CTRL &= 0xffffff0f; //reset TXFCDMODE, RXFCDMODE
-	BUS_RegMaskedClear(&FRC->CTRL, 0xf0);
+	//BUS_RegMaskedClear(&FRC->CTRL, 0xf0);
+	BUS_RegMaskedClear(&FRC->CTRL, FRC_CTRL_RXFCDMODE_Msk | FRC_CTRL_TXFCDMODE_Msk);
   //FRC->CTRL |= 0xa0; //5, 7 - TXFCDMODE, RXFCDMODE
 	BUS_RegMaskedSet(&FRC->CTRL, 0xa0);
  // DAT_000109d8 = RADIO_BUFCIrqHandler; //!!!!!!!
@@ -722,18 +724,12 @@ void RADIO_Init(void)
   RADIO_BUFCClear(0);
   RADIO_BUFCClear(1);
   RADIO_BUFCClear(2);
-  //BUFC->IEN |= 0xb0a0b; //
-	BUS_RegMaskedSet(&BUFC->IEN, 0xb0a0b); 
+	BUS_RegMaskedSet(&BUFC->IEN, 0xb0a0b);
   RADIO_RXBufferDisableThrInt();
   RADIO_SetAndForgetWrite();
-  //MODEM->DCCOMP |= 3; //DCESTIEN, DCCOMPEN
 	BUS_RegMaskedSet(&MODEM->DCCOMP, MODEM_DCCOMP_DCESTIEN_Msk | MODEM_DCCOMP_DCCOMPEN_Msk);
   RAC->SR3 = 0;
   RADIO_DccalEnable();
-  //RAC->CTRL |= 0x80; //ACTIVEPOL
-  //RAC->CTRL |= 0x00010000; //PAENPOL
-  //RAC->CTRL |= 0x00040000; //PRSRXDIS
-	//write_volatile_4(Peripherals::RAC_SET.CTRL,0x380);
 	BUS_RegMaskedSet(&RAC->CTRL, RAC_CTRL_LNAENPOL_Msk | RAC_CTRL_PAENPOL_Msk | RAC_CTRL_ACTIVEPOL_Msk); 
 }
 

@@ -88,7 +88,8 @@ void RADIO_PTI_AppendedInfoDisable(void)
 void RADIO_PTI_Disable(void)
 
 {
-  FRC->SNIFFCTRL &= 0xfffffffc;
+  //FRC->SNIFFCTRL &= 0xfffffffc;
+	BUS_RegMaskedClear(&FRC->SNIFFCTRL, FRC_SNIFFCTRL_SNIFFMODE_Msk);
   RADIO_PTI_AppendedInfoDisable();
 }
 
