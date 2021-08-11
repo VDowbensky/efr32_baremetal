@@ -1,6 +1,6 @@
 ## efr32_baremetal
 
-##Attention! For testing and research purposes only. Do NOT use in commercial projects!
+# Attention! For testing and research purposes only. Do NOT use in commercial projects!
 
 * Based on reverse engineering Silicon Labs RAIL library version 1.2 using Ghidra SRE.
 * SoC: EFR32FG1V131.
