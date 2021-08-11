@@ -119,149 +119,301 @@ typedef struct {                                /*!< (@ 0x40081000) BUFC Structu
 /* =========================================================================================================================== */
 
 /* =======================================================  BUF0_CTRL  ======================================================= */
-#define BUFC_BUF0_CTRL_F00_Pos            (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF0_CTRL_F00_Msk            (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF0_CTRL_SIZE_Pos           (0UL)                     /*!< SIZE (Bit 0)                                          */
+#define BUFC_BUF0_CTRL_SIZE_Msk           (0x7UL)                   /*!< SIZE (Bitfield-Mask: 0x07)                            */
 /* =======================================================  BUF0_ADDR  ======================================================= */
-#define BUFC_BUF0_ADDR_F00_Pos            (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF0_ADDR_F00_Msk            (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF0_ADDR_ADDR_Pos           (0UL)                     /*!< ADDR (Bit 0)                                          */
+#define BUFC_BUF0_ADDR_ADDR_Msk           (0xffffffUL)              /*!< ADDR (Bitfield-Mask: 0xffffff)                        */
 /* ===================================================  BUF0_WRITEOFFSET  ==================================================== */
-#define BUFC_BUF0_WRITEOFFSET_F00_Pos     (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF0_WRITEOFFSET_F00_Msk     (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF0_WRITEOFFSET_WRITEOFFSET_Pos (0UL)                 /*!< WRITEOFFSET (Bit 0)                                   */
+#define BUFC_BUF0_WRITEOFFSET_WRITEOFFSET_Msk (0x1fffUL)            /*!< WRITEOFFSET (Bitfield-Mask: 0x1fff)                   */
 /* ====================================================  BUF0_READOFFSET  ==================================================== */
-#define BUFC_BUF0_READOFFSET_F00_Pos      (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF0_READOFFSET_F00_Msk      (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF0_READOFFSET_READOFFSET_Pos (0UL)                   /*!< READOFFSET (Bit 0)                                    */
+#define BUFC_BUF0_READOFFSET_READOFFSET_Msk (0x1fffUL)              /*!< READOFFSET (Bitfield-Mask: 0x1fff)                    */
 /* ====================================================  BUF0_WRITESTART  ==================================================== */
-#define BUFC_BUF0_WRITESTART_F00_Pos      (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF0_WRITESTART_F00_Msk      (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF0_WRITESTART_WRITESTART_Pos (0UL)                   /*!< WRITESTART (Bit 0)                                    */
+#define BUFC_BUF0_WRITESTART_WRITESTART_Msk (0xffffffffUL)          /*!< WRITESTART (Bitfield-Mask: 0xffffffff)                */
 /* =====================================================  BUF0_READDATA  ===================================================== */
-#define BUFC_BUF0_READDATA_F00_Pos        (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF0_READDATA_F00_Msk        (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF0_READDATA_READDATA_Pos   (0UL)                     /*!< READDATA (Bit 0)                                      */
+#define BUFC_BUF0_READDATA_READDATA_Msk   (0xffUL)                  /*!< READDATA (Bitfield-Mask: 0xff)                        */
 /* ====================================================  BUF0_WRITEDATA  ===================================================== */
-#define BUFC_BUF0_WRITEDATA_F00_Pos       (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF0_WRITEDATA_F00_Msk       (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF0_WRITEDATA_WRITEDATA_Pos (0UL)                     /*!< WRITEDATA (Bit 0)                                     */
+#define BUFC_BUF0_WRITEDATA_WRITEDATA_Msk (0xffUL)                  /*!< WRITEDATA (Bitfield-Mask: 0xff)                       */
 /* ======================================================  BUF0_XWRITE  ====================================================== */
-#define BUFC_BUF0_XWRITE_F00_Pos          (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF0_XWRITE_F00_Msk          (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF0_XWRITE_XORWRITEDATA_Pos (0UL)                     /*!< XORWRITEDATA (Bit 0)                                  */
+#define BUFC_BUF0_XWRITE_XORWRITEDATA_Msk (0xffUL)                  /*!< XORWRITEDATA (Bitfield-Mask: 0xff)                    */
 /* ======================================================  BUF0_STATUS  ====================================================== */
-#define BUFC_BUF0_STATUS_F00_Pos          (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF0_STATUS_F00_Msk          (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF0_STATUS_BYTES_Pos        (0UL)                     /*!< BYTES (Bit 0)                                         */
+#define BUFC_BUF0_STATUS_BYTES_Msk        (0x1fffUL)                /*!< BYTES (Bitfield-Mask: 0x1fff)                         */
+#define BUFC_BUF0_STATUS_THRESHOLDFLAG_Pos (20UL)                   /*!< THRESHOLDFLAG (Bit 20)                                */
+#define BUFC_BUF0_STATUS_THRESHOLDFLAG_Msk (0x100000UL)             /*!< THRESHOLDFLAG (Bitfield-Mask: 0x01)                   */
 /* ==================================================  BUF0_THRESHOLDCTRL  =================================================== */
-#define BUFC_BUF0_THRESHOLDCTRL_F00_Pos   (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF0_THRESHOLDCTRL_F00_Msk   (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF0_THRESHOLDCTRL_THRESHOLD_Pos (0UL)                 /*!< THRESHOLD (Bit 0)                                     */
+#define BUFC_BUF0_THRESHOLDCTRL_THRESHOLD_Msk (0xfffUL)             /*!< THRESHOLD (Bitfield-Mask: 0xfff)                      */
+#define BUFC_BUF0_THRESHOLDCTRL_THRESHOLDMODE_Pos (13UL)            /*!< THRESHOLDMODE (Bit 13)                                */
+#define BUFC_BUF0_THRESHOLDCTRL_THRESHOLDMODE_Msk (0x2000UL)        /*!< THRESHOLDMODE (Bitfield-Mask: 0x01)                   */
 /* =======================================================  BUF0_CMD  ======================================================== */
-#define BUFC_BUF0_CMD_F00_Pos             (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF0_CMD_F00_Msk             (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF0_CMD_CLEAR_Pos           (0UL)                     /*!< CLEAR (Bit 0)                                         */
+#define BUFC_BUF0_CMD_CLEAR_Msk           (0x1UL)                   /*!< CLEAR (Bitfield-Mask: 0x01)                           */
+#define BUFC_BUF0_CMD_PREFETCH_Pos        (1UL)                     /*!< PREFETCH (Bit 1)                                      */
+#define BUFC_BUF0_CMD_PREFETCH_Msk        (0x2UL)                   /*!< PREFETCH (Bitfield-Mask: 0x01)                        */
 /* =======================================================  BUF1_CTRL  ======================================================= */
-#define BUFC_BUF1_CTRL_F00_Pos            (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF1_CTRL_F00_Msk            (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF1_CTRL_SIZE_Pos           (0UL)                     /*!< SIZE (Bit 0)                                          */
+#define BUFC_BUF1_CTRL_SIZE_Msk           (0x7UL)                   /*!< SIZE (Bitfield-Mask: 0x07)                            */
 /* =======================================================  BUF1_ADDR  ======================================================= */
-#define BUFC_BUF1_ADDR_F00_Pos            (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF1_ADDR_F00_Msk            (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF1_ADDR_ADDR_Pos           (0UL)                     /*!< ADDR (Bit 0)                                          */
+#define BUFC_BUF1_ADDR_ADDR_Msk           (0xffffffUL)              /*!< ADDR (Bitfield-Mask: 0xffffff)                        */
 /* ===================================================  BUF1_WRITEOFFSET  ==================================================== */
-#define BUFC_BUF1_WRITEOFFSET_F00_Pos     (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF1_WRITEOFFSET_F00_Msk     (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF1_WRITEOFFSET_WRITEOFFSET_Pos (0UL)                 /*!< WRITEOFFSET (Bit 0)                                   */
+#define BUFC_BUF1_WRITEOFFSET_WRITEOFFSET_Msk (0x1fffUL)            /*!< WRITEOFFSET (Bitfield-Mask: 0x1fff)                   */
 /* ====================================================  BUF1_READOFFSET  ==================================================== */
-#define BUFC_BUF1_READOFFSET_F00_Pos      (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF1_READOFFSET_F00_Msk      (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF1_READOFFSET_READOFFSET_Pos (0UL)                   /*!< READOFFSET (Bit 0)                                    */
+#define BUFC_BUF1_READOFFSET_READOFFSET_Msk (0x1fffUL)              /*!< READOFFSET (Bitfield-Mask: 0x1fff)                    */
 /* ====================================================  BUF1_WRITESTART  ==================================================== */
-#define BUFC_BUF1_WRITESTART_F00_Pos      (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF1_WRITESTART_F00_Msk      (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF1_WRITESTART_WRITESTART_Pos (0UL)                   /*!< WRITESTART (Bit 0)                                    */
+#define BUFC_BUF1_WRITESTART_WRITESTART_Msk (0xffffffffUL)          /*!< WRITESTART (Bitfield-Mask: 0xffffffff)                */
 /* =====================================================  BUF1_READDATA  ===================================================== */
-#define BUFC_BUF1_READDATA_F00_Pos        (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF1_READDATA_F00_Msk        (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF1_READDATA_READDATA_Pos   (0UL)                     /*!< READDATA (Bit 0)                                      */
+#define BUFC_BUF1_READDATA_READDATA_Msk   (0xffUL)                  /*!< READDATA (Bitfield-Mask: 0xff)                        */
 /* ====================================================  BUF1_WRITEDATA  ===================================================== */
-#define BUFC_BUF1_WRITEDATA_F00_Pos       (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF1_WRITEDATA_F00_Msk       (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF1_WRITEDATA_WRITEDATA_Pos (0UL)                     /*!< WRITEDATA (Bit 0)                                     */
+#define BUFC_BUF1_WRITEDATA_WRITEDATA_Msk (0xffUL)                  /*!< WRITEDATA (Bitfield-Mask: 0xff)                       */
 /* ======================================================  BUF1_XWRITE  ====================================================== */
-#define BUFC_BUF1_XWRITE_F00_Pos          (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF1_XWRITE_F00_Msk          (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF1_XWRITE_XORWRITEDATA_Pos (0UL)                     /*!< XORWRITEDATA (Bit 0)                                  */
+#define BUFC_BUF1_XWRITE_XORWRITEDATA_Msk (0xffUL)                  /*!< XORWRITEDATA (Bitfield-Mask: 0xff)                    */
 /* ======================================================  BUF1_STATUS  ====================================================== */
-#define BUFC_BUF1_STATUS_F00_Pos          (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF1_STATUS_F00_Msk          (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF1_STATUS_BYTES_Pos        (0UL)                     /*!< BYTES (Bit 0)                                         */
+#define BUFC_BUF1_STATUS_BYTES_Msk        (0x1fffUL)                /*!< BYTES (Bitfield-Mask: 0x1fff)                         */
+#define BUFC_BUF1_STATUS_THRESHOLDFLAG_Pos (20UL)                   /*!< THRESHOLDFLAG (Bit 20)                                */
+#define BUFC_BUF1_STATUS_THRESHOLDFLAG_Msk (0x100000UL)             /*!< THRESHOLDFLAG (Bitfield-Mask: 0x01)                   */
 /* ==================================================  BUF1_THRESHOLDCTRL  =================================================== */
-#define BUFC_BUF1_THRESHOLDCTRL_F00_Pos   (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF1_THRESHOLDCTRL_F00_Msk   (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF1_THRESHOLDCTRL_THRESHOLD_Pos (0UL)                 /*!< THRESHOLD (Bit 0)                                     */
+#define BUFC_BUF1_THRESHOLDCTRL_THRESHOLD_Msk (0xfffUL)             /*!< THRESHOLD (Bitfield-Mask: 0xfff)                      */
+#define BUFC_BUF1_THRESHOLDCTRL_THRESHOLDMODE_Pos (13UL)            /*!< THRESHOLDMODE (Bit 13)                                */
+#define BUFC_BUF1_THRESHOLDCTRL_THRESHOLDMODE_Msk (0x2000UL)        /*!< THRESHOLDMODE (Bitfield-Mask: 0x01)                   */
 /* =======================================================  BUF1_CMD  ======================================================== */
-#define BUFC_BUF1_CMD_F00_Pos             (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF1_CMD_F00_Msk             (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF1_CMD_CLEAR_Pos           (0UL)                     /*!< CLEAR (Bit 0)                                         */
+#define BUFC_BUF1_CMD_CLEAR_Msk           (0x1UL)                   /*!< CLEAR (Bitfield-Mask: 0x01)                           */
+#define BUFC_BUF1_CMD_PREFETCH_Pos        (1UL)                     /*!< PREFETCH (Bit 1)                                      */
+#define BUFC_BUF1_CMD_PREFETCH_Msk        (0x2UL)                   /*!< PREFETCH (Bitfield-Mask: 0x01)                        */
 /* =======================================================  BUF2_CTRL  ======================================================= */
-#define BUFC_BUF2_CTRL_F00_Pos            (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF2_CTRL_F00_Msk            (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF2_CTRL_SIZE_Pos           (0UL)                     /*!< SIZE (Bit 0)                                          */
+#define BUFC_BUF2_CTRL_SIZE_Msk           (0x7UL)                   /*!< SIZE (Bitfield-Mask: 0x07)                            */
 /* =======================================================  BUF2_ADDR  ======================================================= */
-#define BUFC_BUF2_ADDR_F00_Pos            (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF2_ADDR_F00_Msk            (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF2_ADDR_ADDR_Pos           (0UL)                     /*!< ADDR (Bit 0)                                          */
+#define BUFC_BUF2_ADDR_ADDR_Msk           (0xffffffUL)              /*!< ADDR (Bitfield-Mask: 0xffffff)                        */
 /* ===================================================  BUF2_WRITEOFFSET  ==================================================== */
-#define BUFC_BUF2_WRITEOFFSET_F00_Pos     (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF2_WRITEOFFSET_F00_Msk     (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF2_WRITEOFFSET_WRITEOFFSET_Pos (0UL)                 /*!< WRITEOFFSET (Bit 0)                                   */
+#define BUFC_BUF2_WRITEOFFSET_WRITEOFFSET_Msk (0x1fffUL)            /*!< WRITEOFFSET (Bitfield-Mask: 0x1fff)                   */
 /* ====================================================  BUF2_READOFFSET  ==================================================== */
-#define BUFC_BUF2_READOFFSET_F00_Pos      (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF2_READOFFSET_F00_Msk      (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF2_READOFFSET_READOFFSET_Pos (0UL)                   /*!< READOFFSET (Bit 0)                                    */
+#define BUFC_BUF2_READOFFSET_READOFFSET_Msk (0x1fffUL)              /*!< READOFFSET (Bitfield-Mask: 0x1fff)                    */
 /* ====================================================  BUF2_WRITESTART  ==================================================== */
-#define BUFC_BUF2_WRITESTART_F00_Pos      (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF2_WRITESTART_F00_Msk      (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF2_WRITESTART_WRITESTART_Pos (0UL)                   /*!< WRITESTART (Bit 0)                                    */
+#define BUFC_BUF2_WRITESTART_WRITESTART_Msk (0xffffffffUL)          /*!< WRITESTART (Bitfield-Mask: 0xffffffff)                */
 /* =====================================================  BUF2_READDATA  ===================================================== */
-#define BUFC_BUF2_READDATA_F00_Pos        (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF2_READDATA_F00_Msk        (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF2_READDATA_READDATA_Pos   (0UL)                     /*!< READDATA (Bit 0)                                      */
+#define BUFC_BUF2_READDATA_READDATA_Msk   (0xffUL)                  /*!< READDATA (Bitfield-Mask: 0xff)                        */
 /* ====================================================  BUF2_WRITEDATA  ===================================================== */
-#define BUFC_BUF2_WRITEDATA_F00_Pos       (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF2_WRITEDATA_F00_Msk       (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF2_WRITEDATA_WRITEDATA_Pos (0UL)                     /*!< WRITEDATA (Bit 0)                                     */
+#define BUFC_BUF2_WRITEDATA_WRITEDATA_Msk (0xffUL)                  /*!< WRITEDATA (Bitfield-Mask: 0xff)                       */
 /* ======================================================  BUF2_XWRITE  ====================================================== */
-#define BUFC_BUF2_XWRITE_F00_Pos          (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF2_XWRITE_F00_Msk          (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF2_XWRITE_XORWRITEDATA_Pos (0UL)                     /*!< XORWRITEDATA (Bit 0)                                  */
+#define BUFC_BUF2_XWRITE_XORWRITEDATA_Msk (0xffUL)                  /*!< XORWRITEDATA (Bitfield-Mask: 0xff)                    */
 /* ======================================================  BUF2_STATUS  ====================================================== */
-#define BUFC_BUF2_STATUS_F00_Pos          (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF2_STATUS_F00_Msk          (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF2_STATUS_BYTES_Pos        (0UL)                     /*!< BYTES (Bit 0)                                         */
+#define BUFC_BUF2_STATUS_BYTES_Msk        (0x1fffUL)                /*!< BYTES (Bitfield-Mask: 0x1fff)                         */
+#define BUFC_BUF2_STATUS_THRESHOLDFLAG_Pos (20UL)                   /*!< THRESHOLDFLAG (Bit 20)                                */
+#define BUFC_BUF2_STATUS_THRESHOLDFLAG_Msk (0x100000UL)             /*!< THRESHOLDFLAG (Bitfield-Mask: 0x01)                   */
 /* ===================================================  BUF2_THRESHOLDCTR  =================================================== */
-#define BUFC_BUF2_THRESHOLDCTR_F00_Pos    (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF2_THRESHOLDCTR_F00_Msk    (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF2_THRESHOLDCTR_THRESHOLD_Pos (0UL)                  /*!< THRESHOLD (Bit 0)                                     */
+#define BUFC_BUF2_THRESHOLDCTR_THRESHOLD_Msk (0xfffUL)              /*!< THRESHOLD (Bitfield-Mask: 0xfff)                      */
+#define BUFC_BUF2_THRESHOLDCTR_THRESHOLDMODE_Pos (13UL)             /*!< THRESHOLDMODE (Bit 13)                                */
+#define BUFC_BUF2_THRESHOLDCTR_THRESHOLDMODE_Msk (0x2000UL)         /*!< THRESHOLDMODE (Bitfield-Mask: 0x01)                   */
 /* =======================================================  BUF2_CMD  ======================================================== */
-#define BUFC_BUF2_CMD_F00_Pos             (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF2_CMD_F00_Msk             (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF2_CMD_CLEAR_Pos           (0UL)                     /*!< CLEAR (Bit 0)                                         */
+#define BUFC_BUF2_CMD_CLEAR_Msk           (0x1UL)                   /*!< CLEAR (Bitfield-Mask: 0x01)                           */
+#define BUFC_BUF2_CMD_PREFETCH_Pos        (1UL)                     /*!< PREFETCH (Bit 1)                                      */
+#define BUFC_BUF2_CMD_PREFETCH_Msk        (0x2UL)                   /*!< PREFETCH (Bitfield-Mask: 0x01)                        */
 /* =======================================================  BUF3_CTRL  ======================================================= */
-#define BUFC_BUF3_CTRL_F00_Pos            (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF3_CTRL_F00_Msk            (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF3_CTRL_SIZE_Pos           (0UL)                     /*!< SIZE (Bit 0)                                          */
+#define BUFC_BUF3_CTRL_SIZE_Msk           (0x7UL)                   /*!< SIZE (Bitfield-Mask: 0x07)                            */
 /* =======================================================  BUF3_ADDR  ======================================================= */
-#define BUFC_BUF3_ADDR_F00_Pos            (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF3_ADDR_F00_Msk            (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF3_ADDR_ADDR_Pos           (0UL)                     /*!< ADDR (Bit 0)                                          */
+#define BUFC_BUF3_ADDR_ADDR_Msk           (0xffffffUL)              /*!< ADDR (Bitfield-Mask: 0xffffff)                        */
 /* ===================================================  BUF3_WRITEOFFSET  ==================================================== */
-#define BUFC_BUF3_WRITEOFFSET_F00_Pos     (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF3_WRITEOFFSET_F00_Msk     (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF3_WRITEOFFSET_WRITEOFFSET_Pos (0UL)                 /*!< WRITEOFFSET (Bit 0)                                   */
+#define BUFC_BUF3_WRITEOFFSET_WRITEOFFSET_Msk (0x1fffUL)            /*!< WRITEOFFSET (Bitfield-Mask: 0x1fff)                   */
 /* ====================================================  BUF3_READOFFSET  ==================================================== */
-#define BUFC_BUF3_READOFFSET_F00_Pos      (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF3_READOFFSET_F00_Msk      (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF3_READOFFSET_READOFFSET_Pos (0UL)                   /*!< READOFFSET (Bit 0)                                    */
+#define BUFC_BUF3_READOFFSET_READOFFSET_Msk (0x1fffUL)              /*!< READOFFSET (Bitfield-Mask: 0x1fff)                    */
 /* ====================================================  BUF3_WRITESTART  ==================================================== */
-#define BUFC_BUF3_WRITESTART_F00_Pos      (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF3_WRITESTART_F00_Msk      (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF3_WRITESTART_WRITESTART_Pos (0UL)                   /*!< WRITESTART (Bit 0)                                    */
+#define BUFC_BUF3_WRITESTART_WRITESTART_Msk (0xffffffffUL)          /*!< WRITESTART (Bitfield-Mask: 0xffffffff)                */
 /* =====================================================  BUF3_READDATA  ===================================================== */
-#define BUFC_BUF3_READDATA_F00_Pos        (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF3_READDATA_F00_Msk        (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF3_READDATA_READDATA_Pos   (0UL)                     /*!< READDATA (Bit 0)                                      */
+#define BUFC_BUF3_READDATA_READDATA_Msk   (0xffUL)                  /*!< READDATA (Bitfield-Mask: 0xff)                        */
 /* ====================================================  BUF3_WRITEDATA  ===================================================== */
-#define BUFC_BUF3_WRITEDATA_F00_Pos       (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF3_WRITEDATA_F00_Msk       (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF3_WRITEDATA_WRITEDATA_Pos (0UL)                     /*!< WRITEDATA (Bit 0)                                     */
+#define BUFC_BUF3_WRITEDATA_WRITEDATA_Msk (0xffUL)                  /*!< WRITEDATA (Bitfield-Mask: 0xff)                       */
 /* ======================================================  BUF3_XWRITE  ====================================================== */
-#define BUFC_BUF3_XWRITE_F00_Pos          (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF3_XWRITE_F00_Msk          (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF3_XWRITE_XORWRITEDATA_Pos (0UL)                     /*!< XORWRITEDATA (Bit 0)                                  */
+#define BUFC_BUF3_XWRITE_XORWRITEDATA_Msk (0xffUL)                  /*!< XORWRITEDATA (Bitfield-Mask: 0xff)                    */
 /* ======================================================  BUF3_STATUS  ====================================================== */
-#define BUFC_BUF3_STATUS_F00_Pos          (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF3_STATUS_F00_Msk          (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF3_STATUS_BYTES_Pos        (0UL)                     /*!< BYTES (Bit 0)                                         */
+#define BUFC_BUF3_STATUS_BYTES_Msk        (0x1fffUL)                /*!< BYTES (Bitfield-Mask: 0x1fff)                         */
+#define BUFC_BUF3_STATUS_THRESHOLDFLAG_Pos (20UL)                   /*!< THRESHOLDFLAG (Bit 20)                                */
+#define BUFC_BUF3_STATUS_THRESHOLDFLAG_Msk (0x100000UL)             /*!< THRESHOLDFLAG (Bitfield-Mask: 0x01)                   */
 /* ==================================================  BUF3_THRESHOLDCTRL  =================================================== */
-#define BUFC_BUF3_THRESHOLDCTRL_F00_Pos   (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF3_THRESHOLDCTRL_F00_Msk   (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF3_THRESHOLDCTRL_THRESHOLD_Pos (0UL)                 /*!< THRESHOLD (Bit 0)                                     */
+#define BUFC_BUF3_THRESHOLDCTRL_THRESHOLD_Msk (0xfffUL)             /*!< THRESHOLD (Bitfield-Mask: 0xfff)                      */
+#define BUFC_BUF3_THRESHOLDCTRL_THRESHOLDMODE_Pos (13UL)            /*!< THRESHOLDMODE (Bit 13)                                */
+#define BUFC_BUF3_THRESHOLDCTRL_THRESHOLDMODE_Msk (0x2000UL)        /*!< THRESHOLDMODE (Bitfield-Mask: 0x01)                   */
 /* =======================================================  BUF3_CMD  ======================================================== */
-#define BUFC_BUF3_CMD_F00_Pos             (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_BUF3_CMD_F00_Msk             (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_BUF3_CMD_CLEAR_Pos           (0UL)                     /*!< CLEAR (Bit 0)                                         */
+#define BUFC_BUF3_CMD_CLEAR_Msk           (0x1UL)                   /*!< CLEAR (Bitfield-Mask: 0x01)                           */
+#define BUFC_BUF3_CMD_PREFETCH_Pos        (1UL)                     /*!< PREFETCH (Bit 1)                                      */
+#define BUFC_BUF3_CMD_PREFETCH_Msk        (0x2UL)                   /*!< PREFETCH (Bitfield-Mask: 0x01)                        */
 /* ==========================================================  IF  =========================================================== */
-#define BUFC_IF_F00_Pos                   (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_IF_F00_Msk                   (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_IF_BUF0OF_Pos                (0UL)                     /*!< BUF0OF (Bit 0)                                        */
+#define BUFC_IF_BUF0OF_Msk                (0x1UL)                   /*!< BUF0OF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IF_BUF0UF_Pos                (1UL)                     /*!< BUF0UF (Bit 1)                                        */
+#define BUFC_IF_BUF0UF_Msk                (0x2UL)                   /*!< BUF0UF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IF_BUF0THR_Pos               (2UL)                     /*!< BUF0THR (Bit 2)                                       */
+#define BUFC_IF_BUF0THR_Msk               (0x4UL)                   /*!< BUF0THR (Bitfield-Mask: 0x01)                         */
+#define BUFC_IF_BUF0CORR_Pos              (3UL)                     /*!< BUF0CORR (Bit 3)                                      */
+#define BUFC_IF_BUF0CORR_Msk              (0x8UL)                   /*!< BUF0CORR (Bitfield-Mask: 0x01)                        */
+#define BUFC_IF_BUF1OF_Pos                (8UL)                     /*!< BUF1OF (Bit 8)                                        */
+#define BUFC_IF_BUF1OF_Msk                (0x100UL)                 /*!< BUF1OF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IF_BUF1UF_Pos                (9UL)                     /*!< BUF1UF (Bit 9)                                        */
+#define BUFC_IF_BUF1UF_Msk                (0x200UL)                 /*!< BUF1UF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IF_BUF1THR_Pos               (10UL)                    /*!< BUF1THR (Bit 10)                                      */
+#define BUFC_IF_BUF1THR_Msk               (0x400UL)                 /*!< BUF1THR (Bitfield-Mask: 0x01)                         */
+#define BUFC_IF_BUF1CORR_Pos              (11UL)                    /*!< BUF1CORR (Bit 11)                                     */
+#define BUFC_IF_BUF1CORR_Msk              (0x800UL)                 /*!< BUF1CORR (Bitfield-Mask: 0x01)                        */
+#define BUFC_IF_BUF2OF_Pos                (16UL)                    /*!< BUF2OF (Bit 16)                                       */
+#define BUFC_IF_BUF2OF_Msk                (0x10000UL)               /*!< BUF2OF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IF_BUF2UF_Pos                (17UL)                    /*!< BUF2UF (Bit 17)                                       */
+#define BUFC_IF_BUF2UF_Msk                (0x20000UL)               /*!< BUF2UF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IF_BUF2THR_Pos               (18UL)                    /*!< BUF2THR (Bit 18)                                      */
+#define BUFC_IF_BUF2THR_Msk               (0x40000UL)               /*!< BUF2THR (Bitfield-Mask: 0x01)                         */
+#define BUFC_IF_BUF2CORR_Pos              (19UL)                    /*!< BUF2CORR (Bit 19)                                     */
+#define BUFC_IF_BUF2CORR_Msk              (0x80000UL)               /*!< BUF2CORR (Bitfield-Mask: 0x01)                        */
+#define BUFC_IF_BUF3OF_Pos                (24UL)                    /*!< BUF3OF (Bit 24)                                       */
+#define BUFC_IF_BUF3OF_Msk                (0x1000000UL)             /*!< BUF3OF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IF_BUF3UF_Pos                (25UL)                    /*!< BUF3UF (Bit 25)                                       */
+#define BUFC_IF_BUF3UF_Msk                (0x2000000UL)             /*!< BUF3UF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IF_BUF3THR_Pos               (26UL)                    /*!< BUF3THR (Bit 26)                                      */
+#define BUFC_IF_BUF3THR_Msk               (0x4000000UL)             /*!< BUF3THR (Bitfield-Mask: 0x01)                         */
+#define BUFC_IF_BUF3CORR_Pos              (27UL)                    /*!< BUF3CORR (Bit 27)                                     */
+#define BUFC_IF_BUF3CORR_Msk              (0x8000000UL)             /*!< BUF3CORR (Bitfield-Mask: 0x01)                        */
+#define BUFC_IF_BUSERROR_Pos              (31UL)                    /*!< BUSERROR (Bit 31)                                     */
+#define BUFC_IF_BUSERROR_Msk              (0x80000000UL)            /*!< BUSERROR (Bitfield-Mask: 0x01)                        */
 /* ==========================================================  IFS  ========================================================== */
-#define BUFC_IFS_F00_Pos                  (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_IFS_F00_Msk                  (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_IFS_BUF0OF_Pos               (0UL)                     /*!< BUF0OF (Bit 0)                                        */
+#define BUFC_IFS_BUF0OF_Msk               (0x1UL)                   /*!< BUF0OF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IFS_BUF0UF_Pos               (1UL)                     /*!< BUF0UF (Bit 1)                                        */
+#define BUFC_IFS_BUF0UF_Msk               (0x2UL)                   /*!< BUF0UF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IFS_BUF0THR_Pos              (2UL)                     /*!< BUF0THR (Bit 2)                                       */
+#define BUFC_IFS_BUF0THR_Msk              (0x4UL)                   /*!< BUF0THR (Bitfield-Mask: 0x01)                         */
+#define BUFC_IFS_BUF0CORR_Pos             (3UL)                     /*!< BUF0CORR (Bit 3)                                      */
+#define BUFC_IFS_BUF0CORR_Msk             (0x8UL)                   /*!< BUF0CORR (Bitfield-Mask: 0x01)                        */
+#define BUFC_IFS_BUF1OF_Pos               (8UL)                     /*!< BUF1OF (Bit 8)                                        */
+#define BUFC_IFS_BUF1OF_Msk               (0x100UL)                 /*!< BUF1OF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IFS_BUF1UF_Pos               (9UL)                     /*!< BUF1UF (Bit 9)                                        */
+#define BUFC_IFS_BUF1UF_Msk               (0x200UL)                 /*!< BUF1UF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IFS_BUF1THR_Pos              (10UL)                    /*!< BUF1THR (Bit 10)                                      */
+#define BUFC_IFS_BUF1THR_Msk              (0x400UL)                 /*!< BUF1THR (Bitfield-Mask: 0x01)                         */
+#define BUFC_IFS_BUF1CORR_Pos             (11UL)                    /*!< BUF1CORR (Bit 11)                                     */
+#define BUFC_IFS_BUF1CORR_Msk             (0x800UL)                 /*!< BUF1CORR (Bitfield-Mask: 0x01)                        */
+#define BUFC_IFS_BUF2OF_Pos               (16UL)                    /*!< BUF2OF (Bit 16)                                       */
+#define BUFC_IFS_BUF2OF_Msk               (0x10000UL)               /*!< BUF2OF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IFS_BUF2UF_Pos               (17UL)                    /*!< BUF2UF (Bit 17)                                       */
+#define BUFC_IFS_BUF2UF_Msk               (0x20000UL)               /*!< BUF2UF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IFS_BUF2THR_Pos              (18UL)                    /*!< BUF2THR (Bit 18)                                      */
+#define BUFC_IFS_BUF2THR_Msk              (0x40000UL)               /*!< BUF2THR (Bitfield-Mask: 0x01)                         */
+#define BUFC_IFS_BUF2CORR_Pos             (19UL)                    /*!< BUF2CORR (Bit 19)                                     */
+#define BUFC_IFS_BUF2CORR_Msk             (0x80000UL)               /*!< BUF2CORR (Bitfield-Mask: 0x01)                        */
+#define BUFC_IFS_BUF3OF_Pos               (24UL)                    /*!< BUF3OF (Bit 24)                                       */
+#define BUFC_IFS_BUF3OF_Msk               (0x1000000UL)             /*!< BUF3OF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IFS_BUF3UF_Pos               (25UL)                    /*!< BUF3UF (Bit 25)                                       */
+#define BUFC_IFS_BUF3UF_Msk               (0x2000000UL)             /*!< BUF3UF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IFS_BUF3THR_Pos              (26UL)                    /*!< BUF3THR (Bit 26)                                      */
+#define BUFC_IFS_BUF3THR_Msk              (0x4000000UL)             /*!< BUF3THR (Bitfield-Mask: 0x01)                         */
+#define BUFC_IFS_BUF3CORR_Pos             (27UL)                    /*!< BUF3CORR (Bit 27)                                     */
+#define BUFC_IFS_BUF3CORR_Msk             (0x8000000UL)             /*!< BUF3CORR (Bitfield-Mask: 0x01)                        */
+#define BUFC_IFS_BUSERROR_Pos             (31UL)                    /*!< BUSERROR (Bit 31)                                     */
+#define BUFC_IFS_BUSERROR_Msk             (0x80000000UL)            /*!< BUSERROR (Bitfield-Mask: 0x01)                        */
 /* ==========================================================  IFC  ========================================================== */
-#define BUFC_IFC_F00_Pos                  (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_IFC_F00_Msk                  (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_IFC_BUF0OF_Pos               (0UL)                     /*!< BUF0OF (Bit 0)                                        */
+#define BUFC_IFC_BUF0OF_Msk               (0x1UL)                   /*!< BUF0OF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IFC_BUF0UF_Pos               (1UL)                     /*!< BUF0UF (Bit 1)                                        */
+#define BUFC_IFC_BUF0UF_Msk               (0x2UL)                   /*!< BUF0UF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IFC_BUF0THR_Pos              (2UL)                     /*!< BUF0THR (Bit 2)                                       */
+#define BUFC_IFC_BUF0THR_Msk              (0x4UL)                   /*!< BUF0THR (Bitfield-Mask: 0x01)                         */
+#define BUFC_IFC_BUF0CORR_Pos             (3UL)                     /*!< BUF0CORR (Bit 3)                                      */
+#define BUFC_IFC_BUF0CORR_Msk             (0x8UL)                   /*!< BUF0CORR (Bitfield-Mask: 0x01)                        */
+#define BUFC_IFC_BUF1OF_Pos               (8UL)                     /*!< BUF1OF (Bit 8)                                        */
+#define BUFC_IFC_BUF1OF_Msk               (0x100UL)                 /*!< BUF1OF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IFC_BUF1UF_Pos               (9UL)                     /*!< BUF1UF (Bit 9)                                        */
+#define BUFC_IFC_BUF1UF_Msk               (0x200UL)                 /*!< BUF1UF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IFC_BUF1THR_Pos              (10UL)                    /*!< BUF1THR (Bit 10)                                      */
+#define BUFC_IFC_BUF1THR_Msk              (0x400UL)                 /*!< BUF1THR (Bitfield-Mask: 0x01)                         */
+#define BUFC_IFC_BUF1CORR_Pos             (11UL)                    /*!< BUF1CORR (Bit 11)                                     */
+#define BUFC_IFC_BUF1CORR_Msk             (0x800UL)                 /*!< BUF1CORR (Bitfield-Mask: 0x01)                        */
+#define BUFC_IFC_BUF2OF_Pos               (16UL)                    /*!< BUF2OF (Bit 16)                                       */
+#define BUFC_IFC_BUF2OF_Msk               (0x10000UL)               /*!< BUF2OF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IFC_BUF2UF_Pos               (17UL)                    /*!< BUF2UF (Bit 17)                                       */
+#define BUFC_IFC_BUF2UF_Msk               (0x20000UL)               /*!< BUF2UF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IFC_BUF2THR_Pos              (18UL)                    /*!< BUF2THR (Bit 18)                                      */
+#define BUFC_IFC_BUF2THR_Msk              (0x40000UL)               /*!< BUF2THR (Bitfield-Mask: 0x01)                         */
+#define BUFC_IFC_BUF2CORR_Pos             (19UL)                    /*!< BUF2CORR (Bit 19)                                     */
+#define BUFC_IFC_BUF2CORR_Msk             (0x80000UL)               /*!< BUF2CORR (Bitfield-Mask: 0x01)                        */
+#define BUFC_IFC_BUF3OF_Pos               (24UL)                    /*!< BUF3OF (Bit 24)                                       */
+#define BUFC_IFC_BUF3OF_Msk               (0x1000000UL)             /*!< BUF3OF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IFC_BUF3UF_Pos               (25UL)                    /*!< BUF3UF (Bit 25)                                       */
+#define BUFC_IFC_BUF3UF_Msk               (0x2000000UL)             /*!< BUF3UF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IFC_BUF3THR_Pos              (26UL)                    /*!< BUF3THR (Bit 26)                                      */
+#define BUFC_IFC_BUF3THR_Msk              (0x4000000UL)             /*!< BUF3THR (Bitfield-Mask: 0x01)                         */
+#define BUFC_IFC_BUF3CORR_Pos             (27UL)                    /*!< BUF3CORR (Bit 27)                                     */
+#define BUFC_IFC_BUF3CORR_Msk             (0x8000000UL)             /*!< BUF3CORR (Bitfield-Mask: 0x01)                        */
+#define BUFC_IFC_BUSERROR_Pos             (31UL)                    /*!< BUSERROR (Bit 31)                                     */
+#define BUFC_IFC_BUSERROR_Msk             (0x80000000UL)            /*!< BUSERROR (Bitfield-Mask: 0x01)                        */
 /* ==========================================================  IEN  ========================================================== */
-#define BUFC_IEN_F00_Pos                  (0UL)                     /*!< F00 (Bit 0)                                           */
-#define BUFC_IEN_F00_Msk                  (0xffffffffUL)            /*!< F00 (Bitfield-Mask: 0xffffffff)                       */
+#define BUFC_IEN_BUF0OF_Pos               (0UL)                     /*!< BUF0OF (Bit 0)                                        */
+#define BUFC_IEN_BUF0OF_Msk               (0x1UL)                   /*!< BUF0OF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IEN_BUF0UF_Pos               (1UL)                     /*!< BUF0UF (Bit 1)                                        */
+#define BUFC_IEN_BUF0UF_Msk               (0x2UL)                   /*!< BUF0UF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IEN_BUF0THR_Pos              (2UL)                     /*!< BUF0THR (Bit 2)                                       */
+#define BUFC_IEN_BUF0THR_Msk              (0x4UL)                   /*!< BUF0THR (Bitfield-Mask: 0x01)                         */
+#define BUFC_IEN_BUF0CORR_Pos             (3UL)                     /*!< BUF0CORR (Bit 3)                                      */
+#define BUFC_IEN_BUF0CORR_Msk             (0x8UL)                   /*!< BUF0CORR (Bitfield-Mask: 0x01)                        */
+#define BUFC_IEN_BUF1OF_Pos               (8UL)                     /*!< BUF1OF (Bit 8)                                        */
+#define BUFC_IEN_BUF1OF_Msk               (0x100UL)                 /*!< BUF1OF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IEN_BUF1UF_Pos               (9UL)                     /*!< BUF1UF (Bit 9)                                        */
+#define BUFC_IEN_BUF1UF_Msk               (0x200UL)                 /*!< BUF1UF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IEN_BUF1THR_Pos              (10UL)                    /*!< BUF1THR (Bit 10)                                      */
+#define BUFC_IEN_BUF1THR_Msk              (0x400UL)                 /*!< BUF1THR (Bitfield-Mask: 0x01)                         */
+#define BUFC_IEN_BUF1CORR_Pos             (11UL)                    /*!< BUF1CORR (Bit 11)                                     */
+#define BUFC_IEN_BUF1CORR_Msk             (0x800UL)                 /*!< BUF1CORR (Bitfield-Mask: 0x01)                        */
+#define BUFC_IEN_BUF2OF_Pos               (16UL)                    /*!< BUF2OF (Bit 16)                                       */
+#define BUFC_IEN_BUF2OF_Msk               (0x10000UL)               /*!< BUF2OF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IEN_BUF2UF_Pos               (17UL)                    /*!< BUF2UF (Bit 17)                                       */
+#define BUFC_IEN_BUF2UF_Msk               (0x20000UL)               /*!< BUF2UF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IEN_BUF2THR_Pos              (18UL)                    /*!< BUF2THR (Bit 18)                                      */
+#define BUFC_IEN_BUF2THR_Msk              (0x40000UL)               /*!< BUF2THR (Bitfield-Mask: 0x01)                         */
+#define BUFC_IEN_BUF2CORR_Pos             (19UL)                    /*!< BUF2CORR (Bit 19)                                     */
+#define BUFC_IEN_BUF2CORR_Msk             (0x80000UL)               /*!< BUF2CORR (Bitfield-Mask: 0x01)                        */
+#define BUFC_IEN_BUF3OF_Pos               (24UL)                    /*!< BUF3OF (Bit 24)                                       */
+#define BUFC_IEN_BUF3OF_Msk               (0x1000000UL)             /*!< BUF3OF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IEN_BUF3UF_Pos               (25UL)                    /*!< BUF3UF (Bit 25)                                       */
+#define BUFC_IEN_BUF3UF_Msk               (0x2000000UL)             /*!< BUF3UF (Bitfield-Mask: 0x01)                          */
+#define BUFC_IEN_BUF3THR_Pos              (26UL)                    /*!< BUF3THR (Bit 26)                                      */
+#define BUFC_IEN_BUF3THR_Msk              (0x4000000UL)             /*!< BUF3THR (Bitfield-Mask: 0x01)                         */
+#define BUFC_IEN_BUF3CORR_Pos             (27UL)                    /*!< BUF3CORR (Bit 27)                                     */
+#define BUFC_IEN_BUF3CORR_Msk             (0x8000000UL)             /*!< BUF3CORR (Bitfield-Mask: 0x01)                        */
+#define BUFC_IEN_BUSERROR_Pos             (31UL)                    /*!< BUSERROR (Bit 31)                                     */
+#define BUFC_IEN_BUSERROR_Msk             (0x80000000UL)            /*!< BUSERROR (Bitfield-Mask: 0x01)                        */
 
 
 
