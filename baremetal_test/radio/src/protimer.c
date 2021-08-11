@@ -16,7 +16,8 @@ void PROTIMER_Start(void)
 
 {
   //PROTIMER->CMD |= 0x01;
-	PROTIMER->CMD |= PROTIMER_CMD_START_Msk;
+	//PROTIMER->CMD |= PROTIMER_CMD_START_Msk;
+	BUS_RegMaskedSet(&PROTIMER->CMD, PROTIMER_CMD_START_Msk);
   NVIC_EnableIRQ(PROTIMER_IRQn);
   NVIC_ClearPendingIRQ(PROTIMER_IRQn);
 }
@@ -29,7 +30,8 @@ void PROTIMER_Stop(void)
 
 {
   //PROTIMER->CMD |= 0x04;
-	PROTIMER->CMD |= PROTIMER_CMD_STOP_Msk;
+	//PROTIMER->CMD |= PROTIMER_CMD_STOP_Msk;
+	BUS_RegMaskedSet(&PROTIMER->CMD, PROTIMER_CMD_STOP_Msk);
   NVIC_DisableIRQ(PROTIMER_IRQn);
   NVIC_ClearPendingIRQ(PROTIMER_IRQn);
 }
@@ -201,7 +203,8 @@ void PROTIMER_LBTStart(void)
 {
   RADIO_PTI_AuxdataOutput(0x21);
   //PROTIMER->CMD |= 0x0100;
-	PROTIMER->CMD |= PROTIMER_CMD_LBTSTART_Msk;
+	//PROTIMER->CMD |= PROTIMER_CMD_LBTSTART_Msk;
+	BUS_RegMaskedSet(&PROTIMER->CMD, PROTIMER_CMD_LBTSTART_Msk); 
 }
 
 
@@ -209,7 +212,8 @@ void PROTIMER_LBTPause(void)
 
 {
   RADIO_PTI_AuxdataOutput(0x23);
-  PROTIMER->CMD |= 0x0200;
+  //PROTIMER->CMD |= 0x0200;
+	BUS_RegMaskedSet(&PROTIMER->CMD, 0x0200);
 }
 
 
@@ -223,6 +227,7 @@ void PROTIMER_LBTStop(void)
   INT_Disable();
   //PROTIMER->CMD |= 0x0400;
 	PROTIMER->CMD |= PROTIMER_CMD_LBTSTOP_Msk;
+	BUS_RegMaskedSet(&PROTIMER->CMD, PROTIMER_CMD_LBTSTOP_Msk);
   INT_Enable();
 }
 
@@ -297,8 +302,10 @@ bool PROTIMER_SetTime(uint32_t time)
 void PROTIMER_LBTCfgSet(uint32_t param_1,int param_2,uint32_t param_3,int param_4,uint8_t param_5)
 
 {
-  PROTIMER->CTRL &= 0xff0fffff;
-  PROTIMER->CTRL |= 0x900000;
+  //PROTIMER->CTRL &= 0xff0fffff;
+	BUS_RegMaskedClear(&PROTIMER->CTRL, 0x00f00000);
+  //PROTIMER->CTRL |= 0x900000;
+	BUS_RegMaskedSet(&PROTIMER->CTRL, 0x00900000);
   if (param_3 == 0) 
   {
     PROTIMER->RXCTRL = 0;
