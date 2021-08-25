@@ -72563,7 +72563,7 @@
 					<size>32</size>
 					<access>read-only</access>
 					<resetValue>0x00000000</resetValue>
-					<resetMask>0x3FFFFFF7</resetMask>
+					<resetMask>3F1F1FF7</resetMask>
 					<fields>
 						<field>
 							<name>PRECNTOF</name>
@@ -72735,203 +72735,161 @@
 					<size>32</size>
 					<access>write-only</access>
 					<resetValue>0x00000000</resetValue>
-					<resetMask>0x3FFFFFF7</resetMask>
+					<resetMask>3F1F1FF7</resetMask>
 					<fields>
 						<field>
 							<name>PRECNTOF</name>
 							<description>PRECNTOF Interrupt Enable</description>
 							<bitOffset>0</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>BASECNTOF</name>
 							<description>BASECNTOF Interrupt Enable</description>
 							<bitOffset>1</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>WRAPCNTOF</name>
 							<description>WRAPCNTOF Interrupt Enable</description>
 							<bitOffset>2</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>TOUT0</name>
 							<description>TOUT0 Interrupt Enable</description>
 							<bitOffset>4</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>TOUT1</name>
 							<description>TOUT1 Interrupt Enable</description>
 							<bitOffset>5</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>TOUT0MATCH</name>
 							<description>TOUT0MATCH Interrupt Enable</description>
 							<bitOffset>6</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>TOUT1MATCH</name>
 							<description>TOUT1MATCH Interrupt Enable</description>
 							<bitOffset>7</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>CC0</name>
 							<description>CC0 Interrupt Enable</description>
 							<bitOffset>8</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>CC1</name>
 							<description>CC1 Interrupt Enable</description>
 							<bitOffset>9</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>CC2</name>
 							<description>CC2 Interrupt Enable</description>
 							<bitOffset>10</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>CC3</name>
 							<description>CC3 Interrupt Enable</description>
 							<bitOffset>11</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>CC4</name>
 							<description>CC4 Interrupt Enable</description>
 							<bitOffset>12</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
-							<name>CC5</name>
-							<description>CC5 Interrupt Enable</description>
-							<bitOffset>13</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
-							<name>CC6</name>
-							<description>CC6 Interrupt Enable</description>
-							<bitOffset>14</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
-							<name>CC7</name>
-							<description>CC7 Interrupt Enable</description>
-							<bitOffset>15</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>COF0</name>
 							<description>COF0 Interrupt Enable</description>
 							<bitOffset>16</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>COF1</name>
 							<description>COF1 Interrupt Enable</description>
 							<bitOffset>17</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>COF2</name>
 							<description>COF2 Interrupt Enable</description>
 							<bitOffset>18</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>COF3</name>
 							<description>COF3 Interrupt Enable</description>
 							<bitOffset>19</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>COF4</name>
 							<description>COF4 Interrupt Enable</description>
 							<bitOffset>20</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
-							<name>COF5</name>
-							<description>COF5 Interrupt Enable</description>
-							<bitOffset>21</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
-							<name>COF6</name>
-							<description>COF6 Interrupt Enable</description>
-							<bitOffset>22</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
-							<name>COF7</name>
-							<description>COF7 Interrupt Enable</description>
-							<bitOffset>23</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>LBTSUCCESS</name>
 							<description>LBTSUCCESS Interrupt Enable</description>
 							<bitOffset>24</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>LBTFAILURE</name>
 							<description>LBTFAILURE Interrupt Enable</description>
 							<bitOffset>25</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>LBTPAUSED</name>
 							<description>LBTPAUSED Interrupt Enable</description>
 							<bitOffset>26</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>LBTRETRY</name>
 							<description>LBTRETRY Interrupt Enable</description>
 							<bitOffset>27</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>RTCCSYNCHED</name>
 							<description>RTCCSYNCHED Interrupt Enable</description>
 							<bitOffset>28</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>TOUT0MATCHLBT</name>
@@ -72956,196 +72914,154 @@
 							<description>PRECNTOF Interrupt Enable</description>
 							<bitOffset>0</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>BASECNTOF</name>
 							<description>BASECNTOF Interrupt Enable</description>
 							<bitOffset>1</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>WRAPCNTOF</name>
 							<description>WRAPCNTOF Interrupt Enable</description>
 							<bitOffset>2</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>TOUT0</name>
 							<description>TOUT0 Interrupt Enable</description>
 							<bitOffset>4</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>TOUT1</name>
 							<description>TOUT1 Interrupt Enable</description>
 							<bitOffset>5</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>TOUT0MATCH</name>
 							<description>TOUT0MATCH Interrupt Enable</description>
 							<bitOffset>6</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>TOUT1MATCH</name>
 							<description>TOUT1MATCH Interrupt Enable</description>
 							<bitOffset>7</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>CC0</name>
 							<description>CC0 Interrupt Enable</description>
 							<bitOffset>8</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>CC1</name>
 							<description>CC1 Interrupt Enable</description>
 							<bitOffset>9</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>CC2</name>
 							<description>CC2 Interrupt Enable</description>
 							<bitOffset>10</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>CC3</name>
 							<description>CC3 Interrupt Enable</description>
 							<bitOffset>11</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>CC4</name>
 							<description>CC4 Interrupt Enable</description>
 							<bitOffset>12</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
-							<name>CC5</name>
-							<description>CC5 Interrupt Enable</description>
-							<bitOffset>13</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
-							<name>CC6</name>
-							<description>CC6 Interrupt Enable</description>
-							<bitOffset>14</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
-							<name>CC7</name>
-							<description>CC7 Interrupt Enable</description>
-							<bitOffset>15</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>COF0</name>
 							<description>COF0 Interrupt Enable</description>
 							<bitOffset>16</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>COF1</name>
 							<description>COF1 Interrupt Enable</description>
 							<bitOffset>17</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>COF2</name>
 							<description>COF2 Interrupt Enable</description>
 							<bitOffset>18</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>COF3</name>
 							<description>COF3 Interrupt Enable</description>
 							<bitOffset>19</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>COF4</name>
 							<description>COF4 Interrupt Enable</description>
 							<bitOffset>20</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
-							<name>COF5</name>
-							<description>COF5 Interrupt Enable</description>
-							<bitOffset>21</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
-							<name>COF6</name>
-							<description>COF6 Interrupt Enable</description>
-							<bitOffset>22</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
-							<name>COF7</name>
-							<description>COF7 Interrupt Enable</description>
-							<bitOffset>23</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>LBTSUCCESS</name>
 							<description>LBTSUCCESS Interrupt Enable</description>
 							<bitOffset>24</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>LBTFAILURE</name>
 							<description>LBTFAILURE Interrupt Enable</description>
 							<bitOffset>25</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>LBTPAUSED</name>
 							<description>LBTPAUSED Interrupt Enable</description>
 							<bitOffset>26</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>LBTRETRY</name>
 							<description>LBTRETRY Interrupt Enable</description>
 							<bitOffset>27</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>RTCCSYNCHED</name>
 							<description>RTCCSYNCHED Interrupt Enable</description>
 							<bitOffset>28</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>write-only</access>
 						</field>
 						<field>
 							<name>TOUT0MATCHLBT</name>
@@ -73250,27 +73166,6 @@
 							<access>read-write</access>
 						</field>
 						<field>
-							<name>CC5</name>
-							<description>CC5 Interrupt Enable</description>
-							<bitOffset>13</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
-							<name>CC6</name>
-							<description>CC6 Interrupt Enable</description>
-							<bitOffset>14</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
-							<name>CC7</name>
-							<description>CC7 Interrupt Enable</description>
-							<bitOffset>15</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
 							<name>COF0</name>
 							<description>COF0 Interrupt Enable</description>
 							<bitOffset>16</bitOffset>
@@ -73302,27 +73197,6 @@
 							<name>COF4</name>
 							<description>COF4 Interrupt Enable</description>
 							<bitOffset>20</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
-							<name>COF5</name>
-							<description>COF5 Interrupt Enable</description>
-							<bitOffset>21</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
-							<name>COF6</name>
-							<description>COF6 Interrupt Enable</description>
-							<bitOffset>22</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
-							<name>COF7</name>
-							<description>COF7 Interrupt Enable</description>
-							<bitOffset>23</bitOffset>
 							<bitWidth>1</bitWidth>
 							<access>read-write</access>
 						</field>
