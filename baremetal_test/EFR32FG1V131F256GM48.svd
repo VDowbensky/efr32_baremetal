@@ -72570,203 +72570,161 @@
 							<description>PRECNT Overflow Interrupt Flag</description>
 							<bitOffset>0</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>read-only</access>
 						</field>
 						<field>
 							<name>BASECNTOF</name>
 							<description>BASECNT Overflow Interrupt Flag</description>
 							<bitOffset>1</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>read-only</access>
 						</field>
 						<field>
 							<name>WRAPCNTOF</name>
 							<description>WRAPCNT Overflow Interrupt Flag</description>
 							<bitOffset>2</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>read-only</access>
 						</field>
 						<field>
 							<name>TOUT0</name>
 							<description>TOUT0 underflow interrupt flag</description>
 							<bitOffset>4</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>read-only</access>
 						</field>
 						<field>
 							<name>TOUT1</name>
 							<description>TOUT1 underflow interrupt flag</description>
 							<bitOffset>5</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>read-only</access>
 						</field>
 						<field>
 							<name>TOUT0MATCH</name>
 							<description>TOUT0 compare match interrupt flag</description>
 							<bitOffset>6</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>read-only</access>
 						</field>
 						<field>
 							<name>TOUT1MATCH</name>
 							<description>TOUT1 compare match interrupt flag</description>
 							<bitOffset>7</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>read-only</access>
 						</field>
 						<field>
 							<name>CC0</name>
 							<description>CC Channel 0 Interrupt Flag</description>
 							<bitOffset>8</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>read-only</access>
 						</field>
 						<field>
 							<name>CC1</name>
 							<description>CC Channel 1 Interrupt Flag</description>
 							<bitOffset>9</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>read-only</access>
 						</field>
 						<field>
 							<name>CC2</name>
 							<description>CC Channel 2 Interrupt Flag</description>
 							<bitOffset>10</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>read-only</access>
 						</field>
 						<field>
 							<name>CC3</name>
 							<description>CC Channel 3 Interrupt Flag</description>
 							<bitOffset>11</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>read-only</access>
 						</field>
 						<field>
 							<name>CC4</name>
 							<description>CC Channel 4 Interrupt Flag</description>
 							<bitOffset>12</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
-							<name>CC5</name>
-							<description>CC Channel 5 Interrupt Flag</description>
-							<bitOffset>13</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
-							<name>CC6</name>
-							<description>CC Channel 6 Interrupt Flag</description>
-							<bitOffset>14</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
-							<name>CC7</name>
-							<description>CC Channel 7 Interrupt Flag</description>
-							<bitOffset>15</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>read-only</access>
 						</field>
 						<field>
 							<name>COF0</name>
 							<description>CC Channel 0 Overflow Interrupt Flag</description>
 							<bitOffset>16</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>read-only</access>
 						</field>
 						<field>
 							<name>COF1</name>
 							<description>CC Channel 1 Overflow Interrupt Flag</description>
 							<bitOffset>17</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>read-only</access>
 						</field>
 						<field>
 							<name>COF2</name>
 							<description>CC Channel 2 Overflow Interrupt Flag</description>
 							<bitOffset>18</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>read-only</access>
 						</field>
 						<field>
 							<name>COF3</name>
 							<description>CC Channel 3 Overflow Interrupt Flag</description>
 							<bitOffset>19</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>read-only</access>
 						</field>
 						<field>
 							<name>COF4</name>
 							<description>CC Channel 4 Overflow Interrupt Flag</description>
 							<bitOffset>20</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
-							<name>COF5</name>
-							<description>CC Channel 5 Overflow Interrupt Flag</description>
-							<bitOffset>21</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
-							<name>COF6</name>
-							<description>CC Channel 6 Overflow Interrupt Flag</description>
-							<bitOffset>22</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
-						</field>
-						<field>
-							<name>COF7</name>
-							<description>CC Channel 7 Overflow Interrupt Flag</description>
-							<bitOffset>23</bitOffset>
-							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>read-only</access>
 						</field>
 						<field>
 							<name>LBTSUCCESS</name>
 							<description>Listen Before Talk Success</description>
 							<bitOffset>24</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>read-only</access>
 						</field>
 						<field>
 							<name>LBTFAILURE</name>
 							<description>Listen Before Talk Failure</description>
 							<bitOffset>25</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>read-only</access>
 						</field>
 						<field>
 							<name>LBTPAUSED</name>
 							<description>Listen Before Talk Paused</description>
 							<bitOffset>26</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>read-only</access>
 						</field>
 						<field>
 							<name>LBTRETRY</name>
 							<description>Listen Before Talk Retry</description>
 							<bitOffset>27</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>read-only</access>
 						</field>
 						<field>
 							<name>RTCCSYNCHED</name>
 							<description>PROTIMER synchronized with the RTCC</description>
 							<bitOffset>28</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>read-only</access>
 						</field>
 						<field>
 							<name>TOUT0MATCHLBT</name>
 							<description>TOUT0 compare match interrupt flag</description>
 							<bitOffset>29</bitOffset>
 							<bitWidth>1</bitWidth>
-							<access>read-write</access>
+							<access>read-only</access>
 						</field>
 					</fields>
 				</register>

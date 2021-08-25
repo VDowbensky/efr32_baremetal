@@ -156,14 +156,10 @@ typedef struct {                                /*!< (@ 0x40085000) PROTIMER Str
 #define PROTIMER_CMD_TOUT1START_Msk       (0x40UL)                  /*!< TOUT1START (Bitfield-Mask: 0x01)                      */
 #define PROTIMER_CMD_TOUT1STOP_Pos        (7UL)                     /*!< TOUT1STOP (Bit 7)                                     */
 #define PROTIMER_CMD_TOUT1STOP_Msk        (0x80UL)                  /*!< TOUT1STOP (Bitfield-Mask: 0x01)                       */
-#define PROTIMER_CMD_LBTSTART_Pos         (8UL)                    /*!< LBTSTART (Bit 16)                                     */
-#define PROTIMER_CMD_LBTSTART_Msk         (0x100UL)               /*!< LBTSTART (Bitfield-Mask: 0x01)                        */
-//#define PROTIMER_CMD_LBTSTART_Pos         (16UL)                    /*!< LBTSTART (Bit 16)                                     */
-//#define PROTIMER_CMD_LBTSTART_Msk         (0x10000UL)               /*!< LBTSTART (Bitfield-Mask: 0x01)                        */
-#define PROTIMER_CMD_LBTSTOP_Pos          (10UL)                    /*!< LBTSTOP (Bit 18)                                      */
-#define PROTIMER_CMD_LBTSTOP_Msk          (0x400UL)               /*!< LBTSTOP (Bitfield-Mask: 0x01)                         */
-//#define PROTIMER_CMD_LBTSTOP_Pos          (18UL)                    /*!< LBTSTOP (Bit 18)                                      */
-//#define PROTIMER_CMD_LBTSTOP_Msk          (0x40000UL)               /*!< LBTSTOP (Bitfield-Mask: 0x01)                         */
+#define PROTIMER_CMD_LBTSTART_Pos         (16UL)                    /*!< LBTSTART (Bit 16)                                     */
+#define PROTIMER_CMD_LBTSTART_Msk         (0x10000UL)               /*!< LBTSTART (Bitfield-Mask: 0x01)                        */
+#define PROTIMER_CMD_LBTSTOP_Pos          (18UL)                    /*!< LBTSTOP (Bit 18)                                      */
+#define PROTIMER_CMD_LBTSTOP_Msk          (0x40000UL)               /*!< LBTSTOP (Bitfield-Mask: 0x01)                         */
 /* ========================================================  PRSCTRL  ======================================================== */
 #define PROTIMER_PRSCTRL_STARTPRSEN_Pos   (1UL)                     /*!< STARTPRSEN (Bit 1)                                    */
 #define PROTIMER_PRSCTRL_STARTPRSEN_Msk   (0x2UL)                   /*!< STARTPRSEN (Bitfield-Mask: 0x01)                      */
@@ -318,12 +314,6 @@ typedef struct {                                /*!< (@ 0x40085000) PROTIMER Str
 #define PROTIMER_IF_CC3_Msk               (0x800UL)                 /*!< CC3 (Bitfield-Mask: 0x01)                             */
 #define PROTIMER_IF_CC4_Pos               (12UL)                    /*!< CC4 (Bit 12)                                          */
 #define PROTIMER_IF_CC4_Msk               (0x1000UL)                /*!< CC4 (Bitfield-Mask: 0x01)                             */
-#define PROTIMER_IF_CC5_Pos               (13UL)                    /*!< CC5 (Bit 13)                                          */
-#define PROTIMER_IF_CC5_Msk               (0x2000UL)                /*!< CC5 (Bitfield-Mask: 0x01)                             */
-#define PROTIMER_IF_CC6_Pos               (14UL)                    /*!< CC6 (Bit 14)                                          */
-#define PROTIMER_IF_CC6_Msk               (0x4000UL)                /*!< CC6 (Bitfield-Mask: 0x01)                             */
-#define PROTIMER_IF_CC7_Pos               (15UL)                    /*!< CC7 (Bit 15)                                          */
-#define PROTIMER_IF_CC7_Msk               (0x8000UL)                /*!< CC7 (Bitfield-Mask: 0x01)                             */
 #define PROTIMER_IF_COF0_Pos              (16UL)                    /*!< COF0 (Bit 16)                                         */
 #define PROTIMER_IF_COF0_Msk              (0x10000UL)               /*!< COF0 (Bitfield-Mask: 0x01)                            */
 #define PROTIMER_IF_COF1_Pos              (17UL)                    /*!< COF1 (Bit 17)                                         */
@@ -334,12 +324,6 @@ typedef struct {                                /*!< (@ 0x40085000) PROTIMER Str
 #define PROTIMER_IF_COF3_Msk              (0x80000UL)               /*!< COF3 (Bitfield-Mask: 0x01)                            */
 #define PROTIMER_IF_COF4_Pos              (20UL)                    /*!< COF4 (Bit 20)                                         */
 #define PROTIMER_IF_COF4_Msk              (0x100000UL)              /*!< COF4 (Bitfield-Mask: 0x01)                            */
-#define PROTIMER_IF_COF5_Pos              (21UL)                    /*!< COF5 (Bit 21)                                         */
-#define PROTIMER_IF_COF5_Msk              (0x200000UL)              /*!< COF5 (Bitfield-Mask: 0x01)                            */
-#define PROTIMER_IF_COF6_Pos              (22UL)                    /*!< COF6 (Bit 22)                                         */
-#define PROTIMER_IF_COF6_Msk              (0x400000UL)              /*!< COF6 (Bitfield-Mask: 0x01)                            */
-#define PROTIMER_IF_COF7_Pos              (23UL)                    /*!< COF7 (Bit 23)                                         */
-#define PROTIMER_IF_COF7_Msk              (0x800000UL)              /*!< COF7 (Bitfield-Mask: 0x01)                            */
 #define PROTIMER_IF_LBTSUCCESS_Pos        (24UL)                    /*!< LBTSUCCESS (Bit 24)                                   */
 #define PROTIMER_IF_LBTSUCCESS_Msk        (0x1000000UL)             /*!< LBTSUCCESS (Bitfield-Mask: 0x01)                      */
 #define PROTIMER_IF_LBTFAILURE_Pos        (25UL)                    /*!< LBTFAILURE (Bit 25)                                   */
