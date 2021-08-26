@@ -395,7 +395,6 @@ void GENERIC_PHY_LoadTxPacketBuffer(uint8_t *buf)
   INT_Disable();
  // RADIO_TxBufferSet(*(uint32_t *)(buf + 2),*buf,0,0); //!!!!!!!!!!!!!!!!!!!!!!!!!
   INT_Enable();
-  return;
 }
 
 

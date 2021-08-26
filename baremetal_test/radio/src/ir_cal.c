@@ -260,8 +260,10 @@ void IRCAL_SetSubGhzPllLoopback(void)
   AGC->MANGAIN &= 0x801001ff;
   AGC->MANGAIN |= 0x40009800;
   AGC->CTRL0 |= 0x400000;
-  RAC->SGRFENCTRL0 |= 0x80000;
-  RAC->RFENCTRL0 |= 0x80000;
+  //RAC->SGRFENCTRL0 |= 0x80000;
+	RAC->SGRFENCTRL0 |= RAC_SGRFENCTRL0_TRSW_Msk;
+//RAC->RFENCTRL0 |= 0x80000;
+	RAC->RFENCTRL0 |= RAC_RFENCTRL0_TRSW_Msk;
 }
 
 
@@ -385,7 +387,6 @@ int16_t IRCAL_ReadRssi(uint32_t param_1,uint32_t param_2,uint32_t param_3,uint32
      // while ((AGC->STATUS0 & 0x20), (uVar6 >> (param_3 & 0xff) == 0))
 			while (AGC->STATUS0 & 0x20)
       {
-        //write_volatile_4(AGC->CMD,1);
         AGC->CMD = 1;
         //do {
         //  uVar1 = read_volatile_4(AGC->IF);
