@@ -34,136 +34,51 @@ void BUFC_ConfigureCallbacks(uint32_t cb)
 
 {
   uint32_t flags;
-  uint32_t uVar3;
+  uint32_t cbtoset;
   
   enabledCallbacks = cb & availableCallbacks;
-  uVar3 = 0x90e0a09;
-  if (enabledCallbacks & 0x01) uVar3 = 0x90e0a0d;
-  if (enabledCallbacks & 0x02) uVar3 |= 1;
-  if (enabledCallbacks & 0x04) uVar3 |= 0x400;
-  if (enabledCallbacks & 0x08) uVar3 |= 0x200;
+  cbtoset = 0x90e0a09;
+  if (enabledCallbacks & 0x01) cbtoset = 0x90e0a0d;
+  if (enabledCallbacks & 0x02) cbtoset |= 1;
+  if (enabledCallbacks & 0x04) cbtoset |= 0x400;
+  if (enabledCallbacks & 0x08) cbtoset |= 0x200;
 
-  flags = BUFC->IEN & (uVar3 ^ BUFC->IEN);
-  flags = (BUFC->IEN ^ uVar3) & BUFC->IEN;
+  flags = BUFC->IEN & (cbtoset ^ BUFC->IEN);
+  flags = (BUFC->IEN ^ cbtoset) & BUFC->IEN;
   BUS_RegMaskedClear(&BUFC->IEN,flags);
   BUFC->IFC = flags;
-  uVar3 &= (uVar3 ^ BUFC->IEN);
-  BUFC->IFC = uVar3;
-  BUS_RegMaskedSet(&BUFC->IEN,uVar3);
+  cbtoset &= (cbtoset ^ BUFC->IEN);
+  BUFC->IFC = cbtoset;
+  BUS_RegMaskedSet(&BUFC->IEN,cbtoset);
 }
 
 
 
-void BUFC_WriteBuffer(uint32_t bufnum,uint8_t *src,uint32_t param_3)
+void BUFC_WriteBuffer(uint32_t bufnum,uint8_t *src,uint32_t len )
 
 {
-  uint32_t uVar1;
-  
-  if (param_3 == 0) return;
-  uVar1 = param_3 + 7 >> 3;
-  switch(param_3 & 7) 
+  uint32_t i;
+  if (len == 0) return;
+  for(i = 1; i < len; i++)
   {
-  case 1:
-    break;
-  case 2:
-    goto switchD_000100da_caseD_2;
-  case 3:
-    goto switchD_000100da_caseD_3;
-  case 4:
-    goto switchD_000100da_caseD_4;
-  case 5:
-    goto switchD_000100da_caseD_5;
-  case 6:
-    goto switchD_000100da_caseD_6;
-  case 7:
-    goto switchD_000100da_caseD_7;
-  default:
-    goto switchD_000100da_caseD_7;
+	(&BUFC->BUF0_WRITEDATA)[bufnum * 0xc] = (uint32_t)*src;
+	src++;
   }
-switchD_000100da_caseD_1:
-  (&BUFC->BUF0_WRITEDATA)[bufnum * 0xc] = (uint32_t)*src;
-  uVar1--;
-  if (uVar1 == 0) return;
-  src++;
-switchD_000100da_caseD_7:
-  (&BUFC->BUF0_WRITEDATA)[bufnum * 0xc] = (uint32_t)*src;
-  src++;
-switchD_000100da_caseD_7:
-  (&BUFC->BUF0_WRITEDATA)[bufnum * 0xc] = (uint32_t)*src;
-  src++;
-switchD_000100da_caseD_6:
-  (&BUFC->BUF0_WRITEDATA)[bufnum * 0xc] = (uint32_t)*src;
-  src++;
-switchD_000100da_caseD_5:
-  (&BUFC->BUF0_WRITEDATA)[bufnum * 0xc] = (uint32_t)*src;
-  src++;
-switchD_000100da_caseD_4:
-  (&BUFC->BUF0_WRITEDATA)[bufnum * 0xc] = (uint32_t)*src;
-  src++;
-switchD_000100da_caseD_3:
-  (&BUFC->BUF0_WRITEDATA)[bufnum * 0xc] = (uint32_t)*src;
-  src++;
-switchD_000100da_caseD_2:
-  (&BUFC->BUF0_WRITEDATA)[bufnum * 0xc] = (uint32_t)*src;
-  src++;
-  goto switchD_000100da_caseD_1;
 }
 
 
 
-void BUFC_ReadBuffer(uint32_t bufnum,uint8_t *dest,uint32_t param_3)
+void BUFC_ReadBuffer(uint32_t bufnum,uint8_t *dest,uint32_t len)
 
 {
-  uint32_t uVar1;
+  uint32_t i;
   
-  if (param_3 == 0) return;
-  uVar1 = param_3 + 7 >> 3;
-  switch(param_3 & 7) 
+  if (len == 0) return;
+  for(i = 0; i < len; i++)
   {
-  case 1:
-    break;
-  case 2:
-    goto switchD_00010140_caseD_2;
-  case 3:
-    goto switchD_00010140_caseD_3;
-  case 4:
-    goto switchD_00010140_caseD_4;
-  case 5:
-    goto switchD_00010140_caseD_5;
-  case 6:
-    goto switchD_00010140_caseD_6;
-  case 7:
-    goto switchD_00010140_caseD_7;
-  default:
-    goto switchD_00010140_caseD_7;
+	*dest = (uint8_t)(&BUFC->BUF0_READDATA)[bufnum * 0xc];
+	dest++;
   }
-switchD_00010140_caseD_1:
-  *dest = (char)(&BUFC->BUF0_READDATA)[bufnum * 0xc];
-  uVar1--;
-  if (uVar1 == 0) return;
-  dest++;
-switchD_00010140_caseD_7:
-  *dest = (char)(&BUFC->BUF0_READDATA)[bufnum * 0xc];
-  dest++;
-switchD_00010140_caseD_7:
-  *dest = (char)(&BUFC->BUF0_READDATA)[bufnum * 0xc];
-  dest++;
-switchD_00010140_caseD_6:
-  *dest = (char)(&BUFC->BUF0_READDATA)[bufnum * 0xc];
-  dest++;
-switchD_00010140_caseD_5:
-  *dest = (char)(&BUFC->BUF0_READDATA)[bufnum * 0xc];
-  dest++;
-switchD_00010140_caseD_4:
-  *dest = (char)(&BUFC->BUF0_READDATA)[bufnum * 0xc];
-  dest++;
-switchD_00010140_caseD_3:
-  *dest = (char)(&BUFC->BUF0_READDATA)[bufnum * 0xc];
-  dest++;
-switchD_00010140_caseD_2:
-  *dest = (char)(&BUFC->BUF0_READDATA)[bufnum * 0xc];
-  dest++;
-  goto switchD_00010140_caseD_1;
 }
 
 
