@@ -183,8 +183,10 @@ void BUFC_Init(void)
   BUS_RegMaskedClear(&FRC->CTRL,0xf0);
   BUS_RegMaskedSet(&FRC->CTRL,0xa0);
   RADIO_RegisterIrqCallback(3,BUFC_IrqHandler);
-  _DAT_e000e280 = 0x80;
-  _DAT_e000e100 = 0x80;
+  //_DAT_e000e280 = 0x80;
+  //_DAT_e000e100 = 0x80;
+  NVIC_ClearPendingIRQ(BUFC_IRQn);
+  NVIC_EnableIRQ(BUFC_IRQn);
   BUFC->BUF0_CMD = 1;
   BUFC->BUF3_CMD = 1;
   BUFC_RxBufferReset();
@@ -204,23 +206,25 @@ void BUFC_IrqHandler(void)
   BUFC->IFC = flags;
   if ((flags & 0x04) && (enabledCallbacks & 0x01)) 
   {
-    if (_DAT_430204b4 == 0) BUS_RegMaskedSet(&BUFC->BUF0_THRESHOLDCTRL,0x2000);
+    //if (_DAT_430204b4 == 0) BUS_RegMaskedSet(&BUFC->BUF0_THRESHOLDCTRL,0x2000);
+	if (!(BUF0_THRESHOLDCTRL & BUFC_BUF0_THRESHOLDCTRL_THRESHOLDMODE_Msk)) BUS_RegMaskedSet(&BUFC->BUF0_THRESHOLDCTRL,BUFC_BUF0_THRESHOLDCTRL_THRESHOLDMODE_Msk);//bit 13
     else 
 	{
-      BUS_RegMaskedClear(&BUFC->BUF0_THRESHOLDCTRL,0x2000);
+      BUS_RegMaskedClear(&BUFC->BUF0_THRESHOLDCTRL,BUFC_BUF0_THRESHOLDCTRL_THRESHOLDMODE_Msk);
       (**currentCallbacks)();
     }
   }
   if (flags & 0x0400) && (enabledCallbacks & 0x04) (*currentCallbacks[2])();
   if (flags & 0x40000) 
   {
-    if (_DAT_430210b4 == 0) 
+    //if (_DAT_430210b4 == 0) 
+	if (!(BUF0_THRESHOLDCTRL & BUFC_BUF0_THRESHOLDCTRL_THRESHOLDMODE_Msk))
 	{
       FRC->IFS = 0x10;
       BUS_RegMaskedSet(&FRC->IEN,0x10);
-      if (bufcPendRxFrameError != '\0') 
+      if (bufcPendRxFrameError != 0) 
 	  {
-        bufcPendRxFrameError = '\0';
+        bufcPendRxFrameError = 0;
         FRC->IFS = 0x40;
       }
       BUS_RegMaskedSet(&BUFC->BUF2_THRESHOLDCTR,0x2000);
@@ -302,44 +306,41 @@ uint32_t BUFC_RxLengthBufferBytesAvailable(void)
 
 
 
-void BUFC_RxLengthReadNext(ushort *param_1)
+void BUFC_RxLengthReadNext(uint16_t *buf)
 
 {
-  int32_t iVar1;
-  
-  iVar1 = BUFC_RxBufferPacketAvailable();
-  if (iVar1 == 0) 
+  if (BUFC_RxBufferPacketAvailable() == 0) 
   {
-    *(undefined *)(param_1 + 1) = 0;
-    *(undefined *)param_1 = 0xff;
-    *(undefined *)((int32_t)param_1 + 1) = 0xff;
+    *(undefined *)(buf + 1) = 0;
+    *(undefined *)buf = 0xff;
+    *(undefined *)((int32_t)buf + 1) = 0xff;
     return;
   }
-  BUFC_ReadBuffer(2,param_1,4);
-  *param_1 = (ushort)(((uint32_t)*param_1 << 0x17) >> 0x17);
+  BUFC_ReadBuffer(2,buf,4);
+  *buf = (uint16_t)(((uint32_t)*buf << 0x17) >> 0x17);
 }
 
 
 
 // WARNING: Could not reconcile some variable overlaps
 
-uint32_t BUFC_RxBufferFinalizeAndGet(int32_t *param_1,uint32_t param_2)
+uint32_t BUFC_RxBufferFinalizeAndGet(int32_t *buf,uint32_t len)
 
 {
   uint32_t uVar1;
   int32_t *piVar2;
   uint32_t local_14;
   
-  piVar2 = param_1;
-  local_14 = param_2;
+  piVar2 = buf;
+  local_14 = len;
   BUFC_RxLengthReadNext(&local_14);
   uVar1 = local_14 & 0xffff;
   if (uVar1 != 0xffff) 
   {
-    BUFC_ReadBuffer(1,bufcRxStreaming._4_4_ + (uint32_t)(ushort)bufcRxStreaming,uVar1 - (ushort)bufcRxStreaming,0xffff,piVar2);
-    bufcRxStreaming._0_2_ = (ushort)local_14;
+    BUFC_ReadBuffer(1,bufcRxStreaming._4_4_ + (uint32_t)(uint16_t)bufcRxStreaming,uVar1 - (uint16_t)bufcRxStreaming,0xffff,piVar2);
+    bufcRxStreaming._0_2_ = (uint16_t)local_14;
     BUS_RegMaskedClear(&BUFC->IEN,0x400);
-    *param_1 = bufcRxStreaming._4_4_;
+    *buf = bufcRxStreaming._4_4_;
   }
   return uVar1;
 }

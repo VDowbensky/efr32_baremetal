@@ -2,6 +2,11 @@
 
 //EFRDRV_irqClbk[];
 
+static const unsigned char EFRDRV_actionFunc[32UL + 1] = {0x00, 0x00, 0x01, 0x00, 0x2C, 0x00, 0x01, 0x00, 0x24, 0x00, 0x01, 0x00, 0x1C, 0x00, 0x01, 0x00, 0x50, 0x00, 0x01, 0x00, 0x04, 0x00, 0x01, 0x00, 0x10, 0x00, 0x01, 0x00, 0x36, 0x00, 0x01, 0x00, 0x00};
+static const unsigned char modemCfDec0Factors[5UL + 1] = {0x03, 0x04, 0x04, 0x08, 0x08, 0x00};
+static const unsigned char regBases[8UL + 1] = {0x00, 0x00, 0x08, 0x40, 0x00, 0x00, 0x00, 0x21, 0x00};
+
+
 void RADIO_WriteSync(undefined4 *addr,uint32_t sync)
 
 {
@@ -60,7 +65,7 @@ void RADIO_WaitForSetSync(uint32_t *addr,uint32_t sync)
 
 
 
-void RADIO_Delay(undefined4 param_1,uint32_t us)
+void RADIO_Delay(uint32_t us)
 
 {
   PHY_UTILS_DelayUs(us);
@@ -71,14 +76,14 @@ void RADIO_Delay(undefined4 param_1,uint32_t us)
 void RADIO_SetAndForgetWrite(void)
 
 {
-  undefined4 local_c;
-
-  SYSTEM_ChipRevisionGet(&local_c);
+  RAIL_Version_t version;
+ 
+  SYSTEM_ChipRevisionGet(&version);
   RAC->IFADCCTRL = 0x5153e6c0;
   RAC->IFPGACTRL = 0x87e6;
   RAC->LNAMIXCTRL1 = 0x880;
   RAC->VCOCTRL = 0xf00277a;
-  if ((local_c._1_1_ == '\x01') && ((local_c & 0xff) < 2)) SYNTH->VCOGAIN = 0x28;
+  if (version->major == 1) && (version->minor < 2) SYNTH->VCOGAIN = 0x28;
   SYNTH->CTRL = 0xac3f;
   AGC->MANGAIN = 0x1800000;
   RAC->LNAMIXCTRL = 0;
@@ -92,25 +97,24 @@ void RADIO_SetAndForgetWrite(void)
 void RADIO_SeqInit(uint32_t src,uint32_t len)
 
 {
-  uint32_t uVar3;
-  uint32_t uVar4;
-  uint32_t uVar5;
-  
-  //uVar3 = (RAC->STATUS._0_1_);
-  uVar3 = RAC->STATUS;
+  uint32_t tmp1;
+  uint32_t tmp2;
+  uint32_t tmp3;
+
+  tmp1 = RAC->STATUS;
   RAC->VECTADDR = 0x21000000;
   RAC->SEQCTRL = 1;
-  uVar3 = CORE_EnterCritical();
+  tmp1 = CORE_EnterCritical();
   memcpy(0x21000000,src,len << 2);
-  CORE_ExitCritical(uVar3);
+  CORE_ExitCritical(tmp1);
   RAC->R6 = 0x21000fbc;
-  uVar3 = SEQ->REG0E4;
-  uVar4 = SEQ->REG0E8;
-  uVar5 = SEQ->DYNAMIC_CHPWR_TABLE;
+  tmp1 = SEQ->REG0E4;
+  tmp2 = SEQ->REG0E8;
+  tmp3 = SEQ->DYNAMIC_CHPWR_TABLE;
   memset(0x21000f64,0,0x9c);
-  SEQ->REG0E4 = uVar3;
-  SEQ->REG0E8 = uVar4;
-  SEQ->DYNAMIC_CHPWR_TABLE = uVar5;
+  SEQ->REG0E4 = tmp1;
+  SEQ->REG0E8 = tmp2;
+  SEQ->DYNAMIC_CHPWR_TABLE = tmp3;
 }
 
 
@@ -149,7 +153,7 @@ void RADIO_Init(void)
 void RADIO_Config(int param_1)
 
 {
-  undefined4 uVar1;
+  undefined4 tmp;
   uint uVar2;
   uint uVar3;
   uint uVar4;
@@ -164,16 +168,13 @@ void RADIO_Config(int param_1)
       if (uVar2 == 0xffffffff) break;
       uVar4 = (uVar2 << 8) >> 0x18;
       uVar3 = uVar2 & 0xffff | *(uint *)(regBases + ((uVar2 << 4) >> 0x1c) * 4);
-      if (uVar4 < 2) 
-	  {
-        (**(code **)(EFRDRV_actionFunc + (uVar2 >> 0x1c) * 4))(uVar3,*(undefined4 *)(param_1 + -4));
-      }
+      if (uVar4 < 2) (**(code **)(EFRDRV_actionFunc + (uVar2 >> 0x1c) * 4))(uVar3,*(undefined4 *)(param_1 + -4));
       else 
 	  {
         uVar5 = *(undefined4 *)(param_1 + -4);
-        uVar1 = CORE_EnterCritical();
+        tmp = CORE_EnterCritical();
         memcpy(uVar3,uVar5,uVar4 << 2);
-        CORE_ExitCritical(uVar1);
+        CORE_ExitCritical(tmp);
       }
       param_1 = param_1 + 8;
     }
@@ -280,10 +281,7 @@ void MODEM_IRQHandler(void)
 bool RADIO_IsRxActive(void)
 
 {
-  uint uVar1;
-  
-  uVar1 = (RAC->STATUS << 4) >> 0x1c;
-  if ((uVar1 != 3) && (uVar1 != 7)) return uVar1 == 4;
+  if ((RAC->STATUS << 4) >> 0x1c != 3) && (uVar1 != 7)) return (RAC->STATUS << 4) >> 0x1c == 4);
   return true;
 }
 
@@ -292,7 +290,7 @@ bool RADIO_IsRxActive(void)
 uint32_t RADIO_RxTrailDataLength(void)
 
 {
-  int len;
+  uint32_t len;
   
   if ((FRC->TRAILRXDATA & 0x20) == 0) len = 0;
   else len = 4;
@@ -309,8 +307,8 @@ uint32_t RADIO_RxTrailDataLength(void)
 void RADIO_FrameControlDescrBufferIdSet(int param_1,int param_2)
 
 {
-  (&FRC_CLR.FCD0)[param_1] = 0x300;
-  (&FRC_SET.FCD0)[param_1] = param_2 << 8;
+  (&FRC_CLR->FCD0)[param_1] = 0x300;
+  (&FRC_SET->FCD0)[param_1] = param_2 << 8;
 }
 
 
@@ -318,8 +316,8 @@ void RADIO_FrameControlDescrBufferIdSet(int param_1,int param_2)
 void RADIO_FrameControlDescrConfigSet(int param_1,uint param_2,int param_3,int param_4,byte param_5,byte param_6)
 
 {
-  (&Peripherals::FRC_CLR.FCD0)[param_1] = 31999;
-  (&Peripherals::FRC_SET.FCD0)[param_1] = param_2 | (uint)param_6 << 10 | (uint)param_5 << 0xb | param_4 << 0xc | param_3 << 0xe;
+  (&FRC_CLR->FCD0)[param_1] = 31999;
+  (&FRC_SET->FCD0)[param_1] = param_2 | (uint)param_6 << 10 | (uint)param_5 << 0xb | param_4 << 0xc | param_3 << 0xe;
 }
 
 
@@ -405,7 +403,7 @@ void RADIO_VcoFineCalDisable(void)
 
 
 
-uint RADIO_ComputeTxBaudrate(void)
+uint32_t RADIO_ComputeTxBaudrate(void)
 
 {
   return (((MODEM->TXBR << 8) >> 0x18) * (CMU_ClockFreqGet(0x11) >> 3)) / (MODEM->TXBR & 0xffff);
@@ -413,7 +411,7 @@ uint RADIO_ComputeTxBaudrate(void)
 
 
 
-uint RADIO_ComputeRxBaudrate(void)
+uint32_t RADIO_ComputeRxBaudrate(void)
 
 {
   uint uVar1;
@@ -429,13 +427,12 @@ uint RADIO_ComputeRxBaudrate(void)
   uVar4 = (uint)*(byte *)((int)&modemCfDec0Factors + (uVar2 & 7));
   iVar5 = (((uVar2 << 0xf) >> 0x12) * uVar4 + uVar4) * 2;
   iVar3 = CMU_ClockFreqGet(0x11);
-  return (uVar6 * iVar3) / ((((uVar2 << 9) >> 0x1a) * iVar5 + iVar5) *
-         (uVar6 * ((uVar1 << 0x13) >> 0x1d) + (uVar1 & 0x1f)));
+  return (uVar6 * iVar3) / ((((uVar2 << 9) >> 0x1a) * iVar5 + iVar5) * (uVar6 * ((uVar1 << 0x13) >> 0x1d) + (uVar1 & 0x1f)));
 }
 
 
 
-uint RADIO_ComputeTxSymbolRate(void)
+uint32_t RADIO_ComputeTxSymbolRate(void)
 
 {
   if ((MODEM->CTRL0 & 0x30) == 0x20) return RADIO_ComputeTxBaudrate() / (((MODEM->CTRL0 << 0x10) >> 0x1b) + 1);
@@ -444,10 +441,10 @@ uint RADIO_ComputeTxSymbolRate(void)
 
 
 
-int RADIO_ComputeTxBitRate(void)
+uint32_t RADIO_ComputeTxBitRate(void)
 
 {
-  uint uVar3;
+  uint32_t uVar3;
   
   if ((MODEM->CTRL0 & 0x30) == 0x20) 
   {
@@ -466,49 +463,41 @@ int RADIO_ComputeTxBitRate(void)
 
 
 
-int RADIO_GetRSSI(void)
+int32_t RADIO_GetRSSI(void)
 
 {
-  uint uVar1;
-  uint uVar2;
-  uint uVar3;
-  short sVar4;
+  int16_t rssi;
+  uint32_t status_before;
+  uint32_t status_after;
   
   do 
   {
     CORE_EnterCritical();
-    uVar2 = RAC->STATUS;
-    uVar2 = uVar2 & 0xf000000;
-    uVar1 = AGC->RSSI;
-    uVar3 = RAC->STATUS;
-    uVar3 = uVar3 & 0xf000000;
-    sVar4 = (short)uVar1 >> 6;
+	status_before = RAC->STATUS & 0xf000000;
+    rssi = (int16_t)(AGC->RSSI >> 6);
+	status_after = RAC->STATUS & 0xf000000;
     CORE_ExitCritical();
-    if (sVar4 != -0x200) 
+    if (rssi != -0x200) 
 	{
-      if (uVar3 != 0x2000000 && uVar3 != 0x3000000 || uVar2 != 0x2000000 && uVar2 != 0x3000000) sVar4 = -0x200;
+	  if (((status_after != 0x2000000) && (status_after != 0x3000000)) || ((status_before != 0x2000000) && (status_before != 0x3000000))) rssi = -0x200;
       break;
     }
-  } while ((uVar3 == 0x2000000 || uVar3 == 0x3000000) && (uVar2 == 0x2000000 || uVar2 == 0x3000000));
-  return (int)sVar4;
+  } while ((status_after == 0x2000000 || status_after == 0x3000000) && (status_before == 0x2000000 || status_before == 0x3000000));
+  return (int32_t)rssi;
 }
 
 
-
-undefined4 RADIO_SetAgcCcaParams(int param_1,uint param_2)
+uint32_t RADIO_SetAgcCcaParams(int32_t param_1,uint32_t param_2)
 
 {
-  int iVar1;
-  uint uVar2;
+  uint32_t i;
   
-  iVar1 = RADIO_ComputeRxBaudrate();
-  for (uVar2 = 0; (uint)(1 << (uVar2 & 0xff)) < (uint)(param_1 * iVar1) / 1000000; uVar2 = uVar2 + 1) 
+  for (i = 0; (uint32_t)(1 << (i & 0xff)) < (uint32_t)(param_1 * RADIO_ComputeRxBaudrate()) / 1000000; i++) 
   {
-    if (uVar2 == 0x10) return 1;
+    if (i == 0x10) return 1;
   }
   BUS_RegMaskedClear(&AGC->CTRL1,0xf00);
-  BUS_RegMaskedSet(&AGC->CTRL1,uVar2 << 8);
-  uVar2 = read_volatile_4(AGC->CTRL1);
+  BUS_RegMaskedSet(&AGC->CTRL1,i << 8);
   if ((AGC->CTRL1 & 0xff) == 0x80) return 2;
   BUS_RegMaskedClear(&AGC->CTRL1,0xff);
   BUS_RegMaskedSet(&AGC->CTRL1,param_2 & 0xff);
@@ -517,17 +506,17 @@ undefined4 RADIO_SetAgcCcaParams(int param_1,uint param_2)
 
 
 
-undefined4 RADIO_AGCCCAThresholdSet(byte param_1)
+bool RADIO_AGCCCAThresholdSet(uint8_t param_1)
 
 {
   BUS_RegMaskedClear(&AGC->CTRL1,0xff);
-  BUS_RegMaskedSet(&AGC->CTRL1,(uint)param_1);
-  return 0;
+  BUS_RegMaskedSet(&AGC->CTRL1,(uint32_t)param_1);
+  return true;
 }
 
 
 
-undefined4 RADIO_CalcRssiPeriod(uint param_1)
+uint32_t RADIO_CalcRssiPeriod(uint param_1)
 
 {
   undefined uVar1;

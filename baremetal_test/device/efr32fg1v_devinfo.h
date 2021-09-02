@@ -45,23 +45,23 @@
 
 /** DEVINFO Register Declaration */
 typedef struct {
-  __IM uint32_t CAL;              /**< CRC of DI-page and calibration temperature  */
-  __IM uint32_t MODULEINFO;       /**< Module trace information  */
-  __IM uint32_t MODXOCAL;         /**< Module Crystal Oscillator Calibration  */
-  uint32_t      RESERVED0[5U];    /**< Reserved for future use **/
-  __IM uint32_t EXTINFO;          /**< External Component description  */
-  uint32_t      RESERVED1[1U];    /**< Reserved for future use **/
-  __IM uint32_t EUI48L;           /**< EUI48 OUI and Unique identifier  */
-  __IM uint32_t EUI48H;           /**< OUI  */
-  __IM uint32_t CUSTOMINFO;       /**< Custom information  */
-  __IM uint32_t MEMINFO;          /**< Flash page size and misc. chip information  */
-  uint32_t      RESERVED2[2U];    /**< Reserved for future use **/
-  __IM uint32_t UNIQUEL;          /**< Low 32 bits of device unique number  */
-  __IM uint32_t UNIQUEH;          /**< High 32 bits of device unique number  */
-  __IM uint32_t MSIZE;            /**< Flash and SRAM Memory size in kB  */
-  __IM uint32_t PART;             /**< Part description  */
-  __IM uint32_t DEVINFOREV;       /**< Device information page revision  */
-  __IM uint32_t EMUTEMP;          /**< EMU Temperature Calibration Information  */
+  __IM uint32_t CAL;              /**< CRC of DI-page and calibration temperature  */ 	//0x0FE081B0
+  __IM uint32_t MODULEINFO;       /**< Module trace information  */						//0x0FE081B4
+  __IM uint32_t MODXOCAL;         /**< Module Crystal Oscillator Calibration  */		//0x0FE081B8
+  uint32_t      RESERVED0[5U];    /**< Reserved for future use **/						//0x0FE081BC
+  __IM uint32_t EXTINFO;          /**< External Component description  */				//0x0FE081D0
+  uint32_t      RESERVED1[1U];    /**< Reserved for future use **/						//0x0FE081D4
+  __IM uint32_t EUI48L;           /**< EUI48 OUI and Unique identifier  */				//0x0FE081D8
+  __IM uint32_t EUI48H;           /**< OUI  */											//0x0FE081DC
+  __IM uint32_t CUSTOMINFO;       /**< Custom information  */							//0x0FE081E0
+  __IM uint32_t MEMINFO;          /**< Flash page size and misc. chip information  */	//0x0FE081E4
+  uint32_t      RESERVED2[2U];    /**< Reserved for future use **/						//0x0FE081E8
+  __IM uint32_t UNIQUEL;          /**< Low 32 bits of device unique number  */			//0x0FE081F0
+  __IM uint32_t UNIQUEH;          /**< High 32 bits of device unique number  */			//0x0FE081F4
+  __IM uint32_t MSIZE;            /**< Flash and SRAM Memory size in kB  */				//0x0FE081F8
+  __IM uint32_t PART;             /**< Part description  */								//0x0FE081FC
+  __IM uint32_t DEVINFOREV;       /**< Device information page revision  */				//0x0FE08200
+  __IM uint32_t EMUTEMP;          /**< EMU Temperature Calibration Information  */		//0x0FE08204
   uint32_t      RESERVED3[2U];    /**< Reserved for future use **/
   __IM uint32_t ADC0CAL0;         /**< ADC0 calibration register 0  */
   __IM uint32_t ADC0CAL1;         /**< ADC0 calibration register 1  */
