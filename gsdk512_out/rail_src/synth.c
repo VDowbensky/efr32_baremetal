@@ -6,6 +6,7 @@
 //currIfFrequency;
 //dcdcRetimeClkTarget = 0x006acfc0; 7000000
 
+static const unsigned char DAT_00010328[9UL + 1] = {0x00, 0x00, 0x01, 0x02, 0x02, 0x03, 0x03, 0x03, 0x03, 0x00};
 
 uint32_t SYNTH_RfFreqGet(void)
 
@@ -44,7 +45,7 @@ uint32_t SYNTH_LoDivGet(void)
 
 
 
-uint SYNTH_Is2p4GHz(void)
+bool SYNTH_Is2p4GHz(void)
 
 {
   return ((RAC->IFPGACTRL ^ 0x10) << 0x1b) >> 0x1f;
@@ -97,14 +98,13 @@ void SYNTH_RetimeClkConfig(void)
   uVar3 = (uint)*(byte *)((int)&local_1c + uVar1 / 625000000 + 1);
   uVar1 = uVar1 >> uVar3;
   BUS_RegMaskedClear(&RAC->MMDCTRL,0x3dff);
-  BUS_RegMaskedSet(&RAC->MMDCTRL,(uVar1 + (dcdcRetimeClkTarget >> 1)) / dcdcRetimeClkTarget - 1 | uVar3 << 0xc |
-                   (uint)*(byte *)((int)&local_1c + uVar1 / 325000000 + 1) << 10);
+  BUS_RegMaskedSet(&RAC->MMDCTRL,(uVar1 + (dcdcRetimeClkTarget >> 1)) / dcdcRetimeClkTarget - 1 | uVar3 << 0xc |(uint)*(byte *)((int)&local_1c + uVar1 / 325000000 + 1) << 10);
   SYNTH_RetimeLimitsConfig();
 }
 
 
 
-void SYNTH_Config(int32_t freq,uint32_t step)
+/* void SYNTH_Config(int32_t freq,uint32_t step)
 
 {
   longlong lVar1;
@@ -138,19 +138,54 @@ void SYNTH_Config(int32_t freq,uint32_t step)
     SYNTH->VCOGAIN = ((uint)vcoGainPte * 10000000) / (uVar6 * uVar6 * 0x553 + uVar6 * -0xc60c + 0x192d50);
   }
   SYNTH_RetimeClkConfig();
+} */
+
+void SYNTH_Config(uint32_t base_freg, uint32_t spacing)
+
+{
+  uint32_t lodiv;
+  uint32_t vcofreq;
+  uint32_t xofreq;
+  uint32_t k_ifreq;
+  
+  lodiv = SYNTH_LoDivGet();
+  SYNTH_VcoRangeIsValid(base_freg);
+
+  if (lodiv == 1) RAC->IFPGACTRL |= RAC_IFPGACTRL_BANDSEL_Msk;//&= 0xffffffef;
+  else RAC->IFPGACTRL &= ~RAC_IFPGACTRL_BANDSEL_Msk;//|= 0x10;
+
+  xofreq = SystemHFXOClockGet();
+  currRfFrequency = base_freg;
+  vcofreq = currRfFrequency * lodiv;
+  SYNTH->FREQ = ((uint64_t)vcofreq * 524288)/xofreq;
+  currIfFrequency = SYNTH_IfFreqCompute();
+  k_ifreq = ((uint64_t)currIfFrequency * lodiv * 524288)/xofreq;
+  SYNTH->IFFREQ &= SYNTH_IFFREQ_LOSIDE_Msk;
+  SYNTH->IFFREQ |= (k_ifreq & SYNTH_IFFREQ_IFFREQ_Msk);
+
+  currChSpacing = spacing;
+  SYNTH->CHSP = ((uint64_t)currChSpacing * lodiv * 524288)/xofreq;
+
+  if (vcoGainPte == 0) vcoGainPte = (uint8_t)SYNTH->VCOGAIN & SYNTH_VCOGAIN_VCOGAIN_Msk;
+  if(RAC->SR3 & 0x10)
+  {
+	  vcofreq = vcofreq / 24000000;
+    //SYNTH->VCOGAIN = ((uint64_t)vcoGainPte * 10000000) / (vcofreq * vcofreq * 0x553 + vcofreq * -0xc60c + 0x192d50);
+    SYNTH->VCOGAIN = ((uint64_t)vcoGainPte * 10000000) / (1363*(vcofreq*vcofreq) - 50700*vcofreq + 1650000);
+  }
+  SYNTH_RetimeClkConfig();
 }
 
-
-
-void SYNTH_ChannelSet(uint param_1,int param_2)
+//void SYNTH_ChannelSet(uint param_1,int param_2)
+void SYNTH_ChannelSet(uint16_t ch,int rxcal)
 
 {
   do 
   {
 	while ((RAC->STATUS << 4) >> 0x1c == 4);
   } while ((RAC->STATUS << 4) >> 0x1c == 10);
-  SYNTH->CHCTRL = param_1;
-  if (param_2 != 0) RAC->CMD = 0x80;
+  SYNTH->CHCTRL = ch;
+  if (rxcal != 0) RAC->CMD = 0x80;
   SYNTH_RetimeClkConfig();
 }
 
@@ -180,11 +215,11 @@ void SYNTH_DCDCRetimeEnable(void)
 
 
 
-void SYNTH_DCDCRetimeClkSet(int param_1)
+void SYNTH_DCDCRetimeClkSet(int target)
 
 {
-  dcdcRetimeClkTarget = param_1;
-  EMU_DCDCLnRcoBandSet((param_1 + 500000U) / 1000000 - 3 & 0xff);
+  dcdcRetimeClkTarget = target;
+  EMU_DCDCLnRcoBandSet((target + 500000U) / 1000000 - 3 & 0xff);
 }
 
 

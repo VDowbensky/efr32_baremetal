@@ -66,16 +66,16 @@ RAIL_CalMask_t RAIL_CalPendingGet(void)
 
 
 //void RAIL_CalStart(undefined4 *calValues,int calForce,bool calSave)
-void RAIL_CalStart(RAIL_CalValues_t *calValues, RAIL_CalMask_t calForce, bool calSave);
+void RAIL_CalStart(RAIL_CalValues_t *calValues, RAIL_CalMask_t calForce, bool calSave)
 {
   undefined4 local_14;
   
-  if (calValues == (undefined4 *)0x0) local_14 = 0xffffffff;
+  if (calValues == NULL) local_14 = 0xffffffff;
   else local_14 = *calValues;
   if (calForce == 0) calForce = RAIL_CalPendingGet();
   RAILINT_CalibrationClear(calForce);
   RFHAL_CalibrationRun(&local_14,calForce);
-  if ((calSave != false) && (calValues != (undefined4 *)0x0)) *calValues = local_14;
+  if ((calSave != false) && (calValues != NULL) *calValues = local_14;
 }
 
 

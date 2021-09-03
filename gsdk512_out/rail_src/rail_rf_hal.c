@@ -16,6 +16,15 @@ reseedRandom.8945[] = {0x04, 0xf8};
 currentRssiAverage[] = {0x00,0xfe};
 txConfigEvents[] = {0x1f,0,0,0};
 
+static const unsigned char bufcCallbacks[16UL + 1] = {0xC8, 0x00, 0x01, 0x00, 0x8A, 0x00, 0x01, 0x00, 0xB8, 0x00, 0x01, 0x00, 0x72, 0x00, 0x01, 0x00, 0x00};
+static const unsigned char callbacks[108UL + 1] = {
+  0x00, 0x00, 0x01, 0x00, 0x68, 0x03, 0x01, 0x00, 0xE0, 0x00, 0x01, 0x00, 0x1C, 0x00, 0x01, 0x00, 0x2C, 0x00, 0x01, 0x00, 0x3C, 0x00, 0x01, 0x00, 0x08, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x32, 0x00, 0x01, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x60, 0x00, 0x01, 0x00, 0x66, 0x00, 0x01, 0x00, 0x6C, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x90, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xD8, 0x00, 0x01, 0x00,
+  0x34, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0xA0, 0x03, 0x01, 0x00, 0x7E, 0x00, 0x01, 0x00, 0x84, 0x00, 0x01, 0x00, 0xA0, 0x00, 0x01, 0x00, 0xC8, 0x02, 0x01, 0x00, 0x00
+};
+static const unsigned char CSWTCH_104[12UL + 1] = {
+  0x00, 0x00, 0x00, 0x38, 0x00, 0x00, 0x00, 0x18, 0x00, 0x00, 0x00, 0x20, 0x00
+};
 
 void pktTxDoneEvt(undefined4 param_1,undefined4 param_2,undefined4 param_3)
 
@@ -930,7 +939,7 @@ void RFHAL_DisableRxAppendedInfo(void)
 }
 
 //undefined4 RFHAL_RxIntEnable(uint param_1)
-uint32_t RFHAL_RxIntEnable(uint32_t cbToEnable);
+uint32_t RFHAL_RxIntEnable(uint32_t cbToEnable)
 {
   _enabledCallbacks =
        CONCAT11(DAT_000113b1 & 0xc5 | (uint8_t)(((cbToEnable << 0x1e) >> 0x1f) << 3) |
@@ -993,7 +1002,7 @@ RAIL_Status_t RFHAL_ErrorConfig(uint8_t ignoreErrors)
 
 
 
-RAIL_Status_t RAIL_PaCtuneSet(uint8_t txPaCtuneValue, uint8_t rxPaCtuneValue);
+RAIL_Status_t RAIL_PaCtuneSet(uint8_t txPaCtuneValue, uint8_t rxPaCtuneValue)
 
 {
   return PA_CTuneSet(txPaCtuneValue, rxPaCtuneValue);
@@ -1020,7 +1029,7 @@ void RAIL_TimerCancel(void)
 }
 
 
-RAIL_Status_t RAIL_TimerSet(uint32_t time, RAIL_TimeMode_t mode);
+RAIL_Status_t RAIL_TimerSet(uint32_t time, RAIL_TimeMode_t mode)
 {
   uint8_t bVar1;
   uint32_t tmp;
@@ -1075,7 +1084,7 @@ uint32_t RAIL_BitRateGet(void)
 
 
 //void RAIL_RfSense(undefined param_1,undefined4 param_2,int param_3,uint param_4)
-uint32_t RAIL_RfSense(RAIL_RfSenseBand_t band, uint32_t senseTime, bool enableCb);
+uint32_t RAIL_RfSense(RAIL_RfSenseBand_t band, uint32_t senseTime, bool enableCb)
 {
   code *local_14;
   undefined4 local_10;
@@ -1135,7 +1144,7 @@ void RFHAL_CalibrationRun(int *param_1,int param_2)
 }
 
 
-RAIL_Status_t RFHAL_SetTxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t error);
+RAIL_Status_t RFHAL_SetTxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t error)
 {
   SEQ->REG00C &= 0x0000ffff;
   SEQ->REG00C |= (1 << (success + 0x10U & 0xff)) | (1 << (error + 0x18U & 0xff));
@@ -1143,7 +1152,7 @@ RAIL_Status_t RFHAL_SetTxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t
 }
 
 
-RAIL_Status_t RFHAL_SetRxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t error);
+RAIL_Status_t RFHAL_SetRxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t error)
 {
   SEQ->REG00C &= 0xffff0000;
   SEQ->REG00C  |= (1 << (error + 8U & 0xff) | 1 << (success & 0xff));
@@ -1153,7 +1162,7 @@ RAIL_Status_t RFHAL_SetRxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t
 
 
 //void RFHAL_SetBerConfig(undefined4 *param_1)
-void RFHAL_SetBerConfig(RAIL_BerConfig_t *berConfig);
+void RFHAL_SetBerConfig(RAIL_BerConfig_t *berConfig)
 {
   RFTEST_ResetBerStats(*berConfig);
 }

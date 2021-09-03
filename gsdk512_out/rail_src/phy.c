@@ -19,14 +19,14 @@ RAIL_Status_t RAIL_DebugFrequencyOverride(uint32_t freq)
 
 
 
-void RAIL_PacketLengthConfigFrameType(const RAIL_FrameType_t *frameType);
+void RAIL_PacketLengthConfigFrameType(const RAIL_FrameType_t *frameType)
 {
   GENERIC_PHY_ConfigureFrameType(*frameType);
 }
 
 
 
-RAIL_Status_t RAIL_SetCcaThreshold(int8_t ccaThresholdDbm);
+RAIL_Status_t RAIL_SetCcaThreshold(int8_t ccaThresholdDbm)
 
 {
   return RFHAL_SetCcaThreshold(ccaThresholdDbm);
@@ -103,7 +103,7 @@ uint32_t RAIL_GetTime(void)
 
 
 
-RAIL_Status_t RAIL_SetTime(uint32_t time);
+RAIL_Status_t RAIL_SetTime(uint32_t time)
 
 {
   if (PROTIMER_SetTime(time) == 0) return RAIL_STATUS_INVALID_STATE;
@@ -187,7 +187,7 @@ bool RAIL_AddressFilterDisableAddress(uint8_t field,uint8_t index)
 uint16_t RAIL_GetRadioEntropy(uint8_t *buffer,uint16_t bytes)
 
 {
-  return RFRAND_GetRadioEntropy(_buffer,bytes);
+  return RFRAND_GetRadioEntropy(*buffer,bytes);
 }
 
 void RAIL_DirectModeConfig(bool enable)
@@ -199,18 +199,19 @@ void RAIL_DirectModeConfig(bool enable)
   undefined4 local_10;
   uint local_c;
   
-  local_18 = (uint)CONCAT11(enable,enable);
+  local_18 = (uint32_t)CONCAT11(enable,enable);
   local_14 = 0xb020e00;
   local_10 = 0xe09020e;
   local_c = in_r3 & 0xffff0000 | 0xa02;
   GENERIC_PHY_DirectModeConfig(&local_18);
 }
 
-uint8_t RAIL_ChannelConfig(int *config)
+
+uint8_t RAIL_ChannelConfig(const RAIL_ChannelConfig_t * config)
 
 {
   RAILInt_TrackChannelConfig();
-  SYNTH_Config(*(undefined4 *)(*config + 8),*(undefined4 *)(*config + 4));
+  SYNTH_Config(config->configs->baseFrequency, config->configs->channelSpacing);
   if (SYNTH_Is2p4GHz() == 0) SYNTH_DCDCRetimeClkSet(3500000);
   else SYNTH_DCDCRetimeClkSet(7000000); 
   if (forceIrCal == true) 
@@ -218,50 +219,54 @@ uint8_t RAIL_ChannelConfig(int *config)
     forceIrCal = false;
     RAILINT_CalibrationPend(0x10000);
   }
-  return *(uint8_t *)*config;
+  return config->configs->channelNumberStart;
 }
 
-RAIL_Status_t RAIL_SetStateTiming(RAIL_StateTiming_t *timings);
+RAIL_Status_t RAIL_SetStateTiming(RAIL_StateTiming_t *timings)
 
 {
-  undefined2 uVar1;
-  undefined2 *puVar2;
-  
-  puVar2 = (undefined2 *)(uint)_timings;
-  uVar1 = TIMING_RxWarmTimeSet(*puVar2);
-  *puVar2 = uVar1;
-  uVar1 = TIMING_TxToRxTimeSet(puVar2[1]);
-  puVar2[1] = uVar1;
-  uVar1 = TIMING_TxWarmTimeSet(puVar2[2]);
-  puVar2[2] = uVar1;
-  uVar1 = TIMING_RxFrameToTxTimeSet(puVar2[3]);
-  puVar2[3] = uVar1;
+  timings->idleToRx = TIMING_RxWarmTimeSet(timings->idleToRx);
+  timings->txToRx = TIMING_TxToRxTimeSet(timings->txToRx);
+  timings->idleToTx = TIMING_TxWarmTimeSet(timings->idleToTx);
+  timings->rxToTx = TIMING_RxFrameToTxTimeSet(timings->rxToTx);
   return RAIL_STATUS_NO_ERROR;
 }
 
-// WARNING: Could not reconcile some variable overlaps
+//typedef struct RAIL_AddrConfig {
+  /** The number of fields to configure. You cannot have more than 2. */
+//  uint8_t numFields;
+//  uint8_t *offsets;
+//  uint8_t *sizes;
+//  uint32_t matchTable;
+//} RAIL_AddrConfig_t;
 
 //bool RAIL_AddressFilterConfig (byte *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
-bool RAIL_AddressFilterConfig(RAIL_AddrConfig_t *addrConfig);
+bool RAIL_AddressFilterConfig(RAIL_AddrConfig_t *addrConfig)
 
 {
-  byte bVar1;
-  int iVar3;
+  uint8_t numfields;
+  int i;
   undefined4 local_1c;
   undefined4 local_18;
   undefined4 local_14;
   
   bVar1 = *param_1;
-  if (bVar1 < 3)
+  numfields = addrConfig->numFields;
+  if (numfields < 3)
   {
-    local_1c = param_2;
-    local_18 = param_3;
-    local_14 = param_4;
+    
+	//local_1c = param_2;
+	local_1c = addrConfig->offsets;
+    //local_18 = param_3;
+	local_18 = addrConfig->sizes;
+    //local_14 = param_4;
+	local_14 = addrConfig->matchTable;
+	
     memset(&local_1c,0,0xc);
-    for (iVar3 = 0; iVar3 < (int)(uint)bVar1; iVar3 = iVar3 + 1) 
+    for (i = 0; i < (int)(uint)numfields; i++) 
 	{
-      *(undefined *)((int)&local_1c + iVar3) = *(undefined *)(*(int *)(param_1 + 4) + iVar3);
-      *(undefined *)((int)&local_1c + iVar3 + 2) = *(undefined *)(*(int *)(param_1 + 8) + iVar3);
+      *(undefined *)((int)&local_1c + i) = *(undefined *)(*(int *)(param_1 + 4) + i);
+      *(undefined *)((int)&local_1c + i + 2) = *(undefined *)(*(int *)(param_1 + 8) + i);
     }
     local_18 = *(undefined4 *)(param_1 + 0xc);
     local_14 = CONCAT31(local_14._1_3_,0xff);

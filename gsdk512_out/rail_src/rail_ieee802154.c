@@ -1,5 +1,16 @@
 #include "rail_ieee802154.h"
 
+static const unsigned char _entry[12UL + 1] = {
+  0x0B, 0x00, 0x1A, 0x00, 0x40, 0x4B, 0x4C, 0x00, 0x40, 0x63, 0x59, 0x8F, 0x00
+};
+
+static const unsigned char channels[8UL + 1] = {
+  0x6C, 0x01, 0x01, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00
+};
+
+static const unsigned char DAT_00010160[10UL + 1] = {
+  0x64, 0x00, 0x64, 0x00, 0x64, 0x00, 0x64, 0x00, 0x02, 0x08, 0x00
+};
 
 
 RAIL_Status_t RAIL_IEEE802154_2p4GHzRadioConfig(void)
@@ -69,13 +80,10 @@ bool RAIL_IEEE802154_SetShortAddress(uint16_t shortAddr)
 
 
 
-bool RAIL_IEEE802154_SetLongAddress(uint8_t _longAddr)
+bool RAIL_IEEE802154_SetLongAddress(uint8_t *longAddr)
 
 {
-  bool bVar1;
-  
-  bVar1 = RFHAL_IEEE802154SetLongAddress(_longAddr);
-  return bVar1;
+  return RFHAL_IEEE802154SetLongAddress(*longAddr);
 }
 
 
@@ -98,14 +106,30 @@ RAIL_Status_t RAIL_IEEE802154_SetPromiscuousMode(bool enable)
 
 
 
-undefined4 RAIL_IEEE802154_AcceptFrames(uint8_t framesMask)
+RAIL_Status_t RAIL_IEEE802154_AcceptFrames(uint8_t framesMask)
 
 {
   if (RFHAL_IEEE802154IsEnabled() != false) return RFHAL_IEEE802154AcceptFrames(framesMask);
   else return RAIL_STATUS_INVALID_STATE;
 }
 
+typedef struct RAIL_IEEE802154_Config {
+  bool promiscuousMode;
+  bool isPanCoordinator;
+  uint8_t framesMask;
+  RAIL_RadioState_t defaultState;
+  uint16_t idleTime;
+  uint16_t turnaroundTime;
+  uint16_t ackTimeout;
+  RAIL_IEEE802154_AddrConfig_t *addresses;
+} RAIL_IEEE802154_Config_t;
 
+typedef struct RAIL_IEEE802154_AddrConfig
+{
+  uint16_t panId; /**< PAN ID for destination filtering. */
+  uint16_t shortAddr; /**< Network address for destination filtering. */
+  uint8_t *longAddr; /**< 64 bit address for destination filtering. In OTA byte order.*/
+} RAIL_IEEE802154_AddrConfig_t;
 
 RAIL_Status_t RAIL_IEEE802154_Init(RAIL_IEEE802154_Config_t *config)
 
@@ -127,13 +151,20 @@ RAIL_Status_t RAIL_IEEE802154_Init(RAIL_IEEE802154_Config_t *config)
   
   local_1c = &local_30;
   RFHAL_IEEE802154Enable();
-  RAIL_IEEE802154_SetPanCoordinator((bool)config[1]);
-  RAIL_IEEE802154_SetPromiscuousMode((bool)*config);
-  RAIL_IEEE802154_AcceptFrames(config[2]);
-  local_28[0] = config[3];
-  local_26 = *(undefined2 *)(config + 4);
-  local_24 = *(undefined2 *)(config + 6);
-  local_22 = *(undefined2 *)(config + 8);
+  //RAIL_IEEE802154_SetPanCoordinator((bool)config[1]);
+  RAIL_IEEE802154_SetPanCoordinator(config->isPanCoordinator);
+  //RAIL_IEEE802154_SetPromiscuousMode((bool)*config);
+  RAIL_IEEE802154_SetPromiscuousMode(config->promiscuousMode);
+  //RAIL_IEEE802154_AcceptFrames(config[2]);
+  RAIL_IEEE802154_AcceptFramesRAIL_IEEE802154_AcceptFrames(config->framesMask);
+  //local_28[0] = config[3];
+  local_28[0] = config->defaultState;
+  //local_26 = *(undefined2 *)(config + 4);
+  local_26 = config->idleTime;
+  //local_24 = *(undefined2 *)(config + 6);
+  local_24 = config->turnaroundTime;
+  //local_22 = *(undefined2 *)(config + 8);
+  local_22 = config->ackTimeout;
   uVar1 = RAIL_AutoAckConfig(local_28);
   if (RAIL_AutoAckConfig(local_28) == 0) uVar1 = RFHAL_IEEE802154LoadAck();
   RAIL_AddressFilterReset();
@@ -147,7 +178,7 @@ RAIL_Status_t RAIL_IEEE802154_Init(RAIL_IEEE802154_Config_t *config)
   iVar3 = RFHAL_IEEE802154SetBroadcastAddresses();
   if ((iVar3 == 0) || (iVar2 == 0)) uVar1 = 1;
   RAIL_AddressFilterEnable();
-  RAIL_IEEE802154_SetAddresses(*(uint16_t **)(config + 0xc));
+  RAIL_IEEE802154_SetAddresses(*config->addresses);
   return uVar1;
 }
 

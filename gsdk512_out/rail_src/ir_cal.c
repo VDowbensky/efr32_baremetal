@@ -127,8 +127,6 @@ uint8_t IRCAL_Init(uint8_t *caldata)
 
 
 
-// WARNING: Globals starting with '_' overlap smaller symbols at the same address
-
 void IRCAL_SaveRegStates(void)
 
 {
@@ -209,8 +207,8 @@ void IRCAL_StopRx(void)
   {
     iVar1 = 0x21000f64;
     uVar2 = SEQ->REG06C; & 0xffffff0f | 0xe0;
-	SEQ.REG06C &= 0xffffff0f;
-	SEQ.REG06C |= 0xe0;
+	SEQ->REG06C &= 0xffffff0f;
+	SEQ->REG06C |= 0xe0;
   }
   if ((RAC->STATUS << 4) >> 0x1c == 3) *(uint32_t *)(0x21000f64 + 8) = uVar2;
   FRC->CMD = 1;
@@ -367,7 +365,7 @@ int32_t IRCAL_ReadRssi(uint param_1,uint param_2,uint param_3,undefined4 param_4
 
 
 
-uint IRCAL_SearchLinear2Stage(uint param_1,int param_2,undefined4 param_3,undefined4 param_4,undefined2 param_5)
+uint32_t IRCAL_SearchLinear2Stage(uint param_1,int param_2,undefined4 param_3,undefined4 param_4,undefined2 param_5)
 
 {
   short sVar1;
@@ -440,7 +438,7 @@ uint IRCAL_SearchLinear2Stage(uint param_1,int param_2,undefined4 param_3,undefi
 
 
 
-uint IRCAL_Search(int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
+uint32_t IRCAL_Search(int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
 
 {
   undefined4 uVar1;
@@ -459,8 +457,6 @@ uint IRCAL_Search(int param_1,undefined4 param_2,undefined4 param_3,undefined4 p
 }
 
 
-
-// WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
 void IRCAL_Teardown(void)
 
@@ -496,7 +492,7 @@ void IRCAL_Teardown(void)
 
 
 
-uint IRCAL_Get(void)
+uint32_t IRCAL_Get(void)
 
 {
   return RAC->IFPGACAL & 0xffff;
@@ -506,7 +502,7 @@ uint IRCAL_Get(void)
 
 // WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
-uint IRCAL_GetDiValue(void)
+uint32_t IRCAL_GetDiValue(void)
 
 {
   uint uVar1;
@@ -517,12 +513,7 @@ uint IRCAL_GetDiValue(void)
   else 
   {
     uVar2 = _DAT_0fe081c8;
-    if ((999999999 < uVar1) &&
-       (uVar1 = read_volatile_4(MODEM->CTRL0), uVar2 = _DAT_0fe081c4,
-       (uVar1 << 0x17) >> 0x1d != 4)) 
-	{
-      uVar2 = _DAT_0fe081c0;
-    }
+    if ((999999999 < uVar1) && (uVar2 = _DAT_0fe081c4,(MODEM->CTRL0 << 0x17) >> 0x1d != 4)) uVar2 = _DAT_0fe081c0;
     if (uVar2 != 0xffffffff) return uVar2 & 0xffff;
   }
   return uVar2;
@@ -530,7 +521,7 @@ uint IRCAL_GetDiValue(void)
 
 
 
-uint IRCAL_PerformSubfunction(uint param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined2 param_5)
+int32_t IRCAL_PerformSubfunction(uint param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined2 param_5)
 
 {
   int iVar1;
@@ -552,10 +543,7 @@ uint IRCAL_PerformSubfunction(uint param_1,undefined4 param_2,undefined4 param_3
     if ((param_1 == 0) || (3 < param_1)) uVar2 = 0xffffffff;
     else 
 	{
-      if (IRCAL_Setup(param_1) != 0xffffffff) 
-	  {
-        uVar2 = IRCAL_Search(param_2,param_3,param_4,param_5);
-      }
+      if (IRCAL_Setup(param_1) != 0xffffffff) uVar2 = IRCAL_Search(param_2,param_3,param_4,param_5);
       IRCAL_Teardown();
     }
   }
@@ -576,10 +564,10 @@ uint IRCAL_PerformSubfunction(uint param_1,undefined4 param_2,undefined4 param_3
 
 
 
-undefined4 IRCAL_Perform(undefined4 param_1,undefined4 param_2,undefined4 param_3)
+int32_t IRCAL_Perform(undefined4 param_1,undefined4 param_2,undefined4 param_3)
 
 {
-  if (IRCAL_GetGlobalCalType() == 0xff) return 0xffffffff;
+  if (IRCAL_GetGlobalCalType() == 0xff) return -1;
   else return IRCAL_PerformSubfunction(iVar1,2,rcIrCalData[10],rcIrCalData._12_2_,rcIrCalData._14_2_,param_2,param_3);
 }
 
