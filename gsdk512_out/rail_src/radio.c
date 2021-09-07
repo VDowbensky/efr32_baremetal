@@ -58,9 +58,11 @@ void RADIO_AndSync(uint32_t addr,uint32_t sync)
 void RADIO_WaitForSetSync(uint32_t *addr,uint32_t sync)
 
 {
-  CORE_EnterCritical();
+  CORE_irqState_t irqState;
+  
+  irqState = CORE_EnterCritical();
   while ((*addr & sync) != sync);
-  CORE_ExitCritical();
+  CORE_ExitCritical(irqState);
 }
 
 
@@ -100,13 +102,14 @@ void RADIO_SeqInit(uint32_t src,uint32_t len)
   uint32_t tmp1;
   uint32_t tmp2;
   uint32_t tmp3;
+  CORE_irqState_t irqState;
 
   tmp1 = RAC->STATUS;
   RAC->VECTADDR = 0x21000000;
   RAC->SEQCTRL = 1;
-  tmp1 = CORE_EnterCritical();
+  irqState = CORE_EnterCritical();
   memcpy(0x21000000,src,len << 2);
-  CORE_ExitCritical(tmp1);
+  CORE_ExitCritical(irqState);
   RAC->R6 = 0x21000fbc;
   tmp1 = SEQ->REG0E4;
   tmp2 = SEQ->REG0E8;
@@ -262,7 +265,6 @@ void FRC_IRQHandler(void)
                     // WARNING: Could not recover jumptable at 0x000102d4. Too many branches
                     // WARNING: Treating indirect jump as call
   (*DAT_00010770)();
-  return;
 }
 
 
@@ -469,14 +471,15 @@ int32_t RADIO_GetRSSI(void)
   int16_t rssi;
   uint32_t status_before;
   uint32_t status_after;
+  CORE_irqState_t irqState;
   
   do 
   {
-    CORE_EnterCritical();
+    irqState = CORE_EnterCritical();
 	status_before = RAC->STATUS & 0xf000000;
     rssi = (int16_t)(AGC->RSSI >> 6);
 	status_after = RAC->STATUS & 0xf000000;
-    CORE_ExitCritical();
+    CORE_ExitCritical(irqState);
     if (rssi != -0x200) 
 	{
 	  if (((status_after != 0x2000000) && (status_after != 0x3000000)) || ((status_before != 0x2000000) && (status_before != 0x3000000))) rssi = -0x200;

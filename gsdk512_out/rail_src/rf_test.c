@@ -71,15 +71,17 @@ void RFTEST_StartRx(void)
 void RFTEST_StopRx(void)
 
 {
+  CORE_irqState_t irqState;
+  
   BUS_RegMaskedClear(&RAC->RXENSRCEN,0xff);
-  CORE_EnterCritical();
+  irqState = CORE_EnterCritical();
   if ((RAC->STATUS << 4) >> 0x1c == 3) 
   {
 	SEQ->REG06C &= 0xffffff0f;
 	SEQ->REG06C |= 0xe0;
   }
   FRC->CMD = 1;
-  CORE_ExitCritical();
+  CORE_ExitCritical(irqState);
   if ((RAC->STATUS << 4) >> 0x1c == 6) 
   {
     RAC->CMD = 0x40;
@@ -219,7 +221,6 @@ void RFTEST_BerStop(void)
 void RFTEST_ConfigBerRx(void)
 
 {
-  uint uVar1;
   
   BUFC_SetCallbacks(&bufcCallbacks);
   BUFC_ConfigureCallbacks(4);
@@ -230,7 +231,6 @@ void RFTEST_ConfigBerRx(void)
   BUS_RegMaskedClear(&MODEM->TIMING,0xf00);
   MODEM->CTRL1 |= 0x1f;
   MODEM->AFC &= 0xffffe3ff;
-  uVar1 = (MODEM->CTRL1);
   if ((MODEM->CTRL1 & 0xc000) == 0) BUS_RegMaskedSet(&MODEM->CTRL1,0xc000);
   FRC->TRAILRXDATA = 0;
   BUS_RegMaskedSet(&FRC->RXCTRL,0x12);

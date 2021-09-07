@@ -20,19 +20,19 @@ void RFHAL_802154SetPhyforChan(int phy)
 
 
 
-void RFHAL_IEEE802154Enable(void)
+bool RFHAL_IEEE802154Enable(void)
 
 {
-  GENERIC_PHY_EnableIEEE802154();
+  return GENERIC_PHY_EnableIEEE802154();
 }
 
 
 
-void RFHAL_IEEE802154Disable(void)
+bool RFHAL_IEEE802154Disable(void)
 
 {
   RFHAL_SetProtocolSpecificChCheckCB(0);
-  GENERIC_PHY_DisableIEEE802154();
+  return GENERIC_PHY_DisableIEEE802154();
 }
 
 
@@ -108,12 +108,12 @@ bool RFHAL_IEEE802154SetLongAddress(uint8_t *longAddr)
 RAIL_Status_t RFHAL_IEEE802154SetPromiscuousMode(bool enable)
 
 {
-  uint32_t t;
+  CORE_irqState_t irqState;
   
-  t = CORE_EnterCritical();
+  irqState = CORE_EnterCritical();
   if (enable == 0) SEQ->REG000 &= 0xfffeffff;
   else SEQ->REG000 |= 0x10000;
-  CORE_ExitCritical(t);
+  CORE_ExitCritical(irqState);
   return RAIL_STATUS_NO_ERROR;
 }
 
@@ -122,12 +122,12 @@ RAIL_Status_t RFHAL_IEEE802154SetPromiscuousMode(bool enable)
 RAIL_Status_t RFHAL_IEEE802154SetPanCoordinator(bool isPanCoordinator)
 
 {
-  uint32_t t;
+  CORE_irqState_t irqState;
   
-  t = CORE_EnterCritical();
+  irqState = CORE_EnterCritical();
   if (param_1 == false) SEQ->REG000 &= 0xff7fffff;
   else SEQ->REG000 |= 0x800000;
-  CORE_ExitCritical(t);
+  CORE_ExitCritical(irqState);
   return RAIL_STATUS_NO_ERROR;
 }
 
@@ -136,12 +136,12 @@ RAIL_Status_t RFHAL_IEEE802154SetPanCoordinator(bool isPanCoordinator)
 RAIL_Status_t RFHAL_IEEE802154AcceptFrames(uint8_t framesMask)
 
 {
-  uint32_t t;
+  CORE_irqState_t irqState;
   
-  t = CORE_EnterCritical();
+  irqState = CORE_EnterCritical();
   SEQ->REG000 &= 0xffe1ffff;
   SEQ->REG000 |= framesMask << 0x11;
-  CORE_ExitCritical(t);
+  CORE_ExitCritical(irqState);
   return RAIL_STATUS_NO_ERROR;
 }
 

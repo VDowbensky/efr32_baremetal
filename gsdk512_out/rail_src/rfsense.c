@@ -79,6 +79,7 @@ void RFSENSE_ReInit(void)
 bool RFSENSE_Sensed(void)
 
 {
+  CORE_irqState_t irqState;
   code *pcVar1;
   int32_t iVar2;
   uint32_t uVar3;
@@ -88,10 +89,10 @@ bool RFSENSE_Sensed(void)
   if (RFSENSE->IF != 0) uVar3 = 1;
   if (uVar3 != 0) 
   {
-    CORE_EnterCritical();
+    irqState = CORE_EnterCritical();
     pcVar1 = RFSENSE_Cb;
     RFSENSE_Cb = NULL;
-    CORE_ExitCritical();
+    CORE_ExitCritical(irqState);
     RFSENSE_Disable();
     if (pcVar1 != NULL) (*pcVar1)();
   }
@@ -106,16 +107,17 @@ uint32_t RFSENSE_IRQHandler(void)
   code *pcVar1;
   int iVar2;
   uint uVar3;
+  CORE_irqState_t irqState;
   
   iVar2 = _DAT_43c81904;
   BUS_RegMaskedSet(&CMU->HFRADIOCLKEN0,2);
   if (RFSENSE->IF != 0) uVar3 = 1;
   if (uVar3 != 0) 
   {
-    CORE_EnterCritical();
+    irqState = CORE_EnterCritical();
     pcVar1 = RFSENSE_Cb;
     RFSENSE_Cb = NULL;
-    CORE_ExitCritical();
+    CORE_ExitCritical(irqState);
     RFSENSE_Disable();
     if (pcVar1 != NULL)(*pcVar1)();
   }
@@ -143,6 +145,7 @@ uint32_t RFSENSE_Init(undefined4 *param_1,uint param_2)
   uint uVar5;
   uint uVar6;
   undefined4 *puVar7;
+  CORE_irqState_t irqState;
   
   BUS_RegMaskedSet(&CMU->HFRADIOCLKEN0,2);
   puVar7 = param_1;
@@ -203,9 +206,9 @@ LAB_00010176:
 	  {
         uVar3 = 2;
 LAB_00010234:
-        CORE_EnterCritical();
+        irqState = CORE_EnterCritical();
 		EMU->EM4CTRL |= uVar3;
-        CORE_ExitCritical();
+        CORE_ExitCritical(irqState);
         em4Flag = uVar3;
         goto LAB_00010210;
       }

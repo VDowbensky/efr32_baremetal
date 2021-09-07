@@ -118,51 +118,51 @@ void PROTIMER_CCTimerStop(uint8_t channel)
 
 
 
-bool PROTIMER_CCTimerStart(uint8_t param_1,uint param_2,int param_3)
+bool PROTIMER_CCTimerStart(uint8_t timer,uint32_t time,int32_t mode)
 
 {
   uint uVar1;
   uint uVar2;
   uint uVar3;
-  undefined4 uVar4;
   uint32_t uVar5;
   int iVar6;
   bool bVar7;
+  CORE_irqState_t irqState;
   
-  uVar4 = CORE_EnterCritical();
-  PROTIMER_CCTimerStop((uint8_t)param_1);
+  irqState = CORE_EnterCritical();
+  PROTIMER_CCTimerStop(timer);
   uVar1 = PROTIMER->WRAPCNT;
-  if (param_3 == 1) param_2 = param_2 + PROTIMER->WRAPCNT + 1;
+  if (mode == 1) time = time + PROTIMER->WRAPCNT + 1;
   else 
   {
-    if (param_3 == 2) return true;
+    if (mode == 2) return true;
   }
-  uVar1 = read_volatile_4(PROTIMER->WRAPCNTTOP);
-  if (PROTIMER->WRAPCNTTOP < param_2) param_2 = (param_2 - PROTIMER->WRAPCNTTOP) - 1;
+  uVar1 = PROTIMER->WRAPCNTTOP;
+  if (PROTIMER->WRAPCNTTOP < time) time = (time - PROTIMER->WRAPCNTTOP) - 1;
   iVar6 = 0;
   while( true ) 
   {
-    (&PROTIMER->CC0_WRAP)[param_1 * 4] = param_2;
-    (&PROTIMER->CC0_CTRL)[param_1 * 4] = 0x11;
-    uVar5 = PROTIMER_ElapsedTime(param_2,PROTIMER->WRAPCNT);
+    (&PROTIMER->CC0_WRAP)[timer * 4] = time;
+    (&PROTIMER->CC0_CTRL)[timer * 4] = 0x11;
+    uVar5 = PROTIMER_ElapsedTime(time,PROTIMER->WRAPCNT);
     if (uVar1 >> 2 < uVar5) bVar7 = false;
-    else bVar7 = (0x100 << (param_1 & 0xff) & PROTIMER->IF) == 0;
+    else bVar7 = (0x100 << (timer & 0xff) & PROTIMER->IF) == 0;
     iVar6 = iVar6 + 1;
-    param_2 = iVar6 + PROTIMER->WRAPCNT;
-    if ((param_3 != 1) || (iVar6 == 6)) break;
+    time = iVar6 + PROTIMER->WRAPCNT;
+    if ((mode != 1) || (iVar6 == 6)) break;
     if (!bVar7) 
 	{
-      CORE_ExitCritical(uVar4);
+      CORE_ExitCritical(irqState);
       return true;
     }
   }
   if (bVar7) 
   {
-    PROTIMER_CCTimerStop((uint8_t)param_1);
-    CORE_ExitCritical(uVar4);
+    PROTIMER_CCTimerStop(timer);
+    CORE_ExitCritical(irqState);
     return false;
   }
-  CORE_ExitCritical(uVar4);
+  CORE_ExitCritical(irqState);
   return true;
 }
 
@@ -372,16 +372,15 @@ bool PROTIMER_SetTime(uint32_t time)
   uint64_t uVar2;
   
   iVar1 = PROTIMER_IsRunning();
-  if (iVar1 != 0) {
+  if (iVar1 != 0) 
+  {
     PROTIMER_Stop();
     iVar1 = 1;
   }
   PROTIMER_Reset();
   uVar2 = PROTIMER_UsToPrecntOverflow(time);
-  write_volatile_4(PROTIMER->WRAPCNT,(uint)uVar2);
-  if (iVar1 != 0) {
-    PROTIMER_Start((uint)uVar2,(int)(uVar2 >> 0x20));
-  }
+  PROTIMER->WRAPCNT = (uint)uVar2;
+  if (iVar1 != 0) PROTIMER_Start((uint)uVar2,(int)(uVar2 >> 0x20));
   return true;
 }
 

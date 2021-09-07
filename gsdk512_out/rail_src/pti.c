@@ -4,7 +4,7 @@ static uint32_t sniffBaudHz;
 static uint8_t sniffMode;
 
 //void RADIO_PTI_Init(byte *param_1)
-void RADIO_PTI_Init(RADIO_PTIInit_t *pitInit)
+void RADIO_PTI_Init(RADIO_PTIInit_t *ptiInit)
 
 {
   byte bVar1;
@@ -12,23 +12,23 @@ void RADIO_PTI_Init(RADIO_PTIInit_t *pitInit)
   uint uVar3;
   uint uVar4;
   
-  if (param_1 == (byte *)0x0) 
+  if (ptiInit == (byte *)0x0) 
   {
     return;
   }
   RADIOCMU_ClockEnable(0x63400,1);
   CMU_ClockEnable(0x82500,1);
-  sniffBaudHz = *(undefined4 *)(param_1 + 4);
-  uVar4 = (uint)*param_1;
+  sniffBaudHz = *(undefined4 *)(ptiInit + 4);
+  uVar4 = (uint)*ptiInit;
   FRC->SNIFFCTRL = 0xf8;
-  FRC->ROUTELOC0 = (uint)param_1[0xe] << 0x10 | (uint)param_1[0xb] << 8 | (uint)param_1[8];
+  FRC->ROUTELOC0 = (uint)ptiInit[0xe] << 0x10 | (uint)ptiInit[0xb] << 8 | (uint)ptiInit[8];
   if (uVar4 == 0) 
   {
     sniffMode = 2;
     FRC->ROUTEPEN = 7;
-    GPIO_PinModeSet(param_1[0xc],param_1[0xd],4,0);
-    bVar1 = param_1[0xf];
-    bVar2 = param_1[0x10];
+    GPIO_PinModeSet(ptiInit[0xc],ptiInit[0xd],4,0);
+    bVar1 = ptiInit[0xf];
+    bVar2 = ptiInit[0x10];
     uVar3 = uVar4;
   }
   else 
@@ -51,15 +51,15 @@ void RADIO_PTI_Init(RADIO_PTIInit_t *pitInit)
       }
       goto LAB_00010090;
     }
-    bVar1 = param_1[0xf];
+    bVar1 = ptiInit[0xf];
     FRC->ROUTEPEN = 5;
-    bVar2 = param_1[0x10];
+    bVar2 = ptiInit[0x10];
     uVar3 = 0;
     sniffMode = uVar4;
   }
   GPIO_PinModeSet(bVar1,bVar2,4,uVar3);
 LAB_00010090:
-  GPIO_PinModeSet(param_1[9],param_1[10],4,1);
+  GPIO_PinModeSet(ptiInit[9],ptiInit[10],4,1);
 }
 
 

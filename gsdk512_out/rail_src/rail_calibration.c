@@ -6,12 +6,12 @@ RAIL_CalMask_t RAIL_CalEnable;
 void RAILINT_CalibrationEnable(RAIL_CalMask_t cal)
 
 {
-  uint32_t q;
+  CORE_irqState_t irqState;
   
-  q = CORE_EnterCritical();
+  irqState = CORE_EnterCritical();
   RAIL_CalPend = 0;
   RAIL_CalEnable = cal;
-  CORE_ExitCritical(q);
+  CORE_ExitCritical(irqState);
 }
 
 
@@ -19,10 +19,12 @@ void RAILINT_CalibrationEnable(RAIL_CalMask_t cal)
 void RAILINT_CalibrationPend(RAIL_CalMask_t cal)
 
 {
-  CORE_EnterCritical();
+  CORE_irqState_t irqState;
+  
+  irqState = CORE_EnterCritical();
   cal = &= RAIL_CalEnable;
   RAIL_CalPend = RAIL_CalPend | cal;
-  CORE_ExitCritical();
+  CORE_ExitCritical(irqState);
   if (cal != 0) RAILCb_CalNeeded();
 }
 
@@ -32,12 +34,12 @@ RAIL_CalMask_t RAILINT_CalibrationClear(RAIL_CalMask_t cal)
 
 {
   RAIL_CalMask_t tmp;
-  uint32_t q;
+  CORE_irqState_t irqState;
   
-  q = CORE_EnterCritical();
+  irqState = CORE_EnterCritical();
   tmp = RAIL_CalPend & ~(cal & RAIL_CalEnable);
   RAIL_CalPend = tmp;
-  CORE_ExitCritical(q);
+  CORE_ExitCritical(irqState);
   return tmp;
 }
 
@@ -55,11 +57,11 @@ RAIL_CalMask_t RAIL_CalPendingGet(void)
 
 {
   RAIL_CalMask_t tmp;
-  uint32_t q;
+  CORE_irqState_t irqState;
   
-  q = CORE_EnterCritical();
+  irqState = CORE_EnterCritical();
   tmp = RAIL_CalPend;
-  CORE_ExitCritical(q);
+  CORE_ExitCritical(irqState);
   return tmp;
 }
 

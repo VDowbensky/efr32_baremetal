@@ -249,10 +249,9 @@ void PA_PowerLevelOptimize(int32_t power)
 
 {
   uint uVar1;
-  RAC_CLR *pRVar2;
   
   if ((char)gPaConfig == '\x03') return;
-  uVar1 = (SEQ->REG0E4);
+  uVar1 = SEQ->REG0E4;
   if (power < 0x83) 
   {
 	SEQ->REG0E4 &= 0xffffc037; 

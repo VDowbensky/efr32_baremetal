@@ -60,9 +60,9 @@ undefined4 RTCCSYNC_PreSleep(int param_1,undefined4 param_2,undefined4 param_3)
     if (uVar9 == 1) 
 	{
       uVar3 = PROTIMER_ElapsedTime(uVar8,(&PROTIMER->CC0_WRAP)[iVar11 * 4],iVar11 * 0x10,0x40085080,iVar5,param_2,param_3);
-      uVar10 = PROTIMER->IF;
+      //uVar10 = PROTIMER->IF;
       uVar2 = uVar9;
-      if ((1 << (iVar11 + 8U & 0xff) & uVar10) == 0) 
+      if ((1 << (iVar11 + 8U & 0xff) & PROTIMER->IF) == 0) 
 	  {
         if (uVar3 <= uVar12) uVar12 = uVar3;
       }
@@ -91,16 +91,16 @@ undefined4 RTCCSYNC_PreSleep(int param_1,undefined4 param_2,undefined4 param_3)
   }
   else 
   {
-    uVar6 = PROTIMER->PRECNTTOP;
+    //uVar6 = PROTIMER->PRECNTTOP;
     uVar8 = 0;
-    uVar6 = uVar6 + 0x100;
+    uVar6 = PROTIMER->PRECNTTOP + 0x100;
   }
   uVar9 = RTCC->CNT;
-  uVar10 = RAC->STATUS;
-  if ((uVar10 & 0xf000000) == 0) 
+  //uVar10 = RAC->STATUS;
+  if ((RAC->STATUS & 0xf000000) == 0) 
   {
-    uVar10 = PROTIMER->STATUS;
-    uVar10 = uVar10 & 6;
+    //uVar10 = PROTIMER->STATUS;
+    uVar10 = PROTIMER->STATUS & 6;
     if (uVar10 == 0) 
 	{
       if (uVar2 == 0) return 1;
@@ -183,30 +183,30 @@ void RTCCSYNC_PostWakeUp(void)
   undefined4 uVar7;
   longlong lVar8;
   
-  iVar4 = refRtcCnt;
+  //iVar4 = refRtcCnt;
   if (rtccSyncFlag == '\0') return;
   uVar1 = PROTIMER->CC0_WRAP;
   BUS_RegMaskedSet(&PROTIMER->PRSCTRL,0x720000);
   _DAT_44042024 = 2;
-  uVar6 = RTCC->CNT;
-  RTCC->CC0_CCV = uVar6 + 2;
-  uVar6 = RTCC->CC0_CCV;
-  uVar2 = CMU_ClockFreqGet(0x11);
-  uVar3 = RTCCSYNC_RTCCClockFreqGet();
-  uVar5 = PROTIMER->CTRL;
-  if ((uVar5 & 0x11000) != 0) 
+  //uVar6 = RTCC->CNT;
+  RTCC->CC0_CCV = RTCC->CNT + 2;
+  //uVar6 = RTCC->CC0_CCV;
+  //uVar2 = CMU_ClockFreqGet(0x11);
+  //uVar3 = RTCCSYNC_RTCCClockFreqGet();
+  //uVar5 = PROTIMER->CTRL;
+  if ((PROTIMER->CTRL & 0x11000) != 0) 
   {
-    lVar8 = (ulonglong)uVar2 * (ulonglong)(uVar6 - iVar4);
-    lVar8 = __aeabi_uldivmod((int)lVar8,(int)((ulonglong)lVar8 >> 0x20),uVar3,0,in_r3);
-    uVar6 = PROTIMER->PRECNTTOP;
-    uVar5 = PROTIMER->CC0_PRE;
+    lVar8 = (ulonglong)CMU_ClockFreqGet(0x11) * (ulonglong)(RTCC->CC0_CCV - refRtcCnt);
+    lVar8 = __aeabi_uldivmod((int)lVar8,(int)((ulonglong)lVar8 >> 0x20),RTCCSYNC_RTCCClockFreqGet(),0,in_r3);
+    //uVar6 = PROTIMER->PRECNTTOP;
+    //uVar5 = PROTIMER->CC0_PRE;
     uVar7 = (undefined4)((ulonglong)(lVar8 << 8) >> 0x20);
-    uVar6 = uVar6 + 0x100;
+    uVar6 = PROTIMER->PRECNTTOP + 0x100;
     uVar3 = (undefined4)(lVar8 << 8);
     iVar4 = 0;
     uVar2 = uVar6;
     __aeabi_uldivmod(uVar3,uVar7);
-    uVar5 = uVar5 + (uVar2 >> 8 | iVar4 << 0x18);
+    uVar5 = PROTIMER->CC0_PRE + (uVar2 >> 8 | iVar4 << 0x18);
     iVar4 = __aeabi_uldivmod(uVar3,uVar7,uVar6,0);
     if (uVar6 >> 8 <= uVar5) 
 	{
@@ -214,26 +214,25 @@ void RTCCSYNC_PostWakeUp(void)
       uVar5 = uVar5 - (uVar6 >> 8);
     }
     PROTIMER->PRECNT = uVar5;
-    uVar5 = PROTIMER->CC0_BASE;
-    uVar6 = PROTIMER->BASECNTTOP;
-    PROTIMER->BASECNT,(uVar5 + iVar4) - (uVar6 + 1) * ((uVar5 + iVar4) / (uVar6 + 1));
-    uVar5 = PROTIMER->CC0_WRAP;
-    uVar6 = PROTIMER->WRAPCNTTOP;
-    PROTIMER->WRAPCNT = (iVar4 + uVar5) - (uVar6 + 1) * ((iVar4 + uVar5) / (uVar6 + 1));
+    PROTIMER->BASECNT = (PROTIMER->CC0_BASE + iVar4) - (PROTIMER->BASECNTTOP + 1) * ((PROTIMER->CC0_BASE + iVar4) / (PROTIMER->BASECNTTOP + 1));
+    PROTIMER->WRAPCNT = (iVar4 + PROTIMER->CC0_WRAP) - (PROTIMER->WRAPCNTTOP + 1) * ((iVar4 + PROTIMER->CC0_WRAP) / (PROTIMER->WRAPCNTTOP + 1));
   }
-  do 
-  {
-    uVar6 = PROTIMER->IF;
-    if ((int)(uVar6 << 7) < 0) break;
-    uVar6 = RTCC->CNT;
-    uVar5 = RTCC->CC0_CCV;
-  } while (uVar5 - uVar6 < 3);
+//  do 
+//  {
+    //uVar6 = PROTIMER->IF;
+//    if (PROTIMER->IF & 0x1000000) break;
+//    uVar6 = RTCC->CNT;
+//    uVar5 = RTCC->CC0_CCV;
+//  } while (RTCC->CC0_CCV - RTCC->CNT < 3);
+  
+  while((!PROTIMER->IF & 0x1000000) || (RTCC->CC0_CCV - RTCC->CNT < 3));
+  
   PROTIMER->IFC = 0x1000000;
   RTCC->IFC = 2;
   PROTIMER->CC0_CTRL = ccCtrlBackup;
   BUS_RegMaskedClear(&PROTIMER->PRSCTRL,0x720000);
   iVar4 = 0;
-  uVar6 = PROTIMER->WRAPCNT;
+  //uVar6 = PROTIMER->WRAPCNT;
   do 
   {
     if ((int)((&PROTIMER->CC0_CTRL)[iVar4 * 4] << 0x1f) < 0) 
@@ -243,7 +242,7 @@ void RTCCSYNC_PostWakeUp(void)
       if ((uVar2 & uVar5) == 0) 
 	  {
         uVar5 = (&PROTIMER->CC0_WRAP)[iVar4 * 4];
-        if (uVar6 < uVar1) 
+        if (PROTIMER->WRAPCNT < uVar1) 
 		{
           if (uVar5 <= uVar1) goto LAB_00010362;
 LAB_00010370:
@@ -254,7 +253,7 @@ LAB_00010370:
           if (uVar1 < uVar5) 
 		  {
 LAB_00010362:
-            if (uVar5 <= uVar6) goto LAB_00010370;
+            if (uVar5 <= PROTIMER->WRAPCNT) goto LAB_00010370;
           }
         }
       }

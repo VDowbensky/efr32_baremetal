@@ -198,9 +198,10 @@ void IRCAL_StopRx(void)
   int iVar1;
   uint uVar2;
   bool bVar3;
+  CORE_irqState_t irqState;
   
   BUS_RegMaskedClear(&RAC->RXENSRCEN,0xff);
-  CORE_EnterCritical();
+  irqState = CORE_EnterCritical();
   uVar2 = (RAC->STATUS << 4) >> 0x1c;
   bVar3 = uVar2 == 3;
   if ((RAC->STATUS << 4) >> 0x1c == 3) 
@@ -212,7 +213,7 @@ void IRCAL_StopRx(void)
   }
   if ((RAC->STATUS << 4) >> 0x1c == 3) *(uint32_t *)(0x21000f64 + 8) = uVar2;
   FRC->CMD = 1;
-  CORE_ExitCritical();
+  CORE_ExitCritical(irqState);
   while ((RAC->STATUS & 0xf000000) != 0);
 }
 

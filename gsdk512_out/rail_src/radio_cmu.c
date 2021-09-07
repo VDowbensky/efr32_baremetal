@@ -70,8 +70,6 @@ void RADIOCMU_ClockPrescSet(uint32_t clock,uint32_t presc)
 {
   if ((clock << 0x18) >> 0x1c == 6) 
   {
-    uVar1 = read_volatile_4(CMU->HFRADIOPRESC);
-    write_volatile_4(CMU->HFRADIOPRESC,uVar1 & 0xfffe00ff | presc << 8);
 	CMU->HFRADIOPRESC &= 0xfffe00ff;
 	CMU->HFRADIOPRESC |= presc << 8;
   }

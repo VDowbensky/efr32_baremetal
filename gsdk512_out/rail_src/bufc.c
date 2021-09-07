@@ -102,12 +102,12 @@ uint32_t BUFC_GetBytesAvailable(int32_t bufnum)
 void BUFC_TxAckBufferSet(uint8_t *src,uint32_t len)
 
 {
-  uint32_t tmp;
+  CORE_irqState_t irqState;
   
   BUFC->BUF3_CMD = 1;
-  tmp = CORE_EnterCritical();
+  irqState = CORE_EnterCritical();
   BUFC_WriteBuffer(3,*src,len);
-  CORE_ExitCritical(tmp);
+  CORE_ExitCritical(irqState);
   BUFC->BUF3_CMD = 4;
 }
 
@@ -150,14 +150,14 @@ uint32_t BUFC_RxBufferGet(void)
 void BUFC_RxBufferReset(void)
 
 {
-  uint32_t tmp;
+  CORE_irqState_t irqState;
   
-  tmp = CORE_EnterCritical();
+  irqState = CORE_EnterCritical();
   bufcRxStreaming._0_2_ = 0;
   BUFC->BUF1_CMD = 1;
   BUFC->BUF2_CMD = 1;
   FRC->IFC = 0x10;
-  CORE_ExitCritical(tmp);
+  CORE_ExitCritical(irqState);
 }
 
 

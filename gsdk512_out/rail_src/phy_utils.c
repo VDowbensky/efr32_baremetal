@@ -2,16 +2,16 @@
 
 
 
-int PHY_UTILS_ConvertHexToAscii(uint param_1)
+int PHY_UTILS_ConvertHexToAscii(uint8_t val)
 
 {
-  if ((param_1 & 0xf) < 10) return (param_1 & 0xf) + 0x30; 
-  else return (param_1 & 0xf) + 0x37;
+  if ((val & 0xf) < 10) return (val & 0xf) + 0x30; 
+  else return (val & 0xf) + 0x37;
 }
 
 
 
-uint PHY_UTILS_CheckParity(uint val)
+uint32_t PHY_UTILS_CheckParity(uint32_t val)
 
 {
   val = val ^ val >> 0x10;
@@ -21,46 +21,46 @@ uint PHY_UTILS_CheckParity(uint val)
 
 
 
-uint PHY_UTILS_BitsetIsSet(int param_1,uint param_2)
+bool PHY_UTILS_BitsetIsSet(uint32_t addr,uint32_t bit)
 
 {
-  return *(uint *)(param_1 + (param_2 >> 5) * 4) >> (param_2 & 0x1f) & 1;
+  return *(uint32_t *)(addr + (bit >> 5) * 4) >> (bit & 0x1f) & 1;
 }
 
 
 
-void PHY_UTILS_BitsetClearAll(undefined4 *param_1,int param_2)
+void PHY_UTILS_BitsetClearAll(uint32_t *addr,uint32_t cnt)
 
 {
-  undefined4 *puVar1;
+  uint32_t *puVar1;
   
-  puVar1 = param_1 + param_2;
-  while (puVar1 != param_1) 
+  puVar1 = param_1 + cnt;
+  while (puVar1 != addr) 
   {
-    puVar1 = puVar1 + -1;
+    puVar1--;
     *puVar1 = 0;
   }
 }
 
 
 
-int PHY_UTILS_BitsetLowestSetBit(int param_1,int param_2)
+int PHY_UTILS_BitsetLowestSetBit(uint32_t addr,uint32_t bit)
 
 {
-  byte bVar1;
-  byte bVar2;
-  byte bVar3;
-  byte bVar4;
+//  byte bVar1;
+//  byte bVar2;
+//  byte bVar3;
+//  byte bVar4;
   int iVar5;
-  undefined4 uVar6;
+//  undefined4 uVar6;
   int iVar7;
   
   iVar5 = 0;
   while( true ) 
   {
-    if (iVar5 == param_2) return -1;
-    uVar6 = *(undefined4 *)(param_1 + iVar5 * 4);
-    bVar2 = (byte)uVar6;
+    if (iVar5 == bit) return -1;
+    uVar6 = *(undefined4 *)(addr + iVar5 * 4);
+/*     bVar2 = (byte)uVar6;
     bVar3 = (byte)((uint)uVar6 >> 8);
     bVar4 = (byte)((uint)uVar6 >> 0x10);
     bVar1 = (byte)((uint)uVar6 >> 0x18);
@@ -77,16 +77,17 @@ int PHY_UTILS_BitsetLowestSetBit(int param_1,int param_2)
                                      bVar4 >> 5 & 1) << 1 | bVar4 >> 6 & 1) << 1 | bVar4 >> 7) << 8
                        | (uint)(byte)((((((((bVar1 & 1) << 1 | bVar1 >> 1 & 1) << 1 | bVar1 >> 2 & 1
                                           ) << 1 | bVar1 >> 3 & 1) << 1 | bVar1 >> 4 & 1) << 1 |
-                                       bVar1 >> 5 & 1) << 1 | bVar1 >> 6 & 1) << 1 | bVar1 >> 7));
+                                       bVar1 >> 5 & 1) << 1 | bVar1 >> 6 & 1) << 1 | bVar1 >> 7)); //bit reverse */
+	iVar7 = count_trailing_zeroes(*(undefined4 *)(addr + iVar5 * 4)); //count_trailing_zeroes fcn must be written
     if (iVar7 != 0x20) break;
-    iVar5 = iVar5 + 1;
+    iVar5++;
   }
   return iVar7 + iVar5 * 0x20;
 }
 
 
 
-int PHY_UTILS_BitsetHighestSetBit(int param_1,int param_2)
+int PHY_UTILS_BitsetHighestSetBit(uint32_t addr,uint32_t bit)
 
 {
   int iVar1;
@@ -95,10 +96,10 @@ int PHY_UTILS_BitsetHighestSetBit(int param_1,int param_2)
   iVar1 = 0;
   while( true ) 
   {
-    if (iVar1 == param_2) return -1;
-    iVar2 = count_leading_zeroes(*(undefined4 *)(param_1 + iVar1 * 4));
+    if (iVar1 == bit) return -1;
+    iVar2 = count_leading_zeroes(*(undefined4 *)(addr + iVar1 * 4));
     if (iVar2 != 0x20) break;
-    iVar1 = iVar1 + 1;
+    iVar1++;
   }
   return iVar1 * 0x20 - iVar2;
 }

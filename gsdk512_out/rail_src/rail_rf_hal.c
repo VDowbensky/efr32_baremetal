@@ -539,18 +539,18 @@ int RFHAL_HeadedToIdle(void)
 
 {
   uint uVar1;
-  undefined4 uVar2;
+  CORE_irqState_t irqState;
   int iVar3;
   uint uVar4;
   bool bVar5;
-  
-  uVar2 = CORE_EnterCritical();
+    
+  irqState = CORE_EnterCritical();
   iVar3 = PROTIMER_CCTimerIsEnabled(3);
   if ((iVar3 == 0) && (iVar3 = PROTIMER_LBTIsActive(), iVar3 == 0)) 
   {
     uVar4 = (RAC->STATUS);
     uVar1 = (RAC->SR0);
-    CORE_ExitCritical(uVar2);
+    CORE_ExitCritical(irqState);
     if ((((uVar4 & 0xc0000000) == 0) && (-1 < (int)(uVar1 << 0x18))) && (uVar4 = uVar4 & 0xf000000, uVar4 != 0x6000000)) 
 	{
       if (uVar4 < 0x6000001) bVar5 = uVar4 == 0x3000000;
@@ -564,7 +564,7 @@ int RFHAL_HeadedToIdle(void)
   }
   else 
   {
-    CORE_ExitCritical(uVar2);
+    CORE_ExitCritical(irqState);
     iVar3 = 0;
   }
   return iVar3;
@@ -573,21 +573,21 @@ int RFHAL_HeadedToIdle(void)
 
 uint8_t RFHAL_TxDataLoad(RAIL_TxData_t *txData)
 {
-  uint32_t tmp;
+  CORE_irqState_t irqState;
   uint32_t status;
   
-  tmp = CORE_EnterCritical();
+  irqState = CORE_EnterCritical();
   status = (RAC->STATUS << 4) >> 0x1c;
   if (((status - 7 < 3) || (status == 0xc)) && ((RAC->SR0 & 0x10000)) 
   {  
-	CORE_ExitCritical(tmp);
+	CORE_ExitCritical(irqState);
 	return 3;
   }
   else 
   {
     BUFC->BUF0_CMD = 1;
     BUFC_WriteBuffer(0,*txData->dataPtr,txData->dataLength,txData->dataLength);
-	CORE_ExitCritical(tmp);
+	CORE_ExitCritical(irqState);
     return 0;
   }
 }
@@ -1297,12 +1297,13 @@ uint32_t RFHAL_SetChannel(int param_1,uint8_t *cfg,int param_3)
 bool RFHAL_AutoAckEnable(void)
 
 {
-  uint32_t tmp;
+  CORE_irqState_t irqState;
   uint32_t reg;
-  tmp = CORE_EnterCritical();
+  
+  irqState = CORE_EnterCritical();
   reg = SEQ->REG000;
   SEQ->REG000 |= 0x20;
-  CORE_ExitCritical(tmp);
+  CORE_ExitCritical(irqState);
   return (reg << 0x1a) >> 0x1f;
 }
 
@@ -1311,12 +1312,13 @@ bool RFHAL_AutoAckEnable(void)
 bool RFHAL_AutoAckDisable(void)
 
 {
-  uint32_t tmp;
+  CORE_irqState_t irqState;
   uint32_t reg;
-  tmp = CORE_EnterCritical();
+  
+  irqState = CORE_EnterCritical();
   reg = SEQ->REG000;
   SEQ->REG000 &= 0xffffffdf;
-  CORE_ExitCritical(tmp);
+  CORE_ExitCritical(irqState);
   return (reg << 0x1a) >> 0x1f;
 }
 
@@ -1343,12 +1345,12 @@ void RFHAL_AutoAckConfig(RAIL_AutoAckConfig_t *config)
 RAIL_Status_t RFHAL_AutoAckLoadBuffer(RAIL_AutoAckData_t *ackData)
 {
   uint uVar1;
-  undefined4 uVar2;
+  CORE_irqState_t irqState;
   uint uVar3;
   RAC *pRVar4;
   undefined4 uVar5;
   
-  uVar2 = CORE_EnterCritical();
+  irqState = CORE_EnterCritical();
   BUS_RegMaskedSet(&RAC->SR0,2);
   pRVar4 = &RAC;
   uVar3 = (RAC->STATUS << 4) >> 0x1c;
@@ -1359,7 +1361,7 @@ RAIL_Status_t RFHAL_AutoAckLoadBuffer(RAIL_AutoAckData_t *ackData)
     uVar5 = 0;
   }
   BUS_RegMaskedClear(&RAC->SR0,2);
-  CORE_ExitCritical(uVar2);
+  CORE_ExitCritical(irqState);
   return uVar5;
 }
 
@@ -1368,11 +1370,11 @@ RAIL_Status_t RFHAL_AutoAckLoadBuffer(RAIL_AutoAckData_t *ackData)
 void RFHAL_AutoAckRxPause(void)
 
 {
-  uint32_t tmp;
+  CORE_irqState_t irqState;
   
-  tmp = CORE_EnterCritical();
+  irqState = CORE_EnterCritical();
   SEQ->REG000 |= 8;
-  CORE_ExitCritical(tmp);
+  CORE_ExitCritical(irqState);
 }
 
 
@@ -1380,11 +1382,11 @@ void RFHAL_AutoAckRxPause(void)
 void RFHAL_AutoAckRxResume(void)
 
 {
-  uint32_t tmp;
+  CORE_irqState_t irqState;
   
-  tmp = CORE_EnterCritical();
+  irqState = CORE_EnterCritical();
   SEQ->REG000 &= 0xfffffff7;
-  CORE_ExitCritical(tmp);
+  CORE_ExitCritical(irqState);
 }
 
 
@@ -1392,11 +1394,11 @@ void RFHAL_AutoAckRxResume(void)
 void RFHAL_AutoAckTxPause(void)
 
 {
-  uint32_t tmp;
+  CORE_irqState_t irqState;
   
-  tmp = CORE_EnterCritical();
+  irqState = CORE_EnterCritical();
   SEQ->REG000 |= 0x100;
-  CORE_ExitCritical(tmp);
+  CORE_ExitCritical(irqState);
 }
 
 
@@ -1404,11 +1406,11 @@ void RFHAL_AutoAckTxPause(void)
 void RFHAL_AutoAckTxResume(void)
 
 {
-  uint32_t tmp;
+  CORE_irqState_t irqState;
   
-  tmp = CORE_EnterCritical();
+  irqState = CORE_EnterCritical();
   SEQ->REG000 &= 0xfffffeff;
-  CORE_ExitCritical(tmp);
+  CORE_ExitCritical(irqState);
 }
 
 
@@ -1432,11 +1434,11 @@ bool RFHAL_AutoAckTxIsPaused(void)
 bool RFHAL_AutoAckUseTxBuffer(void)
 
 {
-  undefined4 uVar1;
+  CORE_irqState_t irqState;
   uint uVar2;
   bool bVar3;
   
-  uVar1 = CORE_EnterCritical();
+  irqState = CORE_EnterCritical();
   if (GENERIC_PHY_CanModifyAck() != 0) 
   {
     BUS_RegMaskedSet(&RAC->SR0,2);
@@ -1445,7 +1447,7 @@ bool RFHAL_AutoAckUseTxBuffer(void)
     uVar2 = (uint32_t)bVar3;
     BUS_RegMaskedClear(&RAC->SR0,2);
   }
-  CORE_ExitCritical(uVar1);
+  CORE_ExitCritical(irqState);
   return uVar2;
 }
 
@@ -1454,15 +1456,14 @@ bool RFHAL_AutoAckUseTxBuffer(void)
 bool RFHAL_AutoAckCancelAck(void)
 
 {
-  uint32_t tmp;
+  CORE_irqState_t irqState;
   uint uVar2;
   bool bVar3;
   
-  tmp = CORE_EnterCritical();
-  uVar2 = GENERIC_PHY_CanModifyAck();
+  irqState = CORE_EnterCritical();
   if (GENERIC_PHY_CanModifyAck() == 0) 
   {
-	CORE_ExitCritical(tmp);
+	CORE_ExitCritical(irqState);
 	return false;
   }
   else
@@ -1473,6 +1474,7 @@ bool RFHAL_AutoAckCancelAck(void)
     if (-1 < (int)(RAC->SR0 << 0xe)) BUS_RegMaskedSet(&RAC->SR2,0x20);
     uVar2 = (uint32_t)bVar3;
     BUS_RegMaskedClear(&RAC->SR0,2);
+	CORE_ExitCritical(irqState);
 	return uVar2;
   }
 
@@ -1554,7 +1556,7 @@ void RFHAL_ReadRxFifoAppendedInfo(RAIL_AppendedInfo_t *appendedInfo)
   
   uVar2 = RADIO_RxTrailDataLength();
   GENERIC_PHY_PacketRxAppendedInfoHelper(uVar2,auStack28);
-  read_volatile(FRC->IEN._0_1_);
+  FRC->IEN._0_1_;
   
   uVar1 = FRC->IF;
   *(uint8_t *)(param_1 + 1) = *(uint8_t *)(param_1 + 1) & 0xfd | (uint8_t)((((uVar1 ^ 0x80) << 0x18) >> 0x1f) << 1);
