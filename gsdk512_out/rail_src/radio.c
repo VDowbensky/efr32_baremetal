@@ -90,7 +90,7 @@ void RADIO_SetAndForgetWrite(void)
   AGC->MANGAIN = 0x1800000;
   RAC->LNAMIXCTRL = 0;
   RAC->SYNTHREGCTRL = 0x3636d80;
-  BUS_RegMaskedClear(&SYNTH->VCDACCTRL,0x7f);
+  BUS_RegMaskedClear(&SYNTH->VCDACCTRL,SYNTH_VCDACCTRL_EN_Msk | SYNTH_VCDACCTRL_VCDACVAL_Msk; //0x7f);
   BUS_RegMaskedSet(&SYNTH->VCDACCTRL,0x23);
 }
 
@@ -143,12 +143,12 @@ void RADIO_Init(void)
   RADIO_CLKEnable();
   BUFC_Init();
   RADIO_SetAndForgetWrite();
-  BUS_RegMaskedSet(&MODEM->DCCOMP,3);
+  BUS_RegMaskedSet(&MODEM->DCCOMP,MODEM_DCCOMP_DCCOMPEN_Msk | MODEM_DCCOMP_DCESTIEN_Msk); //3);
   RAC->SR3 = 0;
   BUS_RegMaskedSet(&RAC->SR3,1);
   SYNTH_KvnFreqCompensationEnable();
   SYNTH_DCDCRetimeEnable();
-  BUS_RegMaskedSet(&RAC->CTRL,0x380);
+  BUS_RegMaskedSet(&RAC->CTRL,RAC_CTRL_LNAENPOL_Msk | RAC_CTRL_PAENPOL_Msk | RAC_CTRL_ACTIVEPOL_Msk); //0x380);
 }
 
 
@@ -283,8 +283,10 @@ void MODEM_IRQHandler(void)
 bool RADIO_IsRxActive(void)
 
 {
-  if ((RAC->STATUS << 4) >> 0x1c != 3) && (uVar1 != 7)) return (RAC->STATUS << 4) >> 0x1c == 4);
-  return true;
+  uint32_t state;
+  state = (RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos;
+  if (state != 3) && (state != 7)) return (state == 4);
+  else return true;
 }
 
 
@@ -294,13 +296,13 @@ uint32_t RADIO_RxTrailDataLength(void)
 {
   uint32_t len;
   
-  if ((FRC->TRAILRXDATA & 0x20) == 0) len = 0;
+  if ((FRC->TRAILRXDATA & FRC_TRAILRXDATA_RTCSTAMP_Msk) == 0) len = 0;
   else len = 4;
-  if (FRC->TRAILRXDATA & 0x10) len += 2;
-  if (FRC->TRAILRXDATA & 0x08) len += 2;
-  if (FRC->TRAILRXDATA & 0x04) len += 2;
-  if (FRC->TRAILRXDATA & 0x02) len += 1;
-  if (FRC->TRAILRXDATA & 0x01) len += 1;
+  if (FRC->TRAILRXDATA & FRC_TRAILRXDATA_PROTIMERCC0WRAPH_Msk) len += 2;
+  if (FRC->TRAILRXDATA & FRC_TRAILRXDATA_PROTIMERCC0WRAPL_Msk) len += 2;
+  if (FRC->TRAILRXDATA & FRC_TRAILRXDATA_PROTIMERCC0BASE_Msk) len += 2;
+  if (FRC->TRAILRXDATA & FRC_TRAILRXDATA_CRCOK_Msk) len += 1;
+  if (FRC->TRAILRXDATA & FRC_TRAILRXDATA_RSSI_Msk) len += 1;
   return len;
 }
 
@@ -408,7 +410,7 @@ void RADIO_VcoFineCalDisable(void)
 uint32_t RADIO_ComputeTxBaudrate(void)
 
 {
-  return (((MODEM->TXBR << 8) >> 0x18) * (CMU_ClockFreqGet(0x11) >> 3)) / (MODEM->TXBR & 0xffff);
+  return (((MODEM->TXBR & MODEM_TXBR_TXBRDEN_Msk) >> MODEM_TXBR_TXBRDEN_Pos) * (CMU_ClockFreqGet(0x11) >> 3)) / (MODEM->TXBR & MODEM_TXBR_TXBRNUM_Msk);
 }
 
 
@@ -416,20 +418,15 @@ uint32_t RADIO_ComputeTxBaudrate(void)
 uint32_t RADIO_ComputeRxBaudrate(void)
 
 {
-  uint uVar1;
-  uint uVar2;
-  int iVar3;
-  uint uVar4;
+  uint32_t dec0factor;
   int iVar5;
-  uint uVar6;
+  uint32_t uVar6;
   
-  uVar2 = MODEM->CF;
-  uVar1 = MODEM->RXBR;
-  uVar6 = (uVar1 << 0x16) >> 0x1b;
-  uVar4 = (uint)*(byte *)((int)&modemCfDec0Factors + (uVar2 & 7));
-  iVar5 = (((uVar2 << 0xf) >> 0x12) * uVar4 + uVar4) * 2;
-  iVar3 = CMU_ClockFreqGet(0x11);
-  return (uVar6 * iVar3) / ((((uVar2 << 9) >> 0x1a) * iVar5 + iVar5) * (uVar6 * ((uVar1 << 0x13) >> 0x1d) + (uVar1 & 0x1f)));
+  uVar6 = (MODEM->RXBR & MODEM_RXBR_RXBRDEN_Msk) >> MODEM_RXBR_RXBRDEN_Pos;
+  dec0factor = (uint)*(byte *)((int)&modemCfDec0Factors + (MODEM->CF & MODEM_CF_DEC0_Msk));
+  iVar5 = (((MODEM->CF & MODEM_CF_DEC1_Msk) >> MODEM_CF_DEC1_Pos) * (dec0factor + 1)) * 2;
+
+  return (uVar6 * CMU_ClockFreqGet(0x11)) / ((((MODEM->CF << 9) >> 0x1a) * (iVar5 + 1)) * (uVar6 * ((MODEM->RXBR & MODEM_RXBR_RXBRINT_Msk) >> MODEM_RXBR_RXBRINT_Pos) + (MODEM->RXBR & 0x1f)));
 }
 
 
@@ -437,7 +434,7 @@ uint32_t RADIO_ComputeRxBaudrate(void)
 uint32_t RADIO_ComputeTxSymbolRate(void)
 
 {
-  if ((MODEM->CTRL0 & 0x30) == 0x20) return RADIO_ComputeTxBaudrate() / (((MODEM->CTRL0 << 0x10) >> 0x1b) + 1);
+  if ((MODEM->CTRL0 & MODEM_CTRL0_CODING_Msk) == 0x20) return RADIO_ComputeTxBaudrate() / (((MODEM->CTRL0 & MODEM_CTRL0_DSSSLEN_Msk) >> MODEM_CTRL0_DSSSLEN_Pos) + 1);
   else return RADIO_ComputeTxBaudrate();
 }
 
@@ -446,21 +443,21 @@ uint32_t RADIO_ComputeTxSymbolRate(void)
 uint32_t RADIO_ComputeTxBitRate(void)
 
 {
-  uint32_t uVar3;
+  uint32_t factor;
   
-  if ((MODEM->CTRL0 & 0x30) == 0x20) 
+  if ((MODEM->CTRL0 & MODEM_CTRL0_CODING_Msk) == 0x20) 
   {
-    uVar3 = ((MODEM->CTRL0 << 0x10) >> 0x1b) / ((MODEM->CTRL0 << 0xd) >> 0x1d);
-    if ((MODEM->CTRL0 & 0x180000) != 0) uVar3 = uVar3 << 1;
-    uVar3 = uVar3 >> 1;
-    if (2 < uVar3) uVar3 = 4;
+    factor = ((MODEM->CTRL0 & MODEM_CTRL0_DSSSLEN_Msk) >> MODEM_CTRL0_DSSSLEN_Pos) / ((MODEM->CTRL0 & MODEM_CTRL0_DSSSSHIFTS_Msk) >> MODEM_CTRL0_DSSSSHIFTS_Pos);
+    if ((MODEM->CTRL0 & MODEM_CTRL0_DSSSDOUBLE_Msk) != 0) factor <<= 1;
+    factor >>= 1;
+    if (2 < factor) factor = 4;
   }
   else 
   {
-    if (((MODEM->CTRL0 & 0x1c0) == 0x40) || ((MODEM->CTRL0 & 0x1c0) == 0x100)) uVar3 = 2;
-    else uVar3 = 1;
+    if (((MODEM->CTRL0 & MODEM_CTRL0_MODFORMAT_Msk) == 0x40) || ((MODEM->CTRL0 & MODEM_CTRL0_MODFORMAT_Msk) == 0x100)) factor = 2;
+    else factor = 1;
   }
-  return uVar3 * RADIO_ComputeTxSymbolRate();
+  return factor * RADIO_ComputeTxSymbolRate();
 }
 
 

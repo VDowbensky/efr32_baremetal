@@ -43,12 +43,9 @@ undefined AUXPLL_ConvertAuxLoDivToRegVal(int param_1)
 
 
 
-void AUXPLL_Configure(uint param_1,undefined4 param_2,int param_3,int param_4)
+void AUXPLL_Configure(uint32_t param_1,undefined4 param_2,int param_3,int param_4)
 
 {
-  uint uVar1;
-  int iVar2;
-  
   BUS_RegMaskedClear(&RAC->AUXENCTRL,1);
   RAC->AUXCTRL &= 0xff01ffcf;
   RAC->AUXCTRL |= 0xe80030;
@@ -58,25 +55,25 @@ void AUXPLL_Configure(uint param_1,undefined4 param_2,int param_3,int param_4)
   RAC->AUXCTRL |= param_4 << 0xb | param_3 << 8;
   SYNTH->AUXFREQ &= 0xffffff80;
   SYNTH->AUXFREQ |= param_1;
-  BUS_RegMaskedSet(&RAC->AUXCTRL,0x4a);
-  BUS_RegMaskedSet(&RAC->AUXENCTRL,1);
-  BUS_RegMaskedSet(&RAC->AUXCTRL,0x80);
-  BUS_RegMaskedSet(&RAC->AUXCTRL,0x800000);
-  BUS_RegMaskedSet(&SYNTH->AUXVCDACCTRL,0x10);
-  BUS_RegMaskedClear(&RAC->AUXCTRL,8);
-  BUS_RegMaskedSet(&RAC->AUXCTRL,0x800004);
+  BUS_RegMaskedSet(&RAC->AUXCTRL,RAC_AUXCTRL_LODIVEN_Msk | RAC_AUXCTRL_CHPEN_Msk | RAC_AUXCTRL_VCOEN_Msk); //(&RAC->AUXCTRL,0x4a); RAC_AUXCTRL_LODIVEN_Msk | RAC_AUXCTRL_CHPEN_Msk | RAC_AUXCTRL_VCOEN_Msk
+  BUS_RegMaskedSet (&RAC->AUXENCTRL,RAC_AUXENCTRL_LDOEN_Msk); //(&RAC->AUXENCTRL,1);
+  BUS_RegMaskedSet(&RAC->AUXCTRL,RAC_AUXCTRL_AUXSYNTHCLKEN_Msk); //(&RAC->AUXCTRL,0x80);
+  BUS_RegMaskedSet(&RAC->AUXCTRL,RAC_AUXCTRL_FPLLDIGEN_Msk); //(&RAC->AUXCTRL,0x800000);
+  BUS_RegMaskedSet(&SYNTH->AUXVCDACCTRL,SYNTH_AUXVCDACCTRL_EN_Msk); //(&SYNTH->AUXVCDACCTRL,0x10); 
+  BUS_RegMaskedClear(&RAC->AUXCTRL,RAC_AUXCTRL_CHPEN_Msk); //(&RAC->AUXCTRL,8);
+  BUS_RegMaskedSet(&RAC->AUXCTRL,RAC_AUXCTRL_FPLLDIGEN_Msk | RAC_AUXCTRL_VCOSTARTUP_Msk); //(&RAC->AUXCTRL,0x800004);
   PHY_UTILS_DelayUs(1000);
-  do 
+  while (SYNTH->STATUS & SYNTH_STATUS_CAPCALERROR_Msk) //(SYNTH->STATUS & 0x4000) //do 
   {
-    SYNTH->CMD = 0x80;
-    SYNTH->CMD = 0x100;
-    while (SYNTH->STATUS & 0x800);
-  } while (SYNTH->STATUS << & 0x4000);
-  BUS_RegMaskedSet(&RAC->AUXCTRL,8);
-  BUS_RegMaskedClear(&SYNTH->AUXVCDACCTRL,0x10);
-  SYNTH->CMD = 0x40;
+    SYNTH->CMD = SYNTH_CMD_AUXSTOP_Msk; // 0x80; 
+    SYNTH->CMD = SYNTH_CMD_AUXCAPCALSTART_Msk; //  0x100;
+    while (SYNTH->STATUS & SYNTH_STATUS_AUXCAPCALRUNNING_Msk);//(SYNTH->STATUS & 0x800); //
+  } //while (SYNTH->STATUS << & 0x4000);
+  BUS_RegMaskedSet(&RAC->AUXCTRL,RAC_AUXCTRL_CHPEN_Msk);//(&RAC->AUXCTRL,8);
+  BUS_RegMaskedClear(&SYNTH->AUXVCDACCTRL,SYNTH_AUXVCDACCTRL_EN_Msk); //(&SYNTH->AUXVCDACCTRL,0x10); //
+  SYNTH->CMD = SYNTH_CMD_AUXSTART_Msk; //0x40; 
   RAC->AUXCTRL &= 0xff7ffffb;
-  RAC->AUXCTRL |= 0x800000;
+  RAC->AUXCTRL |= RAC_AUXCTRL_FPLLDIGEN_Msk; //0x800000;
 }
 
 

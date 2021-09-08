@@ -78,12 +78,12 @@ void PA_20dbmConfigSet(void)
 {
   SEQ->REG0E4 &= 0xbfffffe8;
   SEQ->REG0E4 |= 0x40000014;
-  BUS_RegMaskedClear(&RAC->PACTRL0,7);
-  BUS_RegMaskedSet(&RAC->PACTRL0,4);
-  BUS_RegMaskedClear(&RAC->PABIASCTRL1,7);
+  BUS_RegMaskedClear(&RAC->PACTRL0, RAC_PACTRL0_RF2P4RFVDDSEL_Msk | RAC_PACTRL0_RF2P4PAVDDSEL_Msk | RAC_PACTRL0_RF2P4PASEL_Msk); //7);
+  BUS_RegMaskedSet(&RAC->PACTRL0, RAC_PACTRL0_RF2P4RFVDDSEL_Msk); //4);
+  BUS_RegMaskedClear(&RAC->PABIASCTRL1,RAC_PABIASCTRL1_VLDO_Msk); 7);
   BUS_RegMaskedSet(&RAC->PABIASCTRL1,5);
-  BUS_RegMaskedClear(&RAC->PABIASCTRL0,0xc0);
-  BUS_RegMaskedSet(&RAC->PABIASCTRL0,0x81);
+  BUS_RegMaskedClear(&RAC->PABIASCTRL0,RAC_PABIASCTRL0_BUF0BIAS_Msk); //0xc0);
+  BUS_RegMaskedSet(&RAC->PABIASCTRL0,0x80 | RAC_PABIASCTRL0_LDOBIAS_Msk); //1);
 }
 
 
@@ -93,9 +93,9 @@ void PA_0dbmConfigSet(void)
 {
   SEQ->REG0E4 &= 0xbfffffe8;
   SEQ->REG0E4 |= 3;
-  BUS_RegMaskedClear(&RAC->PACTRL0,7);
-  BUS_RegMaskedSet(&RAC->PACTRL0,3);
-  BUS_RegMaskedClear(&RAC->PABIASCTRL1,7);
+  BUS_RegMaskedClear(&RAC->PACTRL0,RAC_PACTRL0_RF2P4RFVDDSEL_Msk | RAC_PACTRL0_RF2P4PAVDDSEL_Msk | RAC_PACTRL0_RF2P4PASEL_Msk); //7);
+  BUS_RegMaskedSet(&RAC->PACTRL0,RAC_PACTRL0_RF2P4PAVDDSEL_Msk | RAC_PACTRL0_RF2P4PASEL_Msk); //3);
+  BUS_RegMaskedClear(&RAC->PABIASCTRL1,RAC_PABIASCTRL1_VLDO_Msk); //7);
   BUS_RegMaskedSet(&RAC->PABIASCTRL1,6);
   BUS_RegMaskedClear(&RAC->PABIASCTRL0,0x4000c1);
   BUS_RegMaskedClear(&RAC->PAPKDCTRL,0xc000);
@@ -108,9 +108,9 @@ void PA_SubGhz20dbmConfigSet(void)
 {
   SEQ->REG0E4 &= 0xbfffffe8;
   SEQ->REG0E4 |= 0x40000020;
-  BUS_RegMaskedClear(&RAC->SGPABIASCTRL1,0x7700);
+  BUS_RegMaskedClear(&RAC->SGPABIASCTRL1,RAC_SGPABIASCTRL1_VCASCODELV_Msk | RAC_SGPABIASCTRL1_VCASCODEHV_Msk); //0x7700);
   BUS_RegMaskedSet(&RAC->SGPABIASCTRL1,0x4500);
-  BUS_RegMaskedSet(&RAC->SGPABIASCTRL0,1);
+  BUS_RegMaskedSet(&RAC->SGPABIASCTRL0,RAC_SGPABIASCTRL0_LDOBIAS_Msk); //1);
 }
 
 
@@ -166,7 +166,7 @@ uint16_t PA_PowerLevelSet(uint8_t pwrLevel, uint8_t boostMode)
     else 
 	{
       uVar3 = uVar3 | 0x100;
-      BUS_RegMaskedSet(&RAC->PABIASCTRL0,0x400000);
+      BUS_RegMaskedSet(&RAC->PABIASCTRL0,RAC_PABIASCTRL0_TXPOWER_Msk); //0x400000);
     }
     apcConfigure(200);
     return uVar3;
@@ -258,8 +258,8 @@ void PA_PowerLevelOptimize(int32_t power)
 	SEQ->REG0E4 |= ((uVar1 << 10) >> 0x18) << 6;
     if (power < 0x1f) 
 	{
-	  BUS_RegMaskedClear(&RAC->PABIASCTRL0,1);
-	  BUS_RegMaskedClear(&RAC->SGPABIASCTRL0,1);
+	  BUS_RegMaskedClear(&RAC->PABIASCTRL0,RAC_PABIASCTRL0_LDOBIAS_Msk); //1);
+	  BUS_RegMaskedClear(&RAC->SGPABIASCTRL0,RAC_SGPABIASCTRL0_LDOBIAS_Msk); //1);
 	}
   }
   else 
@@ -267,8 +267,8 @@ void PA_PowerLevelOptimize(int32_t power)
 	SEQ->REG0E4 &= 0xffffc037;
 	SEQ->REG0E4 |= 0x3fc8;
   }
-	BUS_RegMaskedSet(&RAC->PABIASCTRL0,1);
-	BUS_RegMaskedSet(&RAC->SGPABIASCTRL0,1); 
+	BUS_RegMaskedSet(&RAC->PABIASCTRL0,RAC_PABIASCTRL0_LDOBIAS_Msk); //1);
+	BUS_RegMaskedSet(&RAC->SGPABIASCTRL0,RAC_SGPABIASCTRL0_LDOBIAS_Msk); //1); 
 	apcConfigure();
 }
 
@@ -355,7 +355,7 @@ void PA_PeakDetectorHighRun(void)
 {
   if (SYNTH_Is2p4GHz() == false) RAC->SGPACTRL0 = (RAC->SGPACTRL0 & 0xffc03fff) | ((RAC->SGPACTRL0 & 0x3f8000) >> 1); 
   else RAC->PACTRL0 = (RAC->PACTRL0 & 0xffc03fff) | ((RAC->PACTRL0 & 0x3f8000) >> 1);
-  RAC->IFC = 0x2000000;
+  RAC->IFC = RAC_IFC_PAVHIGH_Msk; //0x2000000;
 }
 
 
@@ -373,7 +373,7 @@ void PA_BatHighRun(void)
 {
   if (SYNTH_Is2p4GHz() == false) BUS_RegMaskedClear(&RAC->SGPACTRL0,0x200000); 
   else BUS_RegMaskedClear(&RAC->PACTRL0,0x200000); 
-  BUS_RegMaskedClear(&RAC->IEN,0x8000000);
+  BUS_RegMaskedClear(&RAC->IEN,RAC_IEN_PABATHIGH_Msk); //0x8000000);
 }
 
 

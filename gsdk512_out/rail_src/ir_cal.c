@@ -184,10 +184,10 @@ void IRCAL_StartRx(void)
 
 {
   BUS_RegMaskedSet(&MODEM->CTRL0,0x200000);
-  while ((RAC->STATUS & 0xf000000) != 0);
+  while ((RAC->STATUS & RAC_STATUS_STATE_Msk) != 0);
   BUFC_RxBufferReset();
   BUS_RegMaskedSet(&RAC->RXENSRCEN,8);
-  while ((RAC->STATUS << 4) >> 0x1c != 2);
+  while (((RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos) != 2);
 }
 
 
@@ -195,26 +195,19 @@ void IRCAL_StartRx(void)
 void IRCAL_StopRx(void)
 
 {
-  int iVar1;
-  uint uVar2;
-  bool bVar3;
   CORE_irqState_t irqState;
   
   BUS_RegMaskedClear(&RAC->RXENSRCEN,0xff);
   irqState = CORE_EnterCritical();
-  uVar2 = (RAC->STATUS << 4) >> 0x1c;
-  bVar3 = uVar2 == 3;
-  if ((RAC->STATUS << 4) >> 0x1c == 3) 
+  if ((RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos == 3) 
   {
-    iVar1 = 0x21000f64;
-    uVar2 = SEQ->REG06C; & 0xffffff0f | 0xe0;
 	SEQ->REG06C &= 0xffffff0f;
 	SEQ->REG06C |= 0xe0;
   }
   if ((RAC->STATUS << 4) >> 0x1c == 3) *(uint32_t *)(0x21000f64 + 8) = uVar2;
-  FRC->CMD = 1;
+  FRC->CMD = FRC_CMD_RXABORT_Msk; //1;
   CORE_ExitCritical(irqState);
-  while ((RAC->STATUS & 0xf000000) != 0);
+  while ((RAC->STATUS & RAC_STATUS_STATE_Msk) != 0);
 }
 
 
@@ -224,9 +217,9 @@ void IRCAL_SetSubGhzPllLoopback(void)
 {
   AGC->MANGAIN &= 0x801001ff;
   AGC->MANGAIN |= 0x40009800;
-  BUS_RegMaskedSet(&AGC->CTRL0,0x400000);
-  BUS_RegMaskedSet(&RAC->SGRFENCTRL0,0x80000);
-  BUS_RegMaskedSet(&RAC->RFENCTRL0,0x80000);
+  BUS_RegMaskedSet(&AGC->CTRL0,AGC_CTRL0_DISRESETCHPWR_Msk); //0x400000);
+  BUS_RegMaskedSet(&RAC->SGRFENCTRL0,RAC_SGRFENCTRL0_TRSW_Msk); //0x80000);
+  BUS_RegMaskedSet(&RAC->RFENCTRL0,RAC_RFENCTRL0_TRSW_Msk); //0x80000);
 }
 
 

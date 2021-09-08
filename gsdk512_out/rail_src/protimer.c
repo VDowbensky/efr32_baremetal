@@ -46,7 +46,7 @@ void PROTIMER_Stop(void)
 bool PROTIMER_IsRunning(void)
 
 {
-  return PROTIMER->STATUS & 1;
+  return PROTIMER->STATUS & PROTIMER_STATUS_RUNNING_Msk; //1;
 }
 
 
@@ -112,8 +112,8 @@ uint32_t PROTIMER_TOUTTimerGet(uint8_t tout)
 void PROTIMER_CCTimerStop(uint8_t channel)
 
 {
-  (&PROTIMER_CLR->CC0_CTRL)[(uint)channel * 4] = 1;
-  PROTIMER->IFC = 0x100 << (uint)channel;
+  (&PROTIMER_CLR->CC0_CTRL)[(uint32_t)channel * 4] = 1;
+  PROTIMER->IFC = 0x100 << (uint32_t)channel;
 }
 
 
@@ -121,33 +121,26 @@ void PROTIMER_CCTimerStop(uint8_t channel)
 bool PROTIMER_CCTimerStart(uint8_t timer,uint32_t time,int32_t mode)
 
 {
-  uint uVar1;
-  uint uVar2;
-  uint uVar3;
-  uint32_t uVar5;
   int iVar6;
   bool bVar7;
   CORE_irqState_t irqState;
   
   irqState = CORE_EnterCritical();
   PROTIMER_CCTimerStop(timer);
-  uVar1 = PROTIMER->WRAPCNT;
   if (mode == 1) time = time + PROTIMER->WRAPCNT + 1;
   else 
   {
     if (mode == 2) return true;
   }
-  uVar1 = PROTIMER->WRAPCNTTOP;
   if (PROTIMER->WRAPCNTTOP < time) time = (time - PROTIMER->WRAPCNTTOP) - 1;
   iVar6 = 0;
   while( true ) 
   {
     (&PROTIMER->CC0_WRAP)[timer * 4] = time;
     (&PROTIMER->CC0_CTRL)[timer * 4] = 0x11;
-    uVar5 = PROTIMER_ElapsedTime(time,PROTIMER->WRAPCNT);
-    if (uVar1 >> 2 < uVar5) bVar7 = false;
+    if (PROTIMER->WRAPCNTTOP >> 2 < PROTIMER_ElapsedTime(time,PROTIMER->WRAPCNT)) bVar7 = false;
     else bVar7 = (0x100 << (timer & 0xff) & PROTIMER->IF) == 0;
-    iVar6 = iVar6 + 1;
+    iVar6++;
     time = iVar6 + PROTIMER->WRAPCNT;
     if ((mode != 1) || (iVar6 == 6)) break;
     if (!bVar7) 
@@ -257,7 +250,7 @@ void PROTIMER_LBTStart(void)
 
 {
   RADIO_PTI_AuxdataOutput(0x21);
-  PROTIMER->CMD = 0x10000;
+  PROTIMER->CMD = PROTIMER_CMD_LBTSTART_Msk; //0x10000;
 }
 
 
@@ -275,7 +268,7 @@ void PROTIMER_LBTStop(void)
 
 {
   RADIO_PTI_AuxdataOutput(0x22);
-  PROTIMER->CMD = 0x40000;
+  PROTIMER->CMD = PROTIMER_CMD_LBTSTOP_Msk; //0x40000;
 }
 
 
@@ -291,7 +284,7 @@ uint32_t PROTIMER_LBTStateGet(void)
 void PROTIMER_LBTStateSet(uint32_t state)
 
 {
-  PROTIMER->LBTSTATE,state;
+  PROTIMER->LBTSTATE = state;
 }
 
 
@@ -299,7 +292,7 @@ void PROTIMER_LBTStateSet(uint32_t state)
 bool PROTIMER_LBTIsActive(void)
 
 {
-  return (PROTIMER->STATUS & 6) != 0;
+  return (PROTIMER->STATUS & (PROTIMER_STATUS_LBTRUNNING_Msk | PROTIMER_STATUS_LBTSYNC_Msk)) != 0;
 }
 
 

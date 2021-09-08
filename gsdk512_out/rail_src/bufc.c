@@ -104,7 +104,7 @@ void BUFC_TxAckBufferSet(uint8_t *src,uint32_t len)
 {
   CORE_irqState_t irqState;
   
-  BUFC->BUF3_CMD = 1;
+  BUFC->BUF3_CMD = BUFC_BUF3_CMD_CLEAR_Msk; //1;
   irqState = CORE_EnterCritical();
   BUFC_WriteBuffer(3,*src,len);
   CORE_ExitCritical(irqState);
@@ -132,7 +132,7 @@ uint32_t BUFC_TxAckBufferBytesAvailable(void)
 void BUFC_RxBufferSet(uint32_t addr)
 
 {
-  if (param_1 != 0) BUS_RegMaskedSet(&BUFC->IEN,0x400);
+  if (param_1 != 0) BUS_RegMaskedSet(&BUFC->IEN,BUFC_IEN_BUF1THR_Msk); //0x400);
   bufcRxStreaming._0_2_ = 0;
   bufcRxStreaming._4_4_ = addr;
 }
@@ -204,7 +204,7 @@ void BUFC_IrqHandler(void)
   
   flags = BUFC->IF & BUFC->IEN;
   BUFC->IFC = flags;
-  if ((flags & 0x04) && (enabledCallbacks & 0x01)) 
+  if ((flags & FRC_IF_TXABORTED_Msk) && (enabledCallbacks & 0x01)) 
   {
     //if (_DAT_430204b4 == 0) BUS_RegMaskedSet(&BUFC->BUF0_THRESHOLDCTRL,0x2000);
 	if (!(BUF0_THRESHOLDCTRL & BUFC_BUF0_THRESHOLDCTRL_THRESHOLDMODE_Msk)) BUS_RegMaskedSet(&BUFC->BUF0_THRESHOLDCTRL,BUFC_BUF0_THRESHOLDCTRL_THRESHOLDMODE_Msk);//bit 13
@@ -214,51 +214,51 @@ void BUFC_IrqHandler(void)
       (**currentCallbacks)();
     }
   }
-  if (flags & 0x0400) && (enabledCallbacks & 0x04) (*currentCallbacks[2])();
+  if (flags & FRC_IF_WCNTCMP1_Msk) && (enabledCallbacks & 0x04) (*currentCallbacks[2])();
   if (flags & 0x40000) 
   {
     //if (_DAT_430210b4 == 0) 
 	if (!(BUF0_THRESHOLDCTRL & BUFC_BUF0_THRESHOLDCTRL_THRESHOLDMODE_Msk))
 	{
-      FRC->IFS = 0x10;
-      BUS_RegMaskedSet(&FRC->IEN,0x10);
+      FRC->IFS = FRC_IFS_RXDONE_Msk;
+      BUS_RegMaskedSet(&FRC->IEN,FRC_IEN_RXDONE_Msk); //0x10);
       if (bufcPendRxFrameError != 0) 
 	  {
         bufcPendRxFrameError = 0;
-        FRC->IFS = 0x40;
+        FRC->IFS = FRC_IFS_FRAMEERROR_Msk;
       }
-      BUS_RegMaskedSet(&BUFC->BUF2_THRESHOLDCTR,0x2000);
+      BUS_RegMaskedSet(&BUFC->BUF2_THRESHOLDCTRL,0x2000);
     }
     else 
 	{
-      BUS_RegMaskedClear(&FRC->IEN,0x10);
-      BUS_RegMaskedClear(&BUFC->BUF2_THRESHOLDCTR,0x2000);
+      BUS_RegMaskedClear(&FRC->IEN,FRC_IEN_RXDONE_Msk); //0x10);
+      BUS_RegMaskedClear(&BUFC->BUF2_THRESHOLDCTRL,0x2000);
     }
   }
   if ((flags & 0xa0a00) != 0) 
   {
     BUFC_RxBufferReset();
-    if ((flags & 0x200) && (enabledCallbacks & 0x08)) (*currentCallbacks[3])();
+    if ((flags & BUFC_IF_BUF1UF_Msk) && (enabledCallbacks & 0x08)) (*currentCallbacks[3])();
   }
-  if ((uVar2 & 9) != 0) 
+  if ((flags & (BUFC_IF_BUF0CORR_Msk | BUFC_IF_BUF0OF_Msk)) != 0) 
   {
-    RAC->CMD = 0x20;
-    BUFC->BUF0_CMD = 1;
+    RAC->CMD = RAC_CMD_TXDIS_Msk; //0x20;
+    BUFC->BUF0_CMD = BUFC_BUF0_CMD_CLEAR_Msk; //1;
     if ((flags & 0x01) && (enabledCallbacks & 0x02)) (*currentCallbacks[1])();
   }
-  if ((uVar2 & 0x9000000) != 0) 
+  if ((flags & 0x9000000) != 0) 
   {
-    RAC->CMD = 0x20;
+    RAC->CMD = RAC_CMD_TXDIS_Msk; //0x20;
     BUFC_TxAckBufferReset();
   }
 }
 
 
 
-void BUFC_RxBufferReadBytes(undefined4 param_1,undefined4 param_2)
+void BUFC_RxBufferReadBytes(undefined4 buf,undefined4 param_2)
 
 {
-  BUFC_ReadBuffer(1,param_1,param_2);
+  BUFC_ReadBuffer(1,buf,param_2);
 }
 
 
