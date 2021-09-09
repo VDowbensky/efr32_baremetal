@@ -28,8 +28,8 @@ uint8_t RAIL_RfInit(const RAIL_Init_t *railInit)
 RAIL_Status_t RAIL_SetPtiProtocol(RAIL_PtiProtocol_t protocol)
 
 {
-  if (RFHAL_StateGet() == 0) return RFHAL_SetPtiProtocol(protocol);
-  else return 2;
+  if (RFHAL_StateGet() == RAIL_RF_STATE_IDLE) return RFHAL_SetPtiProtocol(protocol);
+  else return RAIL_STATUS_INVALID_STATE;
 }
 
 
@@ -37,7 +37,7 @@ RAIL_Status_t RAIL_SetPtiProtocol(RAIL_PtiProtocol_t protocol)
 void RAIL_RfIdle(void)
 
 {
-  RFHAL_IdleExt(1);
+  RFHAL_IdleExt(RAIL_IDLE_ABORT);
 }
 
 
@@ -48,7 +48,7 @@ void RAIL_RfIdleExt(RAIL_RfIdleMode_t mode,bool wait)
   RFHAL_IdleExt(mode);
   if (wait != false) 
   {
-	while (RFHAL_StateGet() != 0);
+	while (RFHAL_StateGet() != RAIL_RF_STATE_IDLE);
   }
 }
 
@@ -131,17 +131,26 @@ undefined RAILInt_GetChannel(void)
   return currentChannel;
 }
 
-
+//typedef struct RAIL_Version {
+//    uint32_t hash;    /**< Git hash */
+//    uint8_t  major;   /**< Major number    */
+//    uint8_t  minor;   /**< Minor number    */
+//    uint8_t  rev;     /**< Revision number */
+//    uint8_t  build;   /**< Build number */
+//    uint8_t  flags;   /**< Build flags */
+//} RAIL_Version_t;
 
 void RAIL_VersionGet(RAIL_Version_t * version, bool verbose)
 
 {
   *(undefined *)(version + 1) = 1;
+  
   *(undefined *)((int)version + 5) = 5;
   *(undefined *)((int)version + 6) = 1;
-  if (verbose != false) {
+  if (verbose != false) 
+  {
     *(undefined *)((int)version + 7) = 7;
-    *version = 0x1e69ebad;
+    version->hash = 0x1e69ebad;
     *(undefined *)(version + 2) = 0;
     return;
   }
@@ -172,10 +181,10 @@ uint32_t RAIL_DebugModeGet(void)
 
 RAIL_Status_t RAIL_SetTxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t error)
 {
-  if ((success == 2) || (error == 2)) return RAIL_STATUS_INVALID_PARAMETER;
+  if ((success == RAIL_RF_STATE_TX) || (error == RAIL_RF_STATE_TX)) return RAIL_STATUS_INVALID_PARAMETER;
   else 
   {
-    if (RFHAL_StateGet() != 2) return RFHAL_SetTxTransitions(success,error);
+    if (RFHAL_StateGet() != RAIL_RF_STATE_TX) return RFHAL_SetTxTransitions(success,error);
   }
   return RAIL_STATUS_INVALID_PARAMETER;
 }
@@ -185,11 +194,11 @@ RAIL_Status_t RAIL_SetTxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t 
 RAIL_Status_t RAIL_SetRxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t error,uint8_t ignoreErrors)
 
 {
-  if (error == 2) return RAIL_STATUS_INVALID_PARAMETER;
-  if (RFHAL_StateGet() == 1) return RAIL_STATUS_INVALID_STATE;
+  if (error == RAIL_RF_STATE_TX) return RAIL_STATUS_INVALID_PARAMETER;
+  if (RFHAL_StateGet() == RAIL_RF_STATE_RX) return RAIL_STATUS_INVALID_STATE;
   else 
   {
-    if (RFHAL_SetRxTransitions(success,error) == 0) return RFHAL_ErrorConfig(ignoreErrors);
+    if (RFHAL_SetRxTransitions(success,error) == RAIL_STATUS_NO_ERROR) return RFHAL_ErrorConfig(ignoreErrors);
   }
   return RAIL_STATUS_INVALID_PARAMETER;
 }

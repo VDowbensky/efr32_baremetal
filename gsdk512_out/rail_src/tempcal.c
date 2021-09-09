@@ -32,7 +32,7 @@ void TEMPCAL_Init(void)
 void TEMPCAL_Perform(void)
 
 {
-  if ((RAC->STATUS << 4) >> 0x1c == 2) RAC->CMD = 0x80;
+  if (RAC->STATUS & RAC_STATUS_STATE_Msk == 2) RAC->CMD = RAC_CMD_RXCAL_Msk;
 }
 
 

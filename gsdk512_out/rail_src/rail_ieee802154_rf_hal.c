@@ -125,7 +125,7 @@ RAIL_Status_t RFHAL_IEEE802154SetPanCoordinator(bool isPanCoordinator)
   CORE_irqState_t irqState;
   
   irqState = CORE_EnterCritical();
-  if (param_1 == false) SEQ->REG000 &= 0xff7fffff;
+  if (isPanCoordinator == false) SEQ->REG000 &= 0xff7fffff;
   else SEQ->REG000 |= 0x800000;
   CORE_ExitCritical(irqState);
   return RAIL_STATUS_NO_ERROR;
@@ -150,19 +150,16 @@ RAIL_Status_t RFHAL_IEEE802154AcceptFrames(uint8_t framesMask)
 uint32_t RFHAL_IEEE802154SetFramePending(void)
 
 {
-  uint32_t uVar3;
-  
-  uVar3 = 2;
   if (GENERIC_PHY_CanModifyAck() != false) 
   {
     BUS_RegMaskedSet(&RAC->SR0,2);
     if ((RAC->SR0 & 0x20000) == 0) 
 	{
       BUS_RegMaskedSet(&RAC->SR2,0x10);
-      uVar3 = RAC->SR0 & 0x20000;
+      return RAC->SR0 & 0x20000;
     }
     BUS_RegMaskedClear(&RAC->SR0,2);
-    return uVar3;
+    return 2;
   }
   return 2;
 }

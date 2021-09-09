@@ -23,9 +23,9 @@ void BUFC_SetCallbacks(uint32_t cb)
     }
   }
   currentCallbacks = cb;
-  _DAT_e000e100 = 0x80;
-  _DAT_e000e180 = 0x80;
-  _DAT_e000e280 = 0x80;
+  NVIC_EnableIRQ(BUFC_IRQn); //???
+  NVIC_DisableIRQ(BUFC_IRQn);
+  NVIC_ClearPendingIRQ(BUFC_IRQn);
 }
 
 
@@ -183,8 +183,6 @@ void BUFC_Init(void)
   BUS_RegMaskedClear(&FRC->CTRL,0xf0);
   BUS_RegMaskedSet(&FRC->CTRL,0xa0);
   RADIO_RegisterIrqCallback(3,BUFC_IrqHandler);
-  //_DAT_e000e280 = 0x80;
-  //_DAT_e000e100 = 0x80;
   NVIC_ClearPendingIRQ(BUFC_IRQn);
   NVIC_EnableIRQ(BUFC_IRQn);
   BUFC->BUF0_CMD = 1;

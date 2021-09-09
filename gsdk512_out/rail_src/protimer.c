@@ -116,9 +116,7 @@ void PROTIMER_CCTimerStop(uint8_t channel)
   PROTIMER->IFC = 0x100 << (uint32_t)channel;
 }
 
-
-
-bool PROTIMER_CCTimerStart(uint8_t timer,uint32_t time,int32_t mode)
+bool PROTIMER_CCTimerStart(uint8_t timer,uint32_t time,RAIL_TimeMode_t mode)
 
 {
   int iVar6;
@@ -127,10 +125,10 @@ bool PROTIMER_CCTimerStart(uint8_t timer,uint32_t time,int32_t mode)
   
   irqState = CORE_EnterCritical();
   PROTIMER_CCTimerStop(timer);
-  if (mode == 1) time = time + PROTIMER->WRAPCNT + 1;
+  if (mode == RAIL_TIME_DELAY) time = time + PROTIMER->WRAPCNT + 1;
   else 
   {
-    if (mode == 2) return true;
+    if (mode == RAIL_TIME_DISABLED) return true;
   }
   if (PROTIMER->WRAPCNTTOP < time) time = (time - PROTIMER->WRAPCNTTOP) - 1;
   iVar6 = 0;
@@ -142,7 +140,7 @@ bool PROTIMER_CCTimerStart(uint8_t timer,uint32_t time,int32_t mode)
     else bVar7 = (0x100 << (timer & 0xff) & PROTIMER->IF) == 0;
     iVar6++;
     time = iVar6 + PROTIMER->WRAPCNT;
-    if ((mode != 1) || (iVar6 == 6)) break;
+    if ((mode != RAIL_TIME_DELAY) || (iVar6 == 6)) break;
     if (!bVar7) 
 	{
       CORE_ExitCritical(irqState);

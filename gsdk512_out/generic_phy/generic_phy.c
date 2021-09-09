@@ -97,7 +97,7 @@ void GENERIC_PHY_AGC_IRQCallback(void)
 
 
 
-void RADIO_RACRxAbort(undefined4 param_1,undefined4 param_2,int param_3)
+void RADIO_RACRxAbort(void)
 
 {
   CORE_irqState_t irqState;
@@ -365,7 +365,7 @@ bool GENERIC_PHY_PacketTx(void)
   if ((PROTIMER_CCTimerIsEnabled(3) == false) && (PROTIMER_LBTIsActive() == false)) 
   {
     GENERIC_PHY_PacketTxCommon();
-    RAC->CMD = 1;
+    RAC->CMD = RAC_CMD_TXEN_Msk;
     CORE_ExitCritical(irqState);
     return false;
   }
@@ -379,16 +379,12 @@ undefined4 GENERIC_PHY_SchedulePacketRx(undefined4 param_1,int param_2,int param
 
 {
   CORE_irqState_t irqState;
-  int iVar2;
-  int iVar3;
-  uint uVar4;
-  
+
   iVar3 = param_4;
   irqState = CORE_EnterCritical();
   if (param_2 != 2) 
   {
-    iVar2 = PROTIMER_CCTimerIsEnabled(3);
-    if (iVar2 != 0) 
+    if (PROTIMER_CCTimerIsEnabled(3) != false) 
 	{
       CORE_ExitCritical(irqState);
       return 1;
@@ -396,12 +392,9 @@ undefined4 GENERIC_PHY_SchedulePacketRx(undefined4 param_1,int param_2,int param
     PROTIMER_ClearRxEnable();
     PROTIMER_ClearTxEnable();
     scheduledRxLoop = param_5;
-    uVar4 = SEQ->REG000;
-    if (param_5 == '\0') uVar4 = uVar4 & 0xffffffbf; 
-    else uVar4 = uVar4 | 0x40;
-    SEQ->REG000 = uVar4;
-    iVar3 = PROTIMER_ScheduleRxEnable(3,param_1,param_2,&SEQ,iVar3);
-    if (iVar3 == 0) 
+    if (param_5 == '\0') SEQ->REG000 &= 0xffffffbf;
+    else SEQ->REG000 |= 0x40;
+    if (PROTIMER_ScheduleRxEnable(3,param_1,param_2) == false) 
 	{
       CORE_ExitCritical(irqState);
       return 2;
@@ -409,7 +402,7 @@ undefined4 GENERIC_PHY_SchedulePacketRx(undefined4 param_1,int param_2,int param
   }
   if (param_4 != 2) 
   {
-    if ((PROTIMER_CCTimerIsEnabled(3) == 0) && (-1 < (int)(RAC->STATUS << 0x11))) 
+    if ((PROTIMER_CCTimerIsEnabled(3) == 0) && (!(RAC->STATUS & 0x4000)) 
 	{
       CORE_ExitCritical(irqState);
       return 4;
@@ -417,15 +410,11 @@ undefined4 GENERIC_PHY_SchedulePacketRx(undefined4 param_1,int param_2,int param
     scheduledRxHardEnd = param_6;
     if ((param_4 == 1) && (param_2 != 2)) 
 	{
-      iVar3 = PROTIMER_GetCCTime(3);
-      TIMING_RxWarmTimeGet();
-      iVar2 = PROTIMER_UsToPrecntOverflow();
       param_4 = 0;
-      param_3 = param_3 + iVar3 + iVar2;
+      param_3 = param_3 + PROTIMER_GetCCTime(3) + PROTIMER_UsToPrecntOverflow(TIMING_RxWarmTimeGet());
     }
     pendedRxWindowEnd = 0;
-    iVar3 = PROTIMER_ScheduleRxDisable(4,param_3,param_4);
-    if (iVar3 == 0) 
+    if (PROTIMER_ScheduleRxDisable(4,param_3,param_4) == 0) 
 	{
       PROTIMER_CCTimerStop(3);
       PROTIMER_ClearRxEnable();
@@ -463,7 +452,7 @@ undefined4 GENERIC_PHY_SchedulePacketTx(undefined4 param_1,undefined4 param_2)
 void GENERIC_PHY_StopTx(void)
 
 {
-  RAC->CMD = 8;
+  RAC->CMD = RAC_CMD_CLEARTXEN_Msk;
 }
 
 
@@ -471,7 +460,7 @@ void GENERIC_PHY_StopTx(void)
 uint GENERIC_PHY_PacketRxDataHelper(int param_1,uint param_2)
 
 {
-  BUFC_RxBufferBytesAvailable();
+  BUFC_RxBufferBytesAvailable(); //??????
   if (param_1 == 0) BUFC_RxBufferDropBytes(param_2);
   else BUFC_RxBufferReadBytes(param_1,param_2 & 0xff);
   return param_2;
@@ -479,63 +468,56 @@ uint GENERIC_PHY_PacketRxDataHelper(int param_1,uint param_2)
 
 
 
-uint GENERIC_PHY_PacketRxAppendedInfoHelper(uint param_1,void *param_2,undefined4 param_3,undefined4 param_4)
+uint GENERIC_PHY_PacketRxAppendedInfoHelper(uint param_1,void *buf,undefined4 param_3,undefined4 param_4)
 
 {
-  uint uVar1;
   undefined2 uVar2;
   undefined4 uVar3;
   uint uVar4;
   uint uVar5;
-  bool bVar6;
   void *apvStack28 [3];
   
-  uVar1 = FRC->TRAILRXDATA;
-  apvStack28[0] = param_2;
+  apvStack28[0] = buf;
   apvStack28[1] = (void *)param_3;
   apvStack28[2] = (void *)param_4;
-  if (param_2 == NULL) BUFC_RxBufferDropBytes();
+  if (buf == NULL) BUFC_RxBufferDropBytes();
   else 
   {
     BUFC_RxBufferReadBytes(apvStack28,param_1 & 0xff,param_3,&FRC,param_1);
     uVar3 = 0x14;
-    memset(param_2,0,0x14);
-    bVar6 = (int)(uVar1 << 0x1a) < 0;
+    memset(buf,0,0x14);
     uVar5 = param_1;
-    if (bVar6) 
+    if (FRC->TRAILRXDATA & FRC_TRAILRXDATA_RTCSTAMP_Msk) 
 	{
       uVar5 = param_1 - 4 & 0xffff;
       uVar3 = *(undefined4 *)((int)apvStack28 + uVar5);
     }
-    if (bVar6) *(undefined4 *)((int)param_2 + 0x10) = uVar3;
-    if ((int)(uVar1 << 0x1b) < 0) 
+    if (FRC->TRAILRXDATA & FRC_TRAILRXDATA_RTCSTAMP_Msk) *(undefined4 *)((int)buf + 0x10) = *(undefined4 *)((int)apvStack28 + uVar5);
+    if (FRC->TRAILRXDATA & FRC_TRAILRXDATA_PROTIMERCC0WRAPH_Msk) 
 	{
       uVar5 = uVar5 - 2 & 0xffff;
-      *(uint *)((int)param_2 + 0xc) = *(uint *)((int)param_2 + 0xc) | (uint)*(ushort *)((int)apvStack28 + uVar5) << 0x10;
+      *(uint *)((int)buf + 0xc) = *(uint *)((int)buf + 0xc) | (uint)*(ushort *)((int)apvStack28 + uVar5) << 0x10;
     }
-    uVar4 = uVar1 << 0x1c;
-    if ((int)uVar4 < 0) 
+    if (FRC->TRAILRXDATA & FRC_TRAILRXDATA_PROTIMERCC0WRAPL_Msk) 
 	{
       uVar5 = uVar5 - 2 & 0xffff;
-      uVar4 = (uint)*(ushort *)((int)apvStack28 + uVar5) | *(uint *)((int)param_2 + 0xc);
-      *(uint *)((int)param_2 + 0xc) = uVar4;
+      uVar4 = (uint)*(ushort *)((int)apvStack28 + uVar5) | *(uint *)((int)buf + 0xc);
+      *(uint *)((int)buf + 0xc) = uVar4;
     }
     uVar2 = (undefined2)uVar4;
-    bVar6 = (int)(uVar1 << 0x1d) < 0;
-    if (bVar6) 
+    if (FRC->TRAILRXDATA & FRC_TRAILRXDATA_PROTIMERCC0BASE_Msk) 
 	{
       uVar5 = uVar5 - 2 & 0xffff;
       uVar2 = *(undefined2 *)((int)apvStack28 + uVar5);
     }
-    if (bVar6) *(undefined2 *)((int)param_2 + 8) = uVar2;
-    if ((int)(uVar1 << 0x1e) < 0) 
+    if (FRC->TRAILRXDATA & FRC_TRAILRXDATA_PROTIMERCC0BASE_Msk) *(undefined2 *)((int)buf + 8) = uVar2;
+    if (FRC->TRAILRXDATA & FRC_TRAILRXDATA_CRCOK_Msk) 
 	{
       uVar5 = uVar5 - 1 & 0xffff;
-      *(byte *)((int)param_2 + 6) = *(byte *)((int)apvStack28 + uVar5) >> 7;
+      *(byte *)((int)buf + 6) = *(byte *)((int)apvStack28 + uVar5) >> 7;
     }
-    bVar6 = (int)(uVar1 << 0x1f) < 0;
-    if (bVar6) uVar5 = (uint)*(byte *)((int)apvStack28 + (uVar5 - 1 & 0xffff));
-    if (bVar6) *(char *)((int)param_2 + 5) = (char)uVar5;
+    if (FRC->TRAILRXDATA & FRC_TRAILRXDATA_RTCSTAMP_Msk) uVar5 = (uint)*(byte *)((int)apvStack28 + (uVar5 - 1 & 0xffff));
+    if (FRC->TRAILRXDATA & FRC_TRAILRXDATA_RTCSTAMP_Msk) *(char *)((int)buf + 5) = (char)uVar5;
   }
   return param_1;
 }
@@ -557,7 +539,7 @@ uint16_t GENERIC_PHY_PacketRxHelper(int param_1,undefined4 param_2,undefined4 pa
 
 
 
-void GENERIC_PHY_PacketRxGet(uint16_t *param_1)
+void GENERIC_PHY_PacketRxGet(uint16_t *buf)
 
 {
   uint16_t uVar1;
@@ -569,25 +551,25 @@ void GENERIC_PHY_PacketRxGet(uint16_t *param_1)
   undefined4 uStack24;
   undefined4 local_14;
   
-  if (param_1 != NULL) 
+  if (buf != NULL) 
   {
     uVar2 = BUFC_RxBufferGet();
     BUFC_RxLengthReadNext(local_28);
     if (local_28[0] == 0xffff) 
 	{
-      *(undefined4 *)(param_1 + 2) = 0;
-      *param_1 = 0;
+      *(undefined4 *)(buf + 2) = 0;
+      *buf = 0;
     }
     else 
 	{
       uVar1 = GENERIC_PHY_PacketRxHelper((uint)local_28[0],uVar2,&local_24);
-      *(undefined4 *)(param_1 + 2) = uVar2;
-      *param_1 = uVar1;
-      *(undefined4 *)(param_1 + 4) = local_24;
-      *(undefined4 *)(param_1 + 6) = uStack32;
-      *(undefined4 *)(param_1 + 8) = uStack28;
-      *(undefined4 *)(param_1 + 10) = uStack24;
-      *(undefined4 *)(param_1 + 0xc) = local_14;
+      *(undefined4 *)(buf + 2) = uVar2;
+      *buf = uVar1;
+      *(undefined4 *)(buf + 4) = local_24;
+      *(undefined4 *)(buf + 6) = uStack32;
+      *(undefined4 *)(buf + 8) = uStack28;
+      *(undefined4 *)(buf + 10) = uStack24;
+      *(undefined4 *)(buf + 0xc) = local_14;
       if (*(code **)(currentCallbacks + 0x54) != NULL) uVar2 = (**(code **)(currentCallbacks + 0x54))();
       BUFC_RxBufferSet(uVar2);
     }
@@ -599,15 +581,17 @@ void GENERIC_PHY_PacketRxGet(uint16_t *param_1)
 void GENERIC_PHY_StartRx(int param_1)
 
 {
+  CORE_irqState_t irqState;
+  
   if (param_1 != 0) FRC->WCNTCMP0 = param_1 - 1;
   if ((BUFC_RxBufferGet() == 0) && (*(code **)(currentCallbacks + 0x54) != NULL) 
   {
     (**(code **)(currentCallbacks + 0x54))();
     BUFC_RxBufferSet();
   }
-  CORE_EnterCritical();
+  irqState = CORE_EnterCritical();
   SEQ->REG000 &= 0xffffffbf;
-  CORE_ExitCritical();
+  CORE_ExitCritical(irqState);
   BUS_RegMaskedSet(&RAC->RXENSRCEN,2);
 }
 
@@ -634,26 +618,23 @@ void GENERIC_PHY_SeqAtomicLock(void)
   }
 }
 
-
-
-void GENERIC_PHY_RadioIdle(int param_1,int param_2,int param_3)
-
+void GENERIC_PHY_RadioIdle(int abort,int shutdown,int clearflags)
 {
   CORE_irqState_t irqState;
   
   irqState = CORE_EnterCritical();
-  if ((param_1 != 0) || (param_2 != 0)) 
+  if ((abort != 0) || (shutdown != 0)) 
   {
     do 
 	{
-      if ((RAC->STATUS << 4) >> 0x1c != 3) break;
+      if (((RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos) != 3) break;
     } while ((SEQ->REG064 & 0xf) != 3);
-    if (param_2 != 0) 
+    if (shutdown != 0) 
 	{
       GENERIC_PHY_SeqAtomicLock();
-      BUS_RegMaskedSet(&RAC->CTRL,1);
+      BUS_RegMaskedSet(&RAC->CTRL,RAC_CTRL_FORCEDISABLE_Msk);
       BUS_RegMaskedClear(&RAC->SR0,4);
-      while ((RAC->STATUS & 0xf000000) != 0) RAC->CMD = 0x40;
+      while ((RAC->STATUS & RAC_STATUS_STATE_Msk) != 0) RAC->CMD = RAC_CMD_CLEARRXOVERFLOW_Msk;
     }
   }
   BUS_RegMaskedClear(&RAC->SR0,0x80);
@@ -667,20 +648,20 @@ void GENERIC_PHY_RadioIdle(int param_1,int param_2,int param_3)
   GENERIC_PHY_SeqAtomicLock();
   SEQ->REG000 |= 0x40;
   BUS_RegMaskedClear(&RAC->RXENSRCEN,0xff);
-  RAC->CMD = 0x100;
+  RAC->CMD = RAC_CMD_RXDIS_Msk;
   BUS_RegMaskedClear(&RAC->SR0,4);
-  if (param_1 != 0) 
+  if (abort != 0) 
   {
     RADIO_RACRxAbort();
-    RAC->CMD = 0x20;
+    RAC->CMD = RAC_CMD_TXDIS_Msk;
     PROTIMER_LBTStop();
     PROTIMER_CCTimerStop(4);
   }
-  if (param_2 != 0) 
+  if (shutdown != 0) 
   {
     BUFC_RxBufferReset();
-    BUS_RegMaskedClear(&RAC->CTRL,1);
-    if (param_3 != 0) 
+    BUS_RegMaskedClear(&RAC->CTRL,RAC_CTRL_FORCEDISABLE_Msk);
+    if (clearflags != 0) 
 	{
 	  FRC->IFC = FRC->IEN;
       RAC->IFC = RAC->IEN;
@@ -808,33 +789,33 @@ void GENERIC_PHY_FrameConfig(void)
 
 
 
-void GENERIC_PHY_DirectModeConfig(byte *param_1)
+void GENERIC_PHY_DirectModeConfig(byte *config)
 
 {
   uint uVar1;
   
-  if (param_1 != NULL) 
+  if (config != NULL) 
   {
     RADIOCMU_ClockEnable(0x67400,1);
     CMU_ClockEnable(0x82500,1);
-    uVar1 = (uint)*param_1;
-    BUS_RegMaskedClear(&MODEM->CTRL2,0xc00);
+    uVar1 = (uint)*config;
+    BUS_RegMaskedClear(&MODEM->CTRL2,MODEM_CTRL2_TXPINMODE_Msk);
     if (uVar1 == 0) BUS_RegMaskedSet(&MODEM->CTRL2,0);
     else 
 	{
-      uVar1 = (uint)param_1[4];
+      uVar1 = (uint)config[4];
       if (uVar1 == 0) BUS_RegMaskedSet(&MODEM->CTRL2,0x800);
       else 
 	  {
-        BUS_RegMaskedSet(&MODEM->CTRL2,0xc00);
+        BUS_RegMaskedSet(&MODEM->CTRL2,MODEM_CTRL2_TXPINMODE_Msk);
         uVar1 = 4;
       }
       uVar1 = uVar1 | 1;
     }
-    if (param_1[1] != 0) 
+    if (config[1] != 0) 
 	{
-      BUS_RegMaskedClear(&MODEM->CTRL2,0x200);
-      if (param_1[3] == 0) BUS_RegMaskedSet(&MODEM->CTRL2,0x200);
+      BUS_RegMaskedClear(&MODEM->CTRL2,MODEM_CTRL2_RXPINMODE_Msk);
+      if (config[3] == 0) BUS_RegMaskedSet(&MODEM->CTRL2,MODEM_CTRL2_RXPINMODE_Msk);
       else 
 	  {
         BUS_RegMaskedSet(&MODEM->CTRL2,0);
@@ -842,14 +823,14 @@ void GENERIC_PHY_DirectModeConfig(byte *param_1)
       }
       uVar1 = uVar1 | 2;
     }
-    if (param_1[2] == 0) BUS_RegMaskedClear(&MODEM->CTRL2,0x100);
-    else BUS_RegMaskedSet(&MODEM->CTRL2,0x100);
-    MODEM->ROUTELOC0 = (uint)param_1[8] << 0x10 | (uint)param_1[5] << 8 | (uint)param_1[0xb];
-    BUS_RegMaskedClear(&MODEM->ROUTEPEN,7);
+    if (config[2] == 0) BUS_RegMaskedClear(&MODEM->CTRL2,MODEM_CTRL2_RXFRCDIS_Msk);
+    else BUS_RegMaskedSet(&MODEM->CTRL2,MODEM_CTRL2_RXFRCDIS_Msk);
+    MODEM->ROUTELOC0 = (uint)config[8] << 0x10 | (uint)config[5] << 8 | (uint)config[0xb];
+    BUS_RegMaskedClear(&MODEM->ROUTEPEN,MODEM_ROUTEPEN_DCLKPEN_Msk | MODEM_ROUTEPEN_DOUTPEN_Msk | MODEM_ROUTEPEN_DINPEN_Msk); //7);
     BUS_RegMaskedSet(&MODEM->ROUTEPEN,uVar1);
-    if (uVar1 & 0x01) GPIO_PinModeSet(param_1[0xc],param_1[0xd],1,0);
-    if (uVar1 & 0x02) GPIO_PinModeSet(param_1[6],param_1[7],4,0);
-    if (uVar1 & 0x04) GPIO_PinModeSet(param_1[9],param_1[10],4,0);
+    if (uVar1 & 0x01) GPIO_PinModeSet(config[0xc],config[0xd],1,0);
+    if (uVar1 & 0x02) GPIO_PinModeSet(config[6],config[7],4,0);
+    if (uVar1 & 0x04) GPIO_PinModeSet(config[9],config[10],4,0);
   }
 }
 
@@ -987,7 +968,6 @@ bool GENERIC_PHY_EnableAddressFiltering(void)
   tmp = SEQ->REG000;
   SEQ->REG000 |= 0x10;
   CORE_ExitCritical(irqState);
-  //return SUB41((uVar1 << 0x1b) >> 0x1f,0);
   return tmp & 0x10;
 }
 
@@ -1003,7 +983,6 @@ bool GENERIC_PHY_DisableAddressFiltering(void)
   tmp = SEQ->REG000;
   SEQ->REG000 &= 0xffffffef;
   CORE_ExitCritical(irqState);
-  //return SUB41((uVar1 << 0x1b) >> 0x1f,0);
   return tmp & 0x10;
 }
 
@@ -1012,7 +991,6 @@ bool GENERIC_PHY_DisableAddressFiltering(void)
 bool GENERIC_PHY_IsEnabledAddressFiltering(void)
 
 {
-  //return SUB41((SEQ->REG000 << 0x1b) >> 0x1f,0);
   return SEQ->REG000 & 0x10;
 }
 
@@ -1239,10 +1217,9 @@ bool GENERIC_PHY_DisableIEEE802154(void)
   CORE_irqState_t irqState;
   
   irqState = CORE_EnterCritical();
-  SEQ->REG000 = SEQ->REG000;
+  tmp = SEQ->REG000;
   SEQ->REG000 &= 0xff7f;
   CORE_ExitCritical(irqState);
-  //return (bool)((byte)uVar1 >> 7);
   return tmp & 0x80;
 }
 
@@ -1257,10 +1234,10 @@ bool GENERIC_PHY_IsEnabledIEEE802154(void)
 
 
 
-void GENERIC_PHY_TimerStart(uint32_t time,int32_t mode)
+bool GENERIC_PHY_TimerStart(uint32_t time,int32_t mode)
 
 {
-  PROTIMER_CCTimerStart(2,time,mode);
+  return PROTIMER_CCTimerStart(2,time,mode);
 }
 
 
@@ -1303,7 +1280,6 @@ bool GENERIC_PHY_CanModifyAck(void)
 {
   uint32_t state;
 
-  //state = (RAC->STATUS << 4) >> 0x1c; //0x1b
   state = (RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos;
   //if (1 < state - 2) return (state == 7);
   if (state > 3) return (state == 7);

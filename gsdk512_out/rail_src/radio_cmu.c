@@ -15,7 +15,7 @@ void RADIOCMU_ClockEnable(uint32_t clock,bool enable)
   {
     if (uVar1 != 4) 
 	{
-      CMU_ClockEnable();
+      CMU_ClockEnable(clock,enable);
       return;
     }
     pCVar2 = (CMU *)0x400e40c8;

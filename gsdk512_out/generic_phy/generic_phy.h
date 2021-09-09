@@ -20,10 +20,10 @@ void GENERIC_PHY_FrameConfig(void);
 void GENERIC_PHY_DirectModeConfig(byte *param_1);
 
 //TRX control
-void GENERIC_PHY_RadioIdle(int param_1,int param_2,int param_3);
+void GENERIC_PHY_RadioIdle(int abort,int shutdown,int clearflags);
 void GENERIC_PHY_ChannelSet(uint8_t channel);
 uint16_t GENERIC_PHY_ChannelGet(void);
-void RADIO_RACRxAbort(undefined4 param_1,undefined4 param_2,int param_3);
+void RADIO_RACRxAbort(void);
 void GENERIC_PHY_StopTx(void);
 void GENERIC_PHY_TxDisable(void);
 void GENERIC_PHY_PacketTxCommon(void);
@@ -31,7 +31,7 @@ bool GENERIC_PHY_PacketTx(void);
 void GENERIC_PHY_StartRx(int param_1);
 
 //timing control
-void GENERIC_PHY_TimerStart(uint32_t time,int32_t mode);
+bool GENERIC_PHY_TimerStart(uint32_t time,RAIL_TimeMode_t mode)
 void GENERIC_PHY_TimerStop(void);
 uint32_t GENERIC_PHY_TimerGetTimeout(void);
 bool GENERIC_PHY_TimerExpired(void);

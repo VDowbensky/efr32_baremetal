@@ -146,7 +146,7 @@ void txFifoOverflow(void)
 void racStateChange(void)
 
 {
-  RAILCb_RadioStateChanged((RAC->STATUS << 4) >> 0x1c);
+  RAILCb_RadioStateChanged(RAC->STATUS & RAC_STATUS_STATE_Msk);
 }
 
 
@@ -154,7 +154,7 @@ void racStateChange(void)
 void softwareTimerExpired(void)
 
 {
-  timerExpired = 1;
+  timerExpired = true;
   GENERIC_PHY_TimerStop();
   RAILCb_TimerExpired();
 }
@@ -272,13 +272,13 @@ void rxTimeout(int param_1)
   
   if (param_1 == 1) 
   {
-    if (rxConfigEvents << 0x16 < 0) RAILCb_RxRadioStatusExt(0x200);
+    if (rxConfigEvents & 0x200) RAILCb_RxRadioStatusExt(0x200);
   }
   else 
   {
     if (param_1 == 2) 
 	{
-      if (rxConfigEvents << 0x17 < 0) RAILCb_RxRadioStatusExt(0x100);
+      if (rxConfigEvents & 0x100) RAILCb_RxRadioStatusExt(0x100);
     }
   }
 }
@@ -289,7 +289,6 @@ void sequencerInterrupt(int param_1)
 
 {
   uint uVar1;
-  uint uVar2;
   uint uVar3;
   int iVar4;
   int iVar5;
@@ -299,17 +298,15 @@ void sequencerInterrupt(int param_1)
   uint8_t local_1c [2];
   undefined2 local_1a;
   
-  if (param_1 << 10 < 0) RAILCb_RxAckTimeout();
-  if ((param_1 << 0xc < 0) && (GENERIC_PHY_CanModifyAck() != 0)) 
+  if (param_1 & 0x8000) RAILCb_RxAckTimeout();
+  if ((param_1 & 0x80000) && (GENERIC_PHY_CanModifyAck() != false)) 
   {
-    uVar2 = BUFC->BUF1_ADDR;
-    uVar1 = BUFC->BUF1_CTRL;
     uVar3 = RAC->SR1;
-    uVar7 = (uVar3 << 0x18) >> 0x1e;
-    uVar8 = (0x40 << (uVar1 & 0xff)) - 1U & 0xffff;
+    uVar7 = (RAC->SR1 << 0x18) >> 0x1e;
+    uVar8 = (0x40 << (BUF1_CTRL & 0xff)) - 1U & 0xffff;
     uVar1 = SEQ->REG004;
     local_1c[0] = (uint8_t)uVar3 >> 6;
-    iVar4 = uVar2 + 0x20000000;
+    iVar4 = BUFC->BUF1_ADDR + 0x20000000;
     if (uVar7 == 3) 
 	{
       iVar5 = 0;
@@ -338,8 +335,8 @@ void rssiAverageDone(void)
   GENERIC_PHY_ConfigureCallbacks(_enabledCallbacks);
   currentRssiAverage = RADIO_GetRSSI();
   RAIL_RfIdle();
-  if (saveFrameDetDisable == '\0') BUS_RegMaskedClear(&MODEMCTRL0, 0x200000);
-  else BUS_RegMaskedSet(&MODEMCTRL0, 0x200000); 
+  if (saveFrameDetDisable == '\0') BUS_RegMaskedClear(&MODEM->CTRL0, MODEM_CTRL0_DETDIS_Msk);
+  else BUS_RegMaskedSet(&MODEM->CTRL0, MODEM_CTRL0_DETDIS_Msk); 
   RAILCb_RssiAverageDone((int)currentRssiAverage);
   BUS_RegMaskedClear(&AGC->CTRL1,0xffffff00);
   BUS_RegMaskedSet(&AGC->CTRL1,saveRssiPeriod & 0xffffff00);
@@ -353,7 +350,7 @@ bool userTransmitStarted(void)
 {
   if (RAC->SR0 & 0x80 != 0) 
   {
-    if (!(PROTIMER->STATUS & 4)) return PROTIMER->CC3_CTRL & 1 ^ 1;
+    if (!(PROTIMER->STATUS & PROTIMER_STATUS_LBTRUNNING_Msk)) return PROTIMER->CC3_CTRL & PROTIMER_CC3_CTRL_ENABLE_Msk ^ 1;
   }
   return false;
 }
@@ -440,21 +437,17 @@ uint8_t RFHAL_Init(int param_1)
 //uint RFHAL_SetPtiProtocol(uint param_1,undefined4 param_2,undefined4 param_3,uint param_4)
 RAIL_Status_t RFHAL_SetPtiProtocol(RAIL_PtiProtocol_t protocol)
 {
-  uint uVar1;
   uint uVar2;
-  int unaff_r4;
   
-  uVar2 = param_1 & 0xfffffff0;
+  uVar2 = protocol & 0xfffffff0;
   if (uVar2 == 0) 
   {
-    unaff_r4 = 0x21000f64;
-    uVar1 = SEQ->REG06C;
-    param_4 = SEQ->REG06C & 0xfffffff0 | param_1 & 0xf;
-    param_1 = uVar2;
+    param_4 = SEQ->REG06C & 0xfffffff0 | protocol & 0xf;
+    protocol = uVar2;
   }
-  if (uVar2 == 0) *(uint *)(unaff_r4 + 8) = param_4;
-  else param_1 = 1;
-  return param_1;
+  if (uVar2 == 0) SEQ->REG06C = param_4;
+  else protocol = 1;
+  return protocol;
 }
 
 
@@ -506,6 +499,7 @@ RAIL_RadioState_t RFHAL_StateGet(void)
         if (!bVar2) return RAIL_RF_STATE_IDLE;
       }
       return RAIL_RF_STATE_TX;
+	  
     }
     if (state != 0x3000000) 
 	{
@@ -543,6 +537,7 @@ int RFHAL_HeadedToIdle(void)
   int iVar3;
   uint uVar4;
   bool bVar5;
+  uint32_t state;
     
   irqState = CORE_EnterCritical();
   iVar3 = PROTIMER_CCTimerIsEnabled(3);
@@ -551,12 +546,12 @@ int RFHAL_HeadedToIdle(void)
     uVar4 = (RAC->STATUS);
     uVar1 = (RAC->SR0);
     CORE_ExitCritical(irqState);
-    if ((((uVar4 & 0xc0000000) == 0) && (-1 < (int)(uVar1 << 0x18))) && (uVar4 = uVar4 & 0xf000000, uVar4 != 0x6000000)) 
+    if ((((RAC->STATUS & 0xc0000000) == 0) && (RAC->SR0 & 0x80) && (RAC->STATUS & RAC_STATUS_STATE_Msk != 0x6000000)) 
 	{
-      if (uVar4 < 0x6000001) bVar5 = uVar4 == 0x3000000;
+      if (RAC->STATUS < 0x6000001) bVar5 = uVar4 == 0x3000000;
       else 
 	  {
-        if (uVar4 == 0x9000000) return 0;
+        if (RAC->STATUS == 0x9000000) return 0;
         bVar5 = uVar4 == 0xc000000;
       }
       if (!bVar5) iVar3 = 1;
@@ -577,7 +572,7 @@ uint8_t RFHAL_TxDataLoad(RAIL_TxData_t *txData)
   uint32_t status;
   
   irqState = CORE_EnterCritical();
-  status = (RAC->STATUS << 4) >> 0x1c;
+  status = (RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos;
   if (((status - 7 < 3) || (status == 0xc)) && ((RAC->SR0 & 0x10000)) 
   {  
 	CORE_ExitCritical(irqState);
@@ -827,14 +822,14 @@ bool RFHAL_AverageRSSIReady(void)
   return isRssiReady;
 }
 
-typedef struct RAIL_ScheduleRxConfig {
+/* typedef struct RAIL_ScheduleRxConfig {
   uint32_t start;
   RAIL_TimeMode_t startMode;
   uint32_t end;
   RAIL_TimeMode_t endMode;
   uint8_t rxTransitionEndSchedule;
   uint8_t hardWindowEnd;
-} RAIL_ScheduleRxConfig_t;
+} RAIL_ScheduleRxConfig_t; */
 
 
 
@@ -900,10 +895,10 @@ undefined4 RFHAL_EnableRxRawCapture(int param_1,uint param_2)
 {
   if (param_1 - 1U & 0xff < 3) param_2 = *(uint *)(&CSWTCH_104 + (param_1 - 1U & 0xff) * 4);
   if (2 < uVar2) param_2 = 0;
-  MODEM->CTRL0 &= 0xc7ffffff;
+  MODEM->CTRL0 &= ~MODEM_CTRL0_DEMODRAWDATASEL_Msk;
   MODEM->CTRL0 |= param_2;
-  BUS_RegMaskedSet(&MODEM->CTRL0,0x200000);
-  FRC->BUFFERMODE &= 0xfffffff9;
+  BUS_RegMaskedSet(&MODEM->CTRL0,MODEM_CTRL0_DETDIS_Msk);
+  FRC->BUFFERMODE &= ~FRC_BUFFERMODE_RXBUFFERMODE_Msk; //0xfffffff9;
   FRC->BUFFERMODE |= 4;
   BUS_RegMaskedSet(&RAC->SR3,0x10000000);
   FRC->RAWCTRL = 4;
@@ -915,11 +910,11 @@ undefined4 RFHAL_EnableRxRawCapture(int param_1,uint param_2)
 void RFHAL_DisableRxRawCapture(void)
 
 {
-  BUS_RegMaskedClear(&FRC->BUFFERMODE,6);
+  BUS_RegMaskedClear(&FRC->BUFFERMODE,FRC_BUFFERMODE_RXBUFFERMODE_Msk);
   FRC->RAWCTRL = 0;
   BUS_RegMaskedClear(&RAC->SR3,0x10000000);
-  BUS_RegMaskedClear(&MODEM->CTRL0,0x200000);
-  BUS_RegMaskedClear(&MODEM->CTRL0,0x38000000);
+  BUS_RegMaskedClear(&MODEM->CTRL0,MODEM_CTRL0_DETDIS_Msk);
+  BUS_RegMaskedClear(&MODEM->CTRL0,MODEM_CTRL0_DEMODRAWDATASEL_Msk);
 }
 
 
@@ -927,7 +922,7 @@ void RFHAL_DisableRxRawCapture(void)
 void RFHAL_EnableRxAppendedInfo(void)
 
 {
-  FRC->TRAILRXDATA = 0x1b;
+  FRC->TRAILRXDATA = FRC_TRAILRXDATA_PROTIMERCC0WRAPH_Msk | FRC_TRAILRXDATA_PROTIMERCC0WRAPL_Msk | FRC_TRAILRXDATA_CRCOK_Msk | FRC_TRAILRXDATA_RSSI_Msk; //0x1b;
 }
 
 
@@ -961,13 +956,13 @@ uint32_t RFHAL_RxIntEnable(uint32_t cbToEnable)
 
 RAIL_Status_t RFHAL_SetRxOptions(uint32_t options)
 {
-  if ((RAC->STATUS << 4) >> 0x1c == 3) return RAIL_STATUS_INVALID_STATE;
+  if ((RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos == 3) return RAIL_STATUS_INVALID_STATE;
   options &= 1;
-  if (options == 0) BUS_RegMaskedClear(&FRC->RXCTRL,1);
+  if (options == 0) BUS_RegMaskedClear(&FRC->RXCTRL,FRC_RXCTRL_STORECRC_Msk);
   else 
   {
     options = 0;
-    BUS_RegMaskedSet(&FRC->RXCTRL,1);
+    BUS_RegMaskedSet(&FRC->RXCTRL,FRC_RXCTRL_STORECRC_Msk);
   }
   return (RAIL_Status_t)options;
 }
@@ -995,8 +990,8 @@ uint32_t RFHAL_TxIntEnable(uint32_t cbToEnable)
 
 RAIL_Status_t RFHAL_ErrorConfig(uint8_t ignoreErrors)
 {
-  if ((ignoreErrors & 1) == 0) BUS_RegMaskedClear(&FRC->RXCTRL,2);
-  else BUS_RegMaskedSet(&FRC->RXCTRL,2);
+  if ((ignoreErrors & 1) == 0) BUS_RegMaskedClear(&FRC->RXCTRL,FRC_RXCTRL_ACCEPTCRCERRORS_Msk);
+  else BUS_RegMaskedSet(&FRC->RXCTRL,FRC_RXCTRL_ACCEPTCRCERRORS_Msk);
   return RAIL_STATUS_NO_ERROR;
 }
 
@@ -1031,23 +1026,25 @@ void RAIL_TimerCancel(void)
 
 RAIL_Status_t RAIL_TimerSet(uint32_t time, RAIL_TimeMode_t mode)
 {
-  uint8_t bVar1;
-  uint32_t tmp;
-  int iVar4;
-  
-  if (mode != 0) iVar4 = 1;
-  if (mode == 2) 
+  RAIL_Status_t result;
+
+  CORE_irqState_t irqState;
+  if (mode == RAIL_TIME_DISABLED) 
   {
     RAIL_TimerCancel();
     return RAIL_STATUS_NO_ERROR;
   }
-  tmp = CORE_EnterCritical();
-  _enabledCallbacks = _enabledCallbacks | 0x2000000;
-  GENERIC_PHY_ConfigureCallbacks(_enabledCallbacks);
-  timerExpired = 0;
-  bVar1 = GENERIC_PHY_TimerStart(PROTIMER_UsToPrecntOverflow(time),iVar4);
-  CORE_ExitCritical(tmp);
-  return (RAIL_Status_t)(bVar1 ^ 1);
+  else 
+  {
+	irqState = CORE_EnterCritical();
+	_enabledCallbacks = _enabledCallbacks | 0x2000000;
+	GENERIC_PHY_ConfigureCallbacks(_enabledCallbacks);
+	timerExpired = 0;
+	if (GENERIC_PHY_TimerStart(PROTIMER_UsToPrecntOverflow(time),mode)==true) result = RAIL_STATUS_NO_ERROR;
+	else result = RAIL_STATUS_INVALID_STATE; //not sure but maybe
+	CORE_ExitCritical(irqState);
+	return result;
+  }
 }
 
 
@@ -1091,7 +1088,7 @@ uint32_t RAIL_RfSense(RAIL_RfSenseBand_t band, uint32_t senseTime, bool enableCb
   uint local_c;
   
   local_14 = RAIL_RFSENSE_Callback;
-  if (param_3 == 0) local_14 = (code *)0x0;
+  if (param_3 == 0) local_14 = NULL;
   local_c._0_2_ = CONCAT11(1,param_1);
   local_c = param_4 & 0xffff0000 | (uint)(uint16_t)local_c;
   local_10 = param_2;
@@ -1175,7 +1172,7 @@ void RFHAL_StartBerRx(void)
   RFTEST_SaveRadioConfiguration();
   FRC->SNIFFCTRL = 0;
   FRC->DFLCTRL = 5;
-  BUS_RegMaskedClear(&MODEM->TIMING,0xf00);
+  BUS_RegMaskedClear(&MODEM->TIMING,MODEM_TIMING_TIMINGBASES_Msk);
   PTR_rxFifoAlmostFull_00011398 = &RFTEST_BerEmptyBufcAndUpdateStats;
   BUFC_SetCallbacks();
   bufcEnabledCallbacks &= 0xffffff00;
@@ -1183,7 +1180,7 @@ void RFHAL_StartBerRx(void)
   BUFC_ConfigureCallbacks(bufcEnabledCallbacks);
   BUFC->BUF1_THRESHOLDCTRL &= 0xfffff000;
   BUFC->BUF1_THRESHOLDCTRL |= 100;
-  BUS_RegMaskedSet(&BUFC->IEN,0x400);
+  BUS_RegMaskedSet(&BUFC->IEN,BUFC_IEN_BUF1THR_Msk);
   RFTEST_StartRx();
 }
 
@@ -1196,7 +1193,7 @@ void RFHAL_StopBerRx(void)
   bufcEnabledCallbacks &= 0xffffff00;
   bufcEnabledCallbacks |= bufcEnabledCallbacks & 0xfb);
   BUFC_ConfigureCallbacks(bufcEnabledCallbacks);
-  BUS_RegMaskedClear(&BUFC->IEN,0x400);
+  BUS_RegMaskedClear(&BUFC->IEN,BUFC_IEN_BUF1THR_Msk);
   RFTEST_RestoreRadioConfiguration();
 }
 
@@ -1283,8 +1280,8 @@ uint32_t RFHAL_SetChannel(int param_1,uint8_t *cfg,int param_3)
     do 
 	{
       if (RFHAL_HeadedToIdle() == 0) break;
-    } while ((RAC->STATUS & 0xf000000) != 0);
-    if ((RAC->STATUS & 0xf000000) != 0) return 2;
+    } while ((RAC->STATUS & RAC_STATUS_STATE_Pos) != 0);
+    if ((RAC->STATUS & RAC_STATUS_STATE_Pos) != 0) return 2;
     if (protChChngCB != NULL) (*protChChngCB)(param_1);
     if (param_3 != 0) SYNTH_Config(*(uint32_t *)(cfg + 8),*(uint32_t *)(cfg + 4));
     GENERIC_PHY_ChannelSet(param_1 - (uint)*cfg & 0xff);
@@ -1337,32 +1334,28 @@ void RFHAL_AutoAckConfig(RAIL_AutoAckConfig_t *config)
 }
 
 
-//typedef struct RAIL_AutoAckData {
-//  uint8_t *dataPtr; /**< Pointer to ack data to transmit */
-//  uint8_t dataLength; /**< Number of ack bytes to transmit */
-//} RAIL_AutoAckData_t;
-//undefined4 RFHAL_AutoAckLoadBuffer(undefined4 *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
 RAIL_Status_t RFHAL_AutoAckLoadBuffer(RAIL_AutoAckData_t *ackData)
 {
-  uint uVar1;
   CORE_irqState_t irqState;
-  uint uVar3;
-  RAC *pRVar4;
-  undefined4 uVar5;
+  uint32_t state;
   
   irqState = CORE_EnterCritical();
   BUS_RegMaskedSet(&RAC->SR0,2);
-  pRVar4 = &RAC;
-  uVar3 = (RAC->STATUS << 4) >> 0x1c;
-  if (((uVar3 - 7 < 3) || (uVar3 == 0xc)) && (uVar1 = (RAC->SR0), pRVar4 = (RAC *)(uVar1 << 0xe), (int)pRVar4 < 0)) uVar5 = 3;
+  state = (RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos;
+  if (((state - 7 < 3) || (state == 0xc)) && (RAC->SR0 & 0x20000)) 
+  {
+	BUS_RegMaskedClear(&RAC->SR0,2);
+	CORE_ExitCritical(irqState);
+	return RAIL_STATUS_INVALID_CALL;
+  }
+  
   else 
   {
-    BUFC_TxAckBufferSet(*param_1,*(undefined *)(param_1 + 1),uVar3,pRVar4,param_4);
-    uVar5 = 0;
+    BUFC_TxAckBufferSet(*ackData->dataPtr,ackData->dataLength);
+	BUS_RegMaskedClear(&RAC->SR0,2);
+	CORE_ExitCritical(irqState);
+	return RAIL_STATUS_NO_ERROR;
   }
-  BUS_RegMaskedClear(&RAC->SR0,2);
-  CORE_ExitCritical(irqState);
-  return uVar5;
 }
 
 
@@ -1435,20 +1428,21 @@ bool RFHAL_AutoAckUseTxBuffer(void)
 
 {
   CORE_irqState_t irqState;
-  uint uVar2;
-  bool bVar3;
   
   irqState = CORE_EnterCritical();
   if (GENERIC_PHY_CanModifyAck() != 0) 
   {
     BUS_RegMaskedSet(&RAC->SR0,2);
-    bVar3 = -1 < (int)(RAC->SR0 << 0xe);
-    if (bVar3) BUS_RegMaskedSet(&RAC->SR2,0x40);
-    uVar2 = (uint32_t)bVar3;
+    if (RAC->SR0 & 0x20000) BUS_RegMaskedSet(&RAC->SR2,0x40);
     BUS_RegMaskedClear(&RAC->SR0,2);
+	CORE_ExitCritical(irqState);
+	return RAC->SR0 & 0x20000;
   }
-  CORE_ExitCritical(irqState);
-  return uVar2;
+  else
+  {
+	CORE_ExitCritical(irqState);
+	return false;
+  }
 }
 
 
@@ -1457,8 +1451,6 @@ bool RFHAL_AutoAckCancelAck(void)
 
 {
   CORE_irqState_t irqState;
-  uint uVar2;
-  bool bVar3;
   
   irqState = CORE_EnterCritical();
   if (GENERIC_PHY_CanModifyAck() == 0) 
@@ -1469,15 +1461,11 @@ bool RFHAL_AutoAckCancelAck(void)
   else
   {
     BUS_RegMaskedSet(&RAC->SR0,2);
-    uVar2 = (RAC->SR0);
-    bVar3 = -1 < (int)(RAC->SR0 << 0xe);
-    if (-1 < (int)(RAC->SR0 << 0xe)) BUS_RegMaskedSet(&RAC->SR2,0x20);
-    uVar2 = (uint32_t)bVar3;
+    if (RAC->SR0 & 0x20000) BUS_RegMaskedSet(&RAC->SR2,0x20);
     BUS_RegMaskedClear(&RAC->SR0,2);
 	CORE_ExitCritical(irqState);
-	return uVar2;
+	return RAC->SR0 & 0x20000;
   }
-
 }
 
 
@@ -1547,35 +1535,30 @@ uint16_t RFHAL_ReadRxFifo(uint8_t *dataPtr, uint16_t readLength)
 //void RFHAL_ReadRxFifoAppendedInfo(undefined4 *param_1)
 void RFHAL_ReadRxFifoAppendedInfo(RAIL_AppendedInfo_t *appendedInfo)
 {
-  uint uVar1;
-  undefined4 uVar2;
   undefined auStack28 [5];
   undefined local_17;
   uint8_t local_16;
   undefined4 local_10;
   
-  uVar2 = RADIO_RxTrailDataLength();
-  GENERIC_PHY_PacketRxAppendedInfoHelper(uVar2,auStack28);
+  GENERIC_PHY_PacketRxAppendedInfoHelper(RADIO_RxTrailDataLength(),auStack28);
   FRC->IEN._0_1_;
   
-  uVar1 = FRC->IF;
-  *(uint8_t *)(param_1 + 1) = *(uint8_t *)(param_1 + 1) & 0xfd | (uint8_t)((((uVar1 ^ 0x80) << 0x18) >> 0x1f) << 1);
-  FRC->IFC = 0x80;
+  *(uint8_t *)(appendedInfo + 1) = *(uint8_t *)(appendedInfo + 1) & 0xfd | (uint8_t)((((FRC->IF ^ FRC_IFS_BLOCKERROR_Msk) << 0x18) >> 0x1f) << 1);
+  FRC->IFC = FRC_IFC_BLOCKERROR_Msk; //0x80;
   if (local_16 != 0) local_16 = 1;
-  *(undefined *)((int)param_1 + 5) = local_17;
-  *(uint8_t *)(param_1 + 1) = *(uint8_t *)(param_1 + 1) & 0xfe | local_16 & 1;
-  uVar2 = TIMING_GetRxTimestampUs(local_10);
-  *param_1 = uVar2;
-  *(undefined *)((int)param_1 + 7) = 0;
+  *(undefined *)((int)appendedInfo + 5) = local_17;
+  *(uint8_t *)(appendedInfo + 1) = *(uint8_t *)(appendedInfo + 1) & 0xfe | local_16 & 1;
+  *appendedInfo = TIMING_GetRxTimestampUs(local_10);
+  *(undefined *)((int)appendedInfo + 7) = 0;
 }
 
 
 uint16_t RFHAL_SetRxFifoThreshold(uint16_t rxThreshold)
 {
-  if (rxThreshold < 0x201) rxThreshold = rxThreshold | BUFC->BUF1_THRESHOLDCTRL & 0xfffff000;
-  else rxThreshold = BUFC->BUF1_THRESHOLDCTRL & 0xfffff000 | 0x200;
+  if (rxThreshold < 0x201) rxThreshold = 0x200;
+  BUFC->BUF1_THRESHOLDCTRL &= ~BUFC_BUF1_THRESHOLDCTRL_THRESHOLD_Msk;
   BUFC->BUF1_THRESHOLDCTRL = rxThreshold;
-  return BUFC->BUF1_THRESHOLDCTRL & 0xfff;
+  return BUFC->BUF1_THRESHOLDCTRL & BUFC_BUF1_THRESHOLDCTRL_THRESHOLD_Msk;
 }
 
 
@@ -1583,14 +1566,14 @@ uint16_t RFHAL_SetRxFifoThreshold(uint16_t rxThreshold)
 uint16_t RFHAL_GetTxFifoThreshold(void)
 
 {
-  return (BUFC->BUF0_THRESHOLDCTRL & 0xfff) + 1;
+  return (BUFC->BUF0_THRESHOLDCTRL & BUFC_BUF1_THRESHOLDCTRL_THRESHOLD_Msk) + 1;
 }
 
 uint16_t RFHAL_SetTxFifoThreshold(uint16_t txThreshold)
 {
   if (0x1ff < txThreshold) txThreshold = 0x200;
-  BUFC->BUF0_THRESHOLDCTRL &= 0xfffff000;
-  BUFC->BUF0_THRESHOLDCTRL |= (txThreshold - 1) & 0xffff;
+  BUFC->BUF0_THRESHOLDCTRL &= ~BUFC_BUF0_THRESHOLDCTRL_THRESHOLD_Msk;
+  BUFC->BUF0_THRESHOLDCTRL |= (txThreshold - 1) & BUFC_BUF0_THRESHOLDCTRL_THRESHOLD_Msk;
   return RFHAL_GetTxFifoThreshold();
 }
 
@@ -1599,7 +1582,7 @@ uint16_t RFHAL_SetTxFifoThreshold(uint16_t txThreshold)
 uint16_t RFHAL_GetRxFifoThreshold(void)
 
 {
-  return BUFC->BUF1_THRESHOLDCTRL & 0xfff;
+  return BUFC->BUF1_THRESHOLDCTRL & BUFC_BUF1_THRESHOLDCTRL_THRESHOLD_Msk;
 }
 
 
@@ -1607,7 +1590,7 @@ uint16_t RFHAL_GetRxFifoThreshold(void)
 void RFHAL_EnableRxFifoThreshold(void)
 
 {
-  BUS_RegMaskedSet(&BUFC->IEN,0x400);
+  BUS_RegMaskedSet(&BUFC->IEN,BUFC_IEN_BUF1THR_Msk);
 }
 
 
@@ -1615,7 +1598,7 @@ void RFHAL_EnableRxFifoThreshold(void)
 void RFHAL_DisableRxFifoThreshold(void)
 
 {
-  BUS_RegMaskedClear(&BUFC->IEN,0x400);
+  BUS_RegMaskedClear(&BUFC->IEN,BUFC_IEN_BUF1THR_Msk);
 }
 
 
@@ -1639,10 +1622,10 @@ uint16_t RFHAL_GetRxFifoBytesAvailable(void)
 void RFHAL_ResetTxFifo(void)
 
 {
-  BUS_RegMaskedClear(&BUFC->IEN,4);
-  BUFC->BUF0_CMD = 1;
-  BUS_RegMaskedClear(&BUFC->BUF0_THRESHOLDCTRL,0x2000);
-  BUS_RegMaskedSet(&BUFC->IEN,4);
+  BUS_RegMaskedClear(&BUFC->IEN,BUFC_IEN_BUF0THR_Msk);
+  BUFC->BUF0_CMD = BUFC_BUF0_CMD_CLEAR_Msk;
+  BUS_RegMaskedClear(&BUFC->BUF0_THRESHOLDCTRL,BUFC_BUF0_THRESHOLDCTRL_THRESHOLDMODE_Msk);
+  BUS_RegMaskedSet(&BUFC->IEN,BUFC_IEN_BUF0THR_Msk);
 }
 
 
@@ -1650,39 +1633,52 @@ void RFHAL_ResetTxFifo(void)
 void RFHAL_ResetRxFifo(void)
 
 {
-  BUS_RegMaskedClear(&BUFC->IEN,0x400);
-  BUFC->BUF1_CMD = 1;
-  BUS_RegMaskedClear(&BUFC->BUF1_THRESHOLDCTRL,0x2000);
-  BUS_RegMaskedSet(&BUFC->IEN,0x400);
+  BUS_RegMaskedClear(&BUFC->IEN,BUFC_IF_BUF1THR_Msk);
+  BUFC->BUF1_CMD = BUFC_BUF1_CMD_CLEAR_Msk;
+  BUS_RegMaskedClear(&BUFC->BUF1_THRESHOLDCTRL,BUFC_BUF1_THRESHOLDCTRL_THRESHOLDMODE_Msk);
+  BUS_RegMaskedSet(&BUFC->IEN,BUFC_IF_BUF1THR_Msk);
 }
+
+
+typedef struct {
+  RAIL_TxDataSource_t txSource; /**< Source of TX Data */
+  RAIL_RxDataSource_t rxSource; /**< Source of RX Data */
+  RAIL_DataMethod_t txMethod; /**< Method of providing transmit data */
+  RAIL_DataMethod_t rxMethod; /**< Method of retrieving receive data */
+} RAIL_DataConfig_t;
+
+typedef enum{
+  TX_PACKET_DATA, /**< Use the frame hardware to packetize data */
+} RAIL_TxDataSource_t;
 
 
 RAIL_Status_t RFHAL_DataConfig(RAIL_DataConfig_t *dataConfig)
 {
-  if (*(char *)(dataConfig + 2) == *(char *)(dataConfig + 3)) 
+  //if (*(char *)(dataConfig + 2) == *(char *)(dataConfig + 3)) 
+  if(dataConfig->txMethod == dataConfig->rxMethod)
   {
-    if (*(char *)(dataConfig + 1) == '\0') RFHAL_DisableRxRawCapture();
+    if (dataConfig->rxSource == RX_PACKET_DATA) RFHAL_DisableRxRawCapture();
     else RFHAL_EnableRxRawCapture();
-    if (*(char *)(dataConfig + 2) == '\0') bufcEnabledCallbacks = bufcEnabledCallbacks & 0xffffff00 | (uint)((uint8_t)bufcEnabledCallbacks & 0xfe);
+    if (dataConfig->txMethod == PACKET_MODE) bufcEnabledCallbacks = bufcEnabledCallbacks & 0xffffff00 | (uint)((uint8_t)bufcEnabledCallbacks & 0xfe);
     else 
 	{
       bufcEnabledCallbacks = bufcEnabledCallbacks & 0xffffff00 | (uint)((uint8_t)bufcEnabledCallbacks | 1);
       RFHAL_ResetTxFifo();
     }
-    if (*(char *)(dataConfig + 3) == '\0') 
+    if (dataConfig->rxMethod == PACKET_MODE) 
 	{
       bufcEnabledCallbacks = bufcEnabledCallbacks & 0xffffff00 | (uint)((uint8_t)bufcEnabledCallbacks & 0xfb);
-      BUS_RegMaskedSet(&FRC->RXCTRL,0x60);
+      BUS_RegMaskedSet(&FRC->RXCTRL,FRC_RXCTRL_BUFRESTORERXABORTED_Msk | FRC_RXCTRL_BUFRESTOREFRAMEERROR_Msk); //0x60);
       BUS_RegMaskedClear(&RAC->SR0,0x40);
-      BUS_RegMaskedClear(&FRC->RXCTRL,2);
+      BUS_RegMaskedClear(&FRC->RXCTRL,FRC_RXCTRL_ACCEPTCRCERRORS_Msk); //2);
     }
     else 
 	{
       bufcEnabledCallbacks = bufcEnabledCallbacks | 4;
-      BUS_RegMaskedClear(&FRC->RXCTRL,0x60);
+      BUS_RegMaskedClear(&FRC->RXCTRL,FRC_RXCTRL_BUFRESTORERXABORTED_Msk | FRC_RXCTRL_BUFRESTOREFRAMEERROR_Msk);
       RFHAL_ResetRxFifo();
       BUS_RegMaskedSet(&RAC->SR0,0x40);
-      BUS_RegMaskedSet(&FRC->RXCTRL,2);
+      BUS_RegMaskedSet(&FRC->RXCTRL,FRC->RXCTRL,FRC_RXCTRL_ACCEPTCRCERRORS_Msk);
     }
     BUFC_ConfigureCallbacks(bufcEnabledCallbacks);
     return RAIL_STATUS_NO_ERROR;
@@ -1694,14 +1690,14 @@ RAIL_Status_t RFHAL_DataConfig(RAIL_DataConfig_t *dataConfig)
 uint16_t RFHAL_SetFixedLength(uint16_t length)
 
 {
-  if (((FRC->DFLCTRL & 7) != 0) && ((FRC->DFLCTRL & 7) != 5)) return 0xffff;
+  if (((FRC->DFLCTRL & FRC_DFLCTRL_DFLMODE_Msk) != 0) && ((FRC->DFLCTRL & FRC_DFLCTRL_DFLMODE_Msk) != 5)) return 0xffff;
   if (length == 0) 
   {
-	FRC->DFLCTRL &= 0xfffffff8;
+	FRC->DFLCTRL &= ~FRC_DFLCTRL_DFLMODE_Msk;
 	FRC->DFLCTRL |= 5;
     return 0;
   }
-  BUS_RegMaskedClear(&FRC->DFLCTRL,7);
+  BUS_RegMaskedClear(&FRC->DFLCTRL,FRC_DFLCTRL_DFLMODE_Msk);
   if (0xfff < length) length = 0x1000;
   FRC->WCNTCMP0 = length - 1;
   return length;

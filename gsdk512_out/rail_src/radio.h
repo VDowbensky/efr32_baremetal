@@ -50,8 +50,8 @@ uint32_t RADIO_ComputeTxSymbolRate(void);
 uint32_t RADIO_ComputeTxBitRate(void);
 int32_t RADIO_GetRSSI(void);
 
-uint32_t RADIO_SetAgcCcaParams(int32_t param_1,uint32_t param_2);
-bool RADIO_AGCCCAThresholdSet(uint8_t param_1);
+uint32_t RADIO_SetAgcCcaParams(int32_t param_1,int8_t threshold);
+bool RADIO_AGCCCAThresholdSet(int8_t threshold);
 uint32_t RADIO_CalcRssiPeriod(uint param_1);
 
 void RADIO_SetCRCInitVal(uint32_t val);

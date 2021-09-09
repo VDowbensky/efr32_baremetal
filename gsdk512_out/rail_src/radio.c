@@ -188,10 +188,10 @@ void RADIO_Config(int param_1)
 
 
 
-void RADIO_RegisterIrqCallback(int param_1,undefined4 param_2)
+void RADIO_RegisterIrqCallback(int irqnumber,undefined4 callback)
 
 {
-  (&EFRDRV_irqClbk)[param_1] = param_2;
+  (&EFRDRV_irqClbk)[irqnumber] = callback;
 }
 
 
@@ -473,21 +473,26 @@ int32_t RADIO_GetRSSI(void)
   do 
   {
     irqState = CORE_EnterCritical();
-	status_before = RAC->STATUS & 0xf000000;
-    rssi = (int16_t)(AGC->RSSI >> 6);
-	status_after = RAC->STATUS & 0xf000000;
+	//status_before = RAC->STATUS & RAC_STATUS_STATE_Msk;
+	status_before = (RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos;
+    //rssi = (int16_t)(AGC->RSSI >> 6);
+	rssi = (int16_t)(AGC->RSSI >> AGC_RSSI_RSSIFRAC_Pos);
+	//status_after = RAC->STATUS & RAC_STATUS_STATE_Msk;
+	status_after = (RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos;
     CORE_ExitCritical(irqState);
     if (rssi != -0x200) 
 	{
-	  if (((status_after != 0x2000000) && (status_after != 0x3000000)) || ((status_before != 0x2000000) && (status_before != 0x3000000))) rssi = -0x200;
+	  //if (((status_after != 0x2000000) && (status_after != 0x3000000)) || ((status_before != 0x2000000) && (status_before != 0x3000000))) rssi = -0x200;
+	  if (((status_after != 2) && (status_after != 3)) || ((status_before != 2) && (status_before != 3))) rssi = -0x200;
       break;
     }
-  } while ((status_after == 0x2000000 || status_after == 0x3000000) && (status_before == 0x2000000 || status_before == 0x3000000));
+  } //while ((status_after == 0x2000000 || status_after == 0x3000000) && (status_before == 0x2000000 || status_before == 0x3000000));
+  while ((status_after == 2) || (status_after == 3) && (status_before == 2) || (status_before == 3));
   return (int32_t)rssi;
 }
 
 
-uint32_t RADIO_SetAgcCcaParams(int32_t param_1,uint32_t param_2)
+uint32_t RADIO_SetAgcCcaParams(int32_t param_1,int8_t threshold)
 
 {
   uint32_t i;
@@ -496,21 +501,21 @@ uint32_t RADIO_SetAgcCcaParams(int32_t param_1,uint32_t param_2)
   {
     if (i == 0x10) return 1;
   }
-  BUS_RegMaskedClear(&AGC->CTRL1,0xf00);
-  BUS_RegMaskedSet(&AGC->CTRL1,i << 8);
-  if ((AGC->CTRL1 & 0xff) == 0x80) return 2;
-  BUS_RegMaskedClear(&AGC->CTRL1,0xff);
-  BUS_RegMaskedSet(&AGC->CTRL1,param_2 & 0xff);
+  BUS_RegMaskedClear(&AGC->CTRL1,AGC_CTRL1_RSSIPERIOD_Msk);
+  BUS_RegMaskedSet(&AGC->CTRL1,i << AGC_CTRL1_RSSIPERIOD_Pos);
+  if ((AGC->CTRL1 & AGC_CTRL1_CCATHRSH_Msk) == 0x80) return 2;
+  BUS_RegMaskedClear(&AGC->CTRL1,AGC_CTRL1_CCATHRSH_Msk);
+  BUS_RegMaskedSet(&AGC->CTRL1,threshold & AGC_CTRL1_CCATHRSH_Msk);
   return 0;
 }
 
 
 
-bool RADIO_AGCCCAThresholdSet(uint8_t param_1)
+bool RADIO_AGCCCAThresholdSet(int8_t threshold)
 
 {
-  BUS_RegMaskedClear(&AGC->CTRL1,0xff);
-  BUS_RegMaskedSet(&AGC->CTRL1,(uint32_t)param_1);
+  BUS_RegMaskedClear(&AGC->CTRL1,AGC_CTRL1_CCATHRSH_Msk);
+  BUS_RegMaskedSet(&AGC->CTRL1,(uint32_t)threshold);
   return true;
 }
 
@@ -530,7 +535,7 @@ uint32_t RADIO_CalcRssiPeriod(uint param_1)
   undefined8 uVar9;
   ulonglong uVar10;
   
-  BUS_RegMaskedSet(&AGC->CTRL1,0x8000);
+  BUS_RegMaskedSet(&AGC->CTRL1,AGC_CTRL1_SUBPERIOD_Msk);
   uVar3 = MODEM->CF;
   uVar4 = MODEM->CF;
   uVar5 = MODEM->CF;
@@ -554,8 +559,8 @@ uint32_t RADIO_CalcRssiPeriod(uint param_1)
     if (uVar4 <= (uint)(1 << (uVar5 & 0xff))) 
 	{
 LAB_000106a4:
-      BUS_RegMaskedClear(&AGC->CTRL1,0xf00);
-      BUS_RegMaskedSet(&AGC->CTRL1,uVar3 << 8);
+      BUS_RegMaskedClear(&AGC->CTRL1,AGC_CTRL1_RSSIPERIOD_Msk);
+      BUS_RegMaskedSet(&AGC->CTRL1,uVar3 << AGC_CTRL1_RSSIPERIOD_Pos);
       uVar9 = __aeabi_uldivmod(uVar6,iVar7,10000000,0);
       uVar9 = __aeabi_uldivmod((int)uVar9,(int)((ulonglong)uVar9 >> 0x20),iVar8,0);
       iVar7 = __aeabi_uldivmod((int)uVar9,(int)((ulonglong)uVar9 >> 0x20),100,0);

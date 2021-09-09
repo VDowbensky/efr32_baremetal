@@ -16,10 +16,10 @@ static const unsigned char nibblebits[16UL + 1] = {0x00, 0x01, 0x01, 0x02, 0x01,
 void setupPnForTest(void)
 
 {
-  FRC->FCD0 &= 0xffffbfff;
-  FRC->FCD1 &= 0xffffbfff;
-  FRC->FCD2 &= 0xffffbfff;
-  FRC->FCD3 &= 0xffffbfff;
+  FRC->FCD0 &= ~FRC_FCD0_SKIPWHITE_Msk;//0xffffbfff;
+  FRC->FCD1 &= ~FRC_FCD0_SKIPWHITE_Msk;//0xffffbfff;
+  FRC->FCD2 &= ~FRC_FCD0_SKIPWHITE_Msk;//0xffffbfff;
+  FRC->FCD3 &= ~FRC_FCD0_SKIPWHITE_Msk;//0xffffbfff;
   FRC->FECCTRL = 1;
   FRC->WHITECTRL = 0x24;
   FRC->WHITEPOLY = 0x100;
@@ -61,7 +61,7 @@ void RFTEST_BerEmptyBufcAndUpdateStats(void)
 void RFTEST_StartRx(void)
 
 {
-  while ((RAC->STATUS & 0xf000000) != 0);
+  while ((RAC->STATUS & RAC_STATUS_STATE_Msk) != 0);
   BUFC_RxBufferReset();
   BUS_RegMaskedSet(&RAC->RXENSRCEN,2);
 }
@@ -87,7 +87,7 @@ void RFTEST_StopRx(void)
     RAC->CMD = 0x40;
     BUFC_RxBufferReset();
   }
-  while ((RAC->STATUS & 0xf000000) != 0);
+  while ((RAC->STATUS & RAC_STATUS_STATE_Msk) != 0);
 }
 
 
@@ -158,20 +158,20 @@ void RFTEST_StartCwTx(void)
 
 {
   SEQ->SYNTHLPFCTRLTX &= 0xfffffff0;
-  if (MODEM->CTRL0 & 0x1c0 == 0xc0) 
+  if (MODEM->CTRL0 & MODEM_CTRL0_MODFORMAT_Msk == 0xc0) 
   {
-	MODEM->CTRL0 &= 0xfffffe3f;
+	MODEM->CTRL0 &= ~MODEM_CTRL0_MODFORMAT_Msk; //0xfffffe3f;
 	MODEM->CTRL0 |= 0x80;
   }
   else 
   {
-    if ((MODEM->CTRL0 & 0x1c0 != 0x180) && (MODEM->CTRL0 & 0x1c0 != 0x80)) MODEM->MODINDEX = 0;
+    if ((MODEM->CTRL0 & MODEM_CTRL0_MODFORMAT_Msk != 0x180) && (MODEM->CTRL0 & MODEM_CTRL0_MODFORMAT_Msk != 0x80)) MODEM->MODINDEX = 0;
   }
   BUS_RegMaskedSet(&MODEM->PRE,0xffff000f);
-  BUS_RegMaskedClear(&MODEM->PRE,0x30);
+  BUS_RegMaskedClear(&MODEM->PRE,MODEM_PRE_BASEBITS_Msk);
   FRC->DFLCTRL = 5;
-  BUS_RegMaskedSet(&FRC->CTRL,1);
-  RAC->CMD = 1;
+  BUS_RegMaskedSet(&FRC->CTRL,FRC_CTRL_RANDOMTX_Msk);
+  RAC->CMD = RAC_CMD_TXEN_Msk;
 }
 
 
@@ -182,8 +182,8 @@ void RFTEST_StartStreamTx(void)
   setupPnForTest();
   FRC->SNIFFCTRL = 0;
   FRC->DFLCTRL = 5;
-  BUS_RegMaskedSet(&FRC->CTRL,1);
-  RAC->CMD = 1;
+  BUS_RegMaskedSet(&FRC->CTRL,FRC_CTRL_RANDOMTX_Msk);
+  RAC->CMD = RAC_CMD_TXEN_Msk;
 }
 
 
@@ -191,7 +191,7 @@ void RFTEST_StartStreamTx(void)
 void RFTEST_StartTx(void)
 
 {
-  RAC->CMD = 1;
+  RAC->CMD = RAC_CMD_TXEN_Msk;
 }
 
 
@@ -199,11 +199,11 @@ void RFTEST_StartTx(void)
 void RFTEST_StopTx(void)
 
 {
-  RAC->CMD = 0x20;
+  RAC->CMD = RAC_CMD_TXDIS_Msk;
   do 
   {
-    if ((FRC->DFLCTRL & 7) != 5)  return;
-  } while (-1 < (int)(FRC->IF << 0x1d));
+    if ((FRC->DFLCTRL & FRC_DFLCTRL_DFLMODE_Msk) != 5)  return;
+  } while (!(FRC->IF & FRC_IF_TXABORTED_Msk));
 }
 
 
@@ -211,9 +211,9 @@ void RFTEST_StopTx(void)
 void RFTEST_BerStop(void)
 
 {
-  BUS_RegMaskedClear(&FRC->RXCTRL,0x40);
+  BUS_RegMaskedClear(&FRC->RXCTRL,FRC_RXCTRL_BUFRESTORERXABORTED_Msk);
   RFTEST_StopRx();
-  BUS_RegMaskedClear(&BUFC->IEN,0x400);
+  BUS_RegMaskedClear(&BUFC->IEN,BUFC_IFC_BUF1THR_Msk);
 }
 
 
@@ -228,13 +228,13 @@ void RFTEST_ConfigBerRx(void)
   FRC->DFLCTRL = 5;
   MODEM->SYNC0 = 0x1dd3d4a0;
   setupPnForTest();
-  BUS_RegMaskedClear(&MODEM->TIMING,0xf00);
-  MODEM->CTRL1 |= 0x1f;
-  MODEM->AFC &= 0xffffe3ff;
-  if ((MODEM->CTRL1 & 0xc000) == 0) BUS_RegMaskedSet(&MODEM->CTRL1,0xc000);
+  BUS_RegMaskedClear(&MODEM->TIMING,MODEM_TIMING_TIMINGBASES_Msk);
+  MODEM->CTRL1 |= MODEM_CTRL1_SYNCBITS_Msk;
+  MODEM->AFC &= ~MODEM_AFC_AFCRXMODE_Msk;
+  if ((MODEM->CTRL1 & MODEM_CTRL1_COMPMODE_Msk) == 0) BUS_RegMaskedSet(&MODEM->CTRL1,MODEM_CTRL1_COMPMODE_Msk);
   FRC->TRAILRXDATA = 0;
-  BUS_RegMaskedSet(&FRC->RXCTRL,0x12);
-  FRC->CTRL = 4;
+  BUS_RegMaskedSet(&FRC->RXCTRL,FRC_RXCTRL_BUFCLEAR_Msk | FRC_RXCTRL_ACCEPTCRCERRORS_Msk; //0x12);
+  FRC->CTRL = FRC_CTRL_BITORDER_Msk; //4;
 }
 
 
@@ -270,7 +270,7 @@ void RFTEST_StartBerRx(uint32_t bytes)
 {
   RFTEST_BerStop();
   RFTEST_ResetBerStats(bytes);
-  BUS_RegMaskedSet(&BUFC->IEN,0x400);
+  BUS_RegMaskedSet(&BUFC->IEN,BUFC_IEN_BUF1THR_Msk);
   RFTEST_StartRx();
 }
 
