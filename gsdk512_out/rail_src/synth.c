@@ -176,16 +176,15 @@ void SYNTH_Config(uint32_t base_freg, uint32_t spacing)
   SYNTH_RetimeClkConfig();
 }
 
-//void SYNTH_ChannelSet(uint param_1,int param_2)
 void SYNTH_ChannelSet(uint16_t ch,int rxcal)
 
 {
   do 
   {
-	while ((RAC->STATUS << 4) >> 0x1c == 4);
-  } while ((RAC->STATUS << 4) >> 0x1c == 10);
+	while ((RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos == 4);
+  } while ((RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos == 10);
   SYNTH->CHCTRL = ch;
-  if (rxcal != 0) RAC->CMD = 0x80;
+  if (rxcal != 0) RAC->CMD = RAC_CMD_RXCAL_Msk;
   SYNTH_RetimeClkConfig();
 }
 

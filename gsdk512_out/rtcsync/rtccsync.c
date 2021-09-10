@@ -14,9 +14,9 @@ uint32_t RTCCSYNC_RTCCClockFreqGet(void)
   uVar1 = 0;
   uVar2 = RTCC->CTRL;
   bVar3 = (RTCC->CTRL & 0x1000) == 0;
-  if (bVar3) uVar1 = (RTCC->CTRL << 0x14) >> 0x1c;
+  if ((RTCC->CTRL & 0x1000) == 0) uVar1 = (RTCC->CTRL << 0x14) >> 0x1c;
   uVar2 = 1;
-  if (bVar3) uVar2 = 1 << uVar1;
+  if ((RTCC->CTRL & 0x1000) == 0) uVar2 = 1 << uVar1;
   return CMU_ClockFreqGet(0x120980) / uVar2;
 }
 

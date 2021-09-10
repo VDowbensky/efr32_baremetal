@@ -154,9 +154,9 @@ void IRCAL_SaveRegStates(void)
   regbuf[19] = SYNTH_RfFreqGet();
   regbuf[20] = SYNTH_ChSpacingGet();
   MODEM->AFC = 0;
-  BUS_RegMaskedSet(&FRC->CTRL,1);
-  BUS_RegMaskedSet(&RAC->CTRL,0x40);
-  AGC->CTRL1 &= 0xfffff0ff;
+  BUS_RegMaskedSet(&FRC->CTRL,FRC_CTRL_RANDOMTX_Msk); //1);
+  BUS_RegMaskedSet(&RAC->CTRL,RAC_CTRL_TXPOSTPONE_Msk); //0x40);
+  AGC->CTRL1 &= ~AGC_CTRL1_RSSIPERIOD_Msk;
   AGC->CTRL1 | (rcIrCalData[16] & 0xf) << 8;
 }
 
@@ -183,7 +183,7 @@ uint32_t IRCAL_SetRxFrequency(uint32_t freq)
 void IRCAL_StartRx(void)
 
 {
-  BUS_RegMaskedSet(&MODEM->CTRL0,0x200000);
+  BUS_RegMaskedSet(&MODEM->CTRL0,MODEM_CTRL0_DETDIS_Msk);
   while ((RAC->STATUS & RAC_STATUS_STATE_Msk) != 0);
   BUFC_RxBufferReset();
   BUS_RegMaskedSet(&RAC->RXENSRCEN,8);
@@ -204,7 +204,7 @@ void IRCAL_StopRx(void)
 	SEQ->REG06C &= 0xffffff0f;
 	SEQ->REG06C |= 0xe0;
   }
-  if ((RAC->STATUS << 4) >> 0x1c == 3) *(uint32_t *)(0x21000f64 + 8) = uVar2;
+  //if ((RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos == 3) SEQ->REG06C = SEQ->REG06C;
   FRC->CMD = FRC_CMD_RXABORT_Msk; //1;
   CORE_ExitCritical(irqState);
   while ((RAC->STATUS & RAC_STATUS_STATE_Msk) != 0);
@@ -234,20 +234,20 @@ void IRCAL_SetSubGhzPaLoopback(void)
   AGC->MININDEX &= 0xff000000;
   AGC->MININDEX |= 0x6d8480;
   AGC->MANGAIN &= 0xffffff40;
-  AGC->MANGAIN | 0xa7;
+  AGC->MANGAIN |= 0xa7;
   BUS_RegMaskedSet(&AGC->CTRL0,0x400000);
   MODEM->MODINDEX = 0;
   MODEM->CTRL0 &= 0xfffffe3f;
-  MODEM->CTRL0 | 0x100;
+  MODEM->CTRL0 |= 0x100;
   FRC->DFLCTRL &= 0xfffffff8;
-  FRC->DFLCTRL | 5;
+  FRC->DFLCTRL |= 5;
   BUS_RegMaskedClear(&RAC->SGRFENCTRL0,0x80000);
   RAC->SGPACTRL0 &= 0x3fffffff;
-  RAC->SGPACTRL0 | 0x40000000;
+  RAC->SGPACTRL0 |= 0x40000000;
   BUS_RegMaskedClear(&RAC->SGPAPKDCTRL,0xc000);
   BUS_RegMaskedSet(&RAC->SGPAPKDCTRL,0xc000);
   RAC->SGPABIASCTRL0 &= 0xff3ff332;
-  RAC->SGPABIASCTRL0 | 0x445;
+  RAC->SGPABIASCTRL0 |= 0x445;
   RAC->SGPABIASCTRL1 &= 0xffffffc8;
   RAC->SGPABIASCTRL1 |= 0x20;
   RAC->SGPABIASCTRL1 &= 0xfff388ff;
@@ -257,7 +257,7 @@ void IRCAL_SetSubGhzPaLoopback(void)
   BUS_RegMaskedSet(&RAC->SGRFENCTRL0,0x10000);
   PHY_UTILS_DelayUs(0x14);
   RAC->SGPACTRL0 &= 0xffffc03;
-  RAC->SGPACTRL0 | 0x40;
+  RAC->SGPACTRL0 |= 0x40;
   BUS_RegMaskedSet(&RAC->SGRFENCTRL0,0x20000);
   PHY_UTILS_DelayUs(0x14);
   RAC->SGPACTRL0 &= 0xe0c03fff;
@@ -329,10 +329,10 @@ int32_t IRCAL_ReadRssi(uint param_1,uint param_2,uint param_3,undefined4 param_4
   if ((param_2 & 0x80) != 0) param_2 = 0x7f;
   if (param_3 < 0xf) 
   {
-	RAC->IFPGACAL &= 0xffff8080;
-	RAC->IFPGACAL |= param_1 << 8 | param_2;
+	RAC->IFPGACAL &= ~(RAC_IFPGACAL_IRPHASE_Msk | RAC_IFPGACAL_IRAMP_Msk); //0xffff8080;
+	RAC->IFPGACAL |= param_1 << RAC_IFPGACAL_IRPHASE_Pos | param_2;
     PHY_UTILS_DelayUs(param_4);
-    if (rcIrCalData[9] == '\0') AGC->IFC = 0x20;
+    if (rcIrCalData[9] == '\0') AGC->IFC = AGC_IFC_RSSIDONE_Msk;
     uVar5 = 0;
     uVar4 = 0;
     for (uVar6 = 0; uVar6 >> (param_3 & 0xff) == 0; uVar6 = uVar6 + 1) 
@@ -340,15 +340,15 @@ int32_t IRCAL_ReadRssi(uint param_1,uint param_2,uint param_3,undefined4 param_4
       PHY_UTILS_DelayUs(param_5);
       if (rcIrCalData[9] == '\0') 
 	  {
-        AGC->CMD = 1;
-		while (!(AGC->IF & 0x20));
+        AGC->CMD = AGC_CMD_RSSISTART_Msk;
+		while (!(AGC->IF & AGC_IF_RSSIDONE_Msk));
       }
       if (rcIrCalData[11] <= uVar6) 
 	  {
         uVar5 = uVar5 + 1;
         uVar4 = uVar4 + RADIO_GetRSSI();
       }
-      if (rcIrCalData[9] == '\0') AGC->IFC = 0x20;
+      if (rcIrCalData[9] == '\0') AGC->IFC = AGC_IFC_RSSIDONE_Msk;
     }
     if (uVar5 == 0) uVar5 = 1;
     sVar2 = (int16_t)(uVar4 / uVar5);
@@ -480,8 +480,8 @@ void IRCAL_Teardown(void)
   MODEM->AFC = regbuf[18];
   SYNTH_Config(regbuf[19],regbuf[20]);
   BUFC_RxBufferReset();
-  BUS_RegMaskedClear(&FRC->CTRL,1);
-  BUS_RegMaskedClear(&RAC->CTRL,0x40);
+  BUS_RegMaskedClear(&FRC->CTRL,FRC_CTRL_RANDOMTX_Msk);
+  BUS_RegMaskedClear(&RAC->CTRL,RAC_CTRL_TXPOSTPONE_Msk);
 }
 
 
@@ -499,15 +499,13 @@ uint32_t IRCAL_Get(void)
 uint32_t IRCAL_GetDiValue(void)
 
 {
-  uint uVar1;
   uint uVar2;
   
-  uVar1 = SYNTH_RfFreqGet();
   if (SYNTH_RfFreqGet() == 0) uVar2 = 0xffffffff;
   else 
   {
     uVar2 = _DAT_0fe081c8;
-    if ((999999999 < uVar1) && (uVar2 = _DAT_0fe081c4,(MODEM->CTRL0 << 0x17) >> 0x1d != 4)) uVar2 = _DAT_0fe081c0;
+    if ((999999999 < SYNTH_RfFreqGet()) && (uVar2 = _DAT_0fe081c4,(MODEM->CTRL0 & MODEM_CTRL0_MODFORMAT_Msk) >> MODEM_CTRL0_MODFORMAT_Pos != 4)) uVar2 = _DAT_0fe081c0;
     if (uVar2 != 0xffffffff) return uVar2 & 0xffff;
   }
   return uVar2;

@@ -47,8 +47,8 @@ void apcConfigure(int power)
   if ((apcEnabled == false) || (power < 0x79)) BUS_RegMaskedClear(&RAC->SR3, 8);
   else 
   {
-    BUS_RegMaskedClear(&RAC->PAPKDCTRL,0xdf01);
-    BUS_RegMaskedClear(&RAC->SGPAPKDCTRL,0xdf01);
+    BUS_RegMaskedClear(&RAC->PAPKDCTRL,RAC_PAPKDCTRL_CAPSEL_Msk | RAC_PAPKDCTRL_VTHSEL_Msk | RAC_PAPKDCTRL_PKDEN_Msk); //0xdf01); //15,14,12,11...8,0
+    BUS_RegMaskedClear(&RAC->SGPAPKDCTRL,RAC_SGPAPKDCTRL_CAPSEL_Msk | RAC_SGPAPKDCTRL_VTHSEL_Msk | RAC_SGPAPKDCTRL_PKDEN_Msk); //0xdf01);
     BUS_RegMaskedSet(&RAC->PAPKDCTRL,0xd700);
     BUS_RegMaskedSet(&RAC->SGPAPKDCTRL,0xd700);
     BUS_RegMaskedSet(&RAC->SR3, 8);
@@ -60,7 +60,7 @@ void apcConfigure(int power)
 int32_t PA_OutputPowerGet(void)
 
 {
-  return (int32_t)gPaConfig._2_2_;
+  return (int32_t)gPaConfig.power;
 }
 
 
@@ -68,7 +68,7 @@ int32_t PA_OutputPowerGet(void)
 void PA_PowerOffsetSet(int16_t offset)
 
 {
-  gPaConfig._4_2_ = offset;
+  gPaConfig.offset = offset;
 }
 
 
@@ -80,8 +80,8 @@ void PA_20dbmConfigSet(void)
   SEQ->REG0E4 |= 0x40000014;
   BUS_RegMaskedClear(&RAC->PACTRL0, RAC_PACTRL0_RF2P4RFVDDSEL_Msk | RAC_PACTRL0_RF2P4PAVDDSEL_Msk | RAC_PACTRL0_RF2P4PASEL_Msk); //7);
   BUS_RegMaskedSet(&RAC->PACTRL0, RAC_PACTRL0_RF2P4RFVDDSEL_Msk); //4);
-  BUS_RegMaskedClear(&RAC->PABIASCTRL1,RAC_PABIASCTRL1_VLDO_Msk); 7);
-  BUS_RegMaskedSet(&RAC->PABIASCTRL1,5);
+  BUS_RegMaskedClear(&RAC->PABIASCTRL1,RAC_PABIASCTRL1_VLDO_Msk); //7);
+  BUS_RegMaskedSet(&RAC->PABIASCTRL1,5 << RAC_PABIASCTRL1_VLDO_Pos);
   BUS_RegMaskedClear(&RAC->PABIASCTRL0,RAC_PABIASCTRL0_BUF0BIAS_Msk); //0xc0);
   BUS_RegMaskedSet(&RAC->PABIASCTRL0,0x80 | RAC_PABIASCTRL0_LDOBIAS_Msk); //1);
 }
@@ -96,9 +96,9 @@ void PA_0dbmConfigSet(void)
   BUS_RegMaskedClear(&RAC->PACTRL0,RAC_PACTRL0_RF2P4RFVDDSEL_Msk | RAC_PACTRL0_RF2P4PAVDDSEL_Msk | RAC_PACTRL0_RF2P4PASEL_Msk); //7);
   BUS_RegMaskedSet(&RAC->PACTRL0,RAC_PACTRL0_RF2P4PAVDDSEL_Msk | RAC_PACTRL0_RF2P4PASEL_Msk); //3);
   BUS_RegMaskedClear(&RAC->PABIASCTRL1,RAC_PABIASCTRL1_VLDO_Msk); //7);
-  BUS_RegMaskedSet(&RAC->PABIASCTRL1,6);
-  BUS_RegMaskedClear(&RAC->PABIASCTRL0,0x4000c1);
-  BUS_RegMaskedClear(&RAC->PAPKDCTRL,0xc000);
+  BUS_RegMaskedSet(&RAC->PABIASCTRL1,6 << RAC_PABIASCTRL1_VLDO_Msk);
+  BUS_RegMaskedClear(&RAC->PABIASCTRL0,RAC_PABIASCTRL0_TXPOWER_Msk | RAC_PABIASCTRL0_BUF0BIAS_Msk | RAC_PABIASCTRL0_LDOBIAS_Msk); //0x4000c1);
+  BUS_RegMaskedClear(&RAC->PAPKDCTRL,RAC_PAPKDCTRL_CAPSEL_Msk); //0xc000);
 }
 
 
@@ -109,7 +109,7 @@ void PA_SubGhz20dbmConfigSet(void)
   SEQ->REG0E4 &= 0xbfffffe8;
   SEQ->REG0E4 |= 0x40000020;
   BUS_RegMaskedClear(&RAC->SGPABIASCTRL1,RAC_SGPABIASCTRL1_VCASCODELV_Msk | RAC_SGPABIASCTRL1_VCASCODEHV_Msk); //0x7700);
-  BUS_RegMaskedSet(&RAC->SGPABIASCTRL1,0x4500);
+  BUS_RegMaskedSet(&RAC->SGPABIASCTRL1, (4 << RAC_SGPABIASCTRL1_VCASCODELV_Pos) | (5 << RAC_SGPABIASCTRL1_VCASCODEHV_Pos)); // 0x4500);
   BUS_RegMaskedSet(&RAC->SGPABIASCTRL0,RAC_SGPABIASCTRL0_LDOBIAS_Msk); //1);
 }
 
@@ -162,7 +162,7 @@ uint16_t PA_PowerLevelSet(uint8_t pwrLevel, uint8_t boostMode)
       pwrLevel = pwrLevel - 1 & 0xff;
     }
     SEQ->REG0E4 |= (pwrLevel % 0x1f) * 0x1000000 + 0x1000000 | ((1 << ((pwrLevel / 0x1f & 0xff) + 1 & 0xff)) - 1U & 0xff) << 0xe;
-    if ((boostMode == 0) || ((char)gPaConfig != '\0')) BUS_RegMaskedClear(&RAC->PABIASCTRL0,0x400000);
+    if ((boostMode == 0) || ((char)gPaConfig != '\0')) BUS_RegMaskedClear(&RAC->PABIASCTRL0,RAC_PABIASCTRL0_TXPOWER_Msk);
     else 
 	{
       uVar3 = uVar3 | 0x100;
@@ -289,7 +289,7 @@ void PA_StripesAndSlicesCalc(int level)
       iVar1 = 6;
       do 
 	  {
-        if ((int)*(short *)(power0dBmParams + iVar1 * 2) <= param_1 + gPaConfig._4_2_) break;
+        if ((int)*(short *)(power0dBmParams + iVar1 * 2) <= param_1 + gPaConfig.offset) break;
         iVar1 = iVar1 + -1;
       } while (iVar1 != 0);
       iVar2 = (int)*(short *)(power0dBmParams + iVar1 * 2);
@@ -301,13 +301,13 @@ void PA_StripesAndSlicesCalc(int level)
       uVar3 = (uint)gPaConfig._1_1_;
       if ((char)gPaConfig != '\0') uVar3 = uVar3 + 2;
       iVar2 = uVar3 * 0x44;
-      PA_StripesAndSlicesCommonCalc(param_1 + gPaConfig._4_2_,paParams + iVar2,paParams,uVar3,param_4);
+      PA_StripesAndSlicesCommonCalc(param_1 + gPaConfig.offset,paParams + iVar2,paParams,uVar3,param_4);
       iVar1 = PA_StripesAndSlicesSet();
       if (iVar1 == 0x21) iVar2 = (int)*(short *)(paParams + iVar2 + 2);
       else iVar2 = PA_PowerFromStripesAndSlicesCommonCalc(iVar1,iVar2 + 0x1074c);
     }
     PA_PowerLevelOptimize(iVar2);
-    gPaConfig._2_2_ = (short)iVar2 - gPaConfig._4_2_;
+    gPaConfig.power = (short)iVar2 - gPaConfig.offset;
   }
 }
 
@@ -318,7 +318,7 @@ void PA_StripesAndSlicesCalc(int level)
 int32_t PA_OutputPowerSet(int32_t power)
 {
   PA_StripesAndSlicesCalc(powerLevel);
-  return (int)gPaConfig._2_2_;
+  return (int)gPaConfig.power;
 }
 
 
@@ -327,7 +327,7 @@ int32_t PA_MaxOutputPowerSet(void)
 
 {
   PA_StripesAndSlicesCalc(200);
-  return (int)gPaConfig._2_2_;
+  return (int)gPaConfig.power;
 }
 
 
@@ -336,7 +336,7 @@ void PA_APCEnable(void)
 
 {
   apcEnabled = 1;
-  apcConfigure((int)gPaConfig._2_2_);
+  apcConfigure((int)gPaConfig.power);
 }
 
 
@@ -345,7 +345,7 @@ void PA_APCDisable(void)
 
 {
   apcEnabled = 0;
-  apcConfigure((int)gPaConfig._2_2_);
+  apcConfigure((int)gPaConfig.power);
 }
 
 
@@ -353,8 +353,8 @@ void PA_APCDisable(void)
 void PA_PeakDetectorHighRun(void)
 
 {
-  if (SYNTH_Is2p4GHz() == false) RAC->SGPACTRL0 = (RAC->SGPACTRL0 & 0xffc03fff) | ((RAC->SGPACTRL0 & 0x3f8000) >> 1); 
-  else RAC->PACTRL0 = (RAC->PACTRL0 & 0xffc03fff) | ((RAC->PACTRL0 & 0x3f8000) >> 1);
+  if (SYNTH_Is2p4GHz() == false) RAC->SGPACTRL0 = (RAC->SGPACTRL0 & ~RAC_SGPACTRL0_SLICE_Msk) | ((RAC->SGPACTRL0 & 0x3f8000) >> 1); 
+  else RAC->PACTRL0 = (RAC->PACTRL0 & RAC_PACTRL0_SLICE_Msk) | ((RAC->PACTRL0 & 0x3f8000) >> 1);
   RAC->IFC = RAC_IFC_PAVHIGH_Msk; //0x2000000;
 }
 
@@ -382,17 +382,17 @@ void PA_BatHighRun(void)
 uint32_t PA_RampTimeGet(void)
 
 {
-  return gPaConfig._6_2_;
+  return gPaConfig.ramptime;
 }
 
 
 
-void PA_RampConfigSet(uint32_t *param_1)
+void PA_RampConfigSet(uint32_t *ramp)
 
 {
-  MODEM->RAMPLEV = param_1[1];
-  BUS_RegMaskedClear(&MODEM->RAMPCTRL,0xfff);
-  BUS_RegMaskedSet(&MODEM->RAMPCTRL,*param_1);
+  MODEM->RAMPLEV = ramp[1];
+  BUS_RegMaskedClear(&MODEM->RAMPCTRL,MODEM_RAMPCTRL_RAMPRATE2_Msk | MODEM_RAMPCTRL_RAMPRATE1_Msk | MODEM_RAMPCTRL_RAMPRATE0_Msk); //0xfff);
+  BUS_RegMaskedSet(&MODEM->RAMPCTRL,*ramp);
 }
 
 
@@ -400,21 +400,11 @@ void PA_RampConfigSet(uint32_t *param_1)
 int32_t PA_RampTimeCalc(void)
 
 {
-  uint uVar1;
-  uint uVar2;
-  uint uVar3;
-  uint uVar4;
-  uint uVar5;
-  uint uVar6;
-  
-  uVar4 = (MODEM->RAMPLEV);
-  uVar6 = (MODEM->RAMPLEV);
-  uVar5 = (MODEM->RAMPLEV);
-  uVar1 = (MODEM->RAMPCTRL);
-  uVar2 = (MODEM->RAMPCTRL);
-  uVar3 = (MODEM->RAMPCTRL);
-  uVar6 = (MODEM->RAMPLEV << 0x10) >> 0x18;
-  return ((int)(((uVar5 << 8) >> 0x18) - uVar6 << ((uVar3 << 0x14) >> 0x1c)) >> 5) + ((int)(uVar6 - (uVar4 & 0xff) << ((uVar2 << 0x18) >> 0x1c)) >> 5) + ((int)((uVar4 & 0xff) << (uVar1 & 0xf)) >> 5);
+  return (((int32_t)(MODEM->RAMPLEV & MODEM_RAMPLEV_RAMPLEV2_Msk) >> MODEM_RAMPLEV_RAMPLEV2_Pos) - 
+  ((MODEM->RAMPLEV & MODEM_RAMPLEV_RAMPLEV1_Msk) >> MODEM_RAMPLEV_RAMPLEV1_Pos) << ((MODEM->RAMPCTRL & MODEM_RAMPCTRL_RAMPRATE2_Msk) >> MODEM_RAMPCTRL_RAMPRATE2_Pos)) >> 5) + 
+  ((int32_t)(((MODEM->RAMPLEV & MODEM_RAMPLEV_RAMPLEV1_Msk) >> MODEM_RAMPLEV_RAMPLEV1_Pos) - 
+  (MODEM->RAMPLEV & MODEM_RAMPLEV_RAMPLEV0_Msk) << ((MODEM->RAMPCTRL & MODEM_RAMPCTRL_RAMPRATE1_Msk) >> MODEM_RAMPCTRL_RAMPRATE1_Pos)) >> 5) + 
+  ((int32_t)((MODEM->RAMPLEV & MODEM_RAMPLEV_RAMPLEV0_Msk) << (MODEM->RAMPCTRL & MODEM_RAMPCTRL_RAMPRATE0_Msk)) >> 5);
 }
 
 
@@ -424,53 +414,49 @@ uint32_t PA_RampTimeSet(uint32_t ramptime)
 
 {
   uint uVar1;
-  int iVar2;
   char cVar3;
-  uint uVar4;
+  uint32_t tmp;
   int local_18;
   int local_14;
-  undefined4 uStack16;
   
-  uVar4 = MODEM->CTRL0;
-  gCurrentModulation = (uint8_t)((MODEM->CTRL0 << 0x17) >> 0x1d);
+  tmp = MODEM->CTRL0;
+  gCurrentModulation = (uint8_t)((MODEM->CTRL0 & MODEM_CTRL0_MODFORMAT_Msk) >> MODEM_CTRL0_MODFORMAT_Pos);
   
-  uVar4 = ((MODEM->CTRL0 << 0x17) >> 0x1d) - 2 & 0xff;
+  tmp = ((MODEM->CTRL0 & MODEM_CTRL0_MODFORMAT_Msk) >> MODEM_CTRL0_MODFORMAT_Pos) - 2 & 0xff;
   
-  if ((uVar4 < 5) && ((1 << uVar4 & 0x13U) != 0)) uVar4 = 0;
+  if ((tmp < 5) && ((1 << tmp & 0x13U) != 0)) tmp = 0;
   else 
   {
-    if ((char)gPaConfig == 2') uVar4 = 0x96;
+    if ((char)gPaConfig == 2') tmp = 0x96;
     else 
 	{
-      if ((char)gPaConfig == 1) uVar4 = 0x32;
-      else uVar4 = 0xb4;
+      if ((char)gPaConfig == 1) tmp = 0x32;
+      else tmp = 0xb4;
     }
   }
   gDesiredRampTime = ramptime;
   local_18 = param_1;
   local_14 = param_2;
-  uStack16 = param_3;
+
   uVar1 = SystemHFXOClockGet();
   cVar3 = -1;
-  for (uVar1 = (((uVar1 / 1000) * param_1) / uVar4 << 5) / 1000; uVar1 != 0; uVar1 = uVar1 >> 1) cVar3++;
+  for (uVar1 = (((uVar1 / 1000) * param_1) / tmp << 5) / 1000; uVar1 != 0; uVar1 = uVar1 >> 1) cVar3++;
   local_18 = (int)cVar3;
-  if (local_18 < 0x10) {
+  if (local_18 < 0x10) 
+  {
     if (local_18 < 0) local_18 = 0;
   }
   else local_18 = 0xf;
   local_18 = local_18 << 8;
-  local_14 = uVar4 << 0x10;
+  local_14 = tmp << 0x10;
   PA_RampConfigSet(&local_18);
-  iVar2 = PA_RampTimeCalc();
-  uVar4 = SystemHFXOClockGet();
-  gPaConfig._6_2_ = (uint16_t)((uint32_t)(PA_RampTimeCalc() * 10000) / (SystemHFXOClockGet() / 100));
+  gPaConfig.ramptime = (uint16_t)((uint32_t)(PA_RampTimeCalc() * 10000) / (SystemHFXOClockGet() / 100));
   TIMING_RecalculateAll();
-  return gPaConfig._6_2_;
+  return gPaConfig.ramptime;
 }
 
 
 
-//void PA_CTuneSet(uint param_1,uint param_2)
 void PA_CTuneSet(uint8_t txPaCtuneValue, uint8_t rxPaCtuneValue)
 
 {
@@ -483,10 +469,8 @@ void PA_CTuneSet(uint8_t txPaCtuneValue, uint8_t rxPaCtuneValue)
 void PA_BandSelect(void)
 
 {
-  undefined4 uVar1;
   uint uVar2;
   
-  uVar1 = SYNTH_LoDivGet();
   if (false) 
   {
 switchD_0001062e_caseD_2:
@@ -497,7 +481,7 @@ LAB_0001065e:
   }
   else 
   {
-    switch(uVar1) 
+    switch(SYNTH_LoDivGet()) 
 	{
     case 1:
       uVar2 = 0x44;
@@ -528,46 +512,40 @@ LAB_00010662:
 }
 
 
-
-//undefined4 RADIO_PA_Init(undefined4 *param_1)
 bool RADIO_PA_Init(RADIO_PAInit_t * paInit)
 
 {
-  char cVar1;
-  bool bVar3;
-  
-  if (paInit == NULL) return 0;
+  if (paInit == NULL) return false;
   RADIO_CLKEnable();
   memset(&SEQ->REG0E4,0,0xc);
-  cVar1 = paInit->paSel;
-  if (paInit->paSel == PA_SEL_SUBGIG) bVar3 = (CMU->RFLOCK0 & 0x200000) == 0;
-  else 
+  
+  if((paInit->paSel != PA_SEL_SUBGIG) && (paInit->paSel != PA_SEL_2P4_LP) && (paInit->paSel != PA_SEL_2P4_HP)
   {
-    if (paInit->paSel == PA_SEL_2P4_LP) bVar3 = (CMU->RFLOCK0 & 0xc00000) == 0;
-    else 
+	gPaConfig.power = 0x8000;
+	return false;
+  }
+  
+  else
+  {
+	//check PA presence - maybe omitted
+	if(((paInit->paSel == PA_SEL_SUBGIG) &&  (CMU->RFLOCK0 & 0x200000 == 0)) || ((paInit->paSel == PA_SEL_2P4_LP) &&  (CMU->RFLOCK0 & 0xc00000 == 0)) || ((paInit->paSel == PA_SEL_2P4_HP) &&  (CMU->RFLOCK0 & 0x400000 | (_DAT_0fe081d4 & 1 ^ 1) == 0))) 
 	{
-      if (paInit->paSel != PA_SEL_2P4_HP) goto LAB_000106c4;
-      bVar3 = (_DAT_0fe081d4 & 1 ^ 1 | CMU->RFLOCK0 & 0x400000) == 0;
-    }
+		gPaConfig.power = paInit->paSel;
+		gPaConfig.voltmode = paInit->voltMode;
+		PA_RampTimeSet(paInit->rampTime);
+		PA_PowerModeConfigSet();
+		PA_OutputPowerSet(paInit->power);
+		BUS_RegMaskedClear(&RAC->APC,3);
+		PA_BandSelect();
+		return true;		
+	}
+	
+	else
+	{
+		gPaConfig.power = 0x8000;
+		return false;
+	}
   }
-  if (bVar3) 
-  {
-    gPaConfig._0_4_ = paInit->paSel;
-    //gPaConfig._4_4_ = paInit[1];
-	gPaConfig._4_4_ = paInit->voltMode;
-    //PA_RampTimeSet(*(undefined2 *)((int)paInit + 6));
-	PA_RampTimeSet(paInit->rampTime);
-    PA_PowerModeConfigSet();
-    //PA_OutputPowerSet((int)*(short *)((int)paInit + 2));
-	PA_OutputPowerSet(paInit->power);
-    BUS_RegMaskedClear(&RAC->APC,3);
-    PA_BandSelect();
-    return true;
-  }
-LAB_000106c4:
-  gPaConfig._0_4_ = CONCAT31(gPaConfig._1_3_,3);
-  gPaConfig._0_4_ = CONCAT22(0x8000,(undefined2)gPaConfig);
-  return false;
 }
 
 
@@ -576,7 +554,7 @@ bool PA_UpdateConfig(void)
 
 {
   PA_BandSelect();
-  if ((uint32_t)gCurrentModulation != (MODEM->CTRL0 << 0x17) >> 0x1d) 
+  if ((uint32_t)gCurrentModulation != (MODEM->CTRL0 && MODEM_CTRL0_MODFORMAT_Msk) >> MODEM_CTRL0_MODFORMAT_Pos) 
   {
     PA_RampTimeSet(gDesiredRampTime);
     return true;

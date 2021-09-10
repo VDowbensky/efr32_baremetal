@@ -34,7 +34,7 @@ void PHY_UTILS_BitsetClearAll(uint32_t *addr,uint32_t cnt)
 {
   uint32_t *puVar1;
   
-  puVar1 = param_1 + cnt;
+  puVar1 = addr + cnt;
   while (puVar1 != addr) 
   {
     puVar1--;

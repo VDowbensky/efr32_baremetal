@@ -38,10 +38,11 @@ void BUFC_ConfigureCallbacks(uint32_t cb)
   
   enabledCallbacks = cb & availableCallbacks;
   cbtoset = 0x90e0a09;
-  if (enabledCallbacks & 0x01) cbtoset = 0x90e0a0d;
-  if (enabledCallbacks & 0x02) cbtoset |= 1;
-  if (enabledCallbacks & 0x04) cbtoset |= 0x400;
-  if (enabledCallbacks & 0x08) cbtoset |= 0x200;
+  //if (enabledCallbacks & 0x01) cbtoset = 0x90e0a0d; //27,24,19,18,17,11,9,3,2,0
+  if (enabledCallbacks & 0x01) cbtoset = BUFC_IEN_BUF3CORR_Msk | BUFC_IEN_BUF3OF_Msk | BUFC_IEN_BUF2CORR_Msk | BUFC_IEN_BUF2THR_Msk | BUFC_IEN_BUF2UF_Msk | BUFC_IEN_BUF1CORR_Msk | BUFC_IEN_BUF1UF_Msk | BUFC_IEN_BUF0CORR_Msk | BUFC_IEN_BUF0UF_Msk |  BUFC_IEN_BUF0OF_Msk);
+  if (enabledCallbacks & 0x02) cbtoset |= BUFC_IEN_BUF0OF_Msk; //1;
+  if (enabledCallbacks & 0x04) cbtoset |= BUFC_IEN_BUF1THR_Msk; //0x400;
+  if (enabledCallbacks & 0x08) cbtoset |= BUFC_IEN_BUF1UF_Msk; //0x200;
 
   flags = BUFC->IEN & (cbtoset ^ BUFC->IEN);
   flags = (BUFC->IEN ^ cbtoset) & BUFC->IEN;
@@ -185,8 +186,8 @@ void BUFC_Init(void)
   RADIO_RegisterIrqCallback(3,BUFC_IrqHandler);
   NVIC_ClearPendingIRQ(BUFC_IRQn);
   NVIC_EnableIRQ(BUFC_IRQn);
-  BUFC->BUF0_CMD = 1;
-  BUFC->BUF3_CMD = 1;
+  BUFC->BUF0_CMD = BUFC_BUF0_CMD_CLEAR_Msk;
+  BUFC->BUF3_CMD = BUFC_BUF3_CMD_CLEAR_Msk;
   BUFC_RxBufferReset();
   BUFC_ConfigureCallbacks(0);
 }
@@ -213,7 +214,7 @@ void BUFC_IrqHandler(void)
     }
   }
   if (flags & FRC_IF_WCNTCMP1_Msk) && (enabledCallbacks & 0x04) (*currentCallbacks[2])();
-  if (flags & 0x40000) 
+  if (flags & BUFC_IF_BUF2THR_Msk) 
   {
     //if (_DAT_430210b4 == 0) 
 	if (!(BUF0_THRESHOLDCTRL & BUFC_BUF0_THRESHOLDCTRL_THRESHOLDMODE_Msk))
@@ -242,7 +243,7 @@ void BUFC_IrqHandler(void)
   {
     RAC->CMD = RAC_CMD_TXDIS_Msk; //0x20;
     BUFC->BUF0_CMD = BUFC_BUF0_CMD_CLEAR_Msk; //1;
-    if ((flags & 0x01) && (enabledCallbacks & 0x02)) (*currentCallbacks[1])();
+    if ((flags & BUFC_IF_BUF0OF_Msk) && (enabledCallbacks & 0x02)) (*currentCallbacks[1])();
   }
   if ((flags & 0x9000000) != 0) 
   {
@@ -337,7 +338,7 @@ uint32_t BUFC_RxBufferFinalizeAndGet(int32_t *buf,uint32_t len)
   {
     BUFC_ReadBuffer(1,bufcRxStreaming._4_4_ + (uint32_t)(uint16_t)bufcRxStreaming,uVar1 - (uint16_t)bufcRxStreaming,0xffff,piVar2);
     bufcRxStreaming._0_2_ = (uint16_t)local_14;
-    BUS_RegMaskedClear(&BUFC->IEN,0x400);
+    BUS_RegMaskedClear(&BUFC->IEN,BUFC_IEN_BUF1THR_Msk);
     *buf = bufcRxStreaming._4_4_;
   }
   return uVar1;

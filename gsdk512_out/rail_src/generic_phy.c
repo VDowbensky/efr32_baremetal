@@ -110,7 +110,7 @@ void RADIO_RACRxAbort(void)
 	SEQ->REG06C &= 0xffffff0f;
 	SEQ->REG06C |= 0xe0;
   }
-  FRC->CMD = 1;
+  FRC->CMD = FRC_CMD_RXABORT_Msk;
   CORE_ExitCritical(irqState);
 }
 
@@ -527,14 +527,12 @@ uint GENERIC_PHY_PacketRxAppendedInfoHelper(uint param_1,void *buf,undefined4 pa
 uint16_t GENERIC_PHY_PacketRxHelper(int param_1,undefined4 param_2,undefined4 param_3)
 
 {
-  int iVar1;
-  uint uVar2;
+  uint32_t len;
   
-  iVar1 = RADIO_RxTrailDataLength();
-  uVar2 = param_1 - iVar1 & 0xffff;
-  GENERIC_PHY_PacketRxDataHelper(param_2,uVar2);
-  GENERIC_PHY_PacketRxAppendedInfoHelper(iVar1,param_3);
-  return (uint16_t)uVar2;
+  len = param_1 - RADIO_RxTrailDataLength() & 0xffff;
+  GENERIC_PHY_PacketRxDataHelper(param_2,len);
+  GENERIC_PHY_PacketRxAppendedInfoHelper(RADIO_RxTrailDataLength(),param_3);
+  return (uint16_t)len;
 }
 
 
@@ -647,7 +645,7 @@ void GENERIC_PHY_RadioIdle(int abort,int shutdown,int clearflags)
   PROTIMER_ClearTxEnable();
   GENERIC_PHY_SeqAtomicLock();
   SEQ->REG000 |= 0x40;
-  BUS_RegMaskedClear(&RAC->RXENSRCEN,0xff);
+  BUS_RegMaskedClear(&RAC->RXENSRCEN,RAC_RXENSRCEN_SWRXEN_Msk);
   RAC->CMD = RAC_CMD_RXDIS_Msk;
   BUS_RegMaskedClear(&RAC->SR0,4);
   if (abort != 0) 
@@ -681,10 +679,7 @@ void GENERIC_PHY_RadioIdle(int abort,int shutdown,int clearflags)
 void GENERIC_PHY_FRC_IRQCallback(void)
 
 {
-  uint uVar1;
   CORE_irqState_t irqState;
-  int iVar3;
-  RAC_SET *pRVar4;
   uint32_t flags;
   
   irqState = CORE_EnterCritical();
@@ -692,31 +687,29 @@ void GENERIC_PHY_FRC_IRQCallback(void)
   SEQ->REG068 | FRC->IF;
   BUS_RegMaskedClear(&RAC->SR0,4);
   CORE_ExitCritical(irqState);
-  uVar1 = (FRC->IEN);
   flags = FRC->IF & FRC->IEN;
   FRC->IFC = flags;
-  if (flags & 0x10) 
+  if (flags & FRC_IF_RXDONE_Msk) 
   {
     (*currentCallbacks[2])();
-    iVar3 = BUFC_RxBufferPacketAvailable();
-    if (BUFC_RxBufferPacketAvailable() != 0) FRC->IFS = 0x10;
+    if (BUFC_RxBufferPacketAvailable() != 0) FRC->IFS = FRC_IFS_RXDONE_Msk;
   }
   else 
   {
-    if (flags & 0x40) 
+    if (flags & FRC_IF_FRAMEERROR_Msk) 
 	{
-      if (((FRC->IF & 0x10) && (BUFC_RxBufferBytesAvailable() != 0)) && (FRC->RXCTRL & 0x02)) bufcPendRxFrameError = 1;
+      if (((FRC->IF & FRC_IF_RXDONE_Msk) && (BUFC_RxBufferBytesAvailable() != 0)) && (FRC->RXCTRL & FRC_RXCTRL_ACCEPTCRCERRORS_Msk)) bufcPendRxFrameError = 1;
       else 
 	  {
         if (enabledCallbacks & 0x08) (*currentCallbacks[3])();
       }
     }
   }
-  if (((flags & 3) != 0) && ((int)((uint)(byte)enabledCallbacks << 0x1f) < 0)) 
+  if ((flags & (FRC_IF_TXDONE_Msk | FRC_IF_TXAFTERFRAMEDONE_Msk) != 0) && (enabledCallbacks & 0x01))
   {
     (**currentCallbacks)();
   }
-  if ((flags & 0x100) && ((RAC->STATUS & 0xf000000) == 0x6000000)) 
+  if ((flags & FRC_IF_RXOF_Msk) && ((RAC->STATUS & RAC_STATUS_STATE_Msk) == 0x6000000)) 
 	 {
     if (enabledCallbacks & 0x10) (*currentCallbacks[4])();
     if (BUFC_RxBufferPacketAvailable() == 0) 
@@ -724,20 +717,20 @@ void GENERIC_PHY_FRC_IRQCallback(void)
       if ((RAC->SR0 & 0x40) == 0) RADIO_FRCErrorHandle();
       if (!(RAC->SR0 & 0x80)) 
 	  {
-        RAC->CMD = 8;
+        RAC->CMD = RAC_CMD_CLEARTXEN_Msk;
         if ((SEQ->REG00C & 0x200) == 0) BUS_RegMaskedClear(&RAC->RXENSRCEN,2);
         else BUS_RegMaskedSet(&RAC->RXENSRCEN,2);
       }
-      RAC->CMD = 0x40;
+      RAC->CMD = RAC_CMD_CLEARRXOVERFLOW_Msk;
     }
-    else FRC->IFS = 0x100;
+    else FRC->IFS = FRC_IFS_RXOF_Msk;
   }
-  if ((flags & 0x04) && (!(FRC->CTRL & 0x01))) (*currentCallbacks[1])(8);
-  if (flags & 0x08) (*currentCallbacks[1])(2);
-  if (flags & 0x4000) (*currentCallbacks[7])();
-  if (flags & 0x2000) (*currentCallbacks[8])();
+  if ((flags & FRC_IF_TXABORTED_Msk) && (!(FRC->CTRL & FRC_CTRL_RANDOMTX_Msk))) (*currentCallbacks[1])(8);
+  if (flags & FRC_IF_TXUF_Msk) (*currentCallbacks[1])(2);
+  if (flags & FRC_IF_RXRAWEVENT_Msk) (*currentCallbacks[7])();
+  if (flags & FRC_IF_BUSERROR_Msk) (*currentCallbacks[8])();
   if (((pendedRxWindowEnd != 0) && (BUFC_RxBufferPacketAvailable() == 0)) && (pendedRxWindowEnd = 0, enabledCallbacks & 0x40)) (*currentCallbacks[6])(1);
-  if (flags & 0x20) (*currentCallbacks[5])();
+  if (flags & FRC_IF_RXABORTED_Msk) (*currentCallbacks[5])();
                     // WARNING: Could not recover jumptable at 0x00010c08. Too many branches
                     // WARNING: Treating indirect jump as call
 }
@@ -755,7 +748,7 @@ void GENERIC_PHY_SeqAtomicUnlock(void)
 void GENERIC_PHY_TxDisable(void)
 
 {
-  RAC->CMD = 0x20;
+  RAC->CMD = RAC_CMD_TXDIS_Msk;
 }
 
 
@@ -1012,7 +1005,7 @@ void GENERIC_PHY_Init(void)
   _DAT_e000e180 = 0x40000000;
   GENERIC_PHY_RACConfig();
   RADIO_PTI_Enable();
-  BUS_RegMaskedClear(&RAC->CTRL,1);
+  BUS_RegMaskedClear(&RAC->CTRL,RAC_CTRL_FORCEDISABLE_Msk);
   RADIO_RegisterIrqCallback(1,GENERIC_PHY_FRC_IRQCallback);
   RADIO_RegisterIrqCallback(2,GENERIC_PHY_MODEM_IRQCallback);
   RADIO_RegisterIrqCallback(5,GENERIC_PHY_RAC_IRQCallback);
@@ -1035,28 +1028,34 @@ void GENERIC_PHY_Init(void)
   RFRAND_SeedProtimerRandom();
 }
 
+//typedef struct RAIL_AddrConfig {
+  /** The number of fields to configure. You cannot have more than 2. */
+//  uint8_t numFields;
+//  uint8_t *offsets;
+//  uint8_t *sizes;
+//  uint32_t matchTable;
+//} RAIL_AddrConfig_t;
 
-
-bool GENERIC_PHY_ConfigureAddressFiltering(undefined *param_1)
-
+//bool GENERIC_PHY_ConfigureAddressFiltering(undefined *param_1)
+bool GENERIC_PHY_ConfigureAddressFiltering(RAIL_AddrConfig_t *addrConfig)
 {
   GENERIC_PHY_ResetAddressFiltering();
-  if (param_1 == NULL) return true;
-  SEQ->REG054._0_1_ = *param_1;
-  if ((byte)param_1[2] < 9) 
+  if (addrConfig == NULL) return true;
+  SEQ->REG054._0_1_ = *addrConfig;
+  if ((byte)addrConfig[2] < 9) 
   {
-    SEQ->REG054._2_1_ = param_1[2];
-    SEQ->REG054._1_1_ = param_1[1];
-    if ((byte)param_1[3] < 9) 
+    SEQ->REG054._2_1_ = addrConfig[2];
+    SEQ->REG054._1_1_ = addrConfig[1];
+    if ((byte)addrConfig[3] < 9) 
 	{
-      SEQ->REG054._3_1_ = param_1[3];
-      SEQ->REG058._2_1_ = param_1[8];
-      addressFilterMatchTable = *(undefined4 *)(param_1 + 4);
+      SEQ->REG054._3_1_ = addrConfig[3];
+      SEQ->REG058._2_1_ = addrConfig[8];
+      addressFilterMatchTable = *(undefined4 *)(addrConfig + 4);
       GENERIC_PHY_SetAddressFilteringMatchTable();
       return true;
     }
   }
-  return false;
+  else return false;
 }
 
 
@@ -1261,7 +1260,6 @@ uint32_t GENERIC_PHY_TimerGetTimeout(void)
 bool GENERIC_PHY_TimerExpired(void)
 
 {
-  //return SUB41((PROTIMER->IF << 0x15) >> 0x1f,0);
   return (PROTIMER->IF & PROTIMER_IF_CC2_Msk);
 }
 

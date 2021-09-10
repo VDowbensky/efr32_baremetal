@@ -6,7 +6,7 @@ uint8_t RAIL_RadioConfig(undefined *radioConfig)
 
 {
   RADIO_Config(*radioConfig);
-  forceIrCal = 1;
+  forceIrCal = true;
   return 0;
 }
 
@@ -79,8 +79,8 @@ void RAIL_SetTune(uint32_t tune)
 {
   CMU_ClockSelectSet(0x11,5);
   CMU_OscillatorEnable(2,0,0);
-  BUS_RegMaskedClear(&CMU->HFXOSTEADYSTATECTRL,0xff800);
-  BUS_RegMaskedSet(&CMU->HFXOSTEADYSTATECTRL,(tune & 0x1ff) << 0xb);
+  BUS_RegMaskedClear(&CMU->HFXOSTEADYSTATECTRL,_CMU_HFXOSTEADYSTATECTRL_CTUNE_MASK);
+  BUS_RegMaskedSet(&CMU->HFXOSTEADYSTATECTRL,(tune & 0x1ff) << _CMU_HFXOSTEADYSTATECTRL_CTUNE_SHIFT);
   CMU_OscillatorEnable(2,1,1);
   CMU_ClockSelectSet(0x11,4);
 }
@@ -90,7 +90,7 @@ void RAIL_SetTune(uint32_t tune)
 uint32_t RAIL_GetTune(void)
 
 {
-  return (CMU->HFXOSTEADYSTATECTRL << 0xc) >> 0x17;
+  return (CMU->HFXOSTEADYSTATECTRL & _CMU_HFXOSTEADYSTATECTRL_CTUNE_MASK) >> _CMU_HFXOSTEADYSTATECTRL_CTUNE_SHIFT;
 }
 
 
@@ -122,7 +122,8 @@ void RAILInt_CompensateForDelay(void)
 bool RAIL_AddressFilterByFrameType(uint8_t validFrames)
 
 {
-  SEQ->REG058._2_1_ = validFrames;
+  //SEQ->REG058._2_1_ = validFrames;
+  SEQ->REG058 |= validFrames << 16;
   return true;
 }
 
@@ -212,7 +213,7 @@ uint8_t RAIL_ChannelConfig(const RAIL_ChannelConfig_t * config)
 {
   RAILInt_TrackChannelConfig();
   SYNTH_Config(config->configs->baseFrequency, config->configs->channelSpacing);
-  if (SYNTH_Is2p4GHz() == 0) SYNTH_DCDCRetimeClkSet(3500000);
+  if (SYNTH_Is2p4GHz() == false) SYNTH_DCDCRetimeClkSet(3500000);
   else SYNTH_DCDCRetimeClkSet(7000000); 
   if (forceIrCal == true) 
   {
@@ -244,13 +245,12 @@ RAIL_Status_t RAIL_SetStateTiming(RAIL_StateTiming_t *timings)
 bool RAIL_AddressFilterConfig(RAIL_AddrConfig_t *addrConfig)
 
 {
-  uint8_t numfields;
+/*   uint8_t numfields;
   int i;
   undefined4 local_1c;
   undefined4 local_18;
   undefined4 local_14;
   
-  bVar1 = *param_1;
   numfields = addrConfig->numFields;
   if (numfields < 3)
   {
@@ -265,14 +265,18 @@ bool RAIL_AddressFilterConfig(RAIL_AddrConfig_t *addrConfig)
     memset(&local_1c,0,0xc);
     for (i = 0; i < (int)(uint)numfields; i++) 
 	{
-      *(undefined *)((int)&local_1c + i) = *(undefined *)(*(int *)(param_1 + 4) + i);
-      *(undefined *)((int)&local_1c + i + 2) = *(undefined *)(*(int *)(param_1 + 8) + i);
+      *(undefined *)((int)&local_1c + i) = *(undefined *)(*(addrConfig->offsets) + i);
+      *(undefined *)((int)&local_1c + i + 2) = *(undefined *)(*(int *)(addrConfig->sizes) + i);
     }
-    local_18 = *(undefined4 *)(param_1 + 0xc);
+    local_18 = *(undefined4 *)(addrconfig->matchtable);
     local_14 = CONCAT31(local_14._1_3_,0xff);
     return GENERIC_PHY_ConfigureAddressFiltering(&local_1c);
   }
   else return false;
+   */
+  if(addrConfig->numFields < 3) return GENERIC_PHY_ConfigureAddressFiltering(&addrConfig);
+  else return false;
+  
 }
 
 

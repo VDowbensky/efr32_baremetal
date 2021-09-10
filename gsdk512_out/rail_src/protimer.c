@@ -101,10 +101,8 @@ void PROTIMER_TOUTTimerStart(uint32_t time,uint8_t tout)
 uint32_t PROTIMER_TOUTTimerGet(uint8_t tout)
 
 {
-  if (tout == 0) return (PROTIMER->TOUT0CNT << 8) >> 0x10;
-  else return (PROTIMER->TOUT1CNT << 8) >> 0x10;
-  //if (tout == 0) return (PROTIMER->TOUT0CNT << 0x10) >> 0x18;
-  //else return (PROTIMER->TOUT1CNT << 0x10) >> 0x18;
+  if (tout == 0) return (PROTIMER->TOUT0CNT & 0xff000000) >> 8; //return (PROTIMER->TOUT0CNT << 8) >> 0x10;
+  else return (PROTIMER->TOUT1CNT & 0xff000000) >> 8; //return (PROTIMER->TOUT1CNT << 8) >> 0x10;
 }
 
 
@@ -112,8 +110,34 @@ uint32_t PROTIMER_TOUTTimerGet(uint8_t tout)
 void PROTIMER_CCTimerStop(uint8_t channel)
 
 {
-  (&PROTIMER_CLR->CC0_CTRL)[(uint32_t)channel * 4] = 1;
-  PROTIMER->IFC = 0x100 << (uint32_t)channel;
+  switch(channel)
+  {
+	case 0:
+	default:
+	BUS_RegMaskedClear(&PROTIMER->CC0_CTRL,PROTIMER_CC0_CTRL_ENABLE_Msk);
+	PROTIMER->IFC = PROTIMER_IFC_CC0_Msk;
+	break;
+	
+	case 1:
+	BUS_RegMaskedClear(&PROTIMER->CC1_CTRL,PROTIMER_CC1_CTRL_ENABLE_Msk);
+	PROTIMER->IFC = PROTIMER_IFC_CC1_Msk;	
+	break;
+	
+	case 2:
+	BUS_RegMaskedClear(&PROTIMER->CC2_CTRL,PROTIMER_CC2_CTRL_ENABLE_Msk);
+	PROTIMER->IFC = PROTIMER_IFC_CC2_Msk;
+	break;
+	
+	case 3:
+	BUS_RegMaskedClear(&PROTIMER->CC3_CTRL,PROTIMER_CC3_CTRL_ENABLE_Msk);
+	PROTIMER->IFC = PROTIMER_IFC_CC3_Msk;
+	break;
+	
+	case 4:
+	BUS_RegMaskedClear(&PROTIMER->CC4_CTRL,PROTIMER_CC4_CTRL_ENABLE_Msk);
+	PROTIMER->IFC = PROTIMER_IFC_CC4_Msk;
+	break;
+  }
 }
 
 bool PROTIMER_CCTimerStart(uint8_t timer,uint32_t time,RAIL_TimeMode_t mode)
@@ -178,7 +202,7 @@ void PROTIMER_WrapMultiple(uint param_1,undefined4 param_2,uint param_3,int para
 bool PROTIMER_CCTimerIsEnabled(uint8_t channel)
 
 {
-  return (bool)((byte)(&PROTIMER->CC0_CTRL)[(uint)channel * 4] & 1);
+  return (&PROTIMER->CC0_CTRL)[channel * 4] & 1;
 }
 
 
@@ -186,7 +210,7 @@ bool PROTIMER_CCTimerIsEnabled(uint8_t channel)
 void PROTIMER_CCTimerCapture(uint8_t channel,uint param_2)
 
 {
-  (&PROTIMER->CC0_CTRL)[(uint)channel * 4] = param_2 & 0xe00000 | 3;
+  (&PROTIMER->CC0_CTRL)[channel * 4] = param_2 & 0xe00000 | 3;
 }
 
 
@@ -203,7 +227,7 @@ bool PROTIMER_ScheduleRxDisable(uint param_1,uint param_2,int param_3)
 
 {
   PROTIMER_CCTimerStop((uint8_t)param_1);
-  PROTIMER->RXCTRL & 0xe0e0ffff;
+  PROTIMER->RXCTRL & ~(PROTIMER_RXCTRL_RXCLREVENT2_Msk | PROTIMER_RXCTRL_RXCLREVENT1_Msk); //0xe0e0ffff;
   PROTIMER->RXCTRL |= 0x10000 | (param_1 + 9) * 0x1000000;
   return PROTIMER_CCTimerStart(param_1,param_2,param_3);
 }
@@ -363,7 +387,7 @@ bool PROTIMER_SetTime(uint32_t time)
   uint64_t uVar2;
   
   iVar1 = PROTIMER_IsRunning();
-  if (iVar1 != 0) 
+  if (PROTIMER_IsRunning() != false) 
   {
     PROTIMER_Stop();
     iVar1 = 1;
@@ -400,7 +424,7 @@ void PROTIMER_LBTCfgSet(uint param_1,int param_2,uint param_3,int param_4,byte p
     uVar2 = PROTIMER_UsToPrecntOverflow(us);
     if (uVar1 < (uint)uVar2) 
 	{
-      BUS_RegMaskedSet(&RAC->.RXENSRCEN,0x10);
+      BUS_RegMaskedSet(&RAC->RXENSRCEN,0x10);
       PROTIMER->TOUT0COMP = 0;
     }
     else PROTIMER->TOUT0COMP = (uint)uVar2;
@@ -419,22 +443,21 @@ void PROTIMER_DelayUs(uint32_t us)
   int iVar3;
   uint32_t uVar4;
   uint uVar5;
-  uint uVar6;
+  uint start;
   uint uVar7;
   uint64_t uVar8;
   
   uVar8 = PROTIMER_UsToPrecntOverflow(us);
-  uVar5 = (uint)uVar8;
-  uVar6 = PROTIMER->WRAPCNT;
+  uVar5 = (uint)PROTIMER_UsToPrecntOverflow(us);
+  start = PROTIMER->WRAPCNT;
   uVar2 = PROTIMER->WRAPCNTTOP;
-  iVar3 = PROTIMER_IsRunning(uVar5,(int)(uVar8 >> 0x20));
-  if (PROTIMER_IsRunning() != 0) 
+  if (PROTIMER_IsRunning()) 
   {
     while( true ) 
 	{
       uVar7 = uVar5;
       if (uVar2 >> 1 <= uVar5) uVar7 = uVar2 >> 1;
-	  while (PROTIMER_ElapsedTime(uVar6,uVar1) < uVar7);
+	  while (PROTIMER_ElapsedTime(start,PROTIMER->WRAPCNT) < uVar7);
       if (uVar5 <= uVar4) break;
       uVar5 = uVar5 - uVar4;
       uVar6 = uVar1;
