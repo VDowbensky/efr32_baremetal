@@ -155,9 +155,9 @@ void BUFC_RxBufferReset(void)
   
   irqState = CORE_EnterCritical();
   bufcRxStreaming._0_2_ = 0;
-  BUFC->BUF1_CMD = 1;
-  BUFC->BUF2_CMD = 1;
-  FRC->IFC = 0x10;
+  BUFC->BUF1_CMD = BUFC_BUF1_CMD_CLEAR_Msk; //1;
+  BUFC->BUF2_CMD = BUFC_BUF2_CMD_CLEAR_Msk; //1;
+  FRC->IFC = FRC_IFC_RXDONE_Msk; //0x10;
   CORE_ExitCritical(irqState);
 }
 
@@ -181,7 +181,7 @@ void BUFC_Init(void)
   RADIO_FrameControlDescrBufferIdSet(1,0);
   RADIO_FrameControlDescrBufferIdSet(2,1);
   RADIO_FrameControlDescrBufferIdSet(3,1);
-  BUS_RegMaskedClear(&FRC->CTRL,0xf0);
+  BUS_RegMaskedClear(&FRC->CTRL,FRC_CTRL_RXFCDMODE_Msk | FRC_CTRL_TXFCDMODE_Msk; //0xf0);
   BUS_RegMaskedSet(&FRC->CTRL,0xa0);
   RADIO_RegisterIrqCallback(3,BUFC_IrqHandler);
   NVIC_ClearPendingIRQ(BUFC_IRQn);

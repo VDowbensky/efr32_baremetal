@@ -127,26 +127,21 @@ undefined4 RTCCSYNC_PreSleep(int param_1,undefined4 param_2,undefined4 param_3)
         PROTIMER->IFC = 0x100;
         uVar2 = PROTIMER->IEN;
         PROTIMER->IEN = 0;
-        uVar6 = RTCC->CNT;
-        RTCC->CC0_CCV = uVar6 + 1;
+        RTCC->CC0_CCV = RTCC->CNT + 1;
         RTCC->CC0_CTRL = 2;
         refRtcCnt = RTCC->CC0_CCV;
         while( true ) 
 		{
           do 
 		  {
-            uVar6 = RTCC->CNT;
-            uVar12 = PROTIMER->IF;
-            if ((uVar12 & 0x100) != 0) 
+             if ((PROTIMER->IF & 0x100) != 0) 
 			{
               PROTIMER->IFC = 0x100;
               PROTIMER->IEN = uVar2;
               iVar1 = uVar8 + 2;
               RTCC->CC0_CCV = (uVar9 - iVar1) + iVar5;
               RTCC->IFC = 2;
-              uVar6 = RTCC->CNT;
-              uVar8 = RTCC->CC0_CCV;
-              if (uVar6 - uVar8 < (uint)(iVar1 - iVar5)) 
+              if (RTCC->CNT - RTCC->CC0_CCV < (uint)(iVar1 - iVar5)) 
 			  {
                 _DAT_46042024 = 2;
                 return 0;
@@ -156,7 +151,7 @@ undefined4 RTCCSYNC_PreSleep(int param_1,undefined4 param_2,undefined4 param_3)
               _DAT_46042024 = 2;
               return 1;
             }
-          } while (uVar6 != refRtcCnt + 1);
+          } while (RTCC->CNT != refRtcCnt + 1);
           if (uVar10 != 0) break;
           refRtcCnt = refRtcCnt + 2;
           RTCC->CC0_CCV = refRtcCnt;

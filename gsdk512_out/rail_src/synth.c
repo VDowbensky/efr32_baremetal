@@ -97,7 +97,7 @@ void SYNTH_RetimeClkConfig(void)
   
   uVar3 = (uint)*(byte *)((int)&local_1c + uVar1 / 625000000 + 1);
   uVar1 = uVar1 >> uVar3;
-  BUS_RegMaskedClear(&RAC->MMDCTRL,0x3dff);
+  BUS_RegMaskedClear(&RAC->MMDCTRL,RAC_MMDCTRL_MMDDIVRSDIG_Msk | RAC_MMDCTRL_MMDDIVRSDCDC_Msk | RAC_MMDCTRL_MMDDIVDCDC_Msk; //0x3dff);
   BUS_RegMaskedSet(&RAC->MMDCTRL,(uVar1 + (dcdcRetimeClkTarget >> 1)) / dcdcRetimeClkTarget - 1 | uVar3 << 0xc |(uint)*(byte *)((int)&local_1c + uVar1 / 325000000 + 1) << 10);
   SYNTH_RetimeLimitsConfig();
 }
