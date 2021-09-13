@@ -1,4 +1,4 @@
-#include "rail_ble.o.h"
+#include "rail_ble.h"
 
 
 
@@ -13,8 +13,8 @@ void RAILCore_BLE_Init(byte *param_1)
 
 
 
-void RAIL_BLE_Init(int param_1)
-
+//void RAIL_BLE_Init(int param_1)
+void RAIL_BLE_Init(RAIL_Handle_t railHandle)
 {
   RAILCore_BLE_Init(param_1 + 0xc);
   return;
@@ -36,8 +36,8 @@ void RAILCore_BLE_Deinit(byte *param_1)
 
 
 
-void RAIL_BLE_Deinit(int param_1)
-
+//void RAIL_BLE_Deinit(int param_1)
+void RAIL_BLE_Deinit(RAIL_Handle_t railHandle)
 {
   RAILCore_BLE_Deinit(param_1 + 0xc);
   return;
@@ -45,8 +45,8 @@ void RAIL_BLE_Deinit(int param_1)
 
 
 
-byte RAIL_BLE_IsEnabled(int param_1)
-
+//byte RAIL_BLE_IsEnabled(int param_1)
+bool RAIL_BLE_IsEnabled(RAIL_Handle_t railHandle)
 {
   return *(byte *)(param_1 + 0xc) & 1;
 }
@@ -68,8 +68,8 @@ undefined4 RAILCore_BLE_ConfigPhy1MbpsViterbi(byte *param_1)
 
 
 
-void RAIL_BLE_ConfigPhy1MbpsViterbi(int param_1)
-
+//void RAIL_BLE_ConfigPhy1MbpsViterbi(int param_1)
+RAIL_Status_t RAIL_BLE_ConfigPhy1MbpsViterbi(RAIL_Handle_t railHandle)
 {
   RAILCore_BLE_ConfigPhy1MbpsViterbi(param_1 + 0xc);
   return;
@@ -92,8 +92,8 @@ undefined4 RAILCore_BLE_ConfigPhy1Mbps(byte *param_1)
 
 
 
-void RAIL_BLE_ConfigPhy1Mbps(int param_1)
-
+//void RAIL_BLE_ConfigPhy1Mbps(int param_1)
+RAIL_Status_t RAIL_BLE_ConfigPhy1Mbps(RAIL_Handle_t railHandle)
 {
   RAILCore_BLE_ConfigPhy1Mbps(param_1 + 0xc);
   return;
@@ -116,8 +116,8 @@ undefined4 RAILCore_BLE_ConfigPhy2MbpsViterbi(byte *param_1)
 
 
 
-void RAIL_BLE_ConfigPhy2MbpsViterbi(int param_1)
-
+//void RAIL_BLE_ConfigPhy2MbpsViterbi(int param_1)
+RAIL_Status_t RAIL_BLE_ConfigPhy2MbpsViterbi(RAIL_Handle_t railHandle)
 {
   RAILCore_BLE_ConfigPhy2MbpsViterbi(param_1 + 0xc);
   return;
@@ -140,8 +140,8 @@ undefined4 RAILCore_BLE_ConfigPhy2Mbps(byte *param_1)
 
 
 
-void RAIL_BLE_ConfigPhy2Mbps(int param_1)
-
+//void RAIL_BLE_ConfigPhy2Mbps(int param_1)
+RAIL_Status_t RAIL_BLE_ConfigPhy2Mbps(RAIL_Handle_t railHandle)
 {
   RAILCore_BLE_ConfigPhy2Mbps(param_1 + 0xc);
   return;
@@ -163,9 +163,15 @@ undefined4 RAILCore_BLE_ConfigPhyCoded(byte *param_1,undefined4 param_2)
 }
 
 
-
-void RAIL_BLE_ConfigPhyCoded(int param_1)
-
+RAIL_ENUM(RAIL_BLE_Coding_t) {
+  RAIL_BLE_Coding_125kbps = 0,
+  RAIL_BLE_Coding_125kbps_DSA = 1,
+  RAIL_BLE_Coding_500kbps = 2,
+  RAIL_BLE_Coding_500kbps_DSA = 3,
+};
+//void RAIL_BLE_ConfigPhyCoded(int param_1)
+RAIL_Status_t RAIL_BLE_ConfigPhyCoded(RAIL_Handle_t railHandle,
+                                      RAIL_BLE_Coding_t bleCoding)
 {
   RAILCore_BLE_ConfigPhyCoded(param_1 + 0xc);
   return;
@@ -243,8 +249,12 @@ void RAILCore_BLE_Reinit(undefined4 param_1,undefined4 *param_2,undefined4 param
 
 
 
-void RAIL_BLE_ConfigChannelRadioParams(int param_1)
-
+//void RAIL_BLE_ConfigChannelRadioParams(int param_1)
+RAIL_Status_t RAIL_BLE_ConfigChannelRadioParams(RAIL_Handle_t railHandle,
+                                                uint32_t crcInit,
+                                                uint32_t accessAddress,
+                                                uint16_t channel,
+                                                bool disableWhitening);
 {
   RAILCore_BLE_ConfigChannelRadioParams(param_1 + 0xc);
   return;

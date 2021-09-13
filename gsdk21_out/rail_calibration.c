@@ -52,7 +52,7 @@ undefined4 RAILInt_GetEnabledCal(int param_1)
 
 
 //undefined4 RAIL_GetPendingCal(int param_1)
-RAIL_CalMask_t RAIL_GetPendingCal(RAIL_Handle_t railHandle);
+RAIL_CalMask_t RAIL_GetPendingCal(RAIL_Handle_t railHandle)
 {
   return *(undefined4 *)(param_1 + 0x14);
 }
@@ -97,7 +97,7 @@ LAB_000100a4:
 //undefined4 RAIL_Calibrate(int param_1)
 RAIL_Status_t RAIL_Calibrate(RAIL_Handle_t railHandle,
                              RAIL_CalValues_t *calValues,
-                             RAIL_CalMask_t calForce);
+                             RAIL_CalMask_t calForce)
 {
   RAILCore_Calibrate(param_1 + 0xc);
   return 0;
@@ -107,7 +107,7 @@ RAIL_Status_t RAIL_Calibrate(RAIL_Handle_t railHandle,
 
 //undefined4 RAIL_ConfigCal(int param_1,uint param_2,undefined4 param_3,undefined4 param_4)
 RAIL_Status_t RAIL_ConfigCal(RAIL_Handle_t railHandle,
-                             RAIL_CalMask_t calEnable);
+                             RAIL_CalMask_t calEnable)
 {
   RAILInt_EnableCal(param_1 + 0xc,param_2 & 0x10001,param_3,param_4,param_4);
   return 0;
@@ -116,7 +116,7 @@ RAIL_Status_t RAIL_ConfigCal(RAIL_Handle_t railHandle,
 
 
 //void RAIL_SetTune(int param_1)
-RAIL_Status_t RAIL_SetTune(RAIL_Handle_t railHandle, uint32_t tune);
+RAIL_Status_t RAIL_SetTune(RAIL_Handle_t railHandle, uint32_t tune)
 {
   RFHAL_SetTune(param_1 + 0xc);
   return;
@@ -125,7 +125,7 @@ RAIL_Status_t RAIL_SetTune(RAIL_Handle_t railHandle, uint32_t tune);
 
 
 //void RAIL_GetTune(int param_1)
-uint32_t RAIL_GetTune(RAIL_Handle_t railHandle);
+uint32_t RAIL_GetTune(RAIL_Handle_t railHandle)
 {
   RFHAL_GetTune(param_1 + 0xc);
   return;
@@ -136,7 +136,7 @@ uint32_t RAIL_GetTune(RAIL_Handle_t railHandle);
 //void RAIL_SetPaCTune(int param_1)
 RAIL_Status_t RAIL_SetPaCTune(RAIL_Handle_t railHandle,
                               uint8_t txPaCtuneValue,
-                              uint8_t rxPaCtuneValue);
+                              uint8_t rxPaCtuneValue)
 {
   RFHAL_SetPaCTune(param_1 + 0xc);
   return;

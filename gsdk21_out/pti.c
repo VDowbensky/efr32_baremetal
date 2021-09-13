@@ -2,8 +2,8 @@
 
 
 
-undefined4 PTI_Config(undefined4 *param_1)
-
+//undefined4 PTI_Config(undefined4 *param_1)
+RAIL_Status_t PTI_Config(const RAIL_PtiConfig_t *config)
 {
   uint uVar1;
   undefined4 uVar2;
@@ -60,8 +60,8 @@ LAB_000100a2:
 
 
 
-undefined4 PTI_GetConfig(undefined4 *param_1)
-
+//undefined4 PTI_GetConfig(undefined4 *param_1)
+RAIL_Status_t PTI_GetConfig(RAIL_PtiConfig_t *ptiConfig)
 {
   undefined4 uVar1;
   undefined4 uVar2;
@@ -99,8 +99,8 @@ void PTI_EnableAppendedInfo(int param_1)
 
 
 
-undefined4 PTI_Enable(int param_1)
-
+//undefined4 PTI_Enable(int param_1)
+RAIL_Status_t PTI_Enable(bool enable)
 {
   int iVar1;
   uint uVar2;

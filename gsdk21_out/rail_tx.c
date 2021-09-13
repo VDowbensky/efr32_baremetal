@@ -50,8 +50,9 @@ void RAILCore_StartScheduledTx
 
 
 
-void RAIL_SetCcaThreshold(int param_1)
-
+//void RAIL_SetCcaThreshold(int param_1)
+RAIL_Status_t RAIL_SetCcaThreshold(RAIL_Handle_t railHandle,
+                                   int8_t ccaThresholdDbm)
 {
   RFHAL_SetCcaThreshold(param_1 + 0xc);
   return;
@@ -113,8 +114,9 @@ int RAILCore_StartTxStream(undefined4 param_1,undefined4 param_2,uint param_3)
 
 
 
-void RAIL_SetTxPower(int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
-
+//void RAIL_SetTxPower(int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
+RAIL_Status_t RAIL_SetTxPowerDbm(RAIL_Handle_t railHandle,
+                                 RAIL_TxPower_t power)
 {
   RFHAL_SetTxPower(param_1 + 0xc,param_2,1,param_4,param_4);
   return;
@@ -122,8 +124,8 @@ void RAIL_SetTxPower(int param_1,undefined4 param_2,undefined4 param_3,undefined
 
 
 
-void RAIL_GetTxPower(int param_1)
-
+//void RAIL_GetTxPower(int param_1)
+RAIL_TxPower_t RAIL_GetTxPowerDbm(RAIL_Handle_t railHandle)
 {
   RFHAL_GetTxPower(param_1 + 0xc);
   return;
@@ -131,8 +133,9 @@ void RAIL_GetTxPower(int param_1)
 
 
 
-void RAIL_ConfigTxPower(int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
-
+//void RAIL_ConfigTxPower(int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
+RAIL_Status_t RAIL_ConfigTxPower(RAIL_Handle_t railHandle,
+                                 const RAIL_TxPowerConfig_t *config)
 {
   RFHAL_SetTxPower(param_1 + 0xc,0,1,param_4,param_4);
   RFHAL_ConfigTxPower(param_1 + 0xc,param_2);
@@ -141,8 +144,9 @@ void RAIL_ConfigTxPower(int param_1,undefined4 param_2,undefined4 param_3,undefi
 
 
 
-void RAIL_GetTxPowerConfig(int param_1)
-
+//void RAIL_GetTxPowerConfig(int param_1)
+RAIL_Status_t RAIL_GetTxPowerConfig(RAIL_Handle_t railHandle,
+                                    RAIL_TxPowerConfig_t *config)
 {
   RFHAL_GetTxPowerConfig(param_1 + 0xc);
   return;
@@ -150,8 +154,9 @@ void RAIL_GetTxPowerConfig(int param_1)
 
 
 
-void RAIL_SetTxPowerDbm(uint param_1,undefined4 param_2)
-
+//void RAIL_SetTxPowerDbm(uint param_1,undefined4 param_2)
+RAIL_Status_t RAIL_SetTxPowerDbm(RAIL_Handle_t railHandle,
+                                 RAIL_TxPower_t power)
 {
   undefined4 uVar1;
   uint local_18;
@@ -167,8 +172,8 @@ void RAIL_SetTxPowerDbm(uint param_1,undefined4 param_2)
 
 
 
-void RAIL_GetTxPowerDbm(uint param_1,undefined4 param_2,undefined4 param_3)
-
+//void RAIL_GetTxPowerDbm(uint param_1,undefined4 param_2,undefined4 param_3)
+RAIL_TxPower_t RAIL_GetTxPowerDbm(RAIL_Handle_t railHandle)
 {
   undefined4 uVar1;
   uint local_18;
@@ -195,8 +200,9 @@ void RAILCore_OverrideDebugFrequency(void)
 
 
 
-void RAIL_GetTxPacketDetails(int param_1)
-
+//void RAIL_GetTxPacketDetails(int param_1)
+RAIL_Status_t RAIL_GetTxPacketDetails(RAIL_Handle_t railHandle,
+                                      RAIL_TxPacketDetails_t *pPacketDetails)
 {
   RFHAL_GetTxPacketDetails(param_1 + 0xc);
   return;
@@ -204,8 +210,8 @@ void RAIL_GetTxPacketDetails(int param_1)
 
 
 
-void RAIL_EnablePaCal(void)
-
+//void RAIL_EnablePaCal(void)
+void RAIL_EnablePaCal(bool enable)
 {
   RFHAL_EnablePaCal();
   return;
@@ -213,8 +219,8 @@ void RAIL_EnablePaCal(void)
 
 
 
-void RAIL_EnableTxHoldOff(int param_1)
-
+//void RAIL_EnableTxHoldOff(int param_1)
+void RAIL_EnableTxHoldOff(RAIL_Handle_t railHandle, bool enable)
 {
   RFHAL_EnableTxHoldOff(param_1 + 0xc);
   return;
@@ -222,8 +228,8 @@ void RAIL_EnableTxHoldOff(int param_1)
 
 
 
-void RAIL_IsTxHoldOffEnabled(int param_1)
-
+//void RAIL_IsTxHoldOffEnabled(int param_1)
+bool RAIL_IsTxHoldOffEnabled(RAIL_Handle_t railHandle)
 {
   RFHAL_IsTxHoldOffEnabled(param_1 + 0xc);
   return;

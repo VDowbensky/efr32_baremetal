@@ -27,8 +27,9 @@ undefined4 RAILCore_Init(undefined4 param_1)
 
 
 
-undefined4 RAIL_ConfigRadio(int param_1,int param_2)
-
+//undefined4 RAIL_ConfigRadio(int param_1,int param_2)
+RAIL_Status_t RAIL_ConfigRadio(RAIL_Handle_t railHandle,
+                               RAIL_RadioConfig_t config)
 {
   undefined4 uVar1;
   
@@ -41,8 +42,9 @@ undefined4 RAIL_ConfigRadio(int param_1,int param_2)
 
 
 
-undefined4 RAIL_SetPtiProtocol(int param_1,undefined4 param_2)
-
+//undefined4 RAIL_SetPtiProtocol(int param_1,undefined4 param_2)
+RAIL_Status_t RAIL_SetPtiProtocol(RAIL_Handle_t railHandle,
+                                  RAIL_PtiProtocol_t protocol)
 {
   int iVar1;
   undefined4 uVar2;
@@ -107,8 +109,8 @@ void RAILCore_EnableDirectMode(void)
 
 
 
-void RAIL_GetSymbolRate(int param_1)
-
+//void RAIL_GetSymbolRate(int param_1)
+uint32_t RAIL_GetSymbolRate(RAIL_Handle_t railHandle)
 {
   RFHAL_GetSymbolRate(param_1 + 0xc);
   return;
@@ -116,8 +118,8 @@ void RAIL_GetSymbolRate(int param_1)
 
 
 
-void RAIL_GetBitRate(int param_1)
-
+//void RAIL_GetBitRate(int param_1)
+uint32_t RAIL_GetBitRate(RAIL_Handle_t railHandle)
 {
   RFHAL_GetBitRate(param_1 + 0xc);
   return;
@@ -125,8 +127,9 @@ void RAIL_GetBitRate(int param_1)
 
 
 
-void RAIL_SetStateTiming(int param_1)
-
+//void RAIL_SetStateTiming(int param_1)
+RAIL_Status_t RAIL_SetStateTiming(RAIL_Handle_t railHandle,
+                                  RAIL_StateTiming_t *timings)
 {
   RFHAL_SetStateTiming(param_1 + 0xc);
   return;
@@ -161,8 +164,9 @@ void RAILCore_Sleep(void)
 
 
 
-undefined4 RAIL_IsValidChannel(int param_1,uint param_2)
-
+//undefined4 RAIL_IsValidChannel(int param_1,uint param_2)
+RAIL_Status_t RAIL_IsValidChannel(RAIL_Handle_t railHandle,
+                                  uint16_t channel)
 {
   int iVar1;
   int iVar2;
@@ -315,8 +319,10 @@ ushort RAILCore_ConfigChannels(int param_1,int param_2,undefined4 param_3,undefi
 
 
 
-undefined4 RAIL_ConfigChannels(int param_1,undefined4 param_2,undefined4 param_3)
-
+//undefined4 RAIL_ConfigChannels(int param_1,undefined4 param_2,undefined4 param_3)
+uint16_t RAIL_ConfigChannels(RAIL_Handle_t railHandle,
+                             const RAIL_ChannelConfig_t *config,
+                             RAIL_RadioConfigChangedCallback_t cb)
 {
   undefined4 uVar1;
   
@@ -335,8 +341,8 @@ undefined2 RAILInt_GetChannel(int param_1)
 
 
 
-void RAIL_GetVersion(undefined4 *param_1,int param_2)
-
+//void RAIL_GetVersion(undefined4 *param_1,int param_2)
+void RAIL_GetVersion(RAIL_Version_t *version, bool verbose)
 {
   *(undefined *)(param_1 + 1) = 2;
   *(undefined *)((int)param_1 + 5) = 1;
@@ -356,8 +362,8 @@ void RAIL_GetVersion(undefined4 *param_1,int param_2)
 
 
 
-undefined4 RAIL_SetDebugMode(int param_1,undefined4 param_2)
-
+//undefined4 RAIL_SetDebugMode(int param_1,undefined4 param_2)
+RAIL_Status_t RAIL_SetDebugMode(RAIL_Handle_t railHandle, uint32_t debugMode)
 {
   int iVar1;
   bool bVar2;
@@ -376,8 +382,8 @@ undefined4 RAIL_SetDebugMode(int param_1,undefined4 param_2)
 
 
 
-undefined4 RAIL_GetDebugMode(int param_1)
-
+//undefined4 RAIL_GetDebugMode(int param_1)
+uint32_t RAIL_GetDebugMode(RAIL_Handle_t railHandle)
 {
   return *(undefined4 *)(param_1 + 0x1c);
 }
@@ -411,8 +417,9 @@ undefined4 RAILCore_SetTxTransitions(undefined4 param_1,byte *param_2)
 
 
 
-void RAIL_SetTxTransitions(int param_1)
-
+//void RAIL_SetTxTransitions(int param_1)
+RAIL_Status_t RAIL_SetTxTransitions(RAIL_Handle_t railHandle,
+                                    const RAIL_StateTransitions_t *transitions)
 {
   RAILCore_SetTxTransitions(param_1 + 0xc);
   return;
@@ -445,8 +452,9 @@ undefined4 RAILCore_SetRxTransitions(undefined4 param_1,undefined *param_2)
 
 
 
-void RAIL_SetRxTransitions(int param_1)
-
+//void RAIL_SetRxTransitions(int param_1)
+RAIL_Status_t RAIL_SetTxTransitions(RAIL_Handle_t railHandle,
+                                    const RAIL_StateTransitions_t *transitions)
 {
   RAILCore_SetRxTransitions(param_1 + 0xc);
   return;
@@ -454,8 +462,8 @@ void RAIL_SetRxTransitions(int param_1)
 
 
 
-void RAIL_SetFixedLength(int param_1)
-
+//void RAIL_SetFixedLength(int param_1)
+uint16_t RAIL_SetFixedLength(RAIL_Handle_t railHandle, uint16_t length)
 {
   RFHAL_SetFixedLength(param_1 + 0xc);
   return;
@@ -463,8 +471,10 @@ void RAIL_SetFixedLength(int param_1)
 
 
 
-void RAIL_ConfigEvents(int param_1)
-
+//void RAIL_ConfigEvents(int param_1)
+RAIL_Status_t RAIL_ConfigEvents(RAIL_Handle_t railHandle,
+                                RAIL_Events_t mask,
+                                RAIL_Events_t events)
 {
   RFHAL_IntEnable(param_1 + 0xc);
   return;
@@ -472,8 +482,8 @@ void RAIL_ConfigEvents(int param_1)
 
 
 
-void RAIL_GetRxFreqOffset(int param_1)
-
+//void RAIL_GetRxFreqOffset(int param_1)
+RAIL_FrequencyOffset_t RAIL_GetRxFreqOffset(RAIL_Handle_t railHandle)
 {
   RFHAL_GetRxFreqOffset(param_1 + 0xc);
   return;
@@ -481,8 +491,9 @@ void RAIL_GetRxFreqOffset(int param_1)
 
 
 
-void RAIL_SetFreqOffset(int param_1)
-
+//void RAIL_SetFreqOffset(int param_1)
+RAIL_Status_t RAIL_SetFreqOffset(RAIL_Handle_t railHandle,
+                                 RAIL_FrequencyOffset_t freqOffset)
 {
   RFHAL_SetFreqOffset(param_1 + 0xc);
   return;

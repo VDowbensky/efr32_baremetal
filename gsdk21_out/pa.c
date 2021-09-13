@@ -74,7 +74,7 @@ undefined4 getRampTimeFromLevelAndRate(int param_1,uint param_2)
 
 
 //undefined4 PA_GetTxPowerConfig(undefined4 *param_1)
-RAIL_Status_t PA_GetTxPowerConfig(RAIL_TxPowerConfig_t *config);
+RAIL_Status_t PA_GetTxPowerConfig(RAIL_TxPowerConfig_t *config)
 {
   *param_1 = gPaConfig;
   *(undefined2 *)(param_1 + 1) = DAT_00010848;
@@ -84,7 +84,7 @@ RAIL_Status_t PA_GetTxPowerConfig(RAIL_TxPowerConfig_t *config);
 
 
 //undefined PA_GetPowerLevel(void)
-RAIL_TxPowerLevel_t PA_GetPowerLevel(void);
+RAIL_TxPowerLevel_t PA_GetPowerLevel(void)
 {
   return currentPowerLevel;
 }
@@ -94,7 +94,7 @@ RAIL_TxPowerLevel_t PA_GetPowerLevel(void);
 // WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
 //uint PA_SetPowerLevel(uint param_1)
-RAIL_TxPowerLevel_t PA_SetPowerLevel(RAIL_TxPowerLevel_t powerLevel);
+RAIL_TxPowerLevel_t PA_SetPowerLevel(RAIL_TxPowerLevel_t powerLevel)
 {
   byte bVar1;
   int iVar2;
@@ -326,7 +326,7 @@ int PA_CalcRampTime(void)
 
 
 //undefined2 PA_SetRampTime(uint param_1,undefined4 param_2,undefined4 param_3)
-uint32_t PA_SetRampTime(uint32_t rampTime, StateTimings_t *timings);
+uint32_t PA_SetRampTime(uint32_t rampTime, StateTimings_t *timings)
 {
   uint uVar1;
   uint uVar2;
@@ -388,7 +388,7 @@ uint32_t PA_SetRampTime(uint32_t rampTime, StateTimings_t *timings);
 
 
 //void PA_SetCTune(uint param_1,uint param_2)
-void PA_SetCTune(uint8_t txPaCtuneValue, uint8_t rxPaCtuneValue);
+void PA_SetCTune(uint8_t txPaCtuneValue, uint8_t rxPaCtuneValue)
 {
   write_volatile_4(DAT_21000fe8,param_1 & 7 | (param_1 & 0x1f) << 4);
   write_volatile_4(DAT_21000fe4,param_2 & 7 | (param_2 & 0x1f) << 4);
@@ -445,7 +445,7 @@ LAB_000104be:
 // WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
 //undefined4 PA_Config(uint *param_1)
-RAIL_Status_t PA_Config(const RAIL_TxPowerConfig_t *paConfig);
+RAIL_Status_t PA_Config(const RAIL_TxPowerConfig_t *paConfig)
 {
   char cVar1;
   uint uVar2;
@@ -535,7 +535,7 @@ undefined4 PA_UpdateConfig(undefined4 param_1)
 
 
 
-void PA_EnableCal(bool enable);
+void PA_EnableCal(bool enable)
 
 {
   paCalEnabled = param_1;
@@ -567,7 +567,7 @@ undefined1 * PA_GetTxPowerCurve(void)
 
 
 //uint PA_ConvertDbmToRaw(int param_1)
-RAIL_TxPowerLevel_t PA_ConvertDbmToRaw(RAIL_TxPower_t power);
+RAIL_TxPowerLevel_t PA_ConvertDbmToRaw(RAIL_TxPower_t power)
 {
   short *psVar1;
   uint uVar2;
@@ -616,8 +616,8 @@ RAIL_TxPowerLevel_t PA_ConvertDbmToRaw(RAIL_TxPower_t power);
 
 
 
-int PA_ConvertRawToDbm(uint param_1)
-RAIL_TxPower_t PA_ConvertRawToDbm(RAIL_TxPowerLevel_t powerLevel);
+//int PA_ConvertRawToDbm(uint param_1)
+RAIL_TxPower_t PA_ConvertRawToDbm(RAIL_TxPowerLevel_t powerLevel)
 {
   short sVar1;
   int iVar2;

@@ -2,8 +2,8 @@
 
 
 
-void RAILCb_AssertFailed(void)
-
+//void RAILCb_AssertFailed(void)
+void RAILCb_AssertFailed(RAIL_Handle_t railHandle, uint32_t errorCode);
 {
   do {
                     // WARNING: Do nothing block with infinite loop

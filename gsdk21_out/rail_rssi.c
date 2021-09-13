@@ -20,8 +20,8 @@ void RAILCore_StartAverageRssi(void)
 
 
 
-void RAIL_GetAverageRssi(int param_1)
-
+//void RAIL_GetAverageRssi(int param_1)
+int16_t RAIL_GetAverageRssi(RAIL_Handle_t railHandle)
 {
   RFHAL_GetAverageRssi(param_1 + 0xc);
   return;
@@ -29,8 +29,8 @@ void RAIL_GetAverageRssi(int param_1)
 
 
 
-int RAIL_IsAverageRssiReady(int param_1)
-
+//int RAIL_IsAverageRssiReady(int param_1)
+bool RAIL_IsAverageRssiReady(RAIL_Handle_t railHandle)
 {
   int iVar1;
   

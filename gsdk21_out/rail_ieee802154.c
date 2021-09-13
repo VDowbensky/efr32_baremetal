@@ -20,8 +20,8 @@ void RAILCore_IEEE802154_Config2p4GHzRadio(void)
 
 
 
-void RAIL_IEEE802154_Config2p4GHzRadio(int param_1)
-
+//void RAIL_IEEE802154_Config2p4GHzRadio(int param_1)
+RAIL_Status_t RAIL_IEEE802154_Config2p4GHzRadio(RAIL_Handle_t railHandle)
 {
   RFHAL_IEEE802154RadioConfig2p4GHz(param_1 + 0xc);
   return;
@@ -44,8 +44,8 @@ undefined4 RAILCore_IEEE802154_Deinit(undefined4 param_1)
 
 
 
-void RAIL_IEEE802154_Deinit(int param_1)
-
+//void RAIL_IEEE802154_Deinit(int param_1)
+RAIL_Status_t RAIL_IEEE802154_Deinit(RAIL_Handle_t railHandle)
 {
   RAILCore_IEEE802154_Deinit(param_1 + 0xc);
   return;
@@ -53,8 +53,8 @@ void RAIL_IEEE802154_Deinit(int param_1)
 
 
 
-void RAIL_IEEE802154_IsEnabled(int param_1)
-
+//void RAIL_IEEE802154_IsEnabled(int param_1)
+bool RAIL_IEEE802154_IsEnabled(RAIL_Handle_t railHandle)
 {
   RFHAL_IEEE802154IsEnabled(param_1 + 0xc);
   return;
@@ -135,8 +135,9 @@ int RAILCore_IEEE802154_Init
 
 
 
-void RAIL_IEEE802154_Init(int param_1)
-
+//void RAIL_IEEE802154_Init(int param_1)
+RAIL_Status_t RAIL_IEEE802154_Init(RAIL_Handle_t railHandle,
+                                   const RAIL_IEEE802154_Config_t *fifteenFourConfig)
 {
   RAILCore_IEEE802154_Init(param_1 + 0xc);
   return;
@@ -144,8 +145,9 @@ void RAIL_IEEE802154_Init(int param_1)
 
 
 
-void RAIL_IEEE802154_SetAddresses(int param_1)
-
+//void RAIL_IEEE802154_SetAddresses(int param_1)
+RAIL_Status_t RAIL_IEEE802154_SetAddresses(RAIL_Handle_t railHandle,
+                                           const RAIL_IEEE802154_AddrConfig_t *addresses)
 {
   RAILCore_IEEE802154_SetAddresses(param_1 + 0xc);
   return;
@@ -153,8 +155,10 @@ void RAIL_IEEE802154_SetAddresses(int param_1)
 
 
 
-undefined4 RAIL_IEEE802154_SetPanId(int param_1,undefined4 param_2,uint param_3)
-
+//undefined4 RAIL_IEEE802154_SetPanId(int param_1,undefined4 param_2,uint param_3)
+RAIL_Status_t RAIL_IEEE802154_SetPanId(RAIL_Handle_t railHandle,
+                                       uint16_t panId,
+                                       uint8_t index)
 {
   undefined4 uVar1;
   
@@ -167,8 +171,10 @@ undefined4 RAIL_IEEE802154_SetPanId(int param_1,undefined4 param_2,uint param_3)
 
 
 
-undefined4 RAIL_IEEE802154_SetShortAddress(int param_1,undefined4 param_2,uint param_3)
-
+//undefined4 RAIL_IEEE802154_SetShortAddress(int param_1,undefined4 param_2,uint param_3)
+RAIL_Status_t RAIL_IEEE802154_SetShortAddress(RAIL_Handle_t railHandle,
+                                              uint16_t shortAddr,
+                                              uint8_t index)
 {
   undefined4 uVar1;
   
@@ -181,8 +187,10 @@ undefined4 RAIL_IEEE802154_SetShortAddress(int param_1,undefined4 param_2,uint p
 
 
 
-undefined4 RAIL_IEEE802154_SetLongAddress(int param_1,undefined4 param_2,uint param_3)
-
+//undefined4 RAIL_IEEE802154_SetLongAddress(int param_1,undefined4 param_2,uint param_3)
+RAIL_Status_t RAIL_IEEE802154_SetLongAddress(RAIL_Handle_t railHandle,
+                                             const uint8_t *longAddr,
+                                             uint8_t index)
 {
   undefined4 uVar1;
   
@@ -196,7 +204,8 @@ undefined4 RAIL_IEEE802154_SetLongAddress(int param_1,undefined4 param_2,uint pa
 
 
 undefined4 RAIL_IEEE802154_SetPanCoordinator(int param_1,undefined4 param_2)
-
+RAIL_Status_t RAIL_IEEE802154_SetPanCoordinator(RAIL_Handle_t railHandle,
+                                                bool isPanCoordinator)
 {
   int iVar1;
   undefined4 uVar2;
@@ -211,8 +220,9 @@ undefined4 RAIL_IEEE802154_SetPanCoordinator(int param_1,undefined4 param_2)
 
 
 
-undefined4 RAIL_IEEE802154_SetPromiscuousMode(int param_1,undefined4 param_2)
-
+//undefined4 RAIL_IEEE802154_SetPromiscuousMode(int param_1,undefined4 param_2)
+RAIL_Status_t RAIL_IEEE802154_SetPromiscuousMode(RAIL_Handle_t railHandle,
+                                                 bool enable)
 {
   int iVar1;
   undefined4 uVar2;
@@ -227,8 +237,9 @@ undefined4 RAIL_IEEE802154_SetPromiscuousMode(int param_1,undefined4 param_2)
 
 
 
-undefined4 RAIL_IEEE802154_AcceptFrames(int param_1,undefined4 param_2)
-
+//undefined4 RAIL_IEEE802154_AcceptFrames(int param_1,undefined4 param_2)
+RAIL_Status_t RAIL_IEEE802154_AcceptFrames(RAIL_Handle_t railHandle,
+                                           uint8_t framesMask)
 {
   int iVar1;
   undefined4 uVar2;
@@ -243,8 +254,8 @@ undefined4 RAIL_IEEE802154_AcceptFrames(int param_1,undefined4 param_2)
 
 
 
-void RAIL_IEEE802154_SetFramePending(int param_1)
-
+//void RAIL_IEEE802154_SetFramePending(int param_1)
+RAIL_Status_t RAIL_IEEE802154_SetFramePending(RAIL_Handle_t railHandle)
 {
   RFHAL_IEEE802154SetFramePending(param_1 + 0xc);
   return;
@@ -252,8 +263,9 @@ void RAIL_IEEE802154_SetFramePending(int param_1)
 
 
 
-void RAIL_IEEE802154_GetAddress(undefined4 param_1,undefined4 param_2)
-
+//void RAIL_IEEE802154_GetAddress(undefined4 param_1,undefined4 param_2)
+RAIL_Status_t RAIL_IEEE802154_GetAddress(RAIL_Handle_t railHandle,
+                                         RAIL_IEEE802154_Address_t *pAddress)
 {
   RFHAL_IEEE802154GetAddress(param_2);
   return;

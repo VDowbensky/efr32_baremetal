@@ -52,10 +52,16 @@ uint RAILCore_ConfigAutoAck(undefined4 param_1,byte *param_2,undefined4 param_3,
   return uVar2;
 }
 
+typedef struct RAIL_AutoAckConfig {
+  bool enable;
+  uint16_t ackTimeout;
+  RAIL_StateTransitions_t rxTransitions;
+  RAIL_StateTransitions_t txTransitions;
+} RAIL_AutoAckConfig_t;
 
-
-void RAIL_ConfigAutoAck(int param_1)
-
+//void RAIL_ConfigAutoAck(int param_1)
+RAIL_Status_t RAIL_ConfigAutoAck(RAIL_Handle_t railHandle,
+                                 const RAIL_AutoAckConfig_t *config)
 {
   RAILCore_ConfigAutoAck(param_1 + 0xc);
   return;
@@ -63,8 +69,8 @@ void RAIL_ConfigAutoAck(int param_1)
 
 
 
-void RAIL_IsAutoAckEnabled(int param_1)
-
+//void RAIL_IsAutoAckEnabled(int param_1)
+bool RAIL_IsAutoAckEnabled(RAIL_Handle_t railHandle)
 {
   RFHAL_IsAutoAckEnabled(param_1 + 0xc);
   return;
@@ -72,8 +78,10 @@ void RAIL_IsAutoAckEnabled(int param_1)
 
 
 
-undefined4 RAIL_WriteAutoAckFifo(int param_1,undefined4 param_2,uint param_3)
-
+//undefined4 RAIL_WriteAutoAckFifo(int param_1,undefined4 param_2,uint param_3)
+RAIL_Status_t RAIL_WriteAutoAckFifo(RAIL_Handle_t railHandle,
+                                    const uint8_t *ackData,
+                                    uint8_t ackDataLen)
 {
   undefined4 uVar1;
   
@@ -86,8 +94,8 @@ undefined4 RAIL_WriteAutoAckFifo(int param_1,undefined4 param_2,uint param_3)
 
 
 
-void RAIL_UseTxFifoForAutoAck(int param_1)
-
+//void RAIL_UseTxFifoForAutoAck(int param_1)
+RAIL_Status_t RAIL_UseTxFifoForAutoAck(RAIL_Handle_t railHandle)
 {
   RFHAL_UseTxFifoForAutoAck(param_1 + 0xc);
   return;
@@ -95,8 +103,8 @@ void RAIL_UseTxFifoForAutoAck(int param_1)
 
 
 
-void RAIL_CancelAutoAck(int param_1)
-
+//void RAIL_CancelAutoAck(int param_1)
+RAIL_Status_t RAIL_CancelAutoAck(RAIL_Handle_t railHandle)
 {
   RFHAL_CancelAutoAck(param_1 + 0xc);
   return;
@@ -104,8 +112,8 @@ void RAIL_CancelAutoAck(int param_1)
 
 
 
-void RAIL_IsAutoAckWaitingForAck(int param_1)
-
+//void RAIL_IsAutoAckWaitingForAck(int param_1)
+bool RAIL_IsAutoAckWaitingForAck(RAIL_Handle_t railHandle)
 {
   RFHAL_IsAutoAckWaitingForAck(param_1 + 0xc);
   return;
@@ -113,8 +121,9 @@ void RAIL_IsAutoAckWaitingForAck(int param_1)
 
 
 
-void RAIL_PauseRxAutoAck(int param_1)
-
+//void RAIL_PauseRxAutoAck(int param_1)
+void RAIL_PauseRxAutoAck(RAIL_Handle_t railHandle,
+                         bool pause);
 {
   RFHAL_PauseRxAutoAck(param_1 + 0xc);
   return;
@@ -122,8 +131,8 @@ void RAIL_PauseRxAutoAck(int param_1)
 
 
 
-void RAIL_IsRxAutoAckPaused(int param_1)
-
+//void RAIL_IsRxAutoAckPaused(int param_1)
+bool RAIL_IsRxAutoAckPaused(RAIL_Handle_t railHandle)
 {
   RFHAL_IsRxAutoAckPaused(param_1 + 0xc);
   return;
@@ -131,8 +140,8 @@ void RAIL_IsRxAutoAckPaused(int param_1)
 
 
 
-void RAIL_PauseTxAutoAck(int param_1)
-
+//void RAIL_PauseTxAutoAck(int param_1)
+void RAIL_PauseTxAutoAck(RAIL_Handle_t railHandle, bool pause)
 {
   RFHAL_PauseTxAutoAck(param_1 + 0xc);
   return;
@@ -140,8 +149,8 @@ void RAIL_PauseTxAutoAck(int param_1)
 
 
 
-void RAIL_IsTxAutoAckPaused(int param_1)
-
+//void RAIL_IsTxAutoAckPaused(int param_1)
+bool RAIL_IsTxAutoAckPaused(RAIL_Handle_t railHandle)
 {
   RFHAL_IsTxAutoAckPaused(param_1 + 0xc);
   return;

@@ -2,8 +2,10 @@
 
 
 
-void RAIL_ConfigRxOptions(int param_1)
-
+//void RAIL_ConfigRxOptions(int param_1)
+RAIL_Status_t RAIL_ConfigRxOptions(RAIL_Handle_t railHandle,
+                                   RAIL_RxOptions_t mask,
+                                   RAIL_RxOptions_t options)
 {
   RFHAL_ConfigRxOptions(param_1 + 0xc);
   return;
