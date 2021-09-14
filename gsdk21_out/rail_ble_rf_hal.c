@@ -86,39 +86,39 @@ undefined4 RFHAL_IsBleLongRangeEnabled(void)
 
 
 
-void RFHAL_BLEPreambleSyncWordSet(int param_1,uint param_2)
+void RFHAL_BLEPreambleSyncWordSet(int param_1,uint32_t param_2)
 
 {
-  uint uVar1;
+  uint32_t uVar1;
   
-  write_volatile_4(Peripherals::MODEM.SYNC0,param_2);
-  uVar1 = read_volatile_4(Peripherals::MODEM.PRE);
+  write_volatile_4(MODEM->SYNC0,param_2);
+  uVar1 = (MODEM->PRE);
   if (param_1 == 0x55) {
     uVar1 = uVar1 & 0xfffffff0 | 1;
   }
   else {
     uVar1 = uVar1 & 0xfffffff0 | 2;
   }
-  write_volatile_4(Peripherals::MODEM.PRE,uVar1);
+  write_volatile_4(MODEM->PRE,uVar1);
   return;
 }
 
 
 
-void RFHAL_BLEWhiteningSet(uint param_1,uint param_2,int param_3)
+void RFHAL_BLEWhiteningSet(uint32_t param_1,uint32_t param_2,int param_3)
 
 {
   bool bVar1;
   
-  write_volatile_4(Peripherals::FRC.WHITEPOLY,param_1);
-  write_volatile_4(Peripherals::FRC.WHITEINIT,param_2);
-  write_volatile_4(Peripherals::FRC_CLR.FECCTRL,7);
+  write_volatile_4(FRC->WHITEPOLY,param_1);
+  write_volatile_4(FRC->WHITEINIT,param_2);
+  BUS_RegMaskedClear(&FRC->FECCTRL,7);
   bVar1 = param_3 == 0;
   if (bVar1) {
-    write_volatile_4(Peripherals::FRC_SET.FECCTRL,0);
+    BUS_RegMaskedSet(&FRC->FECCTRL,0);
   }
   else {
-    write_volatile_4(Peripherals::FRC_SET.FECCTRL,1);
+    BUS_RegMaskedSet(&FRC->FECCTRL,1);
     param_3 = 0;
   }
   RADIO_FrameDescsConfig(bVar1,param_3,1,1);

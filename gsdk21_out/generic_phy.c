@@ -5,26 +5,29 @@
 void GENERIC_PHY_ConfigureRollbackReporting(void)
 
 {
-  uint *puVar1;
+  RAC_SET *pRVar1;
+  CORE_irqState_t irqState;
   
-  CORE_EnterCritical();
-  if ((overrideRxRollback == '\0') && ((enabledRailEvents & 0x1200) == 0)) {
-    write_volatile_4(RAC_SR3_CLR,0x10);
+  irqState = CORE_EnterCritical();
+  if ((overrideRxRollback == '\0') && ((enabledRailEvents & 0x1200) == 0)) 
+  {
+    BUS_RegMaskedClear(&RAC->SR3,0x10);
 LAB_00010022:
-    if ((enabledRailEvents & 0x80) == 0) {
-      puVar1 = &RAC_SR3_CLR;
+    if ((enabledRailEvents & 0x80) == 0) 
+	{
+      pRVar1 = (RAC_SET *)&Peripherals::RAC_CLR;
       goto LAB_00010036;
     }
   }
-  else {
-    write_volatile_4(RAC_SR3_SET,0x10);
+  else 
+  {
+    BUS_RegMaskedSet(&RAC->SR3,0x10);
     if (overrideRxRollback == '\0') goto LAB_00010022;
   }
-  puVar1 = &RAC_SR3_SET;
+  pRVar1 = &Peripherals::RAC_SET;
 LAB_00010036:
-  *puVar1 = 0x20;
-  CORE_ExitCritical();
-  return;
+  ((RAC_CLR *)pRVar1)->SR3 = 0x20;
+  CORE_ExitCritical(irqState);
 }
 
 
@@ -33,7 +36,8 @@ void GENERIC_PHY_ClearPendedRxWindowEnd(void)
 
 {
   pendedRxWindowEnd = 0;
-  if (overrideRxRollback != '\0') {
+  if (overrideRxRollback != '\0') 
+  {
     overrideRxRollback = 0;
     GENERIC_PHY_ConfigureRollbackReporting();
     return;
@@ -44,40 +48,32 @@ void GENERIC_PHY_ClearPendedRxWindowEnd(void)
 
 
 
-void RADIO_RACRxAbort(undefined4 param_1,undefined4 param_2,undefined4 *param_3)
+void RADIO_RACRxAbort(undefined4 param_1,undefined4 param_2,int param_3)
 
 {
-  uint uVar1;
-  bool bVar2;
+  CORE_irqState_t irqState;
   
-  CORE_EnterCritical();
-  uVar1 = read_volatile_4(RAC_STATUS);
-  uVar1 = (uVar1 << 4) >> 0x1c;
-  bVar2 = uVar1 == 3;
-  if (bVar2) {
-    param_3 = &DAT_21000f7c;
-    uVar1 = read_volatile_4(0x21000f80);
-    uVar1 = uVar1 & 0xffffff0f | 0xe0;
+  irqState = CORE_EnterCritical();
+  if ((RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos == 3) 
+  {
+	SEQ->REG080 &= 0xffffff0f;
+	SEQ->REG080 |= 0xe0;
   }
-  if (bVar2) {
-    param_3[1] = uVar1;
-  }
-  write_volatile_4(FRC_CMD,1);
-  CORE_ExitCritical();
-  return;
+  FRC->CMD = FRC_CMD_RXABORT_Msk;
+  CORE_ExitCritical(irqState);
 }
 
 
 
-void GENERIC_PHY_IssueCallback(uint param_1,uint param_2,int param_3)
+void GENERIC_PHY_IssueCallback(uint32_t param_1,uint32_t param_2,int param_3)
 
 {
-  if (((param_1 | param_2) != 0) || (param_3 != 0)) {
+  if (((param_1 | param_2) != 0) || (param_3 != 0)) 
+  {
     inCallback = 1;
     GENERIC_PHY_EventCallback();
     inCallback = 0;
   }
-  return;
 }
 
 
@@ -85,22 +81,12 @@ void GENERIC_PHY_IssueCallback(uint param_1,uint param_2,int param_3)
 void GENERIC_PHY_RxOverflowHook(void)
 
 {
-  uint uVar1;
-  uint *puVar2;
-  
-  uVar1 = read_volatile_4(RAC_SR0);
-  if (-1 < (int)(uVar1 << 0x18)) {
-    write_volatile_4(RAC_CMD,8);
-    uVar1 = read_volatile_4(DAT_21000f24);
-    if ((uVar1 & 0x200) == 0) {
-      puVar2 = &RAC_RXENSRCEN_CLR;
-    }
-    else {
-      puVar2 = &RAC_RXENSRCEN_SET;
-    }
-    *puVar2 = 2;
+  if (!(RAC->SR0 & 0x80)) 
+  {
+    RAC->CMD = RAC_CMD_CLEARTXEN_Msk;
+    if ((SEQ->REG024 & 0x200) == 0) BUS_RegMaskedClear(&RAC->RXENSRCEN,2);
+    else BUS_RegMaskedSet(&RAC->RXENSRCEN,2);
   }
-  return;
 }
 
 
@@ -108,14 +94,11 @@ void GENERIC_PHY_RxOverflowHook(void)
 void GENERIC_PHY_CheckPendedRxWindowEnd(void)
 
 {
-  int iVar1;
-  
-  if ((pendedRxWindowEnd != '\0') && (iVar1 = BUFC_RxBufferBytesAvailable(), iVar1 == 0)) {
+  if ((pendedRxWindowEnd != 0) && (BUFC_RxBufferBytesAvailable() == 0)) 
+  {
     GENERIC_PHY_ClearPendedRxWindowEnd();
     GENERIC_PHY_IssueCallback(enabledRailEvents & 0x800,0,0);
-    return;
   }
-  return;
 }
 
 
@@ -125,61 +108,66 @@ void GENERIC_PHY_CheckPendedRxWindowEnd(void)
 void GENERIC_PHY_DisableRadioIrqs(void)
 
 {
-  CORE_EnterCritical();
+  CORE_irqState_t irqState;
+  
+  irqState = CORE_EnterCritical();
   _DAT_e000e180 = 0x40000000;
-  CORE_ExitCritical();
-  return;
+  CORE_ExitCritical(irqState);
 }
 
 
 
 // WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
-void GENERIC_PHY_ConfigureEvents
-               (uint param_1,uint param_2,uint param_3,uint param_4,uint param_5,uint param_6)
+void GENERIC_PHY_ConfigureEvents(uint32_t param_1,uint32_t param_2,uint32_t param_3,uint32_t param_4,uint32_t param_5,uint32_t param_6)
 
 {
-  uint *puVar1;
-  uint uVar2;
-  uint uVar3;
-  uint uVar4;
+  BUFC_SET *pBVar1;
+  uint32_t *puVar2;
+  uint32_t uVar3;
+  uint32_t uVar4;
+  uint32_t uVar5;
+  CORE_irqState_t irqState;
   
   param_3 = param_3 & param_1;
   param_4 = param_4 & param_2;
   param_6 = param_6 & param_5;
-  if (param_5 == 0) {
-    if (param_2 == 0 && param_1 == 1) {
-      CORE_EnterCritical();
+  if (param_5 == 0) 
+  {
+    if (param_2 == 0 && param_1 == 1) 
+	{
+      irqState = CORE_EnterCritical();
       DAT_000112fc = DAT_000112fc | param_4;
       enabledRailEvents = enabledRailEvents & 0xfffffffe | param_3;
-      uVar3 = 1;
-      if ((param_3 | param_4) == 0) {
-        write_volatile_4(AGC_IEN_CLR,1);
-        write_volatile_4(AGC_IFC,1);
-        goto LAB_00010476;
+      uVar4 = 1;
+      if ((param_3 | param_4) == 0) 
+	  {
+        BUS_RegMaskedClear(&AGC->IEN,1);
+        AGC->IFC = 1;
+        CORE_ExitCritical(irqState);
+		return;
       }
-      write_volatile_4(AGC_IFC,1);
-      puVar1 = &AGC_IEN_SET;
+      AGC->IFC = 1;
+      puVar2 = &Peripherals::AGC_SET.IEN;
     }
-    else {
-      if (param_2 == 0 && param_1 == 0) {
-        return;
-      }
+    else 
+	{
+      if (param_2 == 0 && param_1 == 0) return;
       if (param_2 != 0 || param_1 != 4) goto LAB_0001025a;
       CORE_EnterCritical();
       enabledRailEvents = enabledRailEvents & 0xfffffffb | param_3;
       DAT_000112fc = DAT_000112fc | param_4;
-      if ((param_3 | param_4) == 0) {
-        puVar1 = (uint *)&DAT_440810ec;
-      }
-      else {
-        puVar1 = (uint *)&DAT_460810ec;
-      }
-      uVar3 = 0x400;
+      if ((param_3 | param_4) == 0) pBVar1 = (BUFC_SET *)&Peripherals::BUFC_CLR;
+      else pBVar1 = &Peripherals::BUFC_SET;
+      puVar2 = &((BUFC_CLR *)pBVar1)->IEN;
+      uVar4 = 0x400;
     }
+	*puVar2 = uVar4;
   }
-  else {
-    if (((param_1 | param_2) != 0) || (param_5 != 4)) {
+  else 
+  {
+    if (((param_1 | param_2) != 0) || (param_5 != 4)) 
+	{
 LAB_0001025a:
       GENERIC_PHY_DisableRadioIrqs();
       param_3 = enabledRailEvents & ~param_1 | param_3;
@@ -189,125 +177,93 @@ LAB_0001025a:
       enabledRailEvents = param_3;
       DAT_000112fc = param_4;
       GENERIC_PHY_ConfigureRollbackReporting();
-      uVar3 = read_volatile_4(FRC_IEN);
-      uVar4 = 0x8002;
-      if ((param_3 & 0x2a80000) == 0) {
-        uVar4 = 0x8000;
-      }
-      if ((int)(param_6 << 0x1c) < 0) {
-        uVar4 = uVar4 | 0x2000;
-      }
-      uVar2 = uVar3 & (uVar4 ^ uVar3);
-      write_volatile_4(FRC_IEN_CLR,uVar2);
-      write_volatile_4(FRC_IFC,uVar2);
-      uVar4 = uVar4 & (uVar4 ^ uVar3);
-      write_volatile_4(FRC_IFC,uVar4);
-      write_volatile_4(FRC_IEN_SET,uVar4);
-      if ((param_3 & 0x4000) == 0) {
-        uVar3 = 0;
-      }
-      else {
-        uVar3 = 0x1000;
-      }
-      if ((param_3 & 0x8000) != 0) {
-        uVar3 = uVar3 | 0x100;
-      }
-      if ((int)(param_6 << 0x1f) < 0) {
-        uVar3 = uVar3 | 0x2000;
-      }
-      if ((param_3 & 0x10) != 0) {
-        uVar3 = uVar3 | 0x200;
-      }
-      if ((param_3 & 0x20) != 0) {
-        uVar3 = uVar3 | 0x400;
-      }
-      uVar4 = read_volatile_4(MODEM_IEN);
-      if ((param_3 & 0x40) != 0) {
-        uVar3 = uVar3 | 0x800;
-      }
-      uVar2 = uVar4 & (uVar3 ^ uVar4);
-      write_volatile_4(MODEM_IEN_CLR,uVar2);
-      write_volatile_4(MODEM_IFC,uVar2);
-      uVar3 = uVar3 & (uVar3 ^ uVar4);
-      write_volatile_4(MODEM_IFC,uVar3);
-      write_volatile_4(MODEM_IEN_SET,uVar3);
-      if ((param_4 & 2) == 0) {
-        uVar3 = 0;
-      }
-      else {
-        uVar3 = 0x40000;
-      }
-      if ((param_3 & 0x400) != 0) {
-        uVar3 = uVar3 | 0x10000;
-      }
-      if ((param_3 & 0x2000) != 0) {
-        uVar3 = uVar3 | 0x100000;
-      }
-      if ((param_3 & 2) != 0) {
-        uVar3 = uVar3 | 0x200000;
-      }
-      if ((param_3 & 0x10000) != 0) {
-        uVar3 = uVar3 | 0x80000;
-      }
-      uVar4 = read_volatile_4(RAC_IEN);
-      if ((int)(param_6 << 0x1b) < 0) {
-        uVar3 = uVar3 | 4;
-      }
-      uVar2 = (uVar3 ^ uVar4) & 0xfffffffe;
-      uVar4 = uVar4 & uVar2;
-      write_volatile_4(RAC_IEN_CLR,uVar4);
-      write_volatile_4(RAC_IFC,uVar4);
-      uVar3 = uVar3 & uVar2;
-      write_volatile_4(RAC_IFC,uVar3);
-      write_volatile_4(RAC_IEN_SET,uVar3);
-      _DAT_40085064 = 0x701800;
-      if ((param_6 & 4) != 0) {
-        _DAT_40085064 = 0x701c00;
-      }
-      if ((param_3 & 0x20000000) != 0) {
-        _DAT_40085064 = _DAT_40085064 | 0x2000000;
-      }
-      _DAT_44085068 = _DAT_40085068 & (_DAT_40085064 ^ _DAT_40085068);
-      _DAT_40085064 = _DAT_40085064 & (_DAT_40085064 ^ _DAT_40085068);
-      uVar3 = read_volatile_4(AGC_IEN);
-      uVar4 = uVar3 ^ param_3 & 1;
-      uVar3 = uVar3 & uVar4;
-      write_volatile_4(AGC_IEN_CLR,uVar3);
-      write_volatile_4(AGC_IFC,uVar3);
-      uVar4 = param_3 & 1 & uVar4;
-      write_volatile_4(AGC_IFC,uVar4);
-      write_volatile_4(AGC_IEN_SET,uVar4);
-      _DAT_400810e8 = 0x90a0a09;
-      if ((param_3 & 0x20000) != 0) {
-        _DAT_400810e8 = 0x90a0a0d;
-      }
-      if ((param_3 & 4) != 0) {
-        _DAT_400810e8 = _DAT_400810e8 | 0x400;
-      }
-      uVar3 = (_DAT_400810e8 ^ _DAT_400810ec) & 0xfffaffff;
-      _DAT_440810ec = _DAT_400810ec & uVar3;
-      _DAT_400810e8 = _DAT_400810e8 & uVar3;
-      _DAT_460810ec = _DAT_400810e8;
-      _DAT_46085068 = _DAT_40085064;
+      uVar4 = FRC->IEN;
+      uVar5 = 0x8002;
+      if ((param_3 & 0x2a80000) == 0) uVar5 = 0x8000;
+      if ((int)(param_6 << 0x1c) < 0) uVar5 = uVar5 | 0x2000;
+      uVar3 = uVar4 & (uVar5 ^ uVar4);
+      BUS_RegMaskedClear(&FRC->IEN,uVar3);
+      FRC->IFC = uVar3;
+      uVar5 = uVar5 & (uVar5 ^ uVar4);
+      FRC->IFC = uVar5;
+      BUS_RegMaskedSet(&FRC->IEN = uVar5);
+      if ((param_3 & 0x4000) == 0) uVar4 = 0;
+      else uVar4 = 0x1000;
+      if ((param_3 & 0x8000) != 0) uVar4 = uVar4 | 0x100;
+      if (param_6 & 0x01) uVar4 = uVar4 | 0x2000;
+      if ((param_3 & 0x10) != 0) uVar4 = uVar4 | 0x200;
+      if ((param_3 & 0x20) != 0) uVar4 = uVar4 | 0x400;
+      uVar5 = MODEM->IEN;
+      if ((param_3 & 0x40) != 0) uVar4 = uVar4 | 0x800;
+      uVar3 = uVar5 & (uVar4 ^ uVar5);
+      BUS_RegMaskedClear(&MODEM->IEN,uVar3);
+      MODEM->IFC = uVar3;
+      uVar4 = uVar4 & (uVar4 ^ uVar5);
+      MODEM->IFC = uVar4;
+      BUS_RegMaskedSet(&MODEM->IEN,uVar4);
+      if ((param_4 & 2) == 0) uVar4 = 0;
+      else uVar4 = 0x40000;
+      if ((param_3 & 0x400) != 0) uVar4 = uVar4 | 0x10000;
+      if ((param_3 & 0x2000) != 0) uVar4 = uVar4 | 0x100000;
+      if ((param_3 & 2) != 0) uVar4 = uVar4 | 0x200000;
+      if ((param_3 & 0x10000) != 0) uVar4 = uVar4 | 0x80000;
+      uVar5 = RAC->IEN;
+      if (param_6 & 0x10) uVar4 = uVar4 | 4;
+      uVar3 = (uVar4 ^ uVar5) & 0xfffffffe;
+      uVar5 = uVar5 & uVar3;
+      BUS_RegMaskedClear(&RAC->IEN,uVar5);
+      RAC->IFC = uVar5;
+      uVar4 = uVar4 & uVar3;
+      RAC->IFC = uVar4;
+      BUS_RegMaskedSet(&RAC->IEN,uVar4);
+      uVar4 = 0x701800;
+      if (param_6 & 4) uVar4 = 0x701c00;
+      uVar5 = (PROTIMER->IEN);
+      if ((param_3 & 0x20000000) != 0) uVar4 = uVar4 | 0x2000000;
+      uVar3 = uVar5 & (uVar4 ^ uVar5);
+      BUS_RegMaskedClear(&PROTIMER->IEN,uVar3);
+      uVar4 = uVar4 & (uVar4 ^ uVar5);
+      PROTIMER->IFC = uVar3;
+      PROTIMER->IFC = uVar4;
+      BUS_RegMaskedSet(&PROTIMER->IEN,uVar4);
+      uVar4 = AGC->IEN;
+      uVar5 = uVar4 ^ param_3 & 1;
+      uVar4 = uVar4 & uVar5;
+      BUS_RegMaskedClear(&AGC->IEN,uVar4);
+      AGC->IFC = uVar4;
+      uVar5 = param_3 & 1 & uVar5;
+      AGC->IFC = uVar5;
+      BUS_RegMaskedSet(&AGC->IEN,uVar5);
+      uVar4 = 0x90a0a09;
+      if ((param_3 & 0x20000) != 0) uVar4 = 0x90a0a0d;
+      uVar5 = BUFC->IEN;
+      if ((param_3 & 4) != 0) uVar4 = uVar4 | 0x400;
+      uVar3 = (uVar4 ^ uVar5) & 0xfffaffff;
+      uVar5 = uVar5 & uVar3;
+      BUS_RegMaskedClear(&BUFC->IEN,uVar5);
+      BUFC->IFC = uVar5;
+      uVar4 = uVar4 & uVar3;
+      BUFC->IFC = uVar4;
+      BUS_RegMaskedSet(&BUFC->IEN,uVar4);
       CORE_EnterCritical();
       _DAT_e000e100 = 0x20;
-      goto LAB_00010476;
+      CORE_ExitCritical(irqState);
+	  return;
     }
     CORE_EnterCritical();
     enabledPhyEvents = enabledPhyEvents & 0xfffffffb | param_6;
-    uVar3 = 0x400;
-    if (param_6 == 0) {
-      _DAT_44085068 = 0x400;
-      _DAT_40085064 = 0x400;
-      goto LAB_00010476;
+    uVar4 = 0x400;
+    if (param_6 == 0) 
+	{
+      BUS_RegMaskedClear(&PROTIMER->IEN,0x400);
+      write_volatile_4(PROTIMER->IFC,0x400);
+      CORE_ExitCritical(irqState);
+      return;
     }
-    _DAT_40085064 = 0x400;
-    puVar1 = (uint *)&DAT_46085068;
+    PROTIMER->IFC = 0x400;
+    puVar2 = &Peripherals::PROTIMER_SET.IEN;
+	*puVar2 = uVar4;
   }
-  *puVar1 = uVar3;
-LAB_00010476:
-  CORE_ExitCritical();
-  return;
 }
 
 
@@ -315,107 +271,91 @@ LAB_00010476:
 void GENERIC_PHY_PacketTxCommon(void)
 
 {
-  uint uVar1;
-  int iVar2;
-  
-  uVar1 = read_volatile_4(FRC_DFLCTRL);
-  if (((uVar1 & 7) == 0) && (iVar2 = read_volatile_4(DAT_21000f78), iVar2 != 0)) {
-    iVar2 = BUFC_GetBytesAvailable();
-    write_volatile_4(FRC_WCNTCMP0,iVar2 - 1);
-  }
-  write_volatile_4(RAC_SR0_SET,0x80);
-  uVar1 = read_volatile_4(DAT_21000f14);
-  write_volatile_4(DAT_21000f14,uVar1 & 0xffffffbf);
-  return;
+  if (((FRC->DFLCTRL & 7) == 0) && (SEQ->REG078 != 0)) FRC->WCNTCMP0 = BUFC_GetBytesAvailable() - 1;
+  BUS_RegMaskedSet(&RAC->SR0,0x80);
+  SEQ->REG014 &= 0xffffffbf;
 }
 
 
 
-undefined4 GENERIC_PHY_PacketTx(void)
+bool GENERIC_PHY_PacketTx(void)
 
 {
-  undefined4 uVar1;
-  int iVar2;
+  CORE_irqState_t irqState;
   
-  uVar1 = CORE_EnterCritical();
-  iVar2 = PROTIMER_CCTimerIsEnabled(3);
-  if ((iVar2 == 0) && (iVar2 = PROTIMER_LBTIsActive(), iVar2 == 0)) {
+  irqState = CORE_EnterCritical();
+  if ((PROTIMER_CCTimerIsEnabled(3) == false) && (PROTIMER_LBTIsActive() == false)) 
+  {
     GENERIC_PHY_PacketTxCommon();
-    write_volatile_4(RAC_CMD,1);
-    CORE_ExitCritical(uVar1);
-    return 0;
+    RAC->CMD = RAC_CMD_TXEN_Msk;
+    CORE_ExitCritical(irqState);
+    return false;
   }
-  CORE_ExitCritical(uVar1);
-  return 1;
+  CORE_ExitCritical(irqState);
+  return true;
 }
 
 
 
-// WARNING: Globals starting with '_' overlap smaller symbols at the same address
-
-undefined4
-GENERIC_PHY_SchedulePacketRx
+undefined4 GENERIC_PHY_SchedulePacketRx
           (int param_1,undefined4 param_2,int param_3,int param_4,char param_5,char param_6,
           undefined param_7)
 
 {
-  undefined4 uVar1;
   int iVar2;
-  uint uVar3;
+  uint32_t uVar3;
   undefined8 uVar4;
+  CORE_irqState_t irqState;
   
-  uVar1 = CORE_EnterCritical();
-  if (param_3 != 2) {
-    iVar2 = PROTIMER_CCTimerIsEnabled(3);
-    if (iVar2 != 0) goto LAB_00010624;
+  irqState = CORE_EnterCritical();
+  if (param_3 != 2) 
+  {
+    if (PROTIMER_CCTimerIsEnabled(3) != 0)
+	{
+		CORE_ExitCritical(irqState);
+		return 3;
+	}
     PROTIMER_ClearRxEnable();
     PROTIMER_ClearTxEnable();
     scheduledRxLoop = param_6;
-    uVar3 = read_volatile_4(DAT_21000f14);
-    if (param_6 == '\0') {
-      uVar3 = uVar3 & 0xffffffbf;
-    }
-    else {
-      uVar3 = uVar3 | 0x40;
-    }
-    write_volatile_4(DAT_21000f14,uVar3);
+    uVar3 = SEQ->REG014;
+    if (param_6 == '\0') uVar3 = uVar3 & 0xffffffbf;
+    else uVar3 = uVar3 | 0x40;
+    SEQ->REG014 = uVar3;
     iVar2 = PROTIMER_ScheduleRxEnable(3,param_2,param_3);
-    if (iVar2 == 0) {
-      CORE_ExitCritical(uVar1);
+    if (iVar2 == 0) 
+	{
+      CORE_ExitCritical(irqState);
       return 1;
     }
   }
-  if (param_5 != '\x02') {
-    iVar2 = PROTIMER_CCTimerIsEnabled(3);
-    if ((iVar2 != 0) || (uVar3 = read_volatile_4(RAC_STATUS), (int)(uVar3 << 0x11) < 0)) {
+  if (param_5 != '\x02') 
+  {
+    if ((PROTIMER_CCTimerIsEnabled(3) != false) || (RAC->STATUS & 0x4000) 
+	{
       scheduledRxHardEnd = param_7;
-      if ((param_5 == '\x01') && (param_3 != 2)) {
+      if ((param_5 == '\x01') && (param_3 != 2)) 
+	  {
         param_4 = param_4 + PROTIMER_scheduledRxEnable;
         uVar4 = PROTIMER_UsToPrecntOverflow(*(undefined2 *)(param_1 + 0x38));
-        param_4 = PROTIMER_WrapMultiple
-                            ((int)uVar4 + param_4,(int)((ulonglong)uVar4 >> 0x20),_DAT_40085030 + 1,
-                             0xfffffffe < _DAT_40085030);
+        param_4 = PROTIMER_WrapMultiple((int)uVar4 + param_4,(int)((ulonglong)uVar4 >> 0x20),PROTIMER->WRAPCNTTOP + 1,0xfffffffe < PROTIMER->WRAPCNTTOP);
         param_5 = '\0';
       }
       GENERIC_PHY_ClearPendedRxWindowEnd();
-      iVar2 = PROTIMER_ScheduleRxDisable(4,param_4,param_5);
-      if (iVar2 != 0) {
-        if (param_6 != '\0') {
+      if (PROTIMER_ScheduleRxDisable(4,param_4,param_5) != false) 
+	  {
+        if (param_6 != '\0') 
+		{
           overrideRxRollback = 1;
-          write_volatile_4(RAC_SR3_SET,5);
+          BUS_RegMaskedSet(&RAC->SR3,5);
         }
-        goto LAB_0001063e;
+        CORE_ExitCritical(irqState);
+		return 0;
       }
       PROTIMER_CCTimerStop(3);
       PROTIMER_ClearRxEnable();
     }
-LAB_00010624:
-    CORE_ExitCritical(uVar1);
-    return 3;
   }
-LAB_0001063e:
-  CORE_ExitCritical(uVar1);
-  return 0;
 }
 
 
@@ -424,15 +364,14 @@ undefined4 GENERIC_PHY_SchedulePacketTx(undefined4 *param_1)
 
 {
   undefined4 uVar1;
-  undefined4 uVar2;
-  int iVar3;
   char cVar4;
+  CORE_irqState_t irqState;
   
   uVar1 = PROTIMER_UsToPrecntOverflow(*param_1);
-  uVar2 = CORE_EnterCritical();
-  iVar3 = PROTIMER_CCTimerIsEnabled(3);
-  if ((iVar3 != 0) || (iVar3 = PROTIMER_LBTIsActive(), iVar3 != 0)) {
-    CORE_ExitCritical(uVar2);
+  irqState = CORE_EnterCritical();
+  if ((PROTIMER_CCTimerIsEnabled(3) != false) || (PROTIMER_LBTIsActive() != false)) 
+  {
+    CORE_ExitCritical(irqState);
     return 3;
   }
   GENERIC_PHY_PacketTxCommon();
@@ -440,16 +379,14 @@ undefined4 GENERIC_PHY_SchedulePacketTx(undefined4 *param_1)
   PROTIMER_ClearTxEnable();
   RFHAL_SetAbortScheduledTxDuringRx(*(char *)((int)param_1 + 5) == '\x01');
   cVar4 = *(char *)(param_1 + 1);
-  if (cVar4 != '\0') {
-    cVar4 = '\x01';
-  }
-  iVar3 = PROTIMER_ScheduleTxEnable(3,uVar1,cVar4);
-  if (iVar3 == 0) {
-    write_volatile_4(RAC_SR0_CLR,0x80);
-    CORE_ExitCritical(uVar2);
+  if (cVar4 != '\0') cVar4 = '\x01';
+  if (PROTIMER_ScheduleTxEnable(3,uVar1,cVar4) == 0) 
+  {
+    BUS_RegMaskedClear(&RAC->SR0,0x80);
+    CORE_ExitCritical(irqState);
     return 1;
   }
-  CORE_ExitCritical(uVar2);
+  CORE_ExitCritical(irqState);
   return 0;
 }
 
@@ -458,8 +395,7 @@ undefined4 GENERIC_PHY_SchedulePacketTx(undefined4 *param_1)
 void GENERIC_PHY_StopTx(void)
 
 {
-  write_volatile_4(RAC_CMD,8);
-  return;
+  RAC->CMD = RAC_CMD_CLEARTXEN_Msk;
 }
 
 
@@ -467,17 +403,13 @@ void GENERIC_PHY_StopTx(void)
 void GENERIC_PHY_StartRx(int param_1)
 
 {
-  uint uVar1;
+  CORE_irqState_t irqState;
   
-  if (param_1 != 0) {
-    write_volatile_4(FRC_WCNTCMP0,param_1 - 1);
-  }
-  CORE_EnterCritical();
-  uVar1 = read_volatile_4(DAT_21000f14);
-  write_volatile_4(DAT_21000f14,uVar1 & 0xffffffbf);
-  CORE_ExitCritical();
-  write_volatile_4(RAC_RXENSRCEN_SET,2);
-  return;
+  if (param_1 != 0) FRC->WCNTCMP0 = param_1 - 1;
+  irqState = CORE_EnterCritical();
+  SEQ->REG014 &= 0xffffffbf;
+  CORE_ExitCritical(irqState);
+  BUS_RegMaskedSet(&RAC->RXENSRCEN,2);
 }
 
 
@@ -486,7 +418,6 @@ void GENERIC_PHY_ChannelSet(undefined4 param_1)
 
 {
   SYNTH_ChannelSet(param_1,1);
-  return;
 }
 
 
@@ -494,15 +425,13 @@ void GENERIC_PHY_ChannelSet(undefined4 param_1)
 void GENERIC_PHY_SeqAtomicLock(void)
 
 {
-  uint uVar1;
-  
-  write_volatile_4(RAC_SR0_SET,4);
-  while (uVar1 = read_volatile_4(RAC_SR0), (int)(uVar1 << 0xd) < 0) {
-    write_volatile_4(RAC_SR0_CLR,4);
+  BUS_RegMaskedSet(&RAC->SR0,4);
+  while (RAC->SR0 & 0x40000) 
+  {
+    BUS_RegMaskedClear(&RAC->SR0,4);
     PROTIMER_DelayUs(2);
-    write_volatile_4(RAC_SR0_SET,4);
+    BUS_RegMaskedSet(&RAC->SR0,4);
   }
-  return;
 }
 
 
@@ -510,8 +439,7 @@ void GENERIC_PHY_SeqAtomicLock(void)
 void GENERIC_PHY_SeqAtomicUnlock(void)
 
 {
-  write_volatile_4(RAC_SR0_CLR,4);
-  return;
+  BUS_RegMaskedClear(&RAC->SR0,4);
 }
 
 
@@ -519,18 +447,15 @@ void GENERIC_PHY_SeqAtomicUnlock(void)
 void GENERIC_PHY_TxDisable(void)
 
 {
-  write_volatile_4(RAC_CMD,0x20);
-  return;
+  RAC->CMD = RAC_CMD_TXDIS_Msk;
 }
 
 
 
-// WARNING: Globals starting with '_' overlap smaller symbols at the same address
-
-undefined4 GENERIC_PHY_PreviousTxTime(void)
+uint32_t GENERIC_PHY_PreviousTxTime(void)
 
 {
-  return _DAT_40085090;
+  return PROTIMER->CC1_WRAP;
 }
 
 
@@ -539,102 +464,81 @@ void GENERIC_PHY_RACConfig(void)
 
 {
   RADIO_SeqInit(&genericSeqProg,genericSeqProg_size);
-  memset(&DAT_21000f14,0,0x68);
-  write_volatile_4(RAC_SR0,0);
-  write_volatile_4(RAC_SR1,0);
-  write_volatile_4(RAC_SR2,0);
+  memset(&SEQ->REG014,0,0x68);
+  RAC->SR0 = 0;
+  RAC->SR1 = 0;
+  RAC->SR2 = 0;
   TEMPCAL_Init();
-  return;
 }
 
 
 
-void GENERIC_PHY_ConfigDirectMode(byte *param_1)
+void GENERIC_PHY_ConfigDirectMode(uint8_t *param_1)
 
 {
-  uint uVar1;
+  uint32_t uVar1;
   
-  if (param_1 != (byte *)0x0) {
+  if (param_1 != NULL) 
+  {
     RADIOCMU_ClockEnable(0x67400,1);
     CMU_ClockEnable(0x82500,1);
-    uVar1 = (uint)*param_1;
-    write_volatile_4(MODEM_CTRL2_CLR,0xc00);
-    if (uVar1 == 0) {
-      write_volatile_4(MODEM_CTRL2_SET,0);
-    }
-    else {
-      uVar1 = (uint)param_1[4];
-      if (uVar1 == 0) {
-        write_volatile_4(MODEM_CTRL2_SET,0x800);
-      }
-      else {
-        write_volatile_4(MODEM_CTRL2_SET,0xc00);
+    uVar1 = (uint32_t)*param_1;
+    BUS_RegMaskedClear(&MODEM->CTRL2,0xc00);
+    if (uVar1 == 0) BUS_RegMaskedSet(&MODEM->CTRL2,0);
+    else 
+	{
+      uVar1 = (uint32_t)param_1[4];
+      if (uVar1 == 0) BUS_RegMaskedSet(&MODEM->CTRL2,0x800);
+      else 
+	  {
+        BUS_RegMaskedSet(&MODEM->CTRL2,0xc00);
         uVar1 = 4;
       }
       uVar1 = uVar1 | 1;
     }
-    if (param_1[1] != 0) {
-      write_volatile_4(MODEM_CTRL2_CLR,0x200);
-      if (param_1[3] == 0) {
-        write_volatile_4(MODEM_CTRL2_SET,0x200);
-      }
-      else {
-        write_volatile_4(MODEM_CTRL2_SET,0);
+    if (param_1[1] != 0) 
+	{
+      BUS_RegMaskedClear(&MODEM->CTRL2,0x200);
+      if (param_1[3] == 0) BUS_RegMaskedSet(&MODEM->CTRL2,0x200);
+      else 
+	  {
+        BUS_RegMaskedSet(&MODEM->CTRL2,0);
         uVar1 = uVar1 | 4;
       }
       uVar1 = uVar1 | 2;
     }
-    if (param_1[2] == 0) {
-      write_volatile_4(MODEM_CTRL2_CLR,0x100);
-    }
-    else {
-      write_volatile_4(MODEM_CTRL2_SET,0x100);
-    }
-    write_volatile_4(MODEM_ROUTELOC0,
-                     (uint)param_1[8] << 0x10 | (uint)param_1[5] << 8 | (uint)param_1[0xb]);
-    write_volatile_4(MODEM_ROUTEPEN_CLR,7);
-    write_volatile_4(MODEM_ROUTEPEN_SET,uVar1);
-    if ((int)(uVar1 << 0x1f) < 0) {
-      GPIO_PinModeSet(param_1[0xc],param_1[0xd],1,0);
-    }
-    if ((int)(uVar1 << 0x1e) < 0) {
-      GPIO_PinModeSet(param_1[6],param_1[7],4,0);
-    }
-    if ((int)(uVar1 << 0x1d) < 0) {
-      GPIO_PinModeSet(param_1[9],param_1[10],4,0);
-      return;
-    }
+    if (param_1[2] == 0) BUS_RegMaskedClear(&MODEM->CTRL2,0x100);
+    else BUS_RegMaskedSet(&MODEM->CTRL2,0x100);
+    MODEM->ROUTELOC0 = (uint32_t)param_1[8] << 0x10 | (uint32_t)param_1[5] << 8 | (uint32_t)param_1[0xb];
+    BUS_RegMaskedClear(&MODEM->ROUTEPEN,7);
+    BUS_RegMaskedSet(&MODEM->ROUTEPEN,uVar1);
+    if ((int)(uVar1 << 0x1f) < 0) GPIO_PinModeSet(param_1[0xc],param_1[0xd],1,0);
+    if ((int)(uVar1 << 0x1e) < 0) GPIO_PinModeSet(param_1[6],param_1[7],4,0);
+    if ((int)(uVar1 << 0x1d) < 0) GPIO_PinModeSet(param_1[9],param_1[10],4,0);
   }
-  return;
 }
 
 
-
-// WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
 void GENERIC_PHY_PROTIMERConfig(void)
 
 {
-  _DAT_40085000 = 0;
-  _DAT_40085014 = 0;
-  _DAT_40085018 = 0;
-  _DAT_4008502c = 0xffff;
-  _DAT_40085030 = 0xffffffff;
-  _DAT_4008504c = 0;
-  _DAT_40085064 = 0x3f3fff7;
-  _DAT_44085068 = 0x3f3fff7;
-  return;
+  BUS_RegMaskedClear(&PROTIMER->IEN,0x3f3fff7);
+  PROTIMER->IFC = 0x3f3fff7;
+  PROTIMER->CTRL = 0;
+  PROTIMER->BASECNT = 0;
+  PROTIMER->WRAPCNT = 0;
+  PROTIMER->BASECNTTOP = 0xffff;
+  PROTIMER->WRAPCNTTOP = 0xffffffff;
+  PROTIMER->LBTCTRL = 0;
 }
 
 
 
-uint GENERIC_PHY_ChannelGet(void)
+uint32_t GENERIC_PHY_ChannelGet(void)
 
 {
-  uint uVar1;
-  
-  uVar1 = read_volatile_4(SYNTH_CHCTRL);
-  return uVar1 & 0xff;
+  return SYNTH->CHCTRL & 0xff;
 }
 
 
@@ -643,13 +547,14 @@ int GENERIC_PHY_ReleaseRxPacket(void)
 
 {
   int iVar1;
-  undefined4 uVar2;
+  CORE_irqState_t irqState;
   
   iVar1 = BUFC_ReleaseRxPacket();
-  if ((inCallback == '\0') && (iVar1 == 0)) {
-    uVar2 = CORE_EnterCritical();
+  if ((inCallback == '\0') && (BUFC_ReleaseRxPacket() == 0)) 
+  {
+    irqState = CORE_EnterCritical();
     GENERIC_PHY_CheckPendedRxWindowEnd();
-    CORE_ExitCritical(uVar2);
+    CORE_ExitCritical(irqState);
   }
   return iVar1;
 }
@@ -659,97 +564,77 @@ int GENERIC_PHY_ReleaseRxPacket(void)
 void GENERIC_PHY_ResetRxFifo(int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
 
 {
-  undefined4 uVar1;
-  undefined4 extraout_r1;
-  undefined4 extraout_r1_00;
-  undefined4 extraout_r1_01;
-  undefined4 uVar2;
+  CORE_irqState_t irqState;
   
-  uVar1 = CORE_EnterCritical();
+  irqState = CORE_EnterCritical();
   BUFC_RxBufferReset();
-  if (param_1 == 0) {
-    uVar2 = extraout_r1;
-    if (inCallback == '\0') {
-      GENERIC_PHY_CheckPendedRxWindowEnd();
-      uVar2 = extraout_r1_01;
-    }
-  }
-  else {
-    GENERIC_PHY_ClearPendedRxWindowEnd();
-    uVar2 = extraout_r1_00;
-  }
-  CORE_ExitCritical(uVar1,uVar2,param_3,param_4);
-  return;
+  if ((param_1 == 0) && (inCallback == 0)) GENERIC_PHY_CheckPendedRxWindowEnd();
+  else GENERIC_PHY_ClearPendedRxWindowEnd();
+  CORE_ExitCritical(irqState);
 }
 
 
 
-// WARNING: Globals starting with '_' overlap smaller symbols at the same address
-
 void GENERIC_PHY_RadioIdle(int param_1,int param_2,int param_3)
 
 {
-  uint uVar1;
+  uint32_t uVar1;
   undefined4 uVar2;
   int iVar3;
+  CORE_irqState_t irqState;
   
-  uVar2 = CORE_EnterCritical();
-  if ((param_1 != 0) || (param_2 != 0)) {
-    do {
-      uVar1 = read_volatile_4(RAC_STATUS);
-      if ((uVar1 << 4) >> 0x1c != 3) break;
-      uVar1 = read_volatile_4(DAT_21000f7c);
-    } while ((uVar1 & 0xf) != 3);
-    if (param_2 != 0) {
+  irqState = CORE_EnterCritical();
+  if ((param_1 != 0) || (param_2 != 0)) 
+  {
+    do 
+	{
+      if ((RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos != 3) break;
+    } while ((SEQ->REG07C & 0xf) != 3);
+    if (param_2 != 0) 
+	{
       GENERIC_PHY_SeqAtomicLock();
-      write_volatile_4(RAC_CTRL_SET,1);
-      write_volatile_4(RAC_SR0_CLR,4);
-      while (uVar1 = read_volatile_4(RAC_STATUS), (uVar1 & 0xf000000) != 0) {
-        RADIO_RACClearRxOverflow();
-      }
+      BUS_RegMaskedSet(&RAC->CTRL,1);
+      BUS_RegMaskedClear(&RAC->SR0,4);
+      while (RAC->STATUS & RAC_STATUS_STATE_Msk != 0) RADIO_RACClearRxOverflow();
     }
   }
-  write_volatile_4(RAC_SR0_CLR,0x80);
-  iVar3 = PROTIMER_CCTimerIsEnabled(3);
-  if (iVar3 != 0) {
+  BUS_RegMaskedClear(&RAC->SR0,0x80);
+  if (PROTIMER_CCTimerIsEnabled(3) != 0) 
+  {
     PROTIMER_CCTimerStop(3);
     PROTIMER_CCTimerStop(4);
   }
   PROTIMER_ClearRxEnable();
   PROTIMER_ClearTxEnable();
   GENERIC_PHY_SeqAtomicLock();
-  uVar1 = read_volatile_4(DAT_21000f14);
-  write_volatile_4(DAT_21000f14,uVar1 | 0x40);
-  write_volatile_4(RAC_RXENSRCEN_CLR,0xff);
-  write_volatile_4(RAC_CMD,0x100);
-  write_volatile_4(RAC_SR0_CLR,4);
-  if (param_1 != 0) {
+  SEQ->REG014 |= 0x40;
+  BUS_RegMaskedClear(&RAC->RXENSRCEN,0xff);
+  RAC->CMD = RAC_CMD_RXDIS_Msk;
+  BUS_RegMaskedClear(&RAC->SR0,4);
+  if (param_1 != 0) 
+  {
     RADIO_RACRxAbort();
     PROTIMER_LBTStop();
-    write_volatile_4(RAC_CMD,0x20);
+    RAC->CMD = RAC_CMD_TXDIS_Msk;
     PROTIMER_CCTimerStop(4);
   }
-  if (param_2 != 0) {
+  if (param_2 != 0) 
+  {
     GENERIC_PHY_ResetRxFifo(param_3);
-    write_volatile_4(RAC_CTRL_CLR,1);
-    if (param_3 != 0) {
-      uVar1 = read_volatile_4(FRC_IEN);
-      write_volatile_4(FRC_IFC,uVar1);
-      uVar1 = read_volatile_4(RAC_IEN);
-      write_volatile_4(RAC_IFC,uVar1);
-      uVar1 = read_volatile_4(MODEM_IEN);
-      write_volatile_4(MODEM_IFC,uVar1);
-      uVar1 = read_volatile_4(SYNTH_IEN);
-      write_volatile_4(SYNTH_IFC,uVar1);
-      _DAT_400810e8 = _DAT_400810ec;
-      uVar1 = read_volatile_4(AGC_IEN);
-      write_volatile_4(AGC_IFC,uVar1);
-      _DAT_40085064 = 0x2f00050;
+    BUS_RegMaskedClear(&RAC->CTRL,1);
+    if (param_3 != 0) 
+	{
+      FRC->IFC = FRC->IEN;
+      RAC->IFC = RAC->IEN;
+      MODEM->IFC = MODEM->IEN;
+      SYNTH->IFC = SYNTH->IEN;
+      BUFC->IFC = BUFC->IEN;
+      AGC->IFC = AGC->IEN;
+      PROTIMER->IFC = 0x2f00050;
       GENERIC_PHY_ClearPendedRxWindowEnd();
     }
   }
-  CORE_ExitCritical(uVar2);
-  return;
+  CORE_ExitCritical(irqState);
 }
 
 
@@ -757,9 +642,8 @@ void GENERIC_PHY_RadioIdle(int param_1,int param_2,int param_3)
 void RAILCb_RadioStateChanged(void)
 
 {
-  write_volatile_4(RAC_IEN_CLR,1);
-  write_volatile_4(RAC_IFC,1);
-  return;
+  BUS_RegMaskedClear(&RAC->IEN,1);
+  RAC->IFC = 1;
 }
 
 
@@ -767,22 +651,12 @@ void RAILCb_RadioStateChanged(void)
 void RAC_RSM_IRQHandler(void)
 
 {
-  uint uVar1;
-  uint uVar2;
+  uint32_t flags;
   
-  uVar1 = read_volatile_4(RAC_IF);
-  uVar2 = read_volatile_4(RAC_IEN);
-  uVar2 = uVar2 & uVar1;
-  write_volatile_4(RAC_IFC,uVar2 & 0xffff);
-  if ((int)(uVar2 << 0x1f) < 0) {
-    uVar1 = read_volatile_4(RAC_STATUS);
-    RAILCb_RadioStateChanged((uVar1 << 4) >> 0x1c);
-  }
-  if ((int)(uVar2 << 0x1d) < 0) {
-    GENERIC_PHY_IssueCallback(0,0,enabledPhyEvents & 0x10);
-    return;
-  }
-  return;
+  flags = RAC->IEN & RAC->IF;
+  RAC->IFC = flags & 0xffff;
+  if (flags & 0x01) RAILCb_RadioStateChanged((RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos);
+  if (flags & 0x04) GENERIC_PHY_IssueCallback(0,0,enabledPhyEvents & 0x10);
 }
 
 
@@ -790,19 +664,15 @@ void RAC_RSM_IRQHandler(void)
 void AGC_IRQHandler(void)
 
 {
-  uint uVar1;
-  uint uVar2;
-  undefined4 in_r3;
-  
-  uVar1 = read_volatile_4(AGC_IF);
-  uVar2 = read_volatile_4(AGC_IEN);
-  write_volatile_4(AGC_IFC,uVar1 & uVar2);
-  if ((int)((uVar1 & uVar2) << 0x1f) < 0) {
-    RAILInt_Assert((byte)enabledRailEvents & 1,0x12);
-    GENERIC_PHY_IssueCallback(1,0,0,in_r3);
-    return;
+  uint32_t flags;
+
+  flags = AGC->IEN & AGC->IF;
+  AGC->IFC = flags;
+  if (flags & 0x01) 
+  {
+    RAILInt_Assert((uint8_t)enabledRailEvents & 1,0x12);
+    GENERIC_PHY_IssueCallback(1,0,0);
   }
-  return;
 }
 
 
@@ -810,56 +680,55 @@ void AGC_IRQHandler(void)
 void SYNTH_IRQHandler(void)
 
 {
-  uint uVar1;
-  uint uVar2;
-  
-  uVar1 = read_volatile_4(SYNTH_IF);
-  uVar2 = read_volatile_4(SYNTH_IEN);
-  write_volatile_4(SYNTH_IFC,uVar1 & uVar2);
-  return;
+  SYNTH->IFC = SYNTH->IEN & SYNTH->IF;
 }
 
 
 
-uint GENERIC_PHY_SetFeatures(undefined4 param_1,uint param_2,uint param_3)
+uint32_t GENERIC_PHY_SetFeatures(undefined4 param_1,uint32_t param_2,uint32_t param_3)
 
 {
-  uint uVar1;
+  uint32_t uVar1;
+  CORE_irqState_t irqState;
   
-  CORE_EnterCritical();
-  uVar1 = read_volatile_4(DAT_21000f14);
-  write_volatile_4(DAT_21000f14,param_3 & param_2 | uVar1 & ~param_2);
-  CORE_ExitCritical();
+  irqState = CORE_EnterCritical();
+  uVar1 = SEQ->REG014;
+  //write_volatile_4(SEQ->REG014,param_3 & param_2 | uVar1 & ~param_2);
+  SEQ->REG014 &= ~param_2;
+  SEQ->REG014 |= param_3 & param_2;
+  CORE_ExitCritical(irqState);
   return param_2 & uVar1;
 }
 
 
 
-void GENERIC_PHY_ConfigureFrameType(undefined4 param_1,undefined4 *param_2,undefined4 param_3)
+void GENERIC_PHY_ConfigureFrameType(undefined4 param_1,uint32_t *param_2,undefined4 param_3)
 
 {
-  byte bVar1;
-  undefined4 *local_1c;
+  uint8_t bVar1;
+  uint32_t *local_1c;
   undefined4 uStack24;
   
   uStack24 = param_3;
-  if (param_2 == (undefined4 *)0x0) {
+  if (param_2 == NULL) 
+  {
     local_1c = param_2;
     GENERIC_PHY_SetFeatures(param_1,7,0);
-    write_volatile_4(DAT_21000f74,0);
-    write_volatile_4(DAT_21000f78,0);
+    SEQ->REG074 = 0;
+    SEQ->REG078 = 0;
   }
-  else {
-    write_volatile_4(FRC_DFLCTRL_CLR,7);
-    write_volatile_4(FRC_DFLCTRL_SET,0);
-    write_volatile_1(DAT_21000f74._0_1_,*(undefined *)(param_2 + 1));
-    local_1c = (undefined4 *)(uint)*(byte *)((int)param_2 + 5);
+  else 
+  {
+    BUS_RegMaskedClear(&FRC->DFLCTRL,7);
+    BUS_RegMaskedSet(&FRC->DFLCTRL,0);
+    write_volatile_1(SEQ->REG074._0_1_,*(undefined *)(param_2 + 1));
+    local_1c = (uint32_t *)(uint32_t)*(uint8_t *)((int)param_2 + 5);
     bVar1 = CORTEX_UTILS_BitsetLowestSetBit(&local_1c,1,0,local_1c,param_1);
-    write_volatile_1(DAT_21000f74._1_1_,bVar1 & 0xf | (byte)(((uint)local_1c >> (uint)bVar1) << 4));
-    write_volatile_1(DAT_21000f74._2_1_,*(undefined *)((int)param_2 + 6));
-    write_volatile_1(DAT_21000f74._3_1_,*(undefined *)((int)param_2 + 7));
-    write_volatile_4(DAT_21000f78,*param_2);
-    write_volatile_4(FRC_WCNTCMP0,*(byte *)(param_2 + 1) + 1);
+    SEQ->REG074._1_1_ =  bVar1 & 0xf | (uint8_t)(((uint32_t)local_1c >> (uint32_t)bVar1) << 4));
+    SEQ->REG074._2_1_ = *(undefined *)((int)param_2 + 6));
+    SEQ->REG074._3_1_ = *(undefined *)((int)param_2 + 7));
+    SEQ->REG078 = *param_2);
+    FRC->WCNTCMP0 = *(uint8_t *)(param_2 + 1) + 1;
     GENERIC_PHY_SetFeatures(param_1,7,7);
   }
   return;
@@ -867,35 +736,23 @@ void GENERIC_PHY_ConfigureFrameType(undefined4 param_1,undefined4 *param_2,undef
 
 
 
-int GENERIC_PHY_EnableAddressFiltering
-              (undefined4 param_1,int param_2,undefined4 param_3,undefined4 param_4)
+int GENERIC_PHY_EnableAddressFiltering(undefined4 param_1,int param_2,undefined4 param_3,undefined4 param_4)
 
 {
   int iVar1;
-  undefined4 uVar2;
   
-  if (param_2 == 0) {
-    uVar2 = 0;
-  }
-  else {
-    uVar2 = 0x10;
-  }
-  iVar1 = GENERIC_PHY_SetFeatures(param_1,0x10,uVar2,param_4,param_4);
-  if (iVar1 != 0) {
-    iVar1 = 1;
-  }
+  if (param_2 == 0) iVar1 = GENERIC_PHY_SetFeatures(param_1,0x10,0,param_4,param_4);//uVar2 = 0;
+  else iVar1 = GENERIC_PHY_SetFeatures(param_1,0x10,0x10,param_4,param_4);//uVar2 = 0x10;
+  if (iVar1 != 0) iVar1 = 1;
   return iVar1;
 }
 
 
 
-uint GENERIC_PHY_IsEnabledAddressFiltering(void)
+uint32_t GENERIC_PHY_IsEnabledAddressFiltering(void)
 
 {
-  int iVar1;
-  
-  iVar1 = read_volatile_4(DAT_21000f14);
-  return (uint)(iVar1 << 0x1b) >> 0x1f;
+  return (SEQ->REG014 << 0x1b) >> 0x1f;
 }
 
 
@@ -903,8 +760,7 @@ uint GENERIC_PHY_IsEnabledAddressFiltering(void)
 void GENERIC_PHY_ResetAddressFiltering(void)
 
 {
-  memset(&DAT_21000f28,0,0x4c);
-  return;
+  memset(&SEQ->REG028,0,0x4c);
 }
 
 
@@ -912,14 +768,12 @@ void GENERIC_PHY_ResetAddressFiltering(void)
 void GENERIC_PHY_Init(int param_1)
 
 {
-  int iVar1;
-  
   RADIO_Init();
   GENERIC_PHY_DisableRadioIrqs();
   GENERIC_PHY_RACConfig();
   PTI_Enable(1);
   BUFC_Init(GENERIC_PHY_RxOverflowHook);
-  write_volatile_4(RAC_CTRL_CLR,1);
+  BUS_RegMaskedClear(&RAC->CTRL,1);
   GENERIC_PHY_ResetAddressFiltering(param_1);
   PROTIMER_Init();
   PROTIMER_Start();
@@ -928,109 +782,102 @@ void GENERIC_PHY_Init(int param_1)
   PROTIMER_CCTimerCapture(0,0xc00000);
   PROTIMER_CCTimerCapture(1,0x200000);
   SYNTH_DCDCRetimeDisable();
-  iVar1 = RFRAND_SeedProtimerRandom();
-  if (iVar1 == 0) {
-    RAILInt_Assert(0,0x14);
-  }
+  if (RFRAND_SeedProtimerRandom() == 0) RAILInt_Assert(0,0x14);
   SYNTH_DCDCRetimeEnable();
-  return;
 }
 
 
 
-undefined4 GENERIC_PHY_ConfigureAddressFiltering(undefined4 param_1,undefined *param_2,int param_3)
+bool GENERIC_PHY_ConfigureAddressFiltering(undefined4 param_1,undefined *param_2,int param_3)
 
 {
-  if (param_3 != 0) {
-    GENERIC_PHY_ResetAddressFiltering();
-  }
-  if (param_2 == (undefined *)0x0) {
-    return 0;
-  }
-  write_volatile_1(DAT_21000f6c,*param_2);
-  if ((byte)param_2[2] < 9) {
-    write_volatile_1(DAT_21000f6e,param_2[2]);
-    write_volatile_1(DAT_21000f6d,param_2[1]);
-    if ((byte)param_2[3] < 9) {
-      write_volatile_1(DAT_21000f6f,param_2[3]);
-      write_volatile_4(DAT_21000f28,*(undefined4 *)(param_2 + 4));
-      return 0;
+  if (param_3 != 0) GENERIC_PHY_ResetAddressFiltering();
+  if (param_2 == NULL) return 0;
+  SEQ->REG06C._0_1_ = *param_2;
+  if ((uint8_t)param_2[2] < 9) 
+  {
+    SEQ->REG06C._2_1_ = param_2[2];
+    SEQ->REG06C._1_1_ = param_2[1];
+    if ((uint8_t)param_2[3] < 9) 
+	{
+      SEQ->REG06C._3_1_ = param_2[3];
+      SEQ->REG028 = *(uint32_t *)(param_2 + 4);
+      return false;
     }
   }
-  return 1;
+  return true;
 }
 
 
 
-undefined4 GENERIC_PHY_EnableAddress(undefined4 param_1,uint param_2,uint param_3,int param_4)
+bool GENERIC_PHY_EnableAddress(undefined4 param_1,uint32_t param_2,uint32_t param_3,int param_4)
 
 {
-  byte bVar1;
+  uint8_t bVar1;
+  uint8_t bVar2;
   
-  if ((param_2 < 2) && (param_3 < 4)) {
-    bVar1 = (byte)(1 << (param_3 & 0xff));
-    if (param_4 == 0) {
-      bVar1 = (&DAT_21000f70)[param_2] & ~bVar1;
-    }
-    else {
-      bVar1 = bVar1 | (&DAT_21000f70)[param_2];
-    }
-    (&DAT_21000f70)[param_2] = bVar1;
-    return 0;
+  if ((param_2 < 2) && (param_3 < 4)) 
+  {
+    bVar1 = *(uint8_t *)((int)&SEQ->REG070 + param_2);
+    bVar2 = (uint8_t)(1 << (param_3 & 0xff));
+    if (param_4 == 0) bVar2 = bVar1 & ~bVar2;
+    else bVar2 = bVar2 | bVar1;
+    *(uint8_t *)((int)&SEQ->REG070 + param_2) = bVar2;
+    return false;
   }
-  return 1;
+  return true;
 }
 
 
 
-undefined4
+bool
 GENERIC_PHY_SetAddressData
-          (undefined4 param_1,uint param_2,uint param_3,uint param_4,byte param_5,byte param_6,
-          byte *param_7)
+          (undefined4 param_1,uint32_t param_2,uint32_t param_3,uint32_t param_4,uint8_t param_5,uint8_t param_6,
+          uint8_t *param_7)
 
 {
-  uint *puVar1;
-  uint uVar2;
-  uint uVar3;
-  byte *pbVar4;
+  uint32_t *puVar1;
+  uint32_t uVar2;
+  uint32_t uVar3;
+  uint8_t *pbVar4;
   
-  uVar3 = (uint)param_5;
-  uVar2 = (uint)param_6;
-  if ((((param_2 < 2) && (param_3 < 2)) && (uVar3 < uVar2)) &&
-     (((uVar2 < 9 && (param_4 < 4)) && (param_7 != (byte *)0x0)))) {
+  uVar3 = (uint32_t)param_5;
+  uVar2 = (uint32_t)param_6;
+  if ((((param_2 < 2) && (param_3 < 2)) && (uVar3 < uVar2)) && (((uVar2 < 9 && (param_4 < 4)) && (param_7 != NULL)))) 
+  {
     GENERIC_PHY_EnableAddress(param_1,param_2,param_4,0);
-    puVar1 = (uint *)((uVar3 + 0x84003ca + param_3 * 8) * 4);
+    puVar1 = (uint32_t *)((uVar3 + 0x84003ca + param_3 * 8) * 4);
     for (pbVar4 = param_7; (int)(pbVar4 + (uVar3 - (int)param_7)) < (int)uVar2; pbVar4 = pbVar4 + 1)
     {
       puVar1 = puVar1 + 1;
-      *puVar1 = (uint)*pbVar4 << (param_4 << 3 & 0xff) | ~(0xff << (param_4 << 3 & 0xff)) & *puVar1;
+      *puVar1 = (uint32_t)*pbVar4 << (param_4 << 3 & 0xff) | ~(0xff << (param_4 << 3 & 0xff)) & *puVar1;
     }
-    return 0;
+    return false;
   }
-  return 1;
+  return true;
 }
 
 
 
-int GENERIC_PHY_SetIeeePanId(undefined4 param_1,uint param_2)
+int GENERIC_PHY_SetIeeePanId(undefined4 param_1,uint32_t param_2)
 
 {
   int iVar1;
-  undefined4 *puVar2;
+  int iVar2;
   int iVar3;
   undefined8 uVar4;
   
   uVar4 = GENERIC_PHY_SetAddressData();
-  puVar2 = (undefined4 *)((ulonglong)uVar4 >> 0x20);
+  iVar2 = (int)((ulonglong)uVar4 >> 0x20);
   iVar1 = (int)uVar4;
   iVar3 = iVar1;
-  if (iVar1 == 0) {
-    if (param_2 < 4) {
-      puVar2 = &DAT_21000f28;
-    }
+  if (iVar1 == 0) 
+  {
+    if (param_2 < 4) iVar2 = 0x21000f28;
     iVar3 = 1;
-    if (param_2 < 4) {
-      *(byte *)(puVar2 + 0x12) = (byte)(1 << (param_2 & 0xff)) | *(byte *)(puVar2 + 0x12);
+    if (param_2 < 4) 
+	{
+      *(uint8_t *)(iVar2 + 0x48) = (uint8_t)(1 << (param_2 & 0xff)) | *(uint8_t *)(iVar2 + 0x48);
       iVar3 = iVar1;
     }
   }
@@ -1040,25 +887,25 @@ int GENERIC_PHY_SetIeeePanId(undefined4 param_1,uint param_2)
 
 
 int GENERIC_PHY_SetIeeeShortAddress
-              (undefined4 param_1,uint param_2,undefined4 param_3,undefined4 param_4)
+              (undefined4 param_1,uint32_t param_2,undefined4 param_3,undefined4 param_4)
 
 {
   int iVar1;
-  undefined4 *puVar2;
+  int iVar2;
   int iVar3;
   undefined8 uVar4;
   
   uVar4 = GENERIC_PHY_SetAddressData(param_1,1,0,param_2,2,4,param_3,param_4);
-  puVar2 = (undefined4 *)((ulonglong)uVar4 >> 0x20);
+  iVar2 = (int)((ulonglong)uVar4 >> 0x20);
   iVar1 = (int)uVar4;
   iVar3 = iVar1;
-  if (iVar1 == 0) {
-    if (param_2 < 4) {
-      puVar2 = &DAT_21000f28;
-    }
+  if (iVar1 == 0) 
+  {
+    if (param_2 < 4) iVar2 = 0x21000f28;
     iVar3 = 1;
-    if (param_2 < 4) {
-      *(byte *)((int)puVar2 + 0x49) = (byte)(1 << (param_2 & 0xff)) | *(byte *)((int)puVar2 + 0x49);
+    if (param_2 < 4) 
+	{
+      *(uint8_t *)(iVar2 + 0x49) = (uint8_t)(1 << (param_2 & 0xff)) | *(uint8_t *)(iVar2 + 0x49);
       iVar3 = iVar1;
     }
   }
@@ -1067,25 +914,25 @@ int GENERIC_PHY_SetIeeeShortAddress
 
 
 
-int GENERIC_PHY_SetIeeeLongAddress(undefined4 param_1,uint param_2)
+int GENERIC_PHY_SetIeeeLongAddress(undefined4 param_1,uint32_t param_2)
 
 {
   int iVar1;
-  undefined4 *puVar2;
+  int iVar2;
   int iVar3;
   undefined8 uVar4;
   
   uVar4 = GENERIC_PHY_SetAddressData();
-  puVar2 = (undefined4 *)((ulonglong)uVar4 >> 0x20);
+  iVar2 = (int)((ulonglong)uVar4 >> 0x20);
   iVar1 = (int)uVar4;
   iVar3 = iVar1;
-  if (iVar1 == 0) {
-    if (param_2 < 4) {
-      puVar2 = &DAT_21000f28;
-    }
+  if (iVar1 == 0) 
+  {
+    if (param_2 < 4) iVar2 = 0x21000f28;
     iVar3 = 1;
-    if (param_2 < 4) {
-      *(byte *)((int)puVar2 + 0x49) = (byte)(1 << (param_2 & 0xff)) | *(byte *)((int)puVar2 + 0x49);
+    if (param_2 < 4) 
+	{
+      *(uint8_t *)(iVar2 + 0x49) = (uint8_t)(1 << (param_2 & 0xff)) | *(uint8_t *)(iVar2 + 0x49);
       iVar3 = iVar1;
     }
   }
@@ -1101,12 +948,9 @@ void GENERIC_PHY_SetAddress
   int iVar1;
   
   iVar1 = GENERIC_PHY_SetAddressData
-                    (param_1,param_2,param_2,param_3,0,(&DAT_21000f6e)[param_2],param_4);
-  if ((param_5 != '\0') && (iVar1 == 0)) {
-    GENERIC_PHY_EnableAddress(param_1,param_2,param_3,1);
-    return;
-  }
-  return;
+                    (param_1,param_2,param_2,param_3,0,
+                     *(undefined *)((int)&SEQ->REG06C + param_2 + 2),param_4);
+  if ((param_5 != '\0') && (iVar1 == 0)) GENERIC_PHY_EnableAddress(param_1,param_2,param_3,1);
 }
 
 
@@ -1118,9 +962,7 @@ int GENERIC_PHY_EnableIEEE802154
   int iVar1;
   
   iVar1 = GENERIC_PHY_SetFeatures(param_1,0x80,0x80,param_4,param_4);
-  if (iVar1 != 0) {
-    iVar1 = 1;
-  }
+  if (iVar1 != 0) iVar1 = 1;
   return iVar1;
 }
 
@@ -1133,21 +975,16 @@ int GENERIC_PHY_DisableIEEE802154
   int iVar1;
   
   iVar1 = GENERIC_PHY_SetFeatures(param_1,0x80,0,param_4,param_4);
-  if (iVar1 != 0) {
-    iVar1 = 1;
-  }
+  if (iVar1 != 0) iVar1 = 1;
   return iVar1;
 }
 
 
 
-uint GENERIC_PHY_IsEnabledIEEE802154(void)
+uint32_t GENERIC_PHY_IsEnabledIEEE802154(void)
 
 {
-  int iVar1;
-  
-  iVar1 = read_volatile_4(DAT_21000f14);
-  return (uint)(iVar1 << 0x18) >> 0x1f;
+  return (SEQ->REG014 << 0x18) >> 0x1f;
 }
 
 
@@ -1173,27 +1010,23 @@ void GENERIC_PHY_TimerStop(void)
 void GENERIC_PHY_GetTimerTimeout(void)
 
 {
-  PROTIMER_GetCCTime(2);
-  return;
+  return PROTIMER_GetCCTime(2);
 }
 
 
 
-// WARNING: Globals starting with '_' overlap smaller symbols at the same address
-
-uint GENERIC_PHY_IsTimerExpired(void)
+bool GENERIC_PHY_IsTimerExpired(void)
 
 {
-  return (uint)(_DAT_4008505c << 0x15) >> 0x1f;
+  return (PROTIMER->IF << 0x15) >> 0x1f;
 }
 
 
 
-void GENERIC_PHY_IsTimerRunning(void)
+bool GENERIC_PHY_IsTimerRunning(void)
 
 {
-  PROTIMER_CCTimerIsEnabled(2);
-  return;
+  return PROTIMER_CCTimerIsEnabled(2);
 }
 
 
@@ -1201,19 +1034,14 @@ void GENERIC_PHY_IsTimerRunning(void)
 bool GENERIC_PHY_CanModifyAck(void)
 
 {
-  uint uVar1;
+  uint32_t state;
   
-  uVar1 = read_volatile_4(RAC_STATUS);
-  uVar1 = (uVar1 << 4) >> 0x1c;
-  if (1 < uVar1 - 2) {
-    return uVar1 == 7;
-  }
+  state = (RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos;
+  if (1 < state - 2) return state == 7;
   return true;
 }
 
 
-
-// WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
 void FRC_IRQHandler(void)
 
@@ -1221,128 +1049,114 @@ void FRC_IRQHandler(void)
   int iVar1;
   undefined4 uVar2;
   int iVar3;
-  uint uVar4;
-  uint uVar5;
-  uint uVar6;
-  uint uVar7;
-  uint uVar8;
-  uint uVar9;
-  uint uVar10;
+  uint32_t uVar4;
+  uint32_t uVar5;
+  uint32_t frc_flags;
+  uint32_t bufc_flags; //uVar7
+  uint32_t rac_flags; //uVar8;
+  uint32_t protimer_flags; //uVar9;
+  uint32_t modem_flags;//uVar10;
+  CORE_irqState_t irqState;
   
-  uVar9 = read_volatile_4(FRC_IF);
-  uVar6 = read_volatile_4(FRC_IEN);
-  uVar6 = uVar6 & uVar9;
-  write_volatile_4(FRC_IFC,uVar6);
-  uVar7 = _DAT_400810ec & _DAT_400810e0;
-  uVar9 = read_volatile_4(MODEM_IF);
-  uVar10 = read_volatile_4(MODEM_IEN);
-  uVar10 = uVar10 & uVar9;
-  write_volatile_4(MODEM_IFC,uVar10);
-  uVar9 = read_volatile_4(RAC_IF);
-  uVar8 = read_volatile_4(RAC_IEN);
-  uVar8 = uVar8 & uVar9;
-  write_volatile_4(RAC_IFC,uVar8 & 0xffff0000);
-  _DAT_400810e8 = uVar7;
+  frc_flags = FRC->IEN & FRC->IF;
+  FRC->IFC = frc_flags;
+
+  bufc_flags = BUFC->IEN & BUFC->IF;
+  BUFC->IFC = bufc_flags;
+  
+  modem_flags = MODEM->IEN & MODEM->IF;
+  MODEM->IFC = modem_flags;
+  
+  rac_flags = RAC->IEN & RAC->IF;
+  RAC->IFC = rac_flags & 0xffff0000;
+  
   iVar1 = PROTIMER_LBTIsActive();
-  uVar9 = _DAT_40085068 & _DAT_4008505c;
-  _DAT_40085064 = uVar9 & 0xfffff7ff;
-  if (uVar6 == 0) {
-    uVar4 = 0;
-  }
-  else {
-    if ((int)(uVar6 << 0x10) < 0) {
-      uVar4 = read_volatile_4(RAC_SR0);
-      write_volatile_4(RAC_SR0_CLR,uVar4 & 0x1c00);
-      write_volatile_4(RAC_SR0_CLR,0x80);
-      write_volatile_4(RAC_RXENSRCEN_CLR,0x10);
-      if ((uVar4 & 0x1c00) == 0) {
-        uVar4 = 0x40000;
-      }
-      else {
-        if ((int)(uVar4 << 0x13) < 0) {
-          uVar4 = 0x1000000;
-        }
-        else {
-          if ((int)(uVar4 << 0x15) < 0) {
-            uVar4 = 0x100000;
-          }
-          else {
-            uVar4 = 0x400000;
-          }
+  
+  protimer_flags = PROTIMER->IEN & PROTIMER->IF;
+  PROTIMER->IFC = protimer_flags & 0xfffff7ff;
+  
+  if (frc_flags == 0) uVar4 = 0;
+  else 
+  {
+    if ((int)(frc_flags << 0x10) < 0) 
+	{
+      uVar4 = RAC->SR0;
+      BUS_RegMaskedClear(&RAC->SR0,uVar4 & 0x1c00);
+      BUS_RegMaskedClear(&RAC->SR0,0x80);
+      BUS_RegMaskedClear(&RAC->RXENSRCEN,0x10);
+      if ((uVar4 & 0x1c00) == 0) uVar4 = 0x40000;
+      else 
+	  {
+        if (uVar4 & 0x1000) uVar4 = 0x1000000;
+        else 
+		{
+          if (uVar4 & 0x400) uVar4 = 0x100000;
+          else uVar4 = 0x400000;
         }
       }
     }
-    else {
-      uVar4 = 0;
-    }
-    if ((int)(uVar6 << 0x1e) < 0) {
-      uVar5 = read_volatile_4(RAC_SR0);
-      write_volatile_4(RAC_SR0_CLR,uVar5 & 0xe000);
-      if ((uVar5 & 0xe000) == 0) {
-        uVar4 = uVar4 | 0x80000;
-      }
-      else {
-        if ((int)(uVar5 << 0x10) < 0) {
-          uVar4 = uVar4 | 0x2000000;
-        }
-        else {
-          if ((int)(uVar5 << 0x12) < 0) {
-            uVar4 = uVar4 | 0x200000;
-          }
-          else {
-            uVar4 = uVar4 | 0x800000;
-          }
+    else uVar4 = 0;
+    if (frc_flags & 0x02) 
+	{
+      uVar5 = RAC->SR0;
+      BUS_RegMaskedClear(&RAC->SR0,uVar5 & 0xe000);
+      if ((uVar5 & 0xe000) == 0) uVar4 = uVar4 | 0x80000;
+      else 
+	  {
+        if(uVar5 & 0x8000) uVar4 = uVar4 | 0x2000000;
+        else 
+		{
+          if (uVar5 & 0x2000) uVar4 = uVar4 | 0x200000;
+          else uVar4 = uVar4 | 0x800000;
         }
       }
     }
-    if ((uVar6 & 0x2000) == 0) {
-      uVar6 = 0;
-    }
-    else {
-      uVar6 = 8;
-    }
+    if ((frc_flags & 0x2000) == 0) frc_flags = 0;
+    else frc_flags = 8;
   }
   uVar5 = 0;
-  if ((uVar7 & 0x90b0a09) != 0) {
-    if ((uVar7 & 0xa00) != 0) {
+  if ((bufc_flags & 0x90b0a09) != 0) 
+  {
+    if ((bufc_flags & 0xa00) != 0) 
+	{
       GENERIC_PHY_ResetRxFifo(0);
-      uVar7 = uVar7 & 0xfffbffff;
+      bufc_flags = bufc_flags & 0xfffbffff;
       RAILInt_Assert(0,6);
     }
-    if ((uVar7 & 9) != 0) {
-      write_volatile_4(RAC_CMD,0x20);
-      _DAT_40081028 = 1;
+    if ((bufc_flags & 9) != 0) 
+	{
+      RAC->CMD = 0x20;
+      BUFC->BUF0_CMD = 1;
       RAILInt_Assert(0,8);
     }
-    if ((uVar7 & 0x9000000) != 0) {
-      write_volatile_4(RAC_CMD,0x20);
+    if ((bufc_flags & 0x9000000) != 0) 
+	{
+      RAC->CMD = 0x20;
       BUFC_TxAckBufferReset();
       RAILInt_Assert(0,9);
     }
-    if ((uVar7 & 0xa0000) != 0) {
+    if ((bufc_flags & 0xa0000) != 0) 
+	{
       GENERIC_PHY_ResetRxFifo(0);
-      uVar7 = uVar7 & 0xfffbffff;
+      bufc_flags = bufc_flags & 0xfffbffff;
       RAILInt_Assert(0,7);
     }
-    if ((int)(uVar7 << 0xf) < 0) {
-      BUFC_HandleRxLenOvfEvent();
-    }
+    if ((int)(bufc_flags << 0xf) < 0) BUFC_HandleRxLenOvfEvent();
   }
-  if ((int)(uVar7 << 0x1d) < 0) {
-    if (_DAT_430204b4 == 0) {
-      _DAT_46081024 = 0x2000;
-    }
-    else {
+  if (bufc_flags & 0x10000) 
+  {
+    if (_DAT_430204b4 == 0) BUS_RegMaskedSet(&BUFC->BUF0_THRESHOLDCTRL,0x2000);
+    else 
+	{
       uVar4 = uVar4 | 0x20000;
-      _DAT_44081024 = 0x2000;
+      BUS_RegMaskedClear(&BUFC->BUF0_THRESHOLDCTRL,0x2000);
     }
   }
-  if ((int)(uVar7 << 0x15) < 0) {
-    uVar4 = uVar4 | 4;
-  }
-  if ((uVar7 & 0x40000) != 0) {
-    uVar2 = BUFC_StartRxLenThrEvent();
-    switch(uVar2) {
+  if (bufc_flags & 0x400) uVar4 = uVar4 | 4;
+  if ((bufc_flags & 0x40000) != 0) 
+  {
+    switch(BUFC_StartRxLenThrEvent()) 
+	{
     case 1:
     case 3:
       uVar4 = uVar4 | 0x1000;
@@ -1364,149 +1178,129 @@ void FRC_IRQHandler(void)
       RAILInt_Assert(0,3);
     }
   }
-  if (uVar10 != 0) {
-    if ((uVar10 & 0x1000) != 0) {
-      uVar4 = uVar4 | 0x4000;
-    }
-    if ((uVar10 & 0x100) != 0) {
-      uVar4 = uVar4 | 0x8000;
-    }
-    if ((uVar10 & 0x2000) != 0) {
-      uVar6 = uVar6 | 1;
-    }
-    if ((uVar10 & 0x200) != 0) {
-      uVar4 = uVar4 | 0x10;
-    }
-    if ((uVar10 & 0x400) != 0) {
-      uVar4 = uVar4 | 0x20;
-    }
-    if ((uVar10 & 0x800) != 0) {
-      uVar4 = uVar4 | 0x40;
-    }
+  if (modem_flags != 0) 
+  {
+    if ((modem_flags & 0x1000) != 0) uVar4 = uVar4 | 0x4000;
+    if ((modem_flags & 0x100) != 0) uVar4 = uVar4 | 0x8000;
+    if ((modem_flags & 0x2000) != 0) frc_flags = frc_flags | 1;
+    if ((modem_flags & 0x200) != 0) uVar4 = uVar4 | 0x10;
+    if ((modem_flags & 0x400) != 0) uVar4 = uVar4 | 0x20; 
+    if ((modem_flags & 0x800) != 0) uVar4 = uVar4 | 0x40;
   }
-  if (uVar8 != 0) {
-    if ((uVar8 & 0x2000000) != 0) {
-      uVar6 = uVar6 | 0x20;
-    }
-    if ((uVar8 & 0x4000000) != 0) {
-      uVar6 = uVar6 | 0x40;
-    }
-    if ((uVar8 & 0x8000000) != 0) {
-      uVar6 = uVar6 | 0x80;
-    }
-    if ((uVar8 & 0x40000) != 0) {
-      uVar5 = 2;
-    }
-    if ((uVar8 & 0x10000) != 0) {
-      uVar4 = uVar4 | 0x400;
-    }
-    if ((uVar8 & 0x100000) != 0) {
-      uVar4 = uVar4 | 0x2000;
-    }
-    if ((uVar8 & 0x200000) != 0) {
-      uVar4 = uVar4 | 2;
-    }
-    if (((uVar8 & 0x80000) != 0) && (iVar3 = GENERIC_PHY_CanModifyAck(), iVar3 != 0)) {
-      uVar4 = uVar4 | 0x10000;
-    }
+  if (rac_flags != 0) 
+  {
+    if ((rac_flags & 0x2000000) != 0) frc_flags = frc_flags | 0x20;
+    if ((rac_flags & 0x4000000) != 0) frc_flags = frc_flags | 0x40;
+    if ((rac_flags & 0x8000000) != 0) frc_flags = frc_flags | 0x80;
+    if ((rac_flags & 0x40000) != 0) uVar5 = 2;
+    if ((rac_flags & 0x10000) != 0) uVar4 = uVar4 | 0x400;
+    if ((rac_flags & 0x100000) != 0) uVar4 = uVar4 | 0x2000;
+    if ((rac_flags & 0x200000) != 0) uVar4 = uVar4 | 2;
+    if (((rac_flags & 0x80000) != 0) && (iVar3 = GENERIC_PHY_CanModifyAck(), iVar3 != 0)) uVar4 = uVar4 | 0x10000;
   }
-  if (uVar9 == 0) goto LAB_0001126e;
-  if ((uVar9 & 0x800) != 0) {
+  if (protimer_flags == 0) goto LAB_0001126e;
+  if ((protimer_flags & 0x800) != 0) 
+  {
     PROTIMER_CCTimerStop(3);
-    _DAT_4408506c = 0x1f1f;
-    _DAT_40085064 = 0x800;
+    BUS_RegMaskedClear(&PROTIMER->RXCTRL,0x1f1f);
+    PROTIMER->IFC = 0x800;
     PROTIMER_ClearTxEnable();
   }
-  if ((uVar9 & 0x2000000) != 0) {
+  if ((protimer_flags & 0x2000000) != 0) 
+  {
     PTI_AuxdataOutput(0x2b);
     uVar4 = uVar4 | 0x20000000;
   }
-  if ((uVar9 & 0x700000) == 0) {
-    if ((uVar9 & 0x1000) != 0) {
+  if ((protimer_flags & 0x700000) == 0) 
+  {
+    if ((protimer_flags & 0x1000) != 0) 
+	{
       if (iVar1 != 0) goto LAB_00011158;
       PROTIMER_CCTimerStop(4);
       PROTIMER_CCTimerStop(3);
       PROTIMER_ClearRxEnable();
-      uVar2 = CORE_EnterCritical();
-      if (scheduledRxHardEnd != '\0') {
-        RADIO_RACRxAbort();
-      }
+      irqState = CORE_EnterCritical();
+      if (scheduledRxHardEnd != 0) RADIO_RACRxAbort();
       iVar1 = BUFC_RxBufferBytesAvailable();
-      uVar10 = read_volatile_4(RAC_STATUS);
-      if (((uVar10 << 4) >> 0x1c == 3) || (iVar1 != 0)) {
+      if (((RAC->STATUS << 4) >> 0x1c == 3) || (BUFC_RxBufferBytesAvailable() != 0)) 
+	  {
         iVar1 = 1;
         pendedRxWindowEnd = scheduledRxLoop;
       }
-      CORE_ExitCritical(uVar2);
-      if (iVar1 == 0) {
+      CORE_ExitCritical(irqState);
+      if (iVar1 == 0) 
+	  {
         overrideRxRollback = 0;
         GENERIC_PHY_ConfigureRollbackReporting();
         uVar10 = 0x800;
       }
-      else {
-        uVar10 = 0;
-      }
+      else uVar10 = 0;
       uVar4 = uVar4 | uVar10;
     }
   }
-  else {
+  else 
+  {
 LAB_00011158:
-    uVar9 = PROTIMER_CheckCcaReallyFailed(uVar9);
-    if ((uVar9 & 0x200000) != 0) {
+    protimer_flags = PROTIMER_CheckCcaReallyFailed(protimer_flags);
+    if ((protimer_flags & 0x200000) != 0) 
+	{
       PTI_AuxdataOutput(0x29);
       uVar4 = uVar4 | 0x10000000;
     }
-    if ((uVar9 & 0x400000) == 0) {
-      if ((uVar9 & 0x100000) == 0) {
-        if ((uVar9 & 0x1000) != 0) {
+    if ((protimer_flags & 0x400000) == 0) 
+	{
+      if ((protimer_flags & 0x100000) == 0) 
+	  {
+        if ((protimer_flags & 0x1000) != 0) 
+		{
           PROTIMER_CCTimerStop(4);
           PROTIMER_LBTStop();
-          if ((_DAT_4008505c & 0x500000) == 0) {
+          if ((PROTIMER->IF & 0x500000) == 0) 
+		  {
             PTI_AuxdataOutput(0x2a);
-            _DAT_40081028 = 1;
+            BUFC->BUF0_CMD = 1;
             goto LAB_000111f2;
           }
         }
       }
-      else {
+      else 
+	  {
         PROTIMER_CCTimerStop(4);
         PTI_AuxdataOutput(0x28);
         uVar4 = uVar4 | 0x4000000;
       }
     }
-    else {
+    else 
+	{
       PROTIMER_CCTimerStop(4);
       PTI_AuxdataOutput(0x27);
-      write_volatile_4(RAC_SR0_CLR,0x80);
-      write_volatile_4(RAC_RXENSRCEN_CLR,0x10);
+      BUS_RegMaskedClear(&RAC->SR0,0x80);
+      BUS_RegMaskedClear(&RAC->RXENSRCEN,0x10);
 LAB_000111f2:
       uVar4 = uVar4 | 0x8000000;
     }
   }
-  if ((uVar9 & 0x400) != 0) {
+  if ((protimer_flags & 0x400) != 0) 
+  {
     PROTIMER_CCTimerStop(2);
-    uVar6 = uVar6 | 4;
+    frc_flags = frc_flags | 4;
   }
 LAB_0001126e:
-  GENERIC_PHY_IssueCallback(enabledRailEvents & uVar4,DAT_000112fc & uVar5,enabledPhyEvents & uVar6)
-  ;
-  if ((uVar7 & 0x40000) != 0) {
+  GENERIC_PHY_IssueCallback(enabledRailEvents & uVar4,DAT_000112fc & uVar5,enabledPhyEvents & uVar6);
+  if ((bufc_flags & 0x40000) != 0) 
+  {
     BUFC_EndRxLenThrEvent();
     GENERIC_PHY_CheckPendedRxWindowEnd();
   }
-  if (uVar8 != 0) {
-    if ((uVar8 & 0x2000000) != 0) {
-      PA_RunPeakDetectorHigh();
-    }
-    if ((uVar8 & 0x4000000) != 0) {
-      PA_RunPeakDetectorLow();
-    }
-    if ((uVar8 & 0x8000000) != 0) {
+  if (rac_flags != 0) 
+  {
+    if ((rac_flags & 0x2000000) != 0) PA_RunPeakDetectorHigh();
+    if ((rac_flags & 0x4000000) != 0) PA_RunPeakDetectorLow();
+    if ((rac_flags & 0x8000000) != 0) 
+	{
       PA_RunBatHigh();
-      return;
     }
   }
-  return;
 }
 
 
@@ -1519,40 +1313,44 @@ void FRC_PRI_IRQHandler(void)
   int iVar1;
   undefined4 uVar2;
   int iVar3;
-  uint uVar4;
-  uint uVar5;
-  uint uVar6;
-  uint uVar7;
-  uint uVar8;
-  uint uVar9;
-  uint uVar10;
+  uint32_t uVar4;
+  uint32_t uVar5;
+  uint32_t uVar6;
+  uint32_t uVar7;
+  uint32_t uVar8;
+  uint32_t uVar9;
+  uint32_t uVar10;
   
-  uVar9 = read_volatile_4(FRC_IF);
-  uVar6 = read_volatile_4(FRC_IEN);
-  uVar6 = uVar6 & uVar9;
-  write_volatile_4(FRC_IFC,uVar6);
-  uVar7 = _DAT_400810ec & _DAT_400810e0;
-  uVar9 = read_volatile_4(MODEM_IF);
-  uVar10 = read_volatile_4(MODEM_IEN);
-  uVar10 = uVar10 & uVar9;
-  write_volatile_4(MODEM_IFC,uVar10);
-  uVar9 = read_volatile_4(RAC_IF);
-  uVar8 = read_volatile_4(RAC_IEN);
-  uVar8 = uVar8 & uVar9;
-  write_volatile_4(RAC_IFC,uVar8 & 0xffff0000);
-  _DAT_400810e8 = uVar7;
+  uVar4 = (FRC->IF);
+  uVar6 = (FRC->IEN);
+  uVar6 = uVar6 & uVar4;
+  write_volatile_4(FRC->IFC,uVar6);
+  uVar4 = (BUFC->IF);
+  uVar7 = (BUFC->IEN);
+  uVar7 = uVar7 & uVar4;
+  write_volatile_4(BUFC->IFC,uVar7);
+  uVar4 = (MODEM->IF);
+  uVar10 = (MODEM->IEN);
+  uVar10 = uVar10 & uVar4;
+  write_volatile_4(MODEM->IFC,uVar10);
+  uVar4 = (RAC->IF);
+  uVar8 = (RAC->IEN);
+  uVar8 = uVar8 & uVar4;
+  write_volatile_4(RAC->IFC,uVar8 & 0xffff0000);
   iVar1 = PROTIMER_LBTIsActive();
-  uVar9 = _DAT_40085068 & _DAT_4008505c;
-  _DAT_40085064 = uVar9 & 0xfffff7ff;
+  uVar4 = (PROTIMER->IF);
+  uVar9 = (PROTIMER->IEN);
+  uVar9 = uVar9 & uVar4;
+  write_volatile_4(PROTIMER->IFC,uVar9 & 0xfffff7ff);
   if (uVar6 == 0) {
     uVar4 = 0;
   }
   else {
     if ((int)(uVar6 << 0x10) < 0) {
-      uVar4 = read_volatile_4(RAC_SR0);
-      write_volatile_4(RAC_SR0_CLR,uVar4 & 0x1c00);
-      write_volatile_4(RAC_SR0_CLR,0x80);
-      write_volatile_4(RAC_RXENSRCEN_CLR,0x10);
+      uVar4 = (RAC->SR0);
+      BUS_RegMaskedClear(&RAC->SR0,uVar4 & 0x1c00);
+      BUS_RegMaskedClear(&RAC->SR0,0x80);
+      BUS_RegMaskedClear(&RAC->RXENSRCEN,0x10);
       if ((uVar4 & 0x1c00) == 0) {
         uVar4 = 0x40000;
       }
@@ -1574,8 +1372,8 @@ void FRC_PRI_IRQHandler(void)
       uVar4 = 0;
     }
     if ((int)(uVar6 << 0x1e) < 0) {
-      uVar5 = read_volatile_4(RAC_SR0);
-      write_volatile_4(RAC_SR0_CLR,uVar5 & 0xe000);
+      uVar5 = (RAC->SR0);
+      BUS_RegMaskedClear(&RAC->SR0,uVar5 & 0xe000);
       if ((uVar5 & 0xe000) == 0) {
         uVar4 = uVar4 | 0x80000;
       }
@@ -1608,12 +1406,12 @@ void FRC_PRI_IRQHandler(void)
       RAILInt_Assert(0,6);
     }
     if ((uVar7 & 9) != 0) {
-      write_volatile_4(RAC_CMD,0x20);
-      _DAT_40081028 = 1;
+      write_volatile_4(RAC->CMD,0x20);
+      write_volatile_4(BUFC->BUF0_CMD,1);
       RAILInt_Assert(0,8);
     }
     if ((uVar7 & 0x9000000) != 0) {
-      write_volatile_4(RAC_CMD,0x20);
+      write_volatile_4(RAC->CMD,0x20);
       BUFC_TxAckBufferReset();
       RAILInt_Assert(0,9);
     }
@@ -1628,11 +1426,11 @@ void FRC_PRI_IRQHandler(void)
   }
   if ((int)(uVar7 << 0x1d) < 0) {
     if (_DAT_430204b4 == 0) {
-      _DAT_46081024 = 0x2000;
+      BUS_RegMaskedSet(&BUFC->BUF0_THRESHOLDCTRL,0x2000);
     }
     else {
       uVar4 = uVar4 | 0x20000;
-      _DAT_44081024 = 0x2000;
+      BUS_RegMaskedClear(&BUFC->BUF0_THRESHOLDCTRL,0x2000);
     }
   }
   if ((int)(uVar7 << 0x15) < 0) {
@@ -1711,8 +1509,8 @@ void FRC_PRI_IRQHandler(void)
   if (uVar9 == 0) goto LAB_0001126e;
   if ((uVar9 & 0x800) != 0) {
     PROTIMER_CCTimerStop(3);
-    _DAT_4408506c = 0x1f1f;
-    _DAT_40085064 = 0x800;
+    BUS_RegMaskedClear(&PROTIMER->RXCTRL,0x1f1f);
+    write_volatile_4(PROTIMER->IFC,0x800);
     PROTIMER_ClearTxEnable();
   }
   if ((uVar9 & 0x2000000) != 0) {
@@ -1730,7 +1528,7 @@ void FRC_PRI_IRQHandler(void)
         RADIO_RACRxAbort();
       }
       iVar1 = BUFC_RxBufferBytesAvailable();
-      uVar10 = read_volatile_4(RAC_STATUS);
+      uVar10 = (RAC->STATUS);
       if (((uVar10 << 4) >> 0x1c == 3) || (iVar1 != 0)) {
         iVar1 = 1;
         pendedRxWindowEnd = scheduledRxLoop;
@@ -1759,9 +1557,10 @@ LAB_00011158:
         if ((uVar9 & 0x1000) != 0) {
           PROTIMER_CCTimerStop(4);
           PROTIMER_LBTStop();
-          if ((_DAT_4008505c & 0x500000) == 0) {
+          uVar10 = (PROTIMER->IF);
+          if ((uVar10 & 0x500000) == 0) {
             PTI_AuxdataOutput(0x2a);
-            _DAT_40081028 = 1;
+            write_volatile_4(BUFC->BUF0_CMD,1);
             goto LAB_000111f2;
           }
         }
@@ -1775,8 +1574,8 @@ LAB_00011158:
     else {
       PROTIMER_CCTimerStop(4);
       PTI_AuxdataOutput(0x27);
-      write_volatile_4(RAC_SR0_CLR,0x80);
-      write_volatile_4(RAC_RXENSRCEN_CLR,0x10);
+      BUS_RegMaskedClear(&RAC->SR0,0x80);
+      BUS_RegMaskedClear(&RAC->RXENSRCEN,0x10);
 LAB_000111f2:
       uVar4 = uVar4 | 0x8000000;
     }
@@ -1817,40 +1616,44 @@ void BUFC_IRQHandler(void)
   int iVar1;
   undefined4 uVar2;
   int iVar3;
-  uint uVar4;
-  uint uVar5;
-  uint uVar6;
-  uint uVar7;
-  uint uVar8;
-  uint uVar9;
-  uint uVar10;
+  uint32_t uVar4;
+  uint32_t uVar5;
+  uint32_t uVar6;
+  uint32_t uVar7;
+  uint32_t uVar8;
+  uint32_t uVar9;
+  uint32_t uVar10;
   
-  uVar9 = read_volatile_4(FRC_IF);
-  uVar6 = read_volatile_4(FRC_IEN);
-  uVar6 = uVar6 & uVar9;
-  write_volatile_4(FRC_IFC,uVar6);
-  uVar7 = _DAT_400810ec & _DAT_400810e0;
-  uVar9 = read_volatile_4(MODEM_IF);
-  uVar10 = read_volatile_4(MODEM_IEN);
-  uVar10 = uVar10 & uVar9;
-  write_volatile_4(MODEM_IFC,uVar10);
-  uVar9 = read_volatile_4(RAC_IF);
-  uVar8 = read_volatile_4(RAC_IEN);
-  uVar8 = uVar8 & uVar9;
-  write_volatile_4(RAC_IFC,uVar8 & 0xffff0000);
-  _DAT_400810e8 = uVar7;
+  uVar4 = (FRC->IF);
+  uVar6 = (FRC->IEN);
+  uVar6 = uVar6 & uVar4;
+  write_volatile_4(FRC->IFC,uVar6);
+  uVar4 = (BUFC->IF);
+  uVar7 = (BUFC->IEN);
+  uVar7 = uVar7 & uVar4;
+  write_volatile_4(BUFC->IFC,uVar7);
+  uVar4 = (MODEM->IF);
+  uVar10 = (MODEM->IEN);
+  uVar10 = uVar10 & uVar4;
+  write_volatile_4(MODEM->IFC,uVar10);
+  uVar4 = (RAC->IF);
+  uVar8 = (RAC->IEN);
+  uVar8 = uVar8 & uVar4;
+  write_volatile_4(RAC->IFC,uVar8 & 0xffff0000);
   iVar1 = PROTIMER_LBTIsActive();
-  uVar9 = _DAT_40085068 & _DAT_4008505c;
-  _DAT_40085064 = uVar9 & 0xfffff7ff;
+  uVar4 = (PROTIMER->IF);
+  uVar9 = (PROTIMER->IEN);
+  uVar9 = uVar9 & uVar4;
+  write_volatile_4(PROTIMER->IFC,uVar9 & 0xfffff7ff);
   if (uVar6 == 0) {
     uVar4 = 0;
   }
   else {
     if ((int)(uVar6 << 0x10) < 0) {
-      uVar4 = read_volatile_4(RAC_SR0);
-      write_volatile_4(RAC_SR0_CLR,uVar4 & 0x1c00);
-      write_volatile_4(RAC_SR0_CLR,0x80);
-      write_volatile_4(RAC_RXENSRCEN_CLR,0x10);
+      uVar4 = (RAC->SR0);
+      BUS_RegMaskedClear(&RAC->SR0,uVar4 & 0x1c00);
+      BUS_RegMaskedClear(&RAC->SR0,0x80);
+      BUS_RegMaskedClear(&RAC->RXENSRCEN,0x10);
       if ((uVar4 & 0x1c00) == 0) {
         uVar4 = 0x40000;
       }
@@ -1872,8 +1675,8 @@ void BUFC_IRQHandler(void)
       uVar4 = 0;
     }
     if ((int)(uVar6 << 0x1e) < 0) {
-      uVar5 = read_volatile_4(RAC_SR0);
-      write_volatile_4(RAC_SR0_CLR,uVar5 & 0xe000);
+      uVar5 = (RAC->SR0);
+      BUS_RegMaskedClear(&RAC->SR0,uVar5 & 0xe000);
       if ((uVar5 & 0xe000) == 0) {
         uVar4 = uVar4 | 0x80000;
       }
@@ -1906,12 +1709,12 @@ void BUFC_IRQHandler(void)
       RAILInt_Assert(0,6);
     }
     if ((uVar7 & 9) != 0) {
-      write_volatile_4(RAC_CMD,0x20);
-      _DAT_40081028 = 1;
+      write_volatile_4(RAC->CMD,0x20);
+      write_volatile_4(BUFC->BUF0_CMD,1);
       RAILInt_Assert(0,8);
     }
     if ((uVar7 & 0x9000000) != 0) {
-      write_volatile_4(RAC_CMD,0x20);
+      write_volatile_4(RAC->CMD,0x20);
       BUFC_TxAckBufferReset();
       RAILInt_Assert(0,9);
     }
@@ -1926,11 +1729,11 @@ void BUFC_IRQHandler(void)
   }
   if ((int)(uVar7 << 0x1d) < 0) {
     if (_DAT_430204b4 == 0) {
-      _DAT_46081024 = 0x2000;
+      BUS_RegMaskedSet(&BUFC->BUF0_THRESHOLDCTRL,0x2000);
     }
     else {
       uVar4 = uVar4 | 0x20000;
-      _DAT_44081024 = 0x2000;
+      BUS_RegMaskedClear(&BUFC->BUF0_THRESHOLDCTRL,0x2000);
     }
   }
   if ((int)(uVar7 << 0x15) < 0) {
@@ -2009,8 +1812,8 @@ void BUFC_IRQHandler(void)
   if (uVar9 == 0) goto LAB_0001126e;
   if ((uVar9 & 0x800) != 0) {
     PROTIMER_CCTimerStop(3);
-    _DAT_4408506c = 0x1f1f;
-    _DAT_40085064 = 0x800;
+    BUS_RegMaskedClear(&PROTIMER->RXCTRL,0x1f1f);
+    write_volatile_4(PROTIMER->IFC,0x800);
     PROTIMER_ClearTxEnable();
   }
   if ((uVar9 & 0x2000000) != 0) {
@@ -2028,7 +1831,7 @@ void BUFC_IRQHandler(void)
         RADIO_RACRxAbort();
       }
       iVar1 = BUFC_RxBufferBytesAvailable();
-      uVar10 = read_volatile_4(RAC_STATUS);
+      uVar10 = (RAC->STATUS);
       if (((uVar10 << 4) >> 0x1c == 3) || (iVar1 != 0)) {
         iVar1 = 1;
         pendedRxWindowEnd = scheduledRxLoop;
@@ -2057,9 +1860,10 @@ LAB_00011158:
         if ((uVar9 & 0x1000) != 0) {
           PROTIMER_CCTimerStop(4);
           PROTIMER_LBTStop();
-          if ((_DAT_4008505c & 0x500000) == 0) {
+          uVar10 = (PROTIMER->IF);
+          if ((uVar10 & 0x500000) == 0) {
             PTI_AuxdataOutput(0x2a);
-            _DAT_40081028 = 1;
+            write_volatile_4(BUFC->BUF0_CMD,1);
             goto LAB_000111f2;
           }
         }
@@ -2073,8 +1877,8 @@ LAB_00011158:
     else {
       PROTIMER_CCTimerStop(4);
       PTI_AuxdataOutput(0x27);
-      write_volatile_4(RAC_SR0_CLR,0x80);
-      write_volatile_4(RAC_RXENSRCEN_CLR,0x10);
+      BUS_RegMaskedClear(&RAC->SR0,0x80);
+      BUS_RegMaskedClear(&RAC->RXENSRCEN,0x10);
 LAB_000111f2:
       uVar4 = uVar4 | 0x8000000;
     }
@@ -2115,40 +1919,44 @@ void PROTIMER_IRQHandler(void)
   int iVar1;
   undefined4 uVar2;
   int iVar3;
-  uint uVar4;
-  uint uVar5;
-  uint uVar6;
-  uint uVar7;
-  uint uVar8;
-  uint uVar9;
-  uint uVar10;
+  uint32_t uVar4;
+  uint32_t uVar5;
+  uint32_t uVar6;
+  uint32_t uVar7;
+  uint32_t uVar8;
+  uint32_t uVar9;
+  uint32_t uVar10;
   
-  uVar9 = read_volatile_4(FRC_IF);
-  uVar6 = read_volatile_4(FRC_IEN);
-  uVar6 = uVar6 & uVar9;
-  write_volatile_4(FRC_IFC,uVar6);
-  uVar7 = _DAT_400810ec & _DAT_400810e0;
-  uVar9 = read_volatile_4(MODEM_IF);
-  uVar10 = read_volatile_4(MODEM_IEN);
-  uVar10 = uVar10 & uVar9;
-  write_volatile_4(MODEM_IFC,uVar10);
-  uVar9 = read_volatile_4(RAC_IF);
-  uVar8 = read_volatile_4(RAC_IEN);
-  uVar8 = uVar8 & uVar9;
-  write_volatile_4(RAC_IFC,uVar8 & 0xffff0000);
-  _DAT_400810e8 = uVar7;
+  uVar4 = (FRC->IF);
+  uVar6 = (FRC->IEN);
+  uVar6 = uVar6 & uVar4;
+  write_volatile_4(FRC->IFC,uVar6);
+  uVar4 = (BUFC->IF);
+  uVar7 = (BUFC->IEN);
+  uVar7 = uVar7 & uVar4;
+  write_volatile_4(BUFC->IFC,uVar7);
+  uVar4 = (MODEM->IF);
+  uVar10 = (MODEM->IEN);
+  uVar10 = uVar10 & uVar4;
+  write_volatile_4(MODEM->IFC,uVar10);
+  uVar4 = (RAC->IF);
+  uVar8 = (RAC->IEN);
+  uVar8 = uVar8 & uVar4;
+  write_volatile_4(RAC->IFC,uVar8 & 0xffff0000);
   iVar1 = PROTIMER_LBTIsActive();
-  uVar9 = _DAT_40085068 & _DAT_4008505c;
-  _DAT_40085064 = uVar9 & 0xfffff7ff;
+  uVar4 = (PROTIMER->IF);
+  uVar9 = (PROTIMER->IEN);
+  uVar9 = uVar9 & uVar4;
+  write_volatile_4(PROTIMER->IFC,uVar9 & 0xfffff7ff);
   if (uVar6 == 0) {
     uVar4 = 0;
   }
   else {
     if ((int)(uVar6 << 0x10) < 0) {
-      uVar4 = read_volatile_4(RAC_SR0);
-      write_volatile_4(RAC_SR0_CLR,uVar4 & 0x1c00);
-      write_volatile_4(RAC_SR0_CLR,0x80);
-      write_volatile_4(RAC_RXENSRCEN_CLR,0x10);
+      uVar4 = (RAC->SR0);
+      BUS_RegMaskedClear(&RAC->SR0,uVar4 & 0x1c00);
+      BUS_RegMaskedClear(&RAC->SR0,0x80);
+      BUS_RegMaskedClear(&RAC->RXENSRCEN,0x10);
       if ((uVar4 & 0x1c00) == 0) {
         uVar4 = 0x40000;
       }
@@ -2170,8 +1978,8 @@ void PROTIMER_IRQHandler(void)
       uVar4 = 0;
     }
     if ((int)(uVar6 << 0x1e) < 0) {
-      uVar5 = read_volatile_4(RAC_SR0);
-      write_volatile_4(RAC_SR0_CLR,uVar5 & 0xe000);
+      uVar5 = (RAC->SR0);
+      BUS_RegMaskedClear(&RAC->SR0,uVar5 & 0xe000);
       if ((uVar5 & 0xe000) == 0) {
         uVar4 = uVar4 | 0x80000;
       }
@@ -2204,12 +2012,12 @@ void PROTIMER_IRQHandler(void)
       RAILInt_Assert(0,6);
     }
     if ((uVar7 & 9) != 0) {
-      write_volatile_4(RAC_CMD,0x20);
-      _DAT_40081028 = 1;
+      write_volatile_4(RAC->CMD,0x20);
+      write_volatile_4(BUFC->BUF0_CMD,1);
       RAILInt_Assert(0,8);
     }
     if ((uVar7 & 0x9000000) != 0) {
-      write_volatile_4(RAC_CMD,0x20);
+      write_volatile_4(RAC->CMD,0x20);
       BUFC_TxAckBufferReset();
       RAILInt_Assert(0,9);
     }
@@ -2224,11 +2032,11 @@ void PROTIMER_IRQHandler(void)
   }
   if ((int)(uVar7 << 0x1d) < 0) {
     if (_DAT_430204b4 == 0) {
-      _DAT_46081024 = 0x2000;
+      BUS_RegMaskedSet(&BUFC->BUF0_THRESHOLDCTRL,0x2000);
     }
     else {
       uVar4 = uVar4 | 0x20000;
-      _DAT_44081024 = 0x2000;
+      BUS_RegMaskedClear(&BUFC->BUF0_THRESHOLDCTRL,0x2000);
     }
   }
   if ((int)(uVar7 << 0x15) < 0) {
@@ -2307,8 +2115,8 @@ void PROTIMER_IRQHandler(void)
   if (uVar9 == 0) goto LAB_0001126e;
   if ((uVar9 & 0x800) != 0) {
     PROTIMER_CCTimerStop(3);
-    _DAT_4408506c = 0x1f1f;
-    _DAT_40085064 = 0x800;
+    BUS_RegMaskedClear(&PROTIMER->RXCTRL,0x1f1f);
+    write_volatile_4(PROTIMER->IFC,0x800);
     PROTIMER_ClearTxEnable();
   }
   if ((uVar9 & 0x2000000) != 0) {
@@ -2326,7 +2134,7 @@ void PROTIMER_IRQHandler(void)
         RADIO_RACRxAbort();
       }
       iVar1 = BUFC_RxBufferBytesAvailable();
-      uVar10 = read_volatile_4(RAC_STATUS);
+      uVar10 = (RAC->STATUS);
       if (((uVar10 << 4) >> 0x1c == 3) || (iVar1 != 0)) {
         iVar1 = 1;
         pendedRxWindowEnd = scheduledRxLoop;
@@ -2355,9 +2163,10 @@ LAB_00011158:
         if ((uVar9 & 0x1000) != 0) {
           PROTIMER_CCTimerStop(4);
           PROTIMER_LBTStop();
-          if ((_DAT_4008505c & 0x500000) == 0) {
+          uVar10 = (PROTIMER->IF);
+          if ((uVar10 & 0x500000) == 0) {
             PTI_AuxdataOutput(0x2a);
-            _DAT_40081028 = 1;
+            write_volatile_4(BUFC->BUF0_CMD,1);
             goto LAB_000111f2;
           }
         }
@@ -2371,8 +2180,8 @@ LAB_00011158:
     else {
       PROTIMER_CCTimerStop(4);
       PTI_AuxdataOutput(0x27);
-      write_volatile_4(RAC_SR0_CLR,0x80);
-      write_volatile_4(RAC_RXENSRCEN_CLR,0x10);
+      BUS_RegMaskedClear(&RAC->SR0,0x80);
+      BUS_RegMaskedClear(&RAC->RXENSRCEN,0x10);
 LAB_000111f2:
       uVar4 = uVar4 | 0x8000000;
     }
@@ -2413,40 +2222,44 @@ void RAC_SEQ_IRQHandler(void)
   int iVar1;
   undefined4 uVar2;
   int iVar3;
-  uint uVar4;
-  uint uVar5;
-  uint uVar6;
-  uint uVar7;
-  uint uVar8;
-  uint uVar9;
-  uint uVar10;
+  uint32_t uVar4;
+  uint32_t uVar5;
+  uint32_t uVar6;
+  uint32_t uVar7;
+  uint32_t uVar8;
+  uint32_t uVar9;
+  uint32_t uVar10;
   
-  uVar9 = read_volatile_4(FRC_IF);
-  uVar6 = read_volatile_4(FRC_IEN);
-  uVar6 = uVar6 & uVar9;
-  write_volatile_4(FRC_IFC,uVar6);
-  uVar7 = _DAT_400810ec & _DAT_400810e0;
-  uVar9 = read_volatile_4(MODEM_IF);
-  uVar10 = read_volatile_4(MODEM_IEN);
-  uVar10 = uVar10 & uVar9;
-  write_volatile_4(MODEM_IFC,uVar10);
-  uVar9 = read_volatile_4(RAC_IF);
-  uVar8 = read_volatile_4(RAC_IEN);
-  uVar8 = uVar8 & uVar9;
-  write_volatile_4(RAC_IFC,uVar8 & 0xffff0000);
-  _DAT_400810e8 = uVar7;
+  uVar4 = (FRC->IF);
+  uVar6 = (FRC->IEN);
+  uVar6 = uVar6 & uVar4;
+  write_volatile_4(FRC->IFC,uVar6);
+  uVar4 = (BUFC->IF);
+  uVar7 = (BUFC->IEN);
+  uVar7 = uVar7 & uVar4;
+  write_volatile_4(BUFC->IFC,uVar7);
+  uVar4 = (MODEM->IF);
+  uVar10 = (MODEM->IEN);
+  uVar10 = uVar10 & uVar4;
+  write_volatile_4(MODEM->IFC,uVar10);
+  uVar4 = (RAC->IF);
+  uVar8 = (RAC->IEN);
+  uVar8 = uVar8 & uVar4;
+  write_volatile_4(RAC->IFC,uVar8 & 0xffff0000);
   iVar1 = PROTIMER_LBTIsActive();
-  uVar9 = _DAT_40085068 & _DAT_4008505c;
-  _DAT_40085064 = uVar9 & 0xfffff7ff;
+  uVar4 = (PROTIMER->IF);
+  uVar9 = (PROTIMER->IEN);
+  uVar9 = uVar9 & uVar4;
+  write_volatile_4(PROTIMER->IFC,uVar9 & 0xfffff7ff);
   if (uVar6 == 0) {
     uVar4 = 0;
   }
   else {
     if ((int)(uVar6 << 0x10) < 0) {
-      uVar4 = read_volatile_4(RAC_SR0);
-      write_volatile_4(RAC_SR0_CLR,uVar4 & 0x1c00);
-      write_volatile_4(RAC_SR0_CLR,0x80);
-      write_volatile_4(RAC_RXENSRCEN_CLR,0x10);
+      uVar4 = (RAC->SR0);
+      BUS_RegMaskedClear(&RAC->SR0,uVar4 & 0x1c00);
+      BUS_RegMaskedClear(&RAC->SR0,0x80);
+      BUS_RegMaskedClear(&RAC->RXENSRCEN,0x10);
       if ((uVar4 & 0x1c00) == 0) {
         uVar4 = 0x40000;
       }
@@ -2468,8 +2281,8 @@ void RAC_SEQ_IRQHandler(void)
       uVar4 = 0;
     }
     if ((int)(uVar6 << 0x1e) < 0) {
-      uVar5 = read_volatile_4(RAC_SR0);
-      write_volatile_4(RAC_SR0_CLR,uVar5 & 0xe000);
+      uVar5 = (RAC->SR0);
+      BUS_RegMaskedClear(&RAC->SR0,uVar5 & 0xe000);
       if ((uVar5 & 0xe000) == 0) {
         uVar4 = uVar4 | 0x80000;
       }
@@ -2502,12 +2315,12 @@ void RAC_SEQ_IRQHandler(void)
       RAILInt_Assert(0,6);
     }
     if ((uVar7 & 9) != 0) {
-      write_volatile_4(RAC_CMD,0x20);
-      _DAT_40081028 = 1;
+      write_volatile_4(RAC->CMD,0x20);
+      write_volatile_4(BUFC->BUF0_CMD,1);
       RAILInt_Assert(0,8);
     }
     if ((uVar7 & 0x9000000) != 0) {
-      write_volatile_4(RAC_CMD,0x20);
+      write_volatile_4(RAC->CMD,0x20);
       BUFC_TxAckBufferReset();
       RAILInt_Assert(0,9);
     }
@@ -2522,11 +2335,11 @@ void RAC_SEQ_IRQHandler(void)
   }
   if ((int)(uVar7 << 0x1d) < 0) {
     if (_DAT_430204b4 == 0) {
-      _DAT_46081024 = 0x2000;
+      BUS_RegMaskedSet(&BUFC->BUF0_THRESHOLDCTRL,0x2000);
     }
     else {
       uVar4 = uVar4 | 0x20000;
-      _DAT_44081024 = 0x2000;
+      BUS_RegMaskedClear(&BUFC->BUF0_THRESHOLDCTRL,0x2000);
     }
   }
   if ((int)(uVar7 << 0x15) < 0) {
@@ -2605,8 +2418,8 @@ void RAC_SEQ_IRQHandler(void)
   if (uVar9 == 0) goto LAB_0001126e;
   if ((uVar9 & 0x800) != 0) {
     PROTIMER_CCTimerStop(3);
-    _DAT_4408506c = 0x1f1f;
-    _DAT_40085064 = 0x800;
+    BUS_RegMaskedClear(&PROTIMER->RXCTRL,0x1f1f);
+    write_volatile_4(PROTIMER->IFC,0x800);
     PROTIMER_ClearTxEnable();
   }
   if ((uVar9 & 0x2000000) != 0) {
@@ -2624,7 +2437,7 @@ void RAC_SEQ_IRQHandler(void)
         RADIO_RACRxAbort();
       }
       iVar1 = BUFC_RxBufferBytesAvailable();
-      uVar10 = read_volatile_4(RAC_STATUS);
+      uVar10 = (RAC->STATUS);
       if (((uVar10 << 4) >> 0x1c == 3) || (iVar1 != 0)) {
         iVar1 = 1;
         pendedRxWindowEnd = scheduledRxLoop;
@@ -2653,9 +2466,10 @@ LAB_00011158:
         if ((uVar9 & 0x1000) != 0) {
           PROTIMER_CCTimerStop(4);
           PROTIMER_LBTStop();
-          if ((_DAT_4008505c & 0x500000) == 0) {
+          uVar10 = (PROTIMER->IF);
+          if ((uVar10 & 0x500000) == 0) {
             PTI_AuxdataOutput(0x2a);
-            _DAT_40081028 = 1;
+            write_volatile_4(BUFC->BUF0_CMD,1);
             goto LAB_000111f2;
           }
         }
@@ -2669,8 +2483,8 @@ LAB_00011158:
     else {
       PROTIMER_CCTimerStop(4);
       PTI_AuxdataOutput(0x27);
-      write_volatile_4(RAC_SR0_CLR,0x80);
-      write_volatile_4(RAC_RXENSRCEN_CLR,0x10);
+      BUS_RegMaskedClear(&RAC->SR0,0x80);
+      BUS_RegMaskedClear(&RAC->RXENSRCEN,0x10);
 LAB_000111f2:
       uVar4 = uVar4 | 0x8000000;
     }
@@ -2711,40 +2525,44 @@ void MODEM_IRQHandler(void)
   int iVar1;
   undefined4 uVar2;
   int iVar3;
-  uint uVar4;
-  uint uVar5;
-  uint uVar6;
-  uint uVar7;
-  uint uVar8;
-  uint uVar9;
-  uint uVar10;
+  uint32_t uVar4;
+  uint32_t uVar5;
+  uint32_t uVar6;
+  uint32_t uVar7;
+  uint32_t uVar8;
+  uint32_t uVar9;
+  uint32_t uVar10;
   
-  uVar9 = read_volatile_4(FRC_IF);
-  uVar6 = read_volatile_4(FRC_IEN);
-  uVar6 = uVar6 & uVar9;
-  write_volatile_4(FRC_IFC,uVar6);
-  uVar7 = _DAT_400810ec & _DAT_400810e0;
-  uVar9 = read_volatile_4(MODEM_IF);
-  uVar10 = read_volatile_4(MODEM_IEN);
-  uVar10 = uVar10 & uVar9;
-  write_volatile_4(MODEM_IFC,uVar10);
-  uVar9 = read_volatile_4(RAC_IF);
-  uVar8 = read_volatile_4(RAC_IEN);
-  uVar8 = uVar8 & uVar9;
-  write_volatile_4(RAC_IFC,uVar8 & 0xffff0000);
-  _DAT_400810e8 = uVar7;
+  uVar4 = (FRC->IF);
+  uVar6 = (FRC->IEN);
+  uVar6 = uVar6 & uVar4;
+  write_volatile_4(FRC->IFC,uVar6);
+  uVar4 = (BUFC->IF);
+  uVar7 = (BUFC->IEN);
+  uVar7 = uVar7 & uVar4;
+  write_volatile_4(BUFC->IFC,uVar7);
+  uVar4 = (MODEM->IF);
+  uVar10 = (MODEM->IEN);
+  uVar10 = uVar10 & uVar4;
+  write_volatile_4(MODEM->IFC,uVar10);
+  uVar4 = (RAC->IF);
+  uVar8 = (RAC->IEN);
+  uVar8 = uVar8 & uVar4;
+  write_volatile_4(RAC->IFC,uVar8 & 0xffff0000);
   iVar1 = PROTIMER_LBTIsActive();
-  uVar9 = _DAT_40085068 & _DAT_4008505c;
-  _DAT_40085064 = uVar9 & 0xfffff7ff;
+  uVar4 = (PROTIMER->IF);
+  uVar9 = (PROTIMER->IEN);
+  uVar9 = uVar9 & uVar4;
+  write_volatile_4(PROTIMER->IFC,uVar9 & 0xfffff7ff);
   if (uVar6 == 0) {
     uVar4 = 0;
   }
   else {
     if ((int)(uVar6 << 0x10) < 0) {
-      uVar4 = read_volatile_4(RAC_SR0);
-      write_volatile_4(RAC_SR0_CLR,uVar4 & 0x1c00);
-      write_volatile_4(RAC_SR0_CLR,0x80);
-      write_volatile_4(RAC_RXENSRCEN_CLR,0x10);
+      uVar4 = (RAC->SR0);
+      BUS_RegMaskedClear(&RAC->SR0,uVar4 & 0x1c00);
+      BUS_RegMaskedClear(&RAC->SR0,0x80);
+      BUS_RegMaskedClear(&RAC->RXENSRCEN,0x10);
       if ((uVar4 & 0x1c00) == 0) {
         uVar4 = 0x40000;
       }
@@ -2766,8 +2584,8 @@ void MODEM_IRQHandler(void)
       uVar4 = 0;
     }
     if ((int)(uVar6 << 0x1e) < 0) {
-      uVar5 = read_volatile_4(RAC_SR0);
-      write_volatile_4(RAC_SR0_CLR,uVar5 & 0xe000);
+      uVar5 = (RAC->SR0);
+      BUS_RegMaskedClear(&RAC->SR0,uVar5 & 0xe000);
       if ((uVar5 & 0xe000) == 0) {
         uVar4 = uVar4 | 0x80000;
       }
@@ -2800,12 +2618,12 @@ void MODEM_IRQHandler(void)
       RAILInt_Assert(0,6);
     }
     if ((uVar7 & 9) != 0) {
-      write_volatile_4(RAC_CMD,0x20);
-      _DAT_40081028 = 1;
+      write_volatile_4(RAC->CMD,0x20);
+      write_volatile_4(BUFC->BUF0_CMD,1);
       RAILInt_Assert(0,8);
     }
     if ((uVar7 & 0x9000000) != 0) {
-      write_volatile_4(RAC_CMD,0x20);
+      write_volatile_4(RAC->CMD,0x20);
       BUFC_TxAckBufferReset();
       RAILInt_Assert(0,9);
     }
@@ -2820,11 +2638,11 @@ void MODEM_IRQHandler(void)
   }
   if ((int)(uVar7 << 0x1d) < 0) {
     if (_DAT_430204b4 == 0) {
-      _DAT_46081024 = 0x2000;
+      BUS_RegMaskedSet(&BUFC->BUF0_THRESHOLDCTRL,0x2000);
     }
     else {
       uVar4 = uVar4 | 0x20000;
-      _DAT_44081024 = 0x2000;
+      BUS_RegMaskedClear(&BUFC->BUF0_THRESHOLDCTRL,0x2000);
     }
   }
   if ((int)(uVar7 << 0x15) < 0) {
@@ -2903,8 +2721,8 @@ void MODEM_IRQHandler(void)
   if (uVar9 == 0) goto LAB_0001126e;
   if ((uVar9 & 0x800) != 0) {
     PROTIMER_CCTimerStop(3);
-    _DAT_4408506c = 0x1f1f;
-    _DAT_40085064 = 0x800;
+    BUS_RegMaskedClear(&PROTIMER->RXCTRL,0x1f1f);
+    write_volatile_4(PROTIMER->IFC,0x800);
     PROTIMER_ClearTxEnable();
   }
   if ((uVar9 & 0x2000000) != 0) {
@@ -2922,7 +2740,7 @@ void MODEM_IRQHandler(void)
         RADIO_RACRxAbort();
       }
       iVar1 = BUFC_RxBufferBytesAvailable();
-      uVar10 = read_volatile_4(RAC_STATUS);
+      uVar10 = (RAC->STATUS);
       if (((uVar10 << 4) >> 0x1c == 3) || (iVar1 != 0)) {
         iVar1 = 1;
         pendedRxWindowEnd = scheduledRxLoop;
@@ -2951,9 +2769,10 @@ LAB_00011158:
         if ((uVar9 & 0x1000) != 0) {
           PROTIMER_CCTimerStop(4);
           PROTIMER_LBTStop();
-          if ((_DAT_4008505c & 0x500000) == 0) {
+          uVar10 = (PROTIMER->IF);
+          if ((uVar10 & 0x500000) == 0) {
             PTI_AuxdataOutput(0x2a);
-            _DAT_40081028 = 1;
+            write_volatile_4(BUFC->BUF0_CMD,1);
             goto LAB_000111f2;
           }
         }
@@ -2967,8 +2786,8 @@ LAB_00011158:
     else {
       PROTIMER_CCTimerStop(4);
       PTI_AuxdataOutput(0x27);
-      write_volatile_4(RAC_SR0_CLR,0x80);
-      write_volatile_4(RAC_RXENSRCEN_CLR,0x10);
+      BUS_RegMaskedClear(&RAC->SR0,0x80);
+      BUS_RegMaskedClear(&RAC->RXENSRCEN,0x10);
 LAB_000111f2:
       uVar4 = uVar4 | 0x8000000;
     }

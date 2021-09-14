@@ -7,10 +7,10 @@
 void PROTIMER_Init(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
 
 {
-  uint uVar1;
-  uint uVar2;
+  uint32_t uVar1;
+  uint32_t uVar2;
   int iVar3;
-  uint uVar4;
+  uint32_t uVar4;
   longlong lVar5;
   undefined8 uVar6;
   
@@ -18,32 +18,32 @@ void PROTIMER_Init(undefined4 param_1,undefined4 param_2,undefined4 param_3,unde
   _DAT_40085000 = 0x11100;
   uVar1 = RADIOCMU_ClockFreqGet(0x60400);
   uVar1 = uVar1 / 1000;
-  uVar2 = (uint)((ulonglong)uVar1 * 2000);
+  uVar2 = (uint32_t)((ulonglong)uVar1 * 2000);
   uVar4 = uVar2 * 0x100;
   lVar5 = __aeabi_uldivmod(uVar4 + 500000,
                            ((int)((ulonglong)uVar1 * 2000 >> 0x20) << 8 | uVar2 >> 0x18) +
-                           (uint)(0xfff85edf < uVar4),1000000,0);
-  uVar2 = (uint)lVar5;
+                           (uint32_t)(0xfff85edf < uVar4),1000000,0);
+  uVar2 = (uint32_t)lVar5;
   _DAT_40085028 = uVar2 - 0x100;
   uVar6 = __aeabi_uldivmod(500,uVar1,1000,0);
   if (lVar5 == 0) {
     RAILInt_Assert(0,0x2b);
     uVar2 = 1;
   }
-  uVar4 = (uint)uVar6 * 0x100;
+  uVar4 = (uint32_t)uVar6 * 0x100;
   _usRatioFrac = __aeabi_uldivmod(uVar4 + (uVar2 >> 1),
-                                  ((int)((ulonglong)uVar6 >> 0x20) << 8 | (uint)uVar6 >> 0x18) +
-                                  (uint)CARRY4(uVar4,uVar2 >> 1),uVar2,0);
+                                  ((int)((ulonglong)uVar6 >> 0x20) << 8 | (uint32_t)uVar6 >> 0x18) +
+                                  (uint32_t)CARRY4(uVar4,uVar2 >> 1),uVar2,0);
   iVar3 = (int)_usRatioFrac;
   if (uVar1 == 0) {
     RAILInt_Assert(0,0x2b);
     uVar1 = 1;
   }
   lVar5 = (ulonglong)(uVar2 << 0x18) * 1000;
-  uVar4 = (uint)lVar5;
+  uVar4 = (uint32_t)lVar5;
   uVar6 = __aeabi_uldivmod(uVar4 + (uVar1 >> 1),
                            (uVar2 >> 8) * 1000 + (int)((ulonglong)lVar5 >> 0x20) +
-                           (uint)CARRY4(uVar4,uVar1 >> 1),uVar1,0);
+                           (uint32_t)CARRY4(uVar4,uVar1 >> 1),uVar1,0);
   precntRatioFrac = (int)uVar6;
   precntRatioInt = (int)((ulonglong)uVar6 >> 0x20);
   _DAT_40085030 = iVar3 + -1;
@@ -80,7 +80,7 @@ void PROTIMER_Stop(void)
 
 // WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
-uint PROTIMER_IsRunning(void)
+uint32_t PROTIMER_IsRunning(void)
 
 {
   return _DAT_4008500c & 1;
@@ -103,7 +103,7 @@ void PROTIMER_Reset(void)
 
 // WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
-int PROTIMER_ElapsedTime(uint param_1,uint param_2)
+int PROTIMER_ElapsedTime(uint32_t param_1,uint32_t param_2)
 
 {
   int iVar1;
@@ -135,7 +135,7 @@ void PROTIMER_TOUTTimerStop(int param_1)
 
 // WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
-void PROTIMER_TOUTTimerStart(uint param_1,int param_2,undefined4 param_3,undefined4 param_4)
+void PROTIMER_TOUTTimerStart(uint32_t param_1,int param_2,undefined4 param_3,undefined4 param_4)
 
 {
   RAILInt_Assert(param_1 < 0x100,0x15,param_3,param_4,param_4);
@@ -156,7 +156,7 @@ void PROTIMER_TOUTTimerStart(uint param_1,int param_2,undefined4 param_3,undefin
 
 // WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
-uint PROTIMER_TOUTTimerGet(int param_1)
+uint32_t PROTIMER_TOUTTimerGet(int param_1)
 
 {
   int iVar1;
@@ -165,14 +165,14 @@ uint PROTIMER_TOUTTimerGet(int param_1)
   if (param_1 == 0) {
     iVar1 = _DAT_40085034;
   }
-  return (uint)(iVar1 << 8) >> 0x10;
+  return (uint32_t)(iVar1 << 8) >> 0x10;
 }
 
 
 
 // WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
-void PROTIMER_CCTimerStop(uint param_1)
+void PROTIMER_CCTimerStop(uint32_t param_1)
 
 {
   *(undefined4 *)(param_1 * 0x10 + 0x44085074) = 1;
@@ -184,18 +184,18 @@ void PROTIMER_CCTimerStop(uint param_1)
 
 // WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
-undefined4 PROTIMER_CCTimerStart(uint param_1,uint param_2,int param_3)
+undefined4 PROTIMER_CCTimerStart(uint32_t param_1,uint32_t param_2,int param_3)
 
 {
   int iVar1;
   undefined4 uVar2;
-  uint uVar3;
-  uint uVar4;
-  uint uVar5;
+  uint32_t uVar3;
+  uint32_t uVar4;
+  uint32_t uVar5;
   int iVar6;
-  uint *puVar7;
-  uint *puVar8;
-  uint uVar9;
+  uint32_t *puVar7;
+  uint32_t *puVar8;
+  uint32_t uVar9;
   bool bVar10;
   int iVar11;
   
@@ -209,7 +209,7 @@ undefined4 PROTIMER_CCTimerStart(uint param_1,uint param_2,int param_3)
       param_2 = param_2 + _DAT_40085018 + 1;
     }
     uVar9 = _DAT_40085030 + 1;
-    uVar5 = (uint)(0xfffffffe < _DAT_40085030);
+    uVar5 = (uint32_t)(0xfffffffe < _DAT_40085030);
     while( true ) {
       bVar10 = uVar5 == 0;
       if (uVar5 == 0) {
@@ -237,16 +237,16 @@ LAB_00010258:
     if ((_DAT_4008506c & 0x1f1f) == uVar5) {
       uVar9 = uVar9 | 1;
     }
-    puVar7 = (uint *)(uVar9 & 1);
+    puVar7 = (uint32_t *)(uVar9 & 1);
     puVar8 = puVar7;
-    if (puVar7 != (uint *)0x0) {
+    if (puVar7 != NULL) {
       puVar8 = &PROTIMER_scheduledRxEnable;
     }
     iVar6 = param_1 * 0x10;
-    if (puVar7 != (uint *)0x0) {
+    if (puVar7 != NULL) {
       *puVar8 = param_2;
     }
-    *(uint *)(iVar6 + 0x40085080) = param_2;
+    *(uint32_t *)(iVar6 + 0x40085080) = param_2;
     *(undefined4 *)(iVar6 + 0x40085074) = 0x11;
     uVar4 = PROTIMER_ElapsedTime(iVar1,_DAT_40085018,0x11,&DAT_40085070 + iVar6,uVar4,puVar7,iVar11)
     ;
@@ -256,7 +256,7 @@ LAB_00010258:
         PROTIMER_CCTimerStop(param_1);
         goto LAB_00010258;
       }
-      if (puVar7 != (uint *)0x0) {
+      if (puVar7 != NULL) {
         _DAT_4608506c = 0x101;
         _DAT_4408506c = 0x1f1f;
       }
@@ -266,7 +266,7 @@ LAB_00010258:
         _DAT_4608506c = 0x1010000;
         _DAT_4408506c = 0x1f1f0000;
       }
-      puVar8 = (uint *)(uVar9 << 0x1d);
+      puVar8 = (uint32_t *)(uVar9 << 0x1d);
       bVar10 = (int)puVar8 < 0;
       if (bVar10) {
         puVar8 = &RAC_RXENSRCEN;
@@ -284,7 +284,7 @@ LAB_00010258:
 
 
 
-void PROTIMER_WrapMultiple(uint param_1,undefined4 param_2,uint param_3,int param_4)
+void PROTIMER_WrapMultiple(uint32_t param_1,undefined4 param_2,uint32_t param_3,int param_4)
 
 {
   bool bVar1;
@@ -302,18 +302,18 @@ void PROTIMER_WrapMultiple(uint param_1,undefined4 param_2,uint param_3,int para
 
 
 
-uint PROTIMER_CCTimerIsEnabled(int param_1)
+uint32_t PROTIMER_CCTimerIsEnabled(int param_1)
 
 {
-  return *(uint *)(param_1 * 0x10 + 0x40085074) & 1;
+  return *(uint32_t *)(param_1 * 0x10 + 0x40085074) & 1;
 }
 
 
 
-void PROTIMER_CCTimerCapture(int param_1,uint param_2)
+void PROTIMER_CCTimerCapture(int param_1,uint32_t param_2)
 
 {
-  *(uint *)(param_1 * 0x10 + 0x40085074) = param_2 & 0xe00000 | 3;
+  *(uint32_t *)(param_1 * 0x10 + 0x40085074) = param_2 & 0xe00000 | 3;
   return;
 }
 
@@ -482,23 +482,23 @@ bool PROTIMER_LBTIsActive(void)
 
 
 
-undefined8 PROTIMER_PrecntOverflowToUs(uint param_1,int param_2)
+undefined8 PROTIMER_PrecntOverflowToUs(uint32_t param_1,int param_2)
 
 {
-  uint uVar1;
-  uint uVar2;
+  uint32_t uVar1;
+  uint32_t uVar2;
   
   uVar2 = precntRatioFrac * param_2 + (int)((ulonglong)param_1 * (ulonglong)precntRatioFrac >> 0x20)
-          + (uint)(0x7fffffff < (uint)((ulonglong)param_1 * (ulonglong)precntRatioFrac));
-  uVar1 = (uint)((ulonglong)param_1 * (ulonglong)precntRatioInt);
+          + (uint32_t)(0x7fffffff < (uint32_t)((ulonglong)param_1 * (ulonglong)precntRatioFrac));
+  uVar1 = (uint32_t)((ulonglong)param_1 * (ulonglong)precntRatioInt);
   return CONCAT44(precntRatioInt * param_2 +
                   (int)((ulonglong)param_1 * (ulonglong)precntRatioInt >> 0x20) +
-                  (uint)CARRY4(uVar1,uVar2),uVar1 + uVar2);
+                  (uint32_t)CARRY4(uVar1,uVar2),uVar1 + uVar2);
 }
 
 
 
-longlong PROTIMER_UsToPrecntOverflow(uint param_1)
+longlong PROTIMER_UsToPrecntOverflow(uint32_t param_1)
 
 {
   return (ulonglong)usRatioInt * (ulonglong)param_1 +
@@ -531,10 +531,10 @@ undefined4 PROTIMER_SetTime(undefined4 param_1)
 
 // WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
-void PROTIMER_LBTCfgSet(int param_1,uint param_2,int param_3,uint param_4,byte param_5,byte param_6)
+void PROTIMER_LBTCfgSet(int param_1,uint32_t param_2,int param_3,uint32_t param_4,uint8_t param_5,uint8_t param_6)
 
 {
-  uint uVar1;
+  uint32_t uVar1;
   
   uVar1 = _DAT_4008502c;
   _DAT_40085000 = _DAT_40085000 & 0xff0fffff | 0x900000;
@@ -543,7 +543,7 @@ void PROTIMER_LBTCfgSet(int param_1,uint param_2,int param_3,uint param_4,byte p
     _DAT_4008506c = param_4;
   }
   _DAT_4008504c =
-       (uint)param_6 << 8 | (uint)param_5 << 0x18 | param_3 << 4 | param_4 << 0x10 | param_2;
+       (uint32_t)param_6 << 8 | (uint32_t)param_5 << 0x18 | param_3 << 4 | param_4 << 0x10 | param_2;
   RAILInt_Assert(_DAT_4008502c < 0x100,0x18,_DAT_4008504c,param_5,param_4);
   _DAT_40085038 = uVar1;
   if (param_4 != 0) {
@@ -566,12 +566,12 @@ void PROTIMER_DelayUs(void)
 
 {
   undefined4 uVar1;
-  uint uVar2;
-  uint uVar3;
+  uint32_t uVar2;
+  uint32_t uVar3;
   int iVar4;
-  uint uVar5;
+  uint32_t uVar5;
   undefined4 uVar6;
-  uint uVar7;
+  uint32_t uVar7;
   
   uVar3 = PROTIMER_UsToPrecntOverflow();
   uVar2 = _DAT_40085030;
@@ -599,23 +599,23 @@ void PROTIMER_DelayUs(void)
 
 // WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
-uint PROTIMER_CheckCcaReallyFailed(uint param_1)
+uint32_t PROTIMER_CheckCcaReallyFailed(uint32_t param_1)
 
 {
-  uint uVar1;
-  uint uVar2;
+  uint32_t uVar1;
+  uint32_t uVar2;
   undefined4 uVar3;
-  uint uVar4;
-  uint uVar5;
-  uint uVar6;
+  uint32_t uVar4;
+  uint32_t uVar5;
+  uint32_t uVar6;
   
   uVar3 = CORE_EnterAtomic();
   if ((param_1 & 0x600000) != 0) {
-    uVar5 = read_volatile_4(AGC_RSSI);
+    uVar5 = (AGC_RSSI);
     uVar5 = uVar5 << 0x10;
     uVar6 = uVar5 >> 0x16;
-    uVar1 = read_volatile_4(RAC_STATUS);
-    uVar2 = read_volatile_4(AGC_CTRL1);
+    uVar1 = (RAC_STATUS);
+    uVar2 = (AGC_CTRL1);
     if ((int)uVar5 < 0) {
       uVar6 = ~(uVar5 & 0xffc00000);
     }

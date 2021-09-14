@@ -164,7 +164,7 @@ void RAILCore_Sleep(void)
 
 
 
-//undefined4 RAIL_IsValidChannel(int param_1,uint param_2)
+//undefined4 RAIL_IsValidChannel(int param_1,uint32_t param_2)
 RAIL_Status_t RAIL_IsValidChannel(RAIL_Handle_t railHandle,
                                   uint16_t channel)
 {
@@ -177,7 +177,7 @@ RAIL_Status_t RAIL_IsValidChannel(RAIL_Handle_t railHandle,
       return 1;
     }
     iVar1 = iVar2 * 0x18 + *(int *)(*(int *)(param_1 + 0x2c) + 8);
-    if ((*(ushort *)(iVar1 + 0xe) <= param_2) && (param_2 <= *(ushort *)(iVar1 + 0x10))) break;
+    if ((*(uint16_t *)(iVar1 + 0xe) <= param_2) && (param_2 <= *(uint16_t *)(iVar1 + 0x10))) break;
     iVar2 = iVar2 + 1;
   }
   return 0;
@@ -185,20 +185,20 @@ RAIL_Status_t RAIL_IsValidChannel(RAIL_Handle_t railHandle,
 
 
 
-int RAILInt_SetChannel(int param_1,uint param_2)
+int RAILInt_SetChannel(int param_1,uint32_t param_2)
 
 {
-  byte bVar1;
+  uint8_t bVar1;
   bool bVar2;
   int *piVar3;
   undefined4 *puVar4;
   undefined4 uVar5;
-  uint uVar6;
+  uint32_t uVar6;
   undefined4 uVar7;
   int iVar8;
   undefined4 *puVar9;
   int *piVar10;
-  uint uVar11;
+  uint32_t uVar11;
   undefined4 *puVar12;
   char local_32;
   undefined local_30 [12];
@@ -213,14 +213,14 @@ int RAILInt_SetChannel(int param_1,uint param_2)
   if (((piVar10 == (int *)0x0) || (piVar10[2] == 0)) || (piVar10[3] == 0)) {
     return 3;
   }
-  for (; puVar12 = puVar9, uVar11 < (uint)piVar10[3]; uVar11 = uVar11 + 1) {
+  for (; puVar12 = puVar9, uVar11 < (uint32_t)piVar10[3]; uVar11 = uVar11 + 1) {
     puVar12 = (undefined4 *)(uVar11 * 0x18 + piVar10[2]);
-    if ((*(ushort *)((int)puVar12 + 0xe) <= param_2) && (param_2 <= *(ushort *)(puVar12 + 4))) {
+    if ((*(uint16_t *)((int)puVar12 + 0xe) <= param_2) && (param_2 <= *(uint16_t *)(puVar12 + 4))) {
       bVar2 = true;
       uVar5 = RAILInt_GetActiveConfig();
       RFHAL_GetTxPowerConfig(param_1,local_30);
-      bVar1 = *(byte *)(param_1 + 4);
-      if ((*(short *)((int)puVar12 + 0x12) == 0x7fff) ||
+      bVar1 = *(uint8_t *)(param_1 + 4);
+      if ((*(int16_t *)((int)puVar12 + 0x12) == 0x7fff) ||
          (uVar6 = RAIL_ConvertDbmToRaw(uVar5,local_30[0]), puVar9 = puVar12, bVar1 <= uVar6)) {
         local_32 = '\x01';
         break;
@@ -234,23 +234,23 @@ int RAILInt_SetChannel(int param_1,uint param_2)
     if (!bVar2) {
       return 1;
     }
-    uVar11 = RAIL_ConvertDbmToRaw(uVar5,local_30[0],(int)*(short *)((int)puVar12 + 0x12));
+    uVar11 = RAIL_ConvertDbmToRaw(uVar5,local_30[0],(int)*(int16_t *)((int)puVar12 + 0x12));
   }
   else {
-    uVar11 = (uint)*(byte *)(param_1 + 4);
+    uVar11 = (uint32_t)*(uint8_t *)(param_1 + 4);
     local_32 = '\0';
   }
   RFHAL_SetTxPower(param_1,uVar11,local_32);
-  uVar11 = (uint)*(ushort *)(param_1 + 2);
+  uVar11 = (uint32_t)*(uint16_t *)(param_1 + 2);
   if (currentChannelConfig != (int *)0x0) {
-    if (((currentChannelConfig == piVar10) && (currentChannelConfigEntry != (undefined4 *)0x0)) &&
+    if (((currentChannelConfig == piVar10) && (currentChannelConfigEntry != NULL)) &&
        (currentChannelConfigEntry == puVar12)) {
       if (uVar11 == param_2) {
         return 0;
       }
       iVar8 = RFHAL_SetChannel(param_1,param_2,puVar12,0);
       if (iVar8 == 0) {
-        *(short *)(param_1 + 2) = (short)param_2;
+        *(int16_t *)(param_1 + 2) = (int16_t)param_2;
         return 0;
       }
       RFHAL_SetTxPower(param_1,uVar7,0);
@@ -267,7 +267,7 @@ LAB_0001022a:
   iVar8 = RFHAL_ConfigRadio(param_1,iVar8);
   if ((iVar8 == 0) && (iVar8 = RFHAL_ConfigRadio(param_1,*puVar12), iVar8 == 0)) {
     *(undefined4 **)(param_1 + 0x24) = puVar12;
-    *(short *)(param_1 + 2) = (short)param_2;
+    *(int16_t *)(param_1 + 2) = (int16_t)param_2;
     currentChannelConfig = piVar10;
     currentChannelConfigEntry = puVar12;
     iVar8 = RFHAL_SetChannel(param_1,param_2,puVar12,1);
@@ -282,7 +282,7 @@ LAB_0001022a:
     RFHAL_ConfigRadio(param_1,*piVar3);
   }
   RFHAL_SetTxPower(param_1,uVar7,0);
-  if (currentChannelConfigEntry != (undefined4 *)0x0) {
+  if (currentChannelConfigEntry != NULL) {
     RFHAL_ConfigRadio(param_1,*currentChannelConfigEntry);
     RFHAL_SetChannel(param_1,uVar11,currentChannelConfigEntry,0);
   }
@@ -291,12 +291,12 @@ LAB_0001022a:
 
 
 
-ushort RAILCore_ConfigChannels(int param_1,int param_2,undefined4 param_3,undefined4 param_4)
+uint16_t RAILCore_ConfigChannels(int param_1,int param_2,undefined4 param_3,undefined4 param_4)
 
 {
-  byte bVar1;
-  ushort uVar2;
-  ushort uVar3;
+  uint8_t bVar1;
+  uint16_t uVar2;
+  uint16_t uVar3;
   int iVar4;
   
   iVar4 = param_2;
@@ -308,8 +308,8 @@ ushort RAILCore_ConfigChannels(int param_1,int param_2,undefined4 param_3,undefi
   RAILInt_Assert(iVar4,0x1f);
   bVar1 = 0;
   uVar2 = 0xffff;
-  while ((uVar3 = uVar2, (uint)bVar1 < *(uint *)(param_2 + 0xc) &&
-         ((uVar3 = *(ushort *)((uint)bVar1 * 0x18 + *(int *)(param_2 + 8) + 0xe), uVar2 <= uVar3 ||
+  while ((uVar3 = uVar2, (uint32_t)bVar1 < *(uint32_t *)(param_2 + 0xc) &&
+         ((uVar3 = *(uint16_t *)((uint32_t)bVar1 * 0x18 + *(int *)(param_2 + 8) + 0xe), uVar2 <= uVar3 ||
           (uVar2 = uVar3, uVar3 != 0))))) {
     bVar1 = bVar1 + 1;
   }
@@ -390,11 +390,11 @@ uint32_t RAIL_GetDebugMode(RAIL_Handle_t railHandle)
 
 
 
-undefined4 RAILCore_SetTxTransitions(undefined4 param_1,byte *param_2)
+undefined4 RAILCore_SetTxTransitions(undefined4 param_1,uint8_t *param_2)
 
 {
-  byte bVar1;
-  byte bVar2;
+  uint8_t bVar1;
+  uint8_t bVar2;
   int iVar3;
   undefined4 uVar4;
   
@@ -403,7 +403,7 @@ undefined4 RAILCore_SetTxTransitions(undefined4 param_1,byte *param_2)
   if (iVar3 != 0) {
     bVar2 = param_2[1];
     iVar3 = isTransitionState(bVar2);
-    if ((iVar3 != 0) && (-1 < (int)((uint)(bVar1 | bVar2) << 0x1d))) {
+    if ((iVar3 != 0) && (-1 < (int)((uint32_t)(bVar1 | bVar2) << 0x1d))) {
       iVar3 = RFHAL_GetRadioState();
       if (-1 < iVar3 << 0x1d) {
         uVar4 = RFHAL_SetTxTransitions(param_1,param_2);

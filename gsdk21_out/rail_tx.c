@@ -92,7 +92,7 @@ void RAILCore_StartCcaLbtTx
 
 
 
-int RAILCore_StartTxStream(undefined4 param_1,undefined4 param_2,uint param_3)
+int RAILCore_StartTxStream(undefined4 param_1,undefined4 param_2,uint32_t param_3)
 
 {
   int iVar1;
@@ -154,12 +154,12 @@ RAIL_Status_t RAIL_GetTxPowerConfig(RAIL_Handle_t railHandle,
 
 
 
-//void RAIL_SetTxPowerDbm(uint param_1,undefined4 param_2)
+//void RAIL_SetTxPowerDbm(uint32_t param_1,undefined4 param_2)
 RAIL_Status_t RAIL_SetTxPowerDbm(RAIL_Handle_t railHandle,
                                  RAIL_TxPower_t power)
 {
   undefined4 uVar1;
-  uint local_18;
+  uint32_t local_18;
   undefined4 uStack20;
   
   local_18 = param_1;
@@ -172,11 +172,11 @@ RAIL_Status_t RAIL_SetTxPowerDbm(RAIL_Handle_t railHandle,
 
 
 
-//void RAIL_GetTxPowerDbm(uint param_1,undefined4 param_2,undefined4 param_3)
+//void RAIL_GetTxPowerDbm(uint32_t param_1,undefined4 param_2,undefined4 param_3)
 RAIL_TxPower_t RAIL_GetTxPowerDbm(RAIL_Handle_t railHandle)
 {
   undefined4 uVar1;
-  uint local_18;
+  uint32_t local_18;
   undefined4 uStack20;
   undefined4 uStack16;
   

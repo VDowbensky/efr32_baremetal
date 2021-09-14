@@ -14,12 +14,12 @@ void RAILInt_EnableCal(int param_1,undefined4 param_2)
 
 
 
-undefined8 RAILInt_PendCal(int param_1,uint param_2)
+undefined8 RAILInt_PendCal(int param_1,uint32_t param_2)
 
 {
   CORE_EnterCritical();
-  param_2 = param_2 & *(uint *)(param_1 + 0xc);
-  *(uint *)(param_1 + 8) = *(uint *)(param_1 + 8) | param_2;
+  param_2 = param_2 & *(uint32_t *)(param_1 + 0xc);
+  *(uint32_t *)(param_1 + 8) = *(uint32_t *)(param_1 + 8) | param_2;
   CORE_ExitCritical();
   if (param_2 == 0) {
     return 0;
@@ -29,14 +29,14 @@ undefined8 RAILInt_PendCal(int param_1,uint param_2)
 
 
 
-uint RAILInt_ClearCal(int param_1,uint param_2)
+uint32_t RAILInt_ClearCal(int param_1,uint32_t param_2)
 
 {
-  uint uVar1;
+  uint32_t uVar1;
   
   CORE_EnterCritical();
-  uVar1 = *(uint *)(param_1 + 8) & ~(param_2 & *(uint *)(param_1 + 0xc));
-  *(uint *)(param_1 + 8) = uVar1;
+  uVar1 = *(uint32_t *)(param_1 + 8) & ~(param_2 & *(uint32_t *)(param_1 + 0xc));
+  *(uint32_t *)(param_1 + 8) = uVar1;
   CORE_ExitCritical();
   return uVar1;
 }
@@ -65,7 +65,7 @@ void RAILCore_Calibrate(int param_1,undefined4 *param_2,int param_3)
   undefined4 uVar1;
   undefined4 local_14;
   
-  if (param_2 == (undefined4 *)0x0) {
+  if (param_2 == NULL) {
     local_14 = 0xffffffff;
     if (param_3 != 0) {
       RAILInt_ClearCal(param_1,param_3,param_3,0xffffffff,param_1);
@@ -84,7 +84,7 @@ void RAILCore_Calibrate(int param_1,undefined4 *param_2,int param_3)
   uVar1 = *(undefined4 *)(param_1 + 8);
   RAILInt_ClearCal(param_1,uVar1,param_3,local_14,param_1);
   RFHAL_RunCal(param_1,&local_14,uVar1);
-  if (param_2 == (undefined4 *)0x0) {
+  if (param_2 == NULL) {
     return;
   }
 LAB_000100a4:
@@ -105,7 +105,7 @@ RAIL_Status_t RAIL_Calibrate(RAIL_Handle_t railHandle,
 
 
 
-//undefined4 RAIL_ConfigCal(int param_1,uint param_2,undefined4 param_3,undefined4 param_4)
+//undefined4 RAIL_ConfigCal(int param_1,uint32_t param_2,undefined4 param_3,undefined4 param_4)
 RAIL_Status_t RAIL_ConfigCal(RAIL_Handle_t railHandle,
                              RAIL_CalMask_t calEnable)
 {

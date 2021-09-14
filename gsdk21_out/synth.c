@@ -26,14 +26,14 @@ undefined4 SYNTH_IfFreqGet(void)
 
 
 
-uint SYNTH_LoDivGet(void)
+uint32_t SYNTH_LoDivGet(void)
 
 {
-  uint uVar1;
-  uint uVar2;
-  uint uVar3;
+  uint32_t uVar1;
+  uint32_t uVar2;
+  uint32_t uVar3;
   
-  uVar3 = read_volatile_4(SYNTH_DIVCTRL);
+  uVar3 = (SYNTH_DIVCTRL);
   uVar1 = uVar3 & 7;
   uVar2 = (uVar3 << 0x17) >> 0x1a & 7;
   if (uVar2 != 0) {
@@ -48,26 +48,26 @@ uint SYNTH_LoDivGet(void)
 
 
 
-uint SYNTH_Is2p4GHz(void)
+uint32_t SYNTH_Is2p4GHz(void)
 
 {
-  uint uVar1;
+  uint32_t uVar1;
   
-  uVar1 = read_volatile_4(RAC_IFPGACTRL);
+  uVar1 = (RAC_IFPGACTRL);
   return ((uVar1 ^ 0x10) << 0x1b) >> 0x1f;
 }
 
 
 
-uint SYNTH_VcoRangeIsValid(uint param_1)
+uint32_t SYNTH_VcoRangeIsValid(uint32_t param_1)
 
 {
-  uint uVar1;
+  uint32_t uVar1;
   
   uVar1 = SYNTH_LoDivGet();
   if (uVar1 != 0) {
     if (2300000000 / uVar1 <= param_1) {
-      return (uint)(param_1 <= 2900000000 / uVar1);
+      return (uint32_t)(param_1 <= 2900000000 / uVar1);
     }
     uVar1 = 0;
   }
@@ -76,23 +76,23 @@ uint SYNTH_VcoRangeIsValid(uint param_1)
 
 
 
-uint SYNTH_ChannelGet(void)
+uint32_t SYNTH_ChannelGet(void)
 
 {
-  uint uVar1;
+  uint32_t uVar1;
   
-  uVar1 = read_volatile_4(SYNTH_CHCTRL);
+  uVar1 = (SYNTH_CHCTRL);
   return uVar1 & 0x3f;
 }
 
 
 
-void SYNTH_RetimeLimitsConfig(uint param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
+void SYNTH_RetimeLimitsConfig(uint32_t param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
 
 {
-  uint uVar1;
-  uint uVar2;
-  uint uVar3;
+  uint32_t uVar1;
+  uint32_t uVar2;
+  uint32_t uVar3;
   
   uVar1 = SystemHFXOClockGet();
   if (uVar1 == 0) {
@@ -118,10 +118,10 @@ void SYNTH_RetimeLimitsConfig(uint param_1,undefined4 param_2,undefined4 param_3
 void SYNTH_RetimeClkConfig(void)
 
 {
-  byte bVar1;
+  uint8_t bVar1;
   int iVar2;
-  uint uVar3;
-  uint uVar4;
+  uint32_t uVar3;
+  uint32_t uVar4;
   undefined4 local_24;
   undefined4 uStack32;
   undefined local_1c;
@@ -129,18 +129,18 @@ void SYNTH_RetimeClkConfig(void)
   local_24 = 0x2010000;
   uStack32 = 0x3030302;
   local_1c = 3;
-  uVar3 = read_volatile_4(SYNTH_CHCTRL);
+  uVar3 = (SYNTH_CHCTRL);
   iVar2 = currChSpacing * uVar3 + currRfFrequency;
-  uVar3 = read_volatile_4(SYNTH_IFFREQ);
+  uVar3 = (SYNTH_IFFREQ);
   if ((uVar3 & 0x100000) == 0) {
     uVar3 = iVar2 - currIfFrequency;
   }
   else {
     uVar3 = iVar2 + currIfFrequency;
   }
-  uVar4 = (uint)*(byte *)((int)&local_24 + uVar3 / 625000000 + 1);
+  uVar4 = (uint32_t)*(uint8_t *)((int)&local_24 + uVar3 / 625000000 + 1);
   uVar3 = uVar3 >> uVar4;
-  bVar1 = *(byte *)((int)&local_24 + uVar3 / 325000000 + 1);
+  bVar1 = *(uint8_t *)((int)&local_24 + uVar3 / 325000000 + 1);
   if (dcdcRetimeClkTarget == 0) {
     RAILInt_Assert(0,0x2b);
     dcdcRetimeClkTarget = 1;
@@ -148,23 +148,23 @@ void SYNTH_RetimeClkConfig(void)
   write_volatile_4(RAC_MMDCTRL_CLR,0x3dff);
   write_volatile_4(RAC_MMDCTRL_SET,
                    (uVar3 + (dcdcRetimeClkTarget >> 1)) / dcdcRetimeClkTarget - 1 | uVar4 << 0xc |
-                   (uint)bVar1 << 10);
+                   (uint32_t)bVar1 << 10);
   SYNTH_RetimeLimitsConfig(uVar3);
   return;
 }
 
 
 
-undefined4 SYNTH_Config(int param_1,uint param_2)
+undefined4 SYNTH_Config(int param_1,uint32_t param_2)
 
 {
   longlong lVar1;
-  uint uVar2;
+  uint32_t uVar2;
   int iVar3;
-  uint uVar4;
-  uint uVar5;
-  uint *puVar6;
-  uint uVar7;
+  uint32_t uVar4;
+  uint32_t uVar5;
+  uint32_t *puVar6;
+  uint32_t uVar7;
   
   uVar2 = SYNTH_LoDivGet();
   iVar3 = SYNTH_VcoRangeIsValid(param_1);
@@ -185,7 +185,7 @@ undefined4 SYNTH_Config(int param_1,uint param_2)
       currRfFrequency = param_1;
       uVar5 = __aeabi_uldivmod(uVar7 * 0x80000,uVar7 >> 0xd,uVar4,0);
       write_volatile_4(SYNTH_FREQ,uVar5);
-      uVar5 = read_volatile_4(SYNTH_IFFREQ);
+      uVar5 = (SYNTH_IFFREQ);
       lVar1 = (ulonglong)uVar4 * (ulonglong)(uVar5 & 0xfffff);
       currIfFrequency = __aeabi_uldivmod((int)lVar1,(int)((ulonglong)lVar1 >> 0x20),uVar2 << 0x13,0)
       ;
@@ -195,10 +195,10 @@ undefined4 SYNTH_Config(int param_1,uint param_2)
                                ,uVar4,0);
       write_volatile_4(SYNTH_CHSP,uVar2);
       if (vcoGainPte == 0) {
-        uVar2 = read_volatile_4(SYNTH_VCOGAIN);
-        vcoGainPte = (byte)uVar2 & 0x3f;
+        uVar2 = (SYNTH_VCOGAIN);
+        vcoGainPte = (uint8_t)uVar2 & 0x3f;
       }
-      uVar2 = read_volatile_4(RAC_SR3);
+      uVar2 = (RAC_SR3);
       if ((int)(uVar2 << 0x19) < 0) {
         uVar7 = uVar7 / 24000000;
         uVar2 = uVar7 * uVar7 * 0x54d + uVar7 * -0xc60c + 0x192d50;
@@ -206,7 +206,7 @@ undefined4 SYNTH_Config(int param_1,uint param_2)
           RAILInt_Assert(0,0x2b);
           uVar2 = 1;
         }
-        write_volatile_4(SYNTH_VCOGAIN,((uint)vcoGainPte * 10000000) / uVar2);
+        write_volatile_4(SYNTH_VCOGAIN,((uint32_t)vcoGainPte * 10000000) / uVar2);
       }
       SYNTH_RetimeClkConfig();
       return 0;
@@ -217,14 +217,14 @@ undefined4 SYNTH_Config(int param_1,uint param_2)
 
 
 
-void SYNTH_ChannelSet(uint param_1,int param_2)
+void SYNTH_ChannelSet(uint32_t param_1,int param_2)
 
 {
-  uint uVar1;
+  uint32_t uVar1;
   
   do {
     do {
-      uVar1 = read_volatile_4(RAC_STATUS);
+      uVar1 = (RAC_STATUS);
       uVar1 = (uVar1 << 4) >> 0x1c;
     } while (uVar1 == 4);
   } while (uVar1 == 10);
@@ -263,7 +263,7 @@ void SYNTH_DigRouteRetimeDisable(void)
 void SYNTH_DCDCRetimeClkSet(int param_1)
 
 {
-  uint uVar1;
+  uint32_t uVar1;
   
   write_volatile_4(RAC_SR3_SET,0x80000);
   dcdcRetimeClkTarget = param_1;
@@ -316,7 +316,7 @@ void SYNTH_KvnFreqCompensationDisable(void)
 {
   write_volatile_4(RAC_SR3_CLR,0x40);
   if (vcoGainPte != 0) {
-    write_volatile_4(SYNTH_VCOGAIN,(uint)vcoGainPte);
+    write_volatile_4(SYNTH_VCOGAIN,(uint32_t)vcoGainPte);
   }
   return;
 }

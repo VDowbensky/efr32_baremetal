@@ -1,11 +1,11 @@
 typedef unsigned char   undefined;
 
-typedef unsigned char    byte;
+typedef unsigned char    uint8_t;
 typedef unsigned int    dword;
-typedef unsigned int    uint;
+typedef unsigned int    uint32_t;
 typedef unsigned char    undefined1;
 typedef unsigned int    undefined4;
-typedef unsigned short    word;
+typedef unsigned int16_t    word;
 #define unkbyte9   unsigned long long
 #define unkbyte10   unsigned long long
 #define unkbyte11   unsigned long long
@@ -53,11 +53,11 @@ typedef unsigned short    word;
 typedef struct WDOG0 WDOG0, *PWDOG0;
 
 struct WDOG0 {
-    uint CTRL; // Control Register
-    uint CMD; // Command Register
-    uint SYNCBUSY; // Synchronization Busy Register
-    uint PCH0_PRSCTRL; // PRS Control Register
-    uint PCH1_PRSCTRL; // PRS Control Register
+    uint32_t CTRL; // Control Register
+    uint32_t CMD; // Command Register
+    uint32_t SYNCBUSY; // Synchronization Busy Register
+    uint32_t PCH0_PRSCTRL; // PRS Control Register
+    uint32_t PCH1_PRSCTRL; // PRS Control Register
     undefined field_0x14;
     undefined field_0x15;
     undefined field_0x16;
@@ -66,32 +66,32 @@ struct WDOG0 {
     undefined field_0x19;
     undefined field_0x1a;
     undefined field_0x1b;
-    uint IF; // Watchdog Interrupt Flags
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
+    uint32_t IF; // Watchdog Interrupt Flags
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
 };
 
 typedef struct LETIMER0 LETIMER0, *PLETIMER0;
 
 struct LETIMER0 {
-    uint CTRL; // Control Register
-    uint CMD; // Command Register
-    uint STATUS; // Status Register
-    uint CNT; // Counter Value Register
-    uint COMP0; // Compare Value Register 0
-    uint COMP1; // Compare Value Register 1
-    uint REP0; // Repeat Counter Register 0
-    uint REP1; // Repeat Counter Register 1
-    uint IF; // Interrupt Flag Register
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
+    uint32_t CTRL; // Control Register
+    uint32_t CMD; // Command Register
+    uint32_t STATUS; // Status Register
+    uint32_t CNT; // Counter Value Register
+    uint32_t COMP0; // Compare Value Register 0
+    uint32_t COMP1; // Compare Value Register 1
+    uint32_t REP0; // Repeat Counter Register 0
+    uint32_t REP1; // Repeat Counter Register 1
+    uint32_t IF; // Interrupt Flag Register
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
     undefined field_0x30;
     undefined field_0x31;
     undefined field_0x32;
     undefined field_0x33;
-    uint SYNCBUSY; // Synchronization Busy Register
+    uint32_t SYNCBUSY; // Synchronization Busy Register
     undefined field_0x38;
     undefined field_0x39;
     undefined field_0x3a;
@@ -100,8 +100,8 @@ struct LETIMER0 {
     undefined field_0x3d;
     undefined field_0x3e;
     undefined field_0x3f;
-    uint ROUTEPEN; // I/O Routing Pin Enable Register
-    uint ROUTELOC0; // I/O Routing Location Register
+    uint32_t ROUTEPEN; // I/O Routing Pin Enable Register
+    uint32_t ROUTELOC0; // I/O Routing Location Register
     undefined field_0x48;
     undefined field_0x49;
     undefined field_0x4a;
@@ -110,40 +110,40 @@ struct LETIMER0 {
     undefined field_0x4d;
     undefined field_0x4e;
     undefined field_0x4f;
-    uint PRSSEL; // PRS Input Select Register
+    uint32_t PRSSEL; // PRS Input Select Register
 };
 
 typedef struct RTCC RTCC, *PRTCC;
 
 struct RTCC {
-    uint CTRL; // Control Register
-    uint PRECNT; // Pre-Counter Value Register
-    uint CNT; // Counter Value Register
-    uint COMBCNT; // Combined Pre-Counter and Counter Value Register
-    uint TIME; // Time of Day Register
-    uint DATE; // Date Register
-    uint IF; // RTCC Interrupt Flags
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
-    uint STATUS; // Status Register
-    uint CMD; // Command Register
-    uint SYNCBUSY; // Synchronization Busy Register
-    uint POWERDOWN; // Retention RAM Power-down Register
-    uint LOCK; // Configuration Lock Register
-    uint EM4WUEN; // Wake Up Enable
-    uint CC0_CTRL; // CC Channel Control Register
-    uint CC0_CCV; // Capture/Compare Value Register
-    uint CC0_TIME; // Capture/Compare Time Register
-    uint CC0_DATE; // Capture/Compare Date Register
-    uint CC1_CTRL; // CC Channel Control Register
-    uint CC1_CCV; // Capture/Compare Value Register
-    uint CC1_TIME; // Capture/Compare Time Register
-    uint CC1_DATE; // Capture/Compare Date Register
-    uint CC2_CTRL; // CC Channel Control Register
-    uint CC2_CCV; // Capture/Compare Value Register
-    uint CC2_TIME; // Capture/Compare Time Register
-    uint CC2_DATE; // Capture/Compare Date Register
+    uint32_t CTRL; // Control Register
+    uint32_t PRECNT; // Pre-Counter Value Register
+    uint32_t CNT; // Counter Value Register
+    uint32_t COMBCNT; // Combined Pre-Counter and Counter Value Register
+    uint32_t TIME; // Time of Day Register
+    uint32_t DATE; // Date Register
+    uint32_t IF; // RTCC Interrupt Flags
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
+    uint32_t STATUS; // Status Register
+    uint32_t CMD; // Command Register
+    uint32_t SYNCBUSY; // Synchronization Busy Register
+    uint32_t POWERDOWN; // Retention RAM Power-down Register
+    uint32_t LOCK; // Configuration Lock Register
+    uint32_t EM4WUEN; // Wake Up Enable
+    uint32_t CC0_CTRL; // CC Channel Control Register
+    uint32_t CC0_CCV; // Capture/Compare Value Register
+    uint32_t CC0_TIME; // Capture/Compare Time Register
+    uint32_t CC0_DATE; // Capture/Compare Date Register
+    uint32_t CC1_CTRL; // CC Channel Control Register
+    uint32_t CC1_CCV; // Capture/Compare Value Register
+    uint32_t CC1_TIME; // Capture/Compare Time Register
+    uint32_t CC1_DATE; // Capture/Compare Date Register
+    uint32_t CC2_CTRL; // CC Channel Control Register
+    uint32_t CC2_CCV; // Capture/Compare Value Register
+    uint32_t CC2_TIME; // Capture/Compare Time Register
+    uint32_t CC2_DATE; // Capture/Compare Date Register
     undefined field_0x70;
     undefined field_0x71;
     undefined field_0x72;
@@ -292,47 +292,47 @@ struct RTCC {
     undefined field_0x101;
     undefined field_0x102;
     undefined field_0x103;
-    uint RET0_REG; // Retention Register
-    uint RET1_REG; // Retention Register
-    uint RET2_REG; // Retention Register
-    uint RET3_REG; // Retention Register
-    uint RET4_REG; // Retention Register
-    uint RET5_REG; // Retention Register
-    uint RET6_REG; // Retention Register
-    uint RET7_REG; // Retention Register
-    uint RET8_REG; // Retention Register
-    uint RET9_REG; // Retention Register
-    uint RET10_REG; // Retention Register
-    uint RET11_REG; // Retention Register
-    uint RET12_REG; // Retention Register
-    uint RET13_REG; // Retention Register
-    uint RET14_REG; // Retention Register
-    uint RET15_REG; // Retention Register
-    uint RET16_REG; // Retention Register
-    uint RET17_REG; // Retention Register
-    uint RET18_REG; // Retention Register
-    uint RET19_REG; // Retention Register
-    uint RET20_REG; // Retention Register
-    uint RET21_REG; // Retention Register
-    uint RET22_REG; // Retention Register
-    uint RET23_REG; // Retention Register
-    uint RET24_REG; // Retention Register
-    uint RET25_REG; // Retention Register
-    uint RET26_REG; // Retention Register
-    uint RET27_REG; // Retention Register
-    uint RET28_REG; // Retention Register
-    uint RET29_REG; // Retention Register
-    uint RET30_REG; // Retention Register
-    uint RET31_REG; // Retention Register
+    uint32_t RET0_REG; // Retention Register
+    uint32_t RET1_REG; // Retention Register
+    uint32_t RET2_REG; // Retention Register
+    uint32_t RET3_REG; // Retention Register
+    uint32_t RET4_REG; // Retention Register
+    uint32_t RET5_REG; // Retention Register
+    uint32_t RET6_REG; // Retention Register
+    uint32_t RET7_REG; // Retention Register
+    uint32_t RET8_REG; // Retention Register
+    uint32_t RET9_REG; // Retention Register
+    uint32_t RET10_REG; // Retention Register
+    uint32_t RET11_REG; // Retention Register
+    uint32_t RET12_REG; // Retention Register
+    uint32_t RET13_REG; // Retention Register
+    uint32_t RET14_REG; // Retention Register
+    uint32_t RET15_REG; // Retention Register
+    uint32_t RET16_REG; // Retention Register
+    uint32_t RET17_REG; // Retention Register
+    uint32_t RET18_REG; // Retention Register
+    uint32_t RET19_REG; // Retention Register
+    uint32_t RET20_REG; // Retention Register
+    uint32_t RET21_REG; // Retention Register
+    uint32_t RET22_REG; // Retention Register
+    uint32_t RET23_REG; // Retention Register
+    uint32_t RET24_REG; // Retention Register
+    uint32_t RET25_REG; // Retention Register
+    uint32_t RET26_REG; // Retention Register
+    uint32_t RET27_REG; // Retention Register
+    uint32_t RET28_REG; // Retention Register
+    uint32_t RET29_REG; // Retention Register
+    uint32_t RET30_REG; // Retention Register
+    uint32_t RET31_REG; // Retention Register
 };
 
 typedef struct SYNTH_SET SYNTH_SET, *PSYNTH_SET;
 
 struct SYNTH_SET {
-    uint STATUS;
-    uint CMD;
-    uint CTRL;
-    uint CALCTRL;
+    uint32_t STATUS;
+    uint32_t CMD;
+    uint32_t CTRL;
+    uint32_t CALCTRL;
     undefined field_0x10;
     undefined field_0x11;
     undefined field_0x12;
@@ -353,29 +353,29 @@ struct SYNTH_SET {
     undefined field_0x21;
     undefined field_0x22;
     undefined field_0x23;
-    uint VCDACCTRL;
+    uint32_t VCDACCTRL;
     undefined field_0x28;
     undefined field_0x29;
     undefined field_0x2a;
     undefined field_0x2b;
-    uint FREQ;
-    uint IFFREQ;
-    uint DIVCTRL;
-    uint CHCTRL;
-    uint CHSP;
-    uint CALOFFSET;
-    uint VCOTUNING;
+    uint32_t FREQ;
+    uint32_t IFFREQ;
+    uint32_t DIVCTRL;
+    uint32_t CHCTRL;
+    uint32_t CHSP;
+    uint32_t CALOFFSET;
+    uint32_t VCOTUNING;
     undefined field_0x48;
     undefined field_0x49;
     undefined field_0x4a;
     undefined field_0x4b;
-    uint VCORANGE;
-    uint VCOGAIN;
-    uint AUXVCOTUNING;
-    uint AUXFREQ;
-    uint AUXVCDACCTRL;
-    uint CHPDACCTRL;
-    uint CAPCALCYCLECNT;
+    uint32_t VCORANGE;
+    uint32_t VCOGAIN;
+    uint32_t AUXVCOTUNING;
+    uint32_t AUXFREQ;
+    uint32_t AUXVCDACCTRL;
+    uint32_t CHPDACCTRL;
+    uint32_t CAPCALCYCLECNT;
     undefined field_0x68;
     undefined field_0x69;
     undefined field_0x6a;
@@ -384,37 +384,37 @@ struct SYNTH_SET {
     undefined field_0x6d;
     undefined field_0x6e;
     undefined field_0x6f;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
 };
 
 typedef struct PRS PRS, *PPRS;
 
 struct PRS {
-    uint SWPULSE; // Software Pulse Register
-    uint SWLEVEL; // Software Level Register
-    uint ROUTEPEN; // I/O Routing Pin Enable Register
+    uint32_t SWPULSE; // Software Pulse Register
+    uint32_t SWLEVEL; // Software Level Register
+    uint32_t ROUTEPEN; // I/O Routing Pin Enable Register
     undefined field_0xc;
     undefined field_0xd;
     undefined field_0xe;
     undefined field_0xf;
-    uint ROUTELOC0; // I/O Routing Location Register
-    uint ROUTELOC1; // I/O Routing Location Register
-    uint ROUTELOC2; // I/O Routing Location Register
+    uint32_t ROUTELOC0; // I/O Routing Location Register
+    uint32_t ROUTELOC1; // I/O Routing Location Register
+    uint32_t ROUTELOC2; // I/O Routing Location Register
     undefined field_0x1c;
     undefined field_0x1d;
     undefined field_0x1e;
     undefined field_0x1f;
-    uint CTRL; // Control Register
-    uint DMAREQ0; // DMA Request 0 Register
-    uint DMAREQ1; // DMA Request 1 Register
+    uint32_t CTRL; // Control Register
+    uint32_t DMAREQ0; // DMA Request 0 Register
+    uint32_t DMAREQ1; // DMA Request 1 Register
     undefined field_0x2c;
     undefined field_0x2d;
     undefined field_0x2e;
     undefined field_0x2f;
-    uint PEEK; // PRS Channel Values
+    uint32_t PEEK; // PRS Channel Values
     undefined field_0x34;
     undefined field_0x35;
     undefined field_0x36;
@@ -427,178 +427,178 @@ struct PRS {
     undefined field_0x3d;
     undefined field_0x3e;
     undefined field_0x3f;
-    uint CH0_CTRL; // Channel Control Register
-    uint CH1_CTRL; // Channel Control Register
-    uint CH2_CTRL; // Channel Control Register
-    uint CH3_CTRL; // Channel Control Register
-    uint CH4_CTRL; // Channel Control Register
-    uint CH5_CTRL; // Channel Control Register
-    uint CH6_CTRL; // Channel Control Register
-    uint CH7_CTRL; // Channel Control Register
-    uint CH8_CTRL; // Channel Control Register
-    uint CH9_CTRL; // Channel Control Register
-    uint CH10_CTRL; // Channel Control Register
-    uint CH11_CTRL; // Channel Control Register
+    uint32_t CH0_CTRL; // Channel Control Register
+    uint32_t CH1_CTRL; // Channel Control Register
+    uint32_t CH2_CTRL; // Channel Control Register
+    uint32_t CH3_CTRL; // Channel Control Register
+    uint32_t CH4_CTRL; // Channel Control Register
+    uint32_t CH5_CTRL; // Channel Control Register
+    uint32_t CH6_CTRL; // Channel Control Register
+    uint32_t CH7_CTRL; // Channel Control Register
+    uint32_t CH8_CTRL; // Channel Control Register
+    uint32_t CH9_CTRL; // Channel Control Register
+    uint32_t CH10_CTRL; // Channel Control Register
+    uint32_t CH11_CTRL; // Channel Control Register
 };
 
 typedef struct PROTIMER PROTIMER, *PPROTIMER;
 
 struct PROTIMER {
-    uint CTRL;
-    uint CMD;
-    uint PRSCTRL;
-    uint STATUS;
-    uint PRECNT;
-    uint BASECNT;
-    uint WRAPCNT;
-    uint BASEPRE;
-    uint LWRAPCNT;
-    uint PRECNTTOPADJ;
-    uint PRECNTTOP;
-    uint BASECNTTOP;
-    uint WRAPCNTTOP;
-    uint TOUT0CNT;
-    uint TOUT0CNTTOP;
-    uint TOUT0COMP;
-    uint TOUT1CNT;
-    uint TOUT1CNTTOP;
-    uint TOUT1COMP;
-    uint LBTCTRL;
-    uint LBTPRSCTRL;
-    uint LBTSTATE;
-    uint RANDOM;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
-    uint RXCTRL;
-    uint TXCTRL;
-    uint CC0_CTRL;
-    uint CC0_PRE;
-    uint CC0_BASE;
-    uint CC0_WRAP;
-    uint CC1_CTRL;
-    uint CC1_PRE;
-    uint CC1_BASE;
-    uint CC1_WRAP;
-    uint CC2_CTRL;
-    uint CC2_PRE;
-    uint CC2_BASE;
-    uint CC2_WRAP;
-    uint CC3_CTRL;
-    uint CC3_PRE;
-    uint CC3_BASE;
-    uint CC3_WRAP;
-    uint CC4_CTRL;
-    uint CC4_PRE;
-    uint CC4_BASE;
-    uint CC4_WRAP;
+    uint32_t CTRL;
+    uint32_t CMD;
+    uint32_t PRSCTRL;
+    uint32_t STATUS;
+    uint32_t PRECNT;
+    uint32_t BASECNT;
+    uint32_t WRAPCNT;
+    uint32_t BASEPRE;
+    uint32_t LWRAPCNT;
+    uint32_t PRECNTTOPADJ;
+    uint32_t PRECNTTOP;
+    uint32_t BASECNTTOP;
+    uint32_t WRAPCNTTOP;
+    uint32_t TOUT0CNT;
+    uint32_t TOUT0CNTTOP;
+    uint32_t TOUT0COMP;
+    uint32_t TOUT1CNT;
+    uint32_t TOUT1CNTTOP;
+    uint32_t TOUT1COMP;
+    uint32_t LBTCTRL;
+    uint32_t LBTPRSCTRL;
+    uint32_t LBTSTATE;
+    uint32_t RANDOM;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
+    uint32_t RXCTRL;
+    uint32_t TXCTRL;
+    uint32_t CC0_CTRL;
+    uint32_t CC0_PRE;
+    uint32_t CC0_BASE;
+    uint32_t CC0_WRAP;
+    uint32_t CC1_CTRL;
+    uint32_t CC1_PRE;
+    uint32_t CC1_BASE;
+    uint32_t CC1_WRAP;
+    uint32_t CC2_CTRL;
+    uint32_t CC2_PRE;
+    uint32_t CC2_BASE;
+    uint32_t CC2_WRAP;
+    uint32_t CC3_CTRL;
+    uint32_t CC3_PRE;
+    uint32_t CC3_BASE;
+    uint32_t CC3_WRAP;
+    uint32_t CC4_CTRL;
+    uint32_t CC4_PRE;
+    uint32_t CC4_BASE;
+    uint32_t CC4_WRAP;
 };
 
 typedef struct AGC_SET AGC_SET, *PAGC_SET;
 
 struct AGC_SET {
-    uint STATUS0;
-    uint STATUS1;
-    uint RSSI;
-    uint FRAMERSSI;
+    uint32_t STATUS0;
+    uint32_t STATUS1;
+    uint32_t RSSI;
+    uint32_t FRAMERSSI;
     undefined field_0x10;
     undefined field_0x11;
     undefined field_0x12;
     undefined field_0x13;
-    uint CTRL0;
-    uint CTRL1;
-    uint CTRL2;
-    uint RSSISTEPTHR;
-    uint IFPEAKDET;
-    uint MANGAIN;
+    uint32_t CTRL0;
+    uint32_t CTRL1;
+    uint32_t CTRL2;
+    uint32_t RSSISTEPTHR;
+    uint32_t IFPEAKDET;
+    uint32_t MANGAIN;
     undefined field_0x2c;
     undefined field_0x2d;
     undefined field_0x2e;
     undefined field_0x2f;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
-    uint CMD;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
+    uint32_t CMD;
     undefined field_0x44;
     undefined field_0x45;
     undefined field_0x46;
     undefined field_0x47;
-    uint GAINRANGE;
-    uint GAININDEX;
-    uint SLICECODE;
-    uint ATTENCODE1;
-    uint ATTENCODE2;
-    uint ATTENCODE3;
-    uint GAINERROR1;
-    uint GAINERROR2;
-    uint GAINERROR3;
-    uint MANUALCTRL;
-    uint GAINSTEPLIM;
-    uint LOOPDEL;
-    uint MININDEX;
+    uint32_t GAINRANGE;
+    uint32_t GAININDEX;
+    uint32_t SLICECODE;
+    uint32_t ATTENCODE1;
+    uint32_t ATTENCODE2;
+    uint32_t ATTENCODE3;
+    uint32_t GAINERROR1;
+    uint32_t GAINERROR2;
+    uint32_t GAINERROR3;
+    uint32_t MANUALCTRL;
+    uint32_t GAINSTEPLIM;
+    uint32_t LOOPDEL;
+    uint32_t MININDEX;
 };
 
 typedef struct BUFC_SET BUFC_SET, *PBUFC_SET;
 
 struct BUFC_SET {
-    uint BUF0_CTRL;
-    uint BUF0_ADDR;
-    uint BUF0_WRITEOFFSET;
-    uint BUF0_READOFFSET;
-    uint BUF0_WRITESTART;
-    uint BUF0_READDATA;
-    uint BUF0_WRITEDATA;
-    uint BUF0_XWRITE;
-    uint BUF0_STATUS;
-    uint BUF0_THRESHOLDCTRL;
-    uint BUF0_CMD;
+    uint32_t BUF0_CTRL;
+    uint32_t BUF0_ADDR;
+    uint32_t BUF0_WRITEOFFSET;
+    uint32_t BUF0_READOFFSET;
+    uint32_t BUF0_WRITESTART;
+    uint32_t BUF0_READDATA;
+    uint32_t BUF0_WRITEDATA;
+    uint32_t BUF0_XWRITE;
+    uint32_t BUF0_STATUS;
+    uint32_t BUF0_THRESHOLDCTRL;
+    uint32_t BUF0_CMD;
     undefined field_0x2c;
     undefined field_0x2d;
     undefined field_0x2e;
     undefined field_0x2f;
-    uint BUF1_CTRL;
-    uint BUF1_ADDR;
-    uint BUF1_WRITEOFFSET;
-    uint BUF1_READOFFSET;
-    uint BUF1_WRITESTART;
-    uint BUF1_READDATA;
-    uint BUF1_WRITEDATA;
-    uint BUF1_XWRITE;
-    uint BUF1_STATUS;
-    uint BUF1_THRESHOLDCTRL;
-    uint BUF1_CMD;
+    uint32_t BUF1_CTRL;
+    uint32_t BUF1_ADDR;
+    uint32_t BUF1_WRITEOFFSET;
+    uint32_t BUF1_READOFFSET;
+    uint32_t BUF1_WRITESTART;
+    uint32_t BUF1_READDATA;
+    uint32_t BUF1_WRITEDATA;
+    uint32_t BUF1_XWRITE;
+    uint32_t BUF1_STATUS;
+    uint32_t BUF1_THRESHOLDCTRL;
+    uint32_t BUF1_CMD;
     undefined field_0x5c;
     undefined field_0x5d;
     undefined field_0x5e;
     undefined field_0x5f;
-    uint BUF2_CTRL;
-    uint BUF2_ADDR;
-    uint BUF2_WRITEOFFSET;
-    uint BUF2_READOFFSET;
-    uint BUF2_WRITESTART;
-    uint BUF2_READDATA;
-    uint BUF2_WRITEDATA;
-    uint BUF2_XWRITE;
-    uint BUF2_STATUS;
-    uint BUF2_THRESHOLDCTR;
-    uint BUF2_CMD;
+    uint32_t BUF2_CTRL;
+    uint32_t BUF2_ADDR;
+    uint32_t BUF2_WRITEOFFSET;
+    uint32_t BUF2_READOFFSET;
+    uint32_t BUF2_WRITESTART;
+    uint32_t BUF2_READDATA;
+    uint32_t BUF2_WRITEDATA;
+    uint32_t BUF2_XWRITE;
+    uint32_t BUF2_STATUS;
+    uint32_t BUF2_THRESHOLDCTR;
+    uint32_t BUF2_CMD;
     undefined field_0x8c;
     undefined field_0x8d;
     undefined field_0x8e;
     undefined field_0x8f;
-    uint BUF3_CTRL;
-    uint BUF3_ADDR;
-    uint BUF3_WRITEOFFSET;
-    uint BUF3_READOFFSET;
-    uint BUF3_WRITESTART;
-    uint BUF3_READDATA;
-    uint BUF3_WRITEDATA;
-    uint BUF3_XWRITE;
-    uint BUF3_STATUS;
-    uint BUF3_THRESHOLDCTRL;
-    uint BUF3_CMD;
+    uint32_t BUF3_CTRL;
+    uint32_t BUF3_ADDR;
+    uint32_t BUF3_WRITEOFFSET;
+    uint32_t BUF3_READOFFSET;
+    uint32_t BUF3_WRITESTART;
+    uint32_t BUF3_READDATA;
+    uint32_t BUF3_WRITEDATA;
+    uint32_t BUF3_XWRITE;
+    uint32_t BUF3_STATUS;
+    uint32_t BUF3_THRESHOLDCTRL;
+    uint32_t BUF3_CMD;
     undefined field_0xbc;
     undefined field_0xbd;
     undefined field_0xbe;
@@ -635,65 +635,65 @@ struct BUFC_SET {
     undefined field_0xdd;
     undefined field_0xde;
     undefined field_0xdf;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
 };
 
 typedef struct CRYOTIMER CRYOTIMER, *PCRYOTIMER;
 
 struct CRYOTIMER {
-    uint CTRL; // Control Register
-    uint PERIODSEL; // Interrupt Duration
-    uint CNT; // Counter Value
-    uint EM4WUEN; // Wake Up Enable
-    uint IF; // Interrupt Flag Register
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
+    uint32_t CTRL; // Control Register
+    uint32_t PERIODSEL; // Interrupt Duration
+    uint32_t CNT; // Counter Value
+    uint32_t EM4WUEN; // Wake Up Enable
+    uint32_t IF; // Interrupt Flag Register
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
 };
 
 typedef struct RFSENSE_SET RFSENSE_SET, *PRFSENSE_SET;
 
 struct RFSENSE_SET {
-    uint CTRL;
-    uint PERIODSEL;
-    uint CNT;
+    uint32_t CTRL;
+    uint32_t PERIODSEL;
+    uint32_t CNT;
     undefined field_0xc;
     undefined field_0xd;
     undefined field_0xe;
     undefined field_0xf;
-    uint EM4WUEN;
-    uint CALIB;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
+    uint32_t EM4WUEN;
+    uint32_t CALIB;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
 };
 
 typedef struct GPCRC GPCRC, *PGPCRC;
 
 struct GPCRC {
-    uint CTRL; // Control Register
-    uint CMD; // Command Register
-    uint INIT; // CRC Init Value
-    uint POLY; // CRC Polynomial Value
-    uint INPUTDATA; // Input 32-bit Data Register
-    uint INPUTDATAHWORD; // Input 16-bit Data Register
-    uint INPUTDATABYTE; // Input 8-bit Data Register
-    uint DATA; // CRC Data Register
-    uint DATAREV; // CRC Data Reverse Register
-    uint DATABYTEREV; // CRC Data Byte Reverse Register
+    uint32_t CTRL; // Control Register
+    uint32_t CMD; // Command Register
+    uint32_t INIT; // CRC Init Value
+    uint32_t POLY; // CRC Polynomial Value
+    uint32_t INPUTDATA; // Input 32-bit Data Register
+    uint32_t INPUTDATAHWORD; // Input 16-bit Data Register
+    uint32_t INPUTDATABYTE; // Input 8-bit Data Register
+    uint32_t DATA; // CRC Data Register
+    uint32_t DATAREV; // CRC Data Reverse Register
+    uint32_t DATABYTEREV; // CRC Data Byte Reverse Register
 };
 
 typedef struct SYNTH SYNTH, *PSYNTH;
 
 struct SYNTH {
-    uint STATUS;
-    uint CMD;
-    uint CTRL;
-    uint CALCTRL;
+    uint32_t STATUS;
+    uint32_t CMD;
+    uint32_t CTRL;
+    uint32_t CALCTRL;
     undefined field_0x10;
     undefined field_0x11;
     undefined field_0x12;
@@ -714,29 +714,29 @@ struct SYNTH {
     undefined field_0x21;
     undefined field_0x22;
     undefined field_0x23;
-    uint VCDACCTRL;
+    uint32_t VCDACCTRL;
     undefined field_0x28;
     undefined field_0x29;
     undefined field_0x2a;
     undefined field_0x2b;
-    uint FREQ;
-    uint IFFREQ;
-    uint DIVCTRL;
-    uint CHCTRL;
-    uint CHSP;
-    uint CALOFFSET;
-    uint VCOTUNING;
+    uint32_t FREQ;
+    uint32_t IFFREQ;
+    uint32_t DIVCTRL;
+    uint32_t CHCTRL;
+    uint32_t CHSP;
+    uint32_t CALOFFSET;
+    uint32_t VCOTUNING;
     undefined field_0x48;
     undefined field_0x49;
     undefined field_0x4a;
     undefined field_0x4b;
-    uint VCORANGE;
-    uint VCOGAIN;
-    uint AUXVCOTUNING;
-    uint AUXFREQ;
-    uint AUXVCDACCTRL;
-    uint CHPDACCTRL;
-    uint CAPCALCYCLECNT;
+    uint32_t VCORANGE;
+    uint32_t VCOGAIN;
+    uint32_t AUXVCOTUNING;
+    uint32_t AUXFREQ;
+    uint32_t AUXVCDACCTRL;
+    uint32_t CHPDACCTRL;
+    uint32_t CAPCALCYCLECNT;
     undefined field_0x68;
     undefined field_0x69;
     undefined field_0x6a;
@@ -745,16 +745,16 @@ struct SYNTH {
     undefined field_0x6d;
     undefined field_0x6e;
     undefined field_0x6f;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
 };
 
 typedef struct CMU CMU, *PCMU;
 
 struct CMU {
-    uint CTRL; // CMU Control Register
+    uint32_t CTRL; // CMU Control Register
     undefined field_0x4;
     undefined field_0x5;
     undefined field_0x6;
@@ -767,24 +767,24 @@ struct CMU {
     undefined field_0xd;
     undefined field_0xe;
     undefined field_0xf;
-    uint HFRCOCTRL; // HFRCO Control Register
+    uint32_t HFRCOCTRL; // HFRCO Control Register
     undefined field_0x14;
     undefined field_0x15;
     undefined field_0x16;
     undefined field_0x17;
-    uint AUXHFRCOCTRL; // AUXHFRCO Control Register
+    uint32_t AUXHFRCOCTRL; // AUXHFRCO Control Register
     undefined field_0x1c;
     undefined field_0x1d;
     undefined field_0x1e;
     undefined field_0x1f;
-    uint LFRCOCTRL; // LFRCO Control Register
-    uint HFXOCTRL; // HFXO Control Register
-    uint HFXOCTRL1; // HFXO Control 1
-    uint HFXOSTARTUPCTRL; // HFXO Startup Control
-    uint HFXOSTEADYSTATECTRL; // HFXO Steady State Control
-    uint HFXOTIMEOUTCTRL; // HFXO Timeout Control
-    uint LFXOCTRL; // LFXO Control Register
-    uint ULFRCOCTRL; // ULFRCO Control Register
+    uint32_t LFRCOCTRL; // LFRCO Control Register
+    uint32_t HFXOCTRL; // HFXO Control Register
+    uint32_t HFXOCTRL1; // HFXO Control 1
+    uint32_t HFXOSTARTUPCTRL; // HFXO Startup Control
+    uint32_t HFXOSTEADYSTATECTRL; // HFXO Steady State Control
+    uint32_t HFXOTIMEOUTCTRL; // HFXO Timeout Control
+    uint32_t LFXOCTRL; // LFXO Control Register
+    uint32_t ULFRCOCTRL; // ULFRCO Control Register
     undefined field_0x40;
     undefined field_0x41;
     undefined field_0x42;
@@ -801,8 +801,8 @@ struct CMU {
     undefined field_0x4d;
     undefined field_0x4e;
     undefined field_0x4f;
-    uint CALCTRL; // Calibration Control Register
-    uint CALCNT; // Calibration Counter Register
+    uint32_t CALCTRL; // Calibration Control Register
+    uint32_t CALCNT; // Calibration Counter Register
     undefined field_0x58;
     undefined field_0x59;
     undefined field_0x5a;
@@ -811,8 +811,8 @@ struct CMU {
     undefined field_0x5d;
     undefined field_0x5e;
     undefined field_0x5f;
-    uint OSCENCMD; // Oscillator Enable/Disable Command Register
-    uint CMD; // Command Register
+    uint32_t OSCENCMD; // Oscillator Enable/Disable Command Register
+    uint32_t CMD; // Command Register
     undefined field_0x68;
     undefined field_0x69;
     undefined field_0x6a;
@@ -821,8 +821,8 @@ struct CMU {
     undefined field_0x6d;
     undefined field_0x6e;
     undefined field_0x6f;
-    uint DBGCLKSEL; // Debug Trace Clock Select
-    uint HFCLKSEL; // High Frequency Clock Select Command Register
+    uint32_t DBGCLKSEL; // Debug Trace Clock Select
+    uint32_t HFCLKSEL; // High Frequency Clock Select Command Register
     undefined field_0x78;
     undefined field_0x79;
     undefined field_0x7a;
@@ -831,25 +831,25 @@ struct CMU {
     undefined field_0x7d;
     undefined field_0x7e;
     undefined field_0x7f;
-    uint LFACLKSEL; // Low Frequency A Clock Select Register
-    uint LFBCLKSEL; // Low Frequency B Clock Select Register
-    uint LFECLKSEL; // Low Frequency E Clock Select Register
+    uint32_t LFACLKSEL; // Low Frequency A Clock Select Register
+    uint32_t LFBCLKSEL; // Low Frequency B Clock Select Register
+    uint32_t LFECLKSEL; // Low Frequency E Clock Select Register
     undefined field_0x8c;
     undefined field_0x8d;
     undefined field_0x8e;
     undefined field_0x8f;
-    uint STATUS; // Status Register
-    uint HFCLKSTATUS; // HFCLK Status Register
+    uint32_t STATUS; // Status Register
+    uint32_t HFCLKSTATUS; // HFCLK Status Register
     undefined field_0x98;
     undefined field_0x99;
     undefined field_0x9a;
     undefined field_0x9b;
-    uint HFXOTRIMSTATUS; // HFXO Trim Status
-    uint IF; // Interrupt Flag Register
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
-    uint HFBUSCLKEN0; // High Frequency Bus Clock Enable Register 0
+    uint32_t HFXOTRIMSTATUS; // HFXO Trim Status
+    uint32_t IF; // Interrupt Flag Register
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
+    uint32_t HFBUSCLKEN0; // High Frequency Bus Clock Enable Register 0
     undefined field_0xb4;
     undefined field_0xb5;
     undefined field_0xb6;
@@ -862,12 +862,12 @@ struct CMU {
     undefined field_0xbd;
     undefined field_0xbe;
     undefined field_0xbf;
-    uint HFPERCLKEN0; // High Frequency Peripheral Clock Enable Register 0
+    uint32_t HFPERCLKEN0; // High Frequency Peripheral Clock Enable Register 0
     undefined field_0xc4;
     undefined field_0xc5;
     undefined field_0xc6;
     undefined field_0xc7;
-    uint HFRADIOCLKEN0; // High Frequency Peripheral Clock Enable Register 0
+    uint32_t HFRADIOCLKEN0; // High Frequency Peripheral Clock Enable Register 0
     undefined field_0xcc;
     undefined field_0xcd;
     undefined field_0xce;
@@ -888,17 +888,17 @@ struct CMU {
     undefined field_0xdd;
     undefined field_0xde;
     undefined field_0xdf;
-    uint LFACLKEN0; // Low Frequency a Clock Enable Register 0 (Async Reg)
+    uint32_t LFACLKEN0; // Low Frequency a Clock Enable Register 0 (Async Reg)
     undefined field_0xe4;
     undefined field_0xe5;
     undefined field_0xe6;
     undefined field_0xe7;
-    uint LFBCLKEN0; // Low Frequency B Clock Enable Register 0 (Async Reg)
+    uint32_t LFBCLKEN0; // Low Frequency B Clock Enable Register 0 (Async Reg)
     undefined field_0xec;
     undefined field_0xed;
     undefined field_0xee;
     undefined field_0xef;
-    uint LFECLKEN0; // Low Frequency E Clock Enable Register 0 (Async Reg)
+    uint32_t LFECLKEN0; // Low Frequency E Clock Enable Register 0 (Async Reg)
     undefined field_0xf4;
     undefined field_0xf5;
     undefined field_0xf6;
@@ -911,15 +911,15 @@ struct CMU {
     undefined field_0xfd;
     undefined field_0xfe;
     undefined field_0xff;
-    uint HFPRESC; // High Frequency Clock Prescaler Register
+    uint32_t HFPRESC; // High Frequency Clock Prescaler Register
     undefined field_0x104;
     undefined field_0x105;
     undefined field_0x106;
     undefined field_0x107;
-    uint HFCOREPRESC; // High Frequency Core Clock Prescaler Register
-    uint HFPERPRESC; // High Frequency Peripheral Clock Prescaler Register
-    uint HFRADIOPRESC; // Radio Clock Prescaler Register
-    uint HFEXPPRESC; // High Frequency Export Clock Prescaler Register
+    uint32_t HFCOREPRESC; // High Frequency Core Clock Prescaler Register
+    uint32_t HFPERPRESC; // High Frequency Peripheral Clock Prescaler Register
+    uint32_t HFRADIOPRESC; // Radio Clock Prescaler Register
+    uint32_t HFEXPPRESC; // High Frequency Export Clock Prescaler Register
     undefined field_0x118;
     undefined field_0x119;
     undefined field_0x11a;
@@ -928,17 +928,17 @@ struct CMU {
     undefined field_0x11d;
     undefined field_0x11e;
     undefined field_0x11f;
-    uint LFAPRESC0; // Low Frequency a Prescaler Register 0 (Async Reg)
+    uint32_t LFAPRESC0; // Low Frequency a Prescaler Register 0 (Async Reg)
     undefined field_0x124;
     undefined field_0x125;
     undefined field_0x126;
     undefined field_0x127;
-    uint LFBPRESC0; // Low Frequency B Prescaler Register 0 (Async Reg)
+    uint32_t LFBPRESC0; // Low Frequency B Prescaler Register 0 (Async Reg)
     undefined field_0x12c;
     undefined field_0x12d;
     undefined field_0x12e;
     undefined field_0x12f;
-    uint LFEPRESC0; // Low Frequency E Prescaler Register 0 (Async Reg)
+    uint32_t LFEPRESC0; // Low Frequency E Prescaler Register 0 (Async Reg)
     undefined field_0x134;
     undefined field_0x135;
     undefined field_0x136;
@@ -951,8 +951,8 @@ struct CMU {
     undefined field_0x13d;
     undefined field_0x13e;
     undefined field_0x13f;
-    uint SYNCBUSY; // Synchronization Busy Register
-    uint FREEZE; // Freeze Register
+    uint32_t SYNCBUSY; // Synchronization Busy Register
+    uint32_t FREEZE; // Freeze Register
     undefined field_0x148;
     undefined field_0x149;
     undefined field_0x14a;
@@ -961,10 +961,10 @@ struct CMU {
     undefined field_0x14d;
     undefined field_0x14e;
     undefined field_0x14f;
-    uint PCNTCTRL; // PCNT Control Register
-    uint LCDCTRL; // LCD Control Register
-    uint LVDSCTRL; // LVDSCTRL Control Register
-    uint ADCCTRL; // ADC Control Register
+    uint32_t PCNTCTRL; // PCNT Control Register
+    uint32_t LCDCTRL; // LCD Control Register
+    uint32_t LVDSCTRL; // LVDSCTRL Control Register
+    uint32_t ADCCTRL; // ADC Control Register
     undefined field_0x160;
     undefined field_0x161;
     undefined field_0x162;
@@ -981,8 +981,8 @@ struct CMU {
     undefined field_0x16d;
     undefined field_0x16e;
     undefined field_0x16f;
-    uint ROUTEPEN; // I/O Routing Pin Enable Register
-    uint ROUTELOC0; // I/O Routing Location Register
+    uint32_t ROUTEPEN; // I/O Routing Pin Enable Register
+    uint32_t ROUTELOC0; // I/O Routing Location Register
     undefined field_0x178;
     undefined field_0x179;
     undefined field_0x17a;
@@ -991,22 +991,22 @@ struct CMU {
     undefined field_0x17d;
     undefined field_0x17e;
     undefined field_0x17f;
-    uint LOCK; // Configuration Lock Register
+    uint32_t LOCK; // Configuration Lock Register
     undefined field_0x184;
     undefined field_0x185;
     undefined field_0x186;
     undefined field_0x187;
-    uint RFLOCK0; // RF LOCK Register
+    uint32_t RFLOCK0; // RF LOCK Register
     undefined field_0x18c;
     undefined field_0x18d;
     undefined field_0x18e;
     undefined field_0x18f;
-    uint HFBUSCLKENMASK0;
+    uint32_t HFBUSCLKENMASK0;
     undefined field_0x194;
     undefined field_0x195;
     undefined field_0x196;
     undefined field_0x197;
-    uint HFPERCLKENMASK0;
+    uint32_t HFPERCLKENMASK0;
     undefined field_0x19c;
     undefined field_0x19d;
     undefined field_0x19e;
@@ -1015,7 +1015,7 @@ struct CMU {
     undefined field_0x1a1;
     undefined field_0x1a2;
     undefined field_0x1a3;
-    uint HFRADIOCLKENMASK0;
+    uint32_t HFRADIOCLKENMASK0;
     undefined field_0x1a8;
     undefined field_0x1a9;
     undefined field_0x1aa;
@@ -1028,53 +1028,53 @@ struct CMU {
     undefined field_0x1b1;
     undefined field_0x1b2;
     undefined field_0x1b3;
-    uint LFACLKENMASK0;
+    uint32_t LFACLKENMASK0;
     undefined field_0x1b8;
     undefined field_0x1b9;
     undefined field_0x1ba;
     undefined field_0x1bb;
-    uint LFBCLKENMASK0;
+    uint32_t LFBCLKENMASK0;
     undefined field_0x1c0;
     undefined field_0x1c1;
     undefined field_0x1c2;
     undefined field_0x1c3;
-    uint LFECLKENMASK0;
+    uint32_t LFECLKENMASK0;
     undefined field_0x1c8;
     undefined field_0x1c9;
     undefined field_0x1ca;
     undefined field_0x1cb;
-    uint PCNTCLKENMASK;
-    uint TEST;
-    uint TESTHFRCOCTRL;
-    uint TESTAUXHFRCOCTRL;
-    uint TESTLFRCOCTRL;
-    uint TESTHFXOCTRL;
-    uint TESTLFXOCTRL;
+    uint32_t PCNTCLKENMASK;
+    uint32_t TEST;
+    uint32_t TESTHFRCOCTRL;
+    uint32_t TESTAUXHFRCOCTRL;
+    uint32_t TESTLFRCOCTRL;
+    uint32_t TESTHFXOCTRL;
+    uint32_t TESTLFXOCTRL;
 };
 
 typedef struct EMU EMU, *PEMU;
 
 struct EMU {
-    uint CTRL; // Control Register
-    uint STATUS; // Status Register
-    uint LOCK; // Configuration Lock Register
-    uint RAM0CTRL; // Memory Control Register
-    uint CMD; // Command Register
+    uint32_t CTRL; // Control Register
+    uint32_t STATUS; // Status Register
+    uint32_t LOCK; // Configuration Lock Register
+    uint32_t RAM0CTRL; // Memory Control Register
+    uint32_t CMD; // Command Register
     undefined field_0x14;
     undefined field_0x15;
     undefined field_0x16;
     undefined field_0x17;
-    uint EM4CTRL; // EM4 Control Register
-    uint TEMPLIMITS; // Temperature Limits for Interrupt Generation
-    uint TEMP; // Value of Last Temperature Measurement
-    uint IF; // Interrupt Flag Register
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
-    uint PWRLOCK; // Regulator and Supply Lock Register
-    uint PWRCFG; // Power Configuration Register
-    uint PWRCTRL; // Power Control Register
-    uint DCDCCTRL; // DCDC Control
+    uint32_t EM4CTRL; // EM4 Control Register
+    uint32_t TEMPLIMITS; // Temperature Limits for Interrupt Generation
+    uint32_t TEMP; // Value of Last Temperature Measurement
+    uint32_t IF; // Interrupt Flag Register
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
+    uint32_t PWRLOCK; // Regulator and Supply Lock Register
+    uint32_t PWRCFG; // Power Configuration Register
+    uint32_t PWRCTRL; // Power Control Register
+    uint32_t DCDCCTRL; // DCDC Control
     undefined field_0x44;
     undefined field_0x45;
     undefined field_0x46;
@@ -1083,24 +1083,24 @@ struct EMU {
     undefined field_0x49;
     undefined field_0x4a;
     undefined field_0x4b;
-    uint DCDCMISCCTRL; // DCDC Miscellaneous Control Register
-    uint DCDCZDETCTRL; // DCDC Power Train NFET Zero Current Detector Control Register
-    uint DCDCCLIMCTRL; // DCDC Power Train PFET Current Limiter Control Register
-    uint DCDCLNCOMPCTRL; // DCDC Low Noise Compensator Control Register
-    uint DCDCLNVCTRL; // DCDC Low Noise Voltage Register
-    uint DCDCTIMING; // DCDC Controller Timing Value Register
-    uint DCDCLPVCTRL; // DCDC Low Power Voltage Register
+    uint32_t DCDCMISCCTRL; // DCDC Miscellaneous Control Register
+    uint32_t DCDCZDETCTRL; // DCDC Power Train NFET Zero Current Detector Control Register
+    uint32_t DCDCCLIMCTRL; // DCDC Power Train PFET Current Limiter Control Register
+    uint32_t DCDCLNCOMPCTRL; // DCDC Low Noise Compensator Control Register
+    uint32_t DCDCLNVCTRL; // DCDC Low Noise Voltage Register
+    uint32_t DCDCTIMING; // DCDC Controller Timing Value Register
+    uint32_t DCDCLPVCTRL; // DCDC Low Power Voltage Register
     undefined field_0x68;
     undefined field_0x69;
     undefined field_0x6a;
     undefined field_0x6b;
-    uint DCDCLPCTRL; // DCDC Low Power Control Register
-    uint DCDCLNFREQCTRL; // DCDC Low Noise Controller Frequency Control
+    uint32_t DCDCLPCTRL; // DCDC Low Power Control Register
+    uint32_t DCDCLNFREQCTRL; // DCDC Low Noise Controller Frequency Control
     undefined field_0x74;
     undefined field_0x75;
     undefined field_0x76;
     undefined field_0x77;
-    uint DCDCSYNC; // DCDC Read Status Register
+    uint32_t DCDCSYNC; // DCDC Read Status Register
     undefined field_0x7c;
     undefined field_0x7d;
     undefined field_0x7e;
@@ -1121,10 +1121,10 @@ struct EMU {
     undefined field_0x8d;
     undefined field_0x8e;
     undefined field_0x8f;
-    uint VMONAVDDCTRL; // VMON AVDD Channel Control
-    uint VMONALTAVDDCTRL; // Alternate VMON AVDD Channel Control
-    uint VMONDVDDCTRL; // VMON DVDD Channel Control
-    uint VMONIO0CTRL; // VMON IOVDD0 Channel Control
+    uint32_t VMONAVDDCTRL; // VMON AVDD Channel Control
+    uint32_t VMONALTAVDDCTRL; // Alternate VMON AVDD Channel Control
+    uint32_t VMONDVDDCTRL; // VMON DVDD Channel Control
+    uint32_t VMONIO0CTRL; // VMON IOVDD0 Channel Control
     undefined field_0xa0;
     undefined field_0xa1;
     undefined field_0xa2;
@@ -1321,7 +1321,7 @@ struct EMU {
     undefined field_0x161;
     undefined field_0x162;
     undefined field_0x163;
-    uint BIASCONF; // Configurations Related to the Bias
+    uint32_t BIASCONF; // Configurations Related to the Bias
     undefined field_0x168;
     undefined field_0x169;
     undefined field_0x16a;
@@ -1362,7 +1362,7 @@ struct EMU {
     undefined field_0x18d;
     undefined field_0x18e;
     undefined field_0x18f;
-    uint TESTLOCK; // Test Lock Register
+    uint32_t TESTLOCK; // Test Lock Register
     undefined field_0x194;
     undefined field_0x195;
     undefined field_0x196;
@@ -1371,30 +1371,30 @@ struct EMU {
     undefined field_0x199;
     undefined field_0x19a;
     undefined field_0x19b;
-    uint BIASTESTCTRL; // Test Control Register for Regulator and BIAS
+    uint32_t BIASTESTCTRL; // Test Control Register for Regulator and BIAS
 };
 
 typedef struct LEUART0 LEUART0, *PLEUART0;
 
 struct LEUART0 {
-    uint CTRL; // Control Register
-    uint CMD; // Command Register
-    uint STATUS; // Status Register
-    uint CLKDIV; // Clock Control Register
-    uint STARTFRAME; // Start Frame Register
-    uint SIGFRAME; // Signal Frame Register
-    uint RXDATAX; // Receive Buffer Data Extended Register
-    uint RXDATA; // Receive Buffer Data Register
-    uint RXDATAXP; // Receive Buffer Data Extended Peek Register
-    uint TXDATAX; // Transmit Buffer Data Extended Register
-    uint TXDATA; // Transmit Buffer Data Register
-    uint IF; // Interrupt Flag Register
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
-    uint PULSECTRL; // Pulse Control Register
-    uint FREEZE; // Freeze Register
-    uint SYNCBUSY; // Synchronization Busy Register
+    uint32_t CTRL; // Control Register
+    uint32_t CMD; // Command Register
+    uint32_t STATUS; // Status Register
+    uint32_t CLKDIV; // Clock Control Register
+    uint32_t STARTFRAME; // Start Frame Register
+    uint32_t SIGFRAME; // Signal Frame Register
+    uint32_t RXDATAX; // Receive Buffer Data Extended Register
+    uint32_t RXDATA; // Receive Buffer Data Register
+    uint32_t RXDATAXP; // Receive Buffer Data Extended Peek Register
+    uint32_t TXDATAX; // Transmit Buffer Data Extended Register
+    uint32_t TXDATA; // Transmit Buffer Data Register
+    uint32_t IF; // Interrupt Flag Register
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
+    uint32_t PULSECTRL; // Pulse Control Register
+    uint32_t FREEZE; // Freeze Register
+    uint32_t SYNCBUSY; // Synchronization Busy Register
     undefined field_0x48;
     undefined field_0x49;
     undefined field_0x4a;
@@ -1407,8 +1407,8 @@ struct LEUART0 {
     undefined field_0x51;
     undefined field_0x52;
     undefined field_0x53;
-    uint ROUTEPEN; // I/O Routing Pin Enable Register
-    uint ROUTELOC0; // I/O Routing Location Register
+    uint32_t ROUTEPEN; // I/O Routing Pin Enable Register
+    uint32_t ROUTELOC0; // I/O Routing Location Register
     undefined field_0x5c;
     undefined field_0x5d;
     undefined field_0x5e;
@@ -1417,46 +1417,46 @@ struct LEUART0 {
     undefined field_0x61;
     undefined field_0x62;
     undefined field_0x63;
-    uint INPUT; // LEUART Input Register
+    uint32_t INPUT; // LEUART Input Register
 };
 
 typedef struct FPUEH FPUEH, *PFPUEH;
 
 struct FPUEH {
-    uint IF; // Interrupt Flag Register
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
+    uint32_t IF; // Interrupt Flag Register
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
 };
 
 typedef struct ADC0 ADC0, *PADC0;
 
 struct ADC0 {
-    uint CTRL; // Control Register
+    uint32_t CTRL; // Control Register
     undefined field_0x4;
     undefined field_0x5;
     undefined field_0x6;
     undefined field_0x7;
-    uint CMD; // Command Register
-    uint STATUS; // Status Register
-    uint SINGLECTRL; // Single Channel Control Register
-    uint SINGLECTRLX; // Single Channel Control Register Continued
-    uint SCANCTRL; // Scan Control Register
-    uint SCANCTRLX; // Scan Control Register Continued
-    uint SCANMASK; // Scan Sequence Input Mask Register
-    uint SCANINPUTSEL; // Input Selection Register for Scan Mode
-    uint SCANNEGSEL; // Negative Input Select Register for Scan
-    uint CMPTHR; // Compare Threshold Register
-    uint BIASPROG; // Bias Programming Register for Various Analog Blocks Used in ADC Operation
-    uint CAL; // Calibration Register
-    uint IF; // Interrupt Flag Register
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
-    uint SINGLEDATA; // Single Conversion Result Data
-    uint SCANDATA; // Scan Conversion Result Data
-    uint SINGLEDATAP; // Single Conversion Result Data Peek Register
-    uint SCANDATAP; // Scan Sequence Result Data Peek Register
+    uint32_t CMD; // Command Register
+    uint32_t STATUS; // Status Register
+    uint32_t SINGLECTRL; // Single Channel Control Register
+    uint32_t SINGLECTRLX; // Single Channel Control Register Continued
+    uint32_t SCANCTRL; // Scan Control Register
+    uint32_t SCANCTRLX; // Scan Control Register Continued
+    uint32_t SCANMASK; // Scan Sequence Input Mask Register
+    uint32_t SCANINPUTSEL; // Input Selection Register for Scan Mode
+    uint32_t SCANNEGSEL; // Negative Input Select Register for Scan
+    uint32_t CMPTHR; // Compare Threshold Register
+    uint32_t BIASPROG; // Bias Programming Register for Various Analog Blocks Used in ADC Operation
+    uint32_t CAL; // Calibration Register
+    uint32_t IF; // Interrupt Flag Register
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
+    uint32_t SINGLEDATA; // Single Conversion Result Data
+    uint32_t SCANDATA; // Scan Conversion Result Data
+    uint32_t SINGLEDATAP; // Single Conversion Result Data Peek Register
+    uint32_t SCANDATAP; // Scan Sequence Result Data Peek Register
     undefined field_0x58;
     undefined field_0x59;
     undefined field_0x5a;
@@ -1473,8 +1473,8 @@ struct ADC0 {
     undefined field_0x65;
     undefined field_0x66;
     undefined field_0x67;
-    uint SCANDATAX; // Scan Sequence Result Data + Data Source Register
-    uint SCANDATAXP; // Scan Sequence Result Data + Data Source Peek Register
+    uint32_t SCANDATAX; // Scan Sequence Result Data + Data Source Register
+    uint32_t SCANDATAXP; // Scan Sequence Result Data + Data Source Peek Register
     undefined field_0x70;
     undefined field_0x71;
     undefined field_0x72;
@@ -1487,19 +1487,19 @@ struct ADC0 {
     undefined field_0x79;
     undefined field_0x7a;
     undefined field_0x7b;
-    uint APORTREQ; // APORT Request Status Register
-    uint APORTCONFLICT; // APORT Conflict Status Register
-    uint SINGLEFIFOCOUNT; // Single FIFO Count Register
-    uint SCANFIFOCOUNT; // Scan FIFO Count Register
-    uint SINGLEFIFOCLEAR; // Single FIFO Clear Register
-    uint SCANFIFOCLEAR; // Scan FIFO Clear Register
-    uint APORTMASTERDIS; // APORT Bus Master Disable Register
+    uint32_t APORTREQ; // APORT Request Status Register
+    uint32_t APORTCONFLICT; // APORT Conflict Status Register
+    uint32_t SINGLEFIFOCOUNT; // Single FIFO Count Register
+    uint32_t SCANFIFOCOUNT; // Scan FIFO Count Register
+    uint32_t SINGLEFIFOCLEAR; // Single FIFO Clear Register
+    uint32_t SCANFIFOCLEAR; // Scan FIFO Clear Register
+    uint32_t APORTMASTERDIS; // APORT Bus Master Disable Register
 };
 
 typedef struct CMU_SET CMU_SET, *PCMU_SET;
 
 struct CMU_SET {
-    uint CTRL; // CMU Control Register
+    uint32_t CTRL; // CMU Control Register
     undefined field_0x4;
     undefined field_0x5;
     undefined field_0x6;
@@ -1512,24 +1512,24 @@ struct CMU_SET {
     undefined field_0xd;
     undefined field_0xe;
     undefined field_0xf;
-    uint HFRCOCTRL; // HFRCO Control Register
+    uint32_t HFRCOCTRL; // HFRCO Control Register
     undefined field_0x14;
     undefined field_0x15;
     undefined field_0x16;
     undefined field_0x17;
-    uint AUXHFRCOCTRL; // AUXHFRCO Control Register
+    uint32_t AUXHFRCOCTRL; // AUXHFRCO Control Register
     undefined field_0x1c;
     undefined field_0x1d;
     undefined field_0x1e;
     undefined field_0x1f;
-    uint LFRCOCTRL; // LFRCO Control Register
-    uint HFXOCTRL; // HFXO Control Register
-    uint HFXOCTRL1; // HFXO Control 1
-    uint HFXOSTARTUPCTRL; // HFXO Startup Control
-    uint HFXOSTEADYSTATECTRL; // HFXO Steady State Control
-    uint HFXOTIMEOUTCTRL; // HFXO Timeout Control
-    uint LFXOCTRL; // LFXO Control Register
-    uint ULFRCOCTRL; // ULFRCO Control Register
+    uint32_t LFRCOCTRL; // LFRCO Control Register
+    uint32_t HFXOCTRL; // HFXO Control Register
+    uint32_t HFXOCTRL1; // HFXO Control 1
+    uint32_t HFXOSTARTUPCTRL; // HFXO Startup Control
+    uint32_t HFXOSTEADYSTATECTRL; // HFXO Steady State Control
+    uint32_t HFXOTIMEOUTCTRL; // HFXO Timeout Control
+    uint32_t LFXOCTRL; // LFXO Control Register
+    uint32_t ULFRCOCTRL; // ULFRCO Control Register
     undefined field_0x40;
     undefined field_0x41;
     undefined field_0x42;
@@ -1546,8 +1546,8 @@ struct CMU_SET {
     undefined field_0x4d;
     undefined field_0x4e;
     undefined field_0x4f;
-    uint CALCTRL; // Calibration Control Register
-    uint CALCNT; // Calibration Counter Register
+    uint32_t CALCTRL; // Calibration Control Register
+    uint32_t CALCNT; // Calibration Counter Register
     undefined field_0x58;
     undefined field_0x59;
     undefined field_0x5a;
@@ -1556,8 +1556,8 @@ struct CMU_SET {
     undefined field_0x5d;
     undefined field_0x5e;
     undefined field_0x5f;
-    uint OSCENCMD; // Oscillator Enable/Disable Command Register
-    uint CMD; // Command Register
+    uint32_t OSCENCMD; // Oscillator Enable/Disable Command Register
+    uint32_t CMD; // Command Register
     undefined field_0x68;
     undefined field_0x69;
     undefined field_0x6a;
@@ -1566,8 +1566,8 @@ struct CMU_SET {
     undefined field_0x6d;
     undefined field_0x6e;
     undefined field_0x6f;
-    uint DBGCLKSEL; // Debug Trace Clock Select
-    uint HFCLKSEL; // High Frequency Clock Select Command Register
+    uint32_t DBGCLKSEL; // Debug Trace Clock Select
+    uint32_t HFCLKSEL; // High Frequency Clock Select Command Register
     undefined field_0x78;
     undefined field_0x79;
     undefined field_0x7a;
@@ -1576,25 +1576,25 @@ struct CMU_SET {
     undefined field_0x7d;
     undefined field_0x7e;
     undefined field_0x7f;
-    uint LFACLKSEL; // Low Frequency A Clock Select Register
-    uint LFBCLKSEL; // Low Frequency B Clock Select Register
-    uint LFECLKSEL; // Low Frequency E Clock Select Register
+    uint32_t LFACLKSEL; // Low Frequency A Clock Select Register
+    uint32_t LFBCLKSEL; // Low Frequency B Clock Select Register
+    uint32_t LFECLKSEL; // Low Frequency E Clock Select Register
     undefined field_0x8c;
     undefined field_0x8d;
     undefined field_0x8e;
     undefined field_0x8f;
-    uint STATUS; // Status Register
-    uint HFCLKSTATUS; // HFCLK Status Register
+    uint32_t STATUS; // Status Register
+    uint32_t HFCLKSTATUS; // HFCLK Status Register
     undefined field_0x98;
     undefined field_0x99;
     undefined field_0x9a;
     undefined field_0x9b;
-    uint HFXOTRIMSTATUS; // HFXO Trim Status
-    uint IF; // Interrupt Flag Register
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
-    uint HFBUSCLKEN0; // High Frequency Bus Clock Enable Register 0
+    uint32_t HFXOTRIMSTATUS; // HFXO Trim Status
+    uint32_t IF; // Interrupt Flag Register
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
+    uint32_t HFBUSCLKEN0; // High Frequency Bus Clock Enable Register 0
     undefined field_0xb4;
     undefined field_0xb5;
     undefined field_0xb6;
@@ -1607,12 +1607,12 @@ struct CMU_SET {
     undefined field_0xbd;
     undefined field_0xbe;
     undefined field_0xbf;
-    uint HFPERCLKEN0; // High Frequency Peripheral Clock Enable Register 0
+    uint32_t HFPERCLKEN0; // High Frequency Peripheral Clock Enable Register 0
     undefined field_0xc4;
     undefined field_0xc5;
     undefined field_0xc6;
     undefined field_0xc7;
-    uint HFRADIOCLKEN0; // High Frequency Peripheral Clock Enable Register 0
+    uint32_t HFRADIOCLKEN0; // High Frequency Peripheral Clock Enable Register 0
     undefined field_0xcc;
     undefined field_0xcd;
     undefined field_0xce;
@@ -1633,17 +1633,17 @@ struct CMU_SET {
     undefined field_0xdd;
     undefined field_0xde;
     undefined field_0xdf;
-    uint LFACLKEN0; // Low Frequency a Clock Enable Register 0 (Async Reg)
+    uint32_t LFACLKEN0; // Low Frequency a Clock Enable Register 0 (Async Reg)
     undefined field_0xe4;
     undefined field_0xe5;
     undefined field_0xe6;
     undefined field_0xe7;
-    uint LFBCLKEN0; // Low Frequency B Clock Enable Register 0 (Async Reg)
+    uint32_t LFBCLKEN0; // Low Frequency B Clock Enable Register 0 (Async Reg)
     undefined field_0xec;
     undefined field_0xed;
     undefined field_0xee;
     undefined field_0xef;
-    uint LFECLKEN0; // Low Frequency E Clock Enable Register 0 (Async Reg)
+    uint32_t LFECLKEN0; // Low Frequency E Clock Enable Register 0 (Async Reg)
     undefined field_0xf4;
     undefined field_0xf5;
     undefined field_0xf6;
@@ -1656,15 +1656,15 @@ struct CMU_SET {
     undefined field_0xfd;
     undefined field_0xfe;
     undefined field_0xff;
-    uint HFPRESC; // High Frequency Clock Prescaler Register
+    uint32_t HFPRESC; // High Frequency Clock Prescaler Register
     undefined field_0x104;
     undefined field_0x105;
     undefined field_0x106;
     undefined field_0x107;
-    uint HFCOREPRESC; // High Frequency Core Clock Prescaler Register
-    uint HFPERPRESC; // High Frequency Peripheral Clock Prescaler Register
-    uint HFRADIOPRESC; // Radio Clock Prescaler Register
-    uint HFEXPPRESC; // High Frequency Export Clock Prescaler Register
+    uint32_t HFCOREPRESC; // High Frequency Core Clock Prescaler Register
+    uint32_t HFPERPRESC; // High Frequency Peripheral Clock Prescaler Register
+    uint32_t HFRADIOPRESC; // Radio Clock Prescaler Register
+    uint32_t HFEXPPRESC; // High Frequency Export Clock Prescaler Register
     undefined field_0x118;
     undefined field_0x119;
     undefined field_0x11a;
@@ -1673,17 +1673,17 @@ struct CMU_SET {
     undefined field_0x11d;
     undefined field_0x11e;
     undefined field_0x11f;
-    uint LFAPRESC0; // Low Frequency a Prescaler Register 0 (Async Reg)
+    uint32_t LFAPRESC0; // Low Frequency a Prescaler Register 0 (Async Reg)
     undefined field_0x124;
     undefined field_0x125;
     undefined field_0x126;
     undefined field_0x127;
-    uint LFBPRESC0; // Low Frequency B Prescaler Register 0 (Async Reg)
+    uint32_t LFBPRESC0; // Low Frequency B Prescaler Register 0 (Async Reg)
     undefined field_0x12c;
     undefined field_0x12d;
     undefined field_0x12e;
     undefined field_0x12f;
-    uint LFEPRESC0; // Low Frequency E Prescaler Register 0 (Async Reg)
+    uint32_t LFEPRESC0; // Low Frequency E Prescaler Register 0 (Async Reg)
     undefined field_0x134;
     undefined field_0x135;
     undefined field_0x136;
@@ -1696,8 +1696,8 @@ struct CMU_SET {
     undefined field_0x13d;
     undefined field_0x13e;
     undefined field_0x13f;
-    uint SYNCBUSY; // Synchronization Busy Register
-    uint FREEZE; // Freeze Register
+    uint32_t SYNCBUSY; // Synchronization Busy Register
+    uint32_t FREEZE; // Freeze Register
     undefined field_0x148;
     undefined field_0x149;
     undefined field_0x14a;
@@ -1706,10 +1706,10 @@ struct CMU_SET {
     undefined field_0x14d;
     undefined field_0x14e;
     undefined field_0x14f;
-    uint PCNTCTRL; // PCNT Control Register
-    uint LCDCTRL; // LCD Control Register
-    uint LVDSCTRL; // LVDSCTRL Control Register
-    uint ADCCTRL; // ADC Control Register
+    uint32_t PCNTCTRL; // PCNT Control Register
+    uint32_t LCDCTRL; // LCD Control Register
+    uint32_t LVDSCTRL; // LVDSCTRL Control Register
+    uint32_t ADCCTRL; // ADC Control Register
     undefined field_0x160;
     undefined field_0x161;
     undefined field_0x162;
@@ -1726,8 +1726,8 @@ struct CMU_SET {
     undefined field_0x16d;
     undefined field_0x16e;
     undefined field_0x16f;
-    uint ROUTEPEN; // I/O Routing Pin Enable Register
-    uint ROUTELOC0; // I/O Routing Location Register
+    uint32_t ROUTEPEN; // I/O Routing Pin Enable Register
+    uint32_t ROUTELOC0; // I/O Routing Location Register
     undefined field_0x178;
     undefined field_0x179;
     undefined field_0x17a;
@@ -1736,22 +1736,22 @@ struct CMU_SET {
     undefined field_0x17d;
     undefined field_0x17e;
     undefined field_0x17f;
-    uint LOCK; // Configuration Lock Register
+    uint32_t LOCK; // Configuration Lock Register
     undefined field_0x184;
     undefined field_0x185;
     undefined field_0x186;
     undefined field_0x187;
-    uint RFLOCK0; // RF LOCK Register
+    uint32_t RFLOCK0; // RF LOCK Register
     undefined field_0x18c;
     undefined field_0x18d;
     undefined field_0x18e;
     undefined field_0x18f;
-    uint HFBUSCLKENMASK0;
+    uint32_t HFBUSCLKENMASK0;
     undefined field_0x194;
     undefined field_0x195;
     undefined field_0x196;
     undefined field_0x197;
-    uint HFPERCLKENMASK0;
+    uint32_t HFPERCLKENMASK0;
     undefined field_0x19c;
     undefined field_0x19d;
     undefined field_0x19e;
@@ -1760,7 +1760,7 @@ struct CMU_SET {
     undefined field_0x1a1;
     undefined field_0x1a2;
     undefined field_0x1a3;
-    uint HFRADIOCLKENMASK0;
+    uint32_t HFRADIOCLKENMASK0;
     undefined field_0x1a8;
     undefined field_0x1a9;
     undefined field_0x1aa;
@@ -1773,36 +1773,36 @@ struct CMU_SET {
     undefined field_0x1b1;
     undefined field_0x1b2;
     undefined field_0x1b3;
-    uint LFACLKENMASK0;
+    uint32_t LFACLKENMASK0;
     undefined field_0x1b8;
     undefined field_0x1b9;
     undefined field_0x1ba;
     undefined field_0x1bb;
-    uint LFBCLKENMASK0;
+    uint32_t LFBCLKENMASK0;
     undefined field_0x1c0;
     undefined field_0x1c1;
     undefined field_0x1c2;
     undefined field_0x1c3;
-    uint LFECLKENMASK0;
+    uint32_t LFECLKENMASK0;
     undefined field_0x1c8;
     undefined field_0x1c9;
     undefined field_0x1ca;
     undefined field_0x1cb;
-    uint PCNTCLKENMASK;
-    uint TEST;
-    uint TESTHFRCOCTRL;
-    uint TESTAUXHFRCOCTRL;
-    uint TESTLFRCOCTRL;
-    uint TESTHFXOCTRL;
-    uint TESTLFXOCTRL;
+    uint32_t PCNTCLKENMASK;
+    uint32_t TEST;
+    uint32_t TESTHFRCOCTRL;
+    uint32_t TESTAUXHFRCOCTRL;
+    uint32_t TESTLFRCOCTRL;
+    uint32_t TESTHFXOCTRL;
+    uint32_t TESTLFXOCTRL;
 };
 
 typedef struct LDMA LDMA, *PLDMA;
 
 struct LDMA {
-    uint CTRL; // DMA Control Register
-    uint STATUS; // DMA Status Register
-    uint SYNC; // DMA Synchronization Trigger Register (Single-Cycle RMW)
+    uint32_t CTRL; // DMA Control Register
+    uint32_t STATUS; // DMA Status Register
+    uint32_t SYNC; // DMA Synchronization Trigger Register (Single-Cycle RMW)
     undefined field_0xc;
     undefined field_0xd;
     undefined field_0xe;
@@ -1823,15 +1823,15 @@ struct LDMA {
     undefined field_0x1d;
     undefined field_0x1e;
     undefined field_0x1f;
-    uint CHEN; // DMA Channel Enable Register (Single-Cycle RMW)
-    uint CHBUSY; // DMA Channel Busy Register
-    uint CHDONE; // DMA Channel Linking Done Register (Single-Cycle RMW)
-    uint DBGHALT; // DMA Channel Debug Halt Register
-    uint SWREQ; // DMA Channel Software Transfer Request Register
-    uint REQDIS; // DMA Channel Request Disable Register
-    uint REQPEND; // DMA Channel Requests Pending Register
-    uint LINKLOAD; // DMA Channel Link Load Register
-    uint REQCLEAR; // DMA Channel Request Clear Register
+    uint32_t CHEN; // DMA Channel Enable Register (Single-Cycle RMW)
+    uint32_t CHBUSY; // DMA Channel Busy Register
+    uint32_t CHDONE; // DMA Channel Linking Done Register (Single-Cycle RMW)
+    uint32_t DBGHALT; // DMA Channel Debug Halt Register
+    uint32_t SWREQ; // DMA Channel Software Transfer Request Register
+    uint32_t REQDIS; // DMA Channel Request Disable Register
+    uint32_t REQPEND; // DMA Channel Requests Pending Register
+    uint32_t LINKLOAD; // DMA Channel Link Load Register
+    uint32_t REQCLEAR; // DMA Channel Request Clear Register
     undefined field_0x44;
     undefined field_0x45;
     undefined field_0x46;
@@ -1860,10 +1860,10 @@ struct LDMA {
     undefined field_0x5d;
     undefined field_0x5e;
     undefined field_0x5f;
-    uint IF; // Interrupt Flag Register
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
+    uint32_t IF; // Interrupt Flag Register
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
     undefined field_0x70;
     undefined field_0x71;
     undefined field_0x72;
@@ -1880,13 +1880,13 @@ struct LDMA {
     undefined field_0x7d;
     undefined field_0x7e;
     undefined field_0x7f;
-    uint CH0_REQSEL; // Channel Peripheral Request Select Register
-    uint CH0_CFG; // Channel Configuration Register
-    uint CH0_LOOP; // Channel Loop Counter Register
-    uint CH0_CTRL; // Channel Descriptor Control Word Register
-    uint CH0_SRC; // Channel Descriptor Source Data Address Register
-    uint CH0_DST; // Channel Descriptor Destination Data Address Register
-    uint CH0_LINK; // Channel Descriptor Link Structure Address Register
+    uint32_t CH0_REQSEL; // Channel Peripheral Request Select Register
+    uint32_t CH0_CFG; // Channel Configuration Register
+    uint32_t CH0_LOOP; // Channel Loop Counter Register
+    uint32_t CH0_CTRL; // Channel Descriptor Control Word Register
+    uint32_t CH0_SRC; // Channel Descriptor Source Data Address Register
+    uint32_t CH0_DST; // Channel Descriptor Destination Data Address Register
+    uint32_t CH0_LINK; // Channel Descriptor Link Structure Address Register
     undefined field_0x9c;
     undefined field_0x9d;
     undefined field_0x9e;
@@ -1907,13 +1907,13 @@ struct LDMA {
     undefined field_0xad;
     undefined field_0xae;
     undefined field_0xaf;
-    uint CH1_REQSEL; // Channel Peripheral Request Select Register
-    uint CH1_CFG; // Channel Configuration Register
-    uint CH1_LOOP; // Channel Loop Counter Register
-    uint CH1_CTRL; // Channel Descriptor Control Word Register
-    uint CH1_SRC; // Channel Descriptor Source Data Address Register
-    uint CH1_DST; // Channel Descriptor Destination Data Address Register
-    uint CH1_LINK; // Channel Descriptor Link Structure Address Register
+    uint32_t CH1_REQSEL; // Channel Peripheral Request Select Register
+    uint32_t CH1_CFG; // Channel Configuration Register
+    uint32_t CH1_LOOP; // Channel Loop Counter Register
+    uint32_t CH1_CTRL; // Channel Descriptor Control Word Register
+    uint32_t CH1_SRC; // Channel Descriptor Source Data Address Register
+    uint32_t CH1_DST; // Channel Descriptor Destination Data Address Register
+    uint32_t CH1_LINK; // Channel Descriptor Link Structure Address Register
     undefined field_0xcc;
     undefined field_0xcd;
     undefined field_0xce;
@@ -1934,13 +1934,13 @@ struct LDMA {
     undefined field_0xdd;
     undefined field_0xde;
     undefined field_0xdf;
-    uint CH2_REQSEL; // Channel Peripheral Request Select Register
-    uint CH2_CFG; // Channel Configuration Register
-    uint CH2_LOOP; // Channel Loop Counter Register
-    uint CH2_CTRL; // Channel Descriptor Control Word Register
-    uint CH2_SRC; // Channel Descriptor Source Data Address Register
-    uint CH2_DST; // Channel Descriptor Destination Data Address Register
-    uint CH2_LINK; // Channel Descriptor Link Structure Address Register
+    uint32_t CH2_REQSEL; // Channel Peripheral Request Select Register
+    uint32_t CH2_CFG; // Channel Configuration Register
+    uint32_t CH2_LOOP; // Channel Loop Counter Register
+    uint32_t CH2_CTRL; // Channel Descriptor Control Word Register
+    uint32_t CH2_SRC; // Channel Descriptor Source Data Address Register
+    uint32_t CH2_DST; // Channel Descriptor Destination Data Address Register
+    uint32_t CH2_LINK; // Channel Descriptor Link Structure Address Register
     undefined field_0xfc;
     undefined field_0xfd;
     undefined field_0xfe;
@@ -1961,13 +1961,13 @@ struct LDMA {
     undefined field_0x10d;
     undefined field_0x10e;
     undefined field_0x10f;
-    uint CH3_REQSEL; // Channel Peripheral Request Select Register
-    uint CH3_CFG; // Channel Configuration Register
-    uint CH3_LOOP; // Channel Loop Counter Register
-    uint CH3_CTRL; // Channel Descriptor Control Word Register
-    uint CH3_SRC; // Channel Descriptor Source Data Address Register
-    uint CH3_DST; // Channel Descriptor Destination Data Address Register
-    uint CH3_LINK; // Channel Descriptor Link Structure Address Register
+    uint32_t CH3_REQSEL; // Channel Peripheral Request Select Register
+    uint32_t CH3_CFG; // Channel Configuration Register
+    uint32_t CH3_LOOP; // Channel Loop Counter Register
+    uint32_t CH3_CTRL; // Channel Descriptor Control Word Register
+    uint32_t CH3_SRC; // Channel Descriptor Source Data Address Register
+    uint32_t CH3_DST; // Channel Descriptor Destination Data Address Register
+    uint32_t CH3_LINK; // Channel Descriptor Link Structure Address Register
     undefined field_0x12c;
     undefined field_0x12d;
     undefined field_0x12e;
@@ -1988,13 +1988,13 @@ struct LDMA {
     undefined field_0x13d;
     undefined field_0x13e;
     undefined field_0x13f;
-    uint CH4_REQSEL; // Channel Peripheral Request Select Register
-    uint CH4_CFG; // Channel Configuration Register
-    uint CH4_LOOP; // Channel Loop Counter Register
-    uint CH4_CTRL; // Channel Descriptor Control Word Register
-    uint CH4_SRC; // Channel Descriptor Source Data Address Register
-    uint CH4_DST; // Channel Descriptor Destination Data Address Register
-    uint CH4_LINK; // Channel Descriptor Link Structure Address Register
+    uint32_t CH4_REQSEL; // Channel Peripheral Request Select Register
+    uint32_t CH4_CFG; // Channel Configuration Register
+    uint32_t CH4_LOOP; // Channel Loop Counter Register
+    uint32_t CH4_CTRL; // Channel Descriptor Control Word Register
+    uint32_t CH4_SRC; // Channel Descriptor Source Data Address Register
+    uint32_t CH4_DST; // Channel Descriptor Destination Data Address Register
+    uint32_t CH4_LINK; // Channel Descriptor Link Structure Address Register
     undefined field_0x15c;
     undefined field_0x15d;
     undefined field_0x15e;
@@ -2015,13 +2015,13 @@ struct LDMA {
     undefined field_0x16d;
     undefined field_0x16e;
     undefined field_0x16f;
-    uint CH5_REQSEL; // Channel Peripheral Request Select Register
-    uint CH5_CFG; // Channel Configuration Register
-    uint CH5_LOOP; // Channel Loop Counter Register
-    uint CH5_CTRL; // Channel Descriptor Control Word Register
-    uint CH5_SRC; // Channel Descriptor Source Data Address Register
-    uint CH5_DST; // Channel Descriptor Destination Data Address Register
-    uint CH5_LINK; // Channel Descriptor Link Structure Address Register
+    uint32_t CH5_REQSEL; // Channel Peripheral Request Select Register
+    uint32_t CH5_CFG; // Channel Configuration Register
+    uint32_t CH5_LOOP; // Channel Loop Counter Register
+    uint32_t CH5_CTRL; // Channel Descriptor Control Word Register
+    uint32_t CH5_SRC; // Channel Descriptor Source Data Address Register
+    uint32_t CH5_DST; // Channel Descriptor Destination Data Address Register
+    uint32_t CH5_LINK; // Channel Descriptor Link Structure Address Register
     undefined field_0x18c;
     undefined field_0x18d;
     undefined field_0x18e;
@@ -2042,13 +2042,13 @@ struct LDMA {
     undefined field_0x19d;
     undefined field_0x19e;
     undefined field_0x19f;
-    uint CH6_REQSEL; // Channel Peripheral Request Select Register
-    uint CH6_CFG; // Channel Configuration Register
-    uint CH6_LOOP; // Channel Loop Counter Register
-    uint CH6_CTRL; // Channel Descriptor Control Word Register
-    uint CH6_SRC; // Channel Descriptor Source Data Address Register
-    uint CH6_DST; // Channel Descriptor Destination Data Address Register
-    uint CH6_LINK; // Channel Descriptor Link Structure Address Register
+    uint32_t CH6_REQSEL; // Channel Peripheral Request Select Register
+    uint32_t CH6_CFG; // Channel Configuration Register
+    uint32_t CH6_LOOP; // Channel Loop Counter Register
+    uint32_t CH6_CTRL; // Channel Descriptor Control Word Register
+    uint32_t CH6_SRC; // Channel Descriptor Source Data Address Register
+    uint32_t CH6_DST; // Channel Descriptor Destination Data Address Register
+    uint32_t CH6_LINK; // Channel Descriptor Link Structure Address Register
     undefined field_0x1bc;
     undefined field_0x1bd;
     undefined field_0x1be;
@@ -2069,76 +2069,76 @@ struct LDMA {
     undefined field_0x1cd;
     undefined field_0x1ce;
     undefined field_0x1cf;
-    uint CH7_REQSEL; // Channel Peripheral Request Select Register
-    uint CH7_CFG; // Channel Configuration Register
-    uint CH7_LOOP; // Channel Loop Counter Register
-    uint CH7_CTRL; // Channel Descriptor Control Word Register
-    uint CH7_SRC; // Channel Descriptor Source Data Address Register
-    uint CH7_DST; // Channel Descriptor Destination Data Address Register
-    uint CH7_LINK; // Channel Descriptor Link Structure Address Register
+    uint32_t CH7_REQSEL; // Channel Peripheral Request Select Register
+    uint32_t CH7_CFG; // Channel Configuration Register
+    uint32_t CH7_LOOP; // Channel Loop Counter Register
+    uint32_t CH7_CTRL; // Channel Descriptor Control Word Register
+    uint32_t CH7_SRC; // Channel Descriptor Source Data Address Register
+    uint32_t CH7_DST; // Channel Descriptor Destination Data Address Register
+    uint32_t CH7_LINK; // Channel Descriptor Link Structure Address Register
 };
 
 typedef struct CRC CRC, *PCRC;
 
 struct CRC {
-    uint CTRL;
-    uint STATUS;
-    uint CMD;
-    uint INPUTDATA;
-    uint INIT;
-    uint DATA;
-    uint POLY;
+    uint32_t CTRL;
+    uint32_t STATUS;
+    uint32_t CMD;
+    uint32_t INPUTDATA;
+    uint32_t INIT;
+    uint32_t DATA;
+    uint32_t POLY;
 };
 
 typedef struct MODEM_CLR MODEM_CLR, *PMODEM_CLR;
 
 struct MODEM_CLR {
-    uint STATUS;
-    uint TIMDETSTATUS;
-    uint FREQOFFEST;
-    uint AFCADJRX;
-    uint AFCADJTX;
-    uint MIXCTRL;
-    uint CTRL0;
-    uint CTRL1;
-    uint CTRL2;
-    uint CTRL3;
-    uint CTRL4;
-    uint CTRL5;
-    uint TXBR;
-    uint RXBR;
-    uint CF;
-    uint PRE;
-    uint SYNC0;
-    uint SYNC1;
-    uint TIMING;
-    uint DSSS0;
-    uint MODINDEX;
-    uint AFC;
-    uint AFCADJLIM;
-    uint SHAPING0;
-    uint SHAPING1;
-    uint SHAPING2;
-    uint RAMPCTRL;
-    uint RAMPLEV;
-    uint ROUTEPEN;
-    uint ROUTELOC0;
-    uint ROUTELOC1;
+    uint32_t STATUS;
+    uint32_t TIMDETSTATUS;
+    uint32_t FREQOFFEST;
+    uint32_t AFCADJRX;
+    uint32_t AFCADJTX;
+    uint32_t MIXCTRL;
+    uint32_t CTRL0;
+    uint32_t CTRL1;
+    uint32_t CTRL2;
+    uint32_t CTRL3;
+    uint32_t CTRL4;
+    uint32_t CTRL5;
+    uint32_t TXBR;
+    uint32_t RXBR;
+    uint32_t CF;
+    uint32_t PRE;
+    uint32_t SYNC0;
+    uint32_t SYNC1;
+    uint32_t TIMING;
+    uint32_t DSSS0;
+    uint32_t MODINDEX;
+    uint32_t AFC;
+    uint32_t AFCADJLIM;
+    uint32_t SHAPING0;
+    uint32_t SHAPING1;
+    uint32_t SHAPING2;
+    uint32_t RAMPCTRL;
+    uint32_t RAMPLEV;
+    uint32_t ROUTEPEN;
+    uint32_t ROUTELOC0;
+    uint32_t ROUTELOC1;
     undefined field_0x7c;
     undefined field_0x7d;
     undefined field_0x7e;
     undefined field_0x7f;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
-    uint CMD;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
+    uint32_t CMD;
     undefined field_0x94;
     undefined field_0x95;
     undefined field_0x96;
     undefined field_0x97;
-    uint DCCOMP;
-    uint DCCOMPFILTINIT;
+    uint32_t DCCOMP;
+    uint32_t DCCOMPFILTINIT;
     undefined field_0xa0;
     undefined field_0xa1;
     undefined field_0xa2;
@@ -2235,7 +2235,7 @@ struct MODEM_CLR {
     undefined field_0xfd;
     undefined field_0xfe;
     undefined field_0xff;
-    uint DCESTI;
+    uint32_t DCESTI;
     undefined field_0x104;
     undefined field_0x105;
     undefined field_0x106;
@@ -3000,306 +3000,306 @@ struct MODEM_CLR {
     undefined field_0x3fd;
     undefined field_0x3fe;
     undefined field_0x3ff;
-    uint RAM0_RAMDATA;
-    uint RAM1_RAMDATA;
-    uint RAM2_RAMDATA;
-    uint RAM3_RAMDATA;
-    uint RAM4_RAMDATA;
-    uint RAM5_RAMDATA;
-    uint RAM6_RAMDATA;
-    uint RAM7_RAMDATA;
-    uint RAM8_RAMDATA;
-    uint RAM9_RAMDATA;
-    uint RAM10_RAMDATA;
-    uint RAM11_RAMDATA;
-    uint RAM12_RAMDATA;
-    uint RAM13_RAMDATA;
-    uint RAM14_RAMDATA;
-    uint RAM15_RAMDATA;
-    uint RAM16_RAMDATA;
-    uint RAM17_RAMDATA;
-    uint RAM18_RAMDATA;
-    uint RAM19_RAMDATA;
-    uint RAM20_RAMDATA;
-    uint RAM21_RAMDATA;
-    uint RAM22_RAMDATA;
-    uint RAM23_RAMDATA;
-    uint RAM24_RAMDATA;
-    uint RAM25_RAMDATA;
-    uint RAM26_RAMDATA;
-    uint RAM27_RAMDATA;
-    uint RAM28_RAMDATA;
-    uint RAM29_RAMDATA;
-    uint RAM30_RAMDATA;
-    uint RAM31_RAMDATA;
-    uint RAM32_RAMDATA;
-    uint RAM33_RAMDATA;
-    uint RAM34_RAMDATA;
-    uint RAM35_RAMDATA;
-    uint RAM36_RAMDATA;
-    uint RAM37_RAMDATA;
-    uint RAM38_RAMDATA;
-    uint RAM39_RAMDATA;
-    uint RAM40_RAMDATA;
-    uint RAM41_RAMDATA;
-    uint RAM42_RAMDATA;
-    uint RAM43_RAMDATA;
-    uint RAM44_RAMDATA;
-    uint RAM45_RAMDATA;
-    uint RAM46_RAMDATA;
-    uint RAM47_RAMDATA;
-    uint RAM48_RAMDATA;
-    uint RAM49_RAMDATA;
-    uint RAM50_RAMDATA;
-    uint RAM51_RAMDATA;
-    uint RAM52_RAMDATA;
-    uint RAM53_RAMDATA;
-    uint RAM54_RAMDATA;
-    uint RAM55_RAMDATA;
-    uint RAM56_RAMDATA;
-    uint RAM57_RAMDATA;
-    uint RAM58_RAMDATA;
-    uint RAM59_RAMDATA;
-    uint RAM60_RAMDATA;
-    uint RAM61_RAMDATA;
-    uint RAM62_RAMDATA;
-    uint RAM63_RAMDATA;
-    uint RAM64_RAMDATA;
-    uint RAM65_RAMDATA;
-    uint RAM66_RAMDATA;
-    uint RAM67_RAMDATA;
-    uint RAM68_RAMDATA;
-    uint RAM69_RAMDATA;
-    uint RAM70_RAMDATA;
-    uint RAM71_RAMDATA;
-    uint RAM72_RAMDATA;
-    uint RAM73_RAMDATA;
-    uint RAM74_RAMDATA;
-    uint RAM75_RAMDATA;
-    uint RAM76_RAMDATA;
-    uint RAM77_RAMDATA;
-    uint RAM78_RAMDATA;
-    uint RAM79_RAMDATA;
-    uint RAM80_RAMDATA;
-    uint RAM81_RAMDATA;
-    uint RAM82_RAMDATA;
-    uint RAM83_RAMDATA;
-    uint RAM84_RAMDATA;
-    uint RAM85_RAMDATA;
-    uint RAM86_RAMDATA;
-    uint RAM87_RAMDATA;
-    uint RAM88_RAMDATA;
-    uint RAM89_RAMDATA;
-    uint RAM90_RAMDATA;
-    uint RAM91_RAMDATA;
-    uint RAM92_RAMDATA;
-    uint RAM93_RAMDATA;
-    uint RAM94_RAMDATA;
-    uint RAM95_RAMDATA;
-    uint RAM96_RAMDATA;
-    uint RAM97_RAMDATA;
-    uint RAM98_RAMDATA;
-    uint RAM99_RAMDATA;
-    uint RAM100_RAMDATA;
-    uint RAM101_RAMDATA;
-    uint RAM102_RAMDATA;
-    uint RAM103_RAMDATA;
-    uint RAM104_RAMDATA;
-    uint RAM105_RAMDATA;
-    uint RAM106_RAMDATA;
-    uint RAM107_RAMDATA;
-    uint RAM108_RAMDATA;
-    uint RAM109_RAMDATA;
-    uint RAM110_RAMDATA;
-    uint RAM111_RAMDATA;
-    uint RAM112_RAMDATA;
-    uint RAM113_RAMDATA;
-    uint RAM114_RAMDATA;
-    uint RAM115_RAMDATA;
-    uint RAM116_RAMDATA;
-    uint RAM117_RAMDATA;
-    uint RAM118_RAMDATA;
-    uint RAM119_RAMDATA;
-    uint RAM120_RAMDATA;
-    uint RAM121_RAMDATA;
-    uint RAM122_RAMDATA;
-    uint RAM123_RAMDATA;
-    uint RAM124_RAMDATA;
-    uint RAM125_RAMDATA;
-    uint RAM126_RAMDATA;
-    uint RAM127_RAMDATA;
-    uint RAM128_RAMDATA;
-    uint RAM129_RAMDATA;
-    uint RAM130_RAMDATA;
-    uint RAM131_RAMDATA;
-    uint RAM132_RAMDATA;
-    uint RAM133_RAMDATA;
-    uint RAM134_RAMDATA;
-    uint RAM135_RAMDATA;
-    uint RAM136_RAMDATA;
-    uint RAM137_RAMDATA;
-    uint RAM138_RAMDATA;
-    uint RAM139_RAMDATA;
-    uint RAM140_RAMDATA;
-    uint RAM141_RAMDATA;
-    uint RAM142_RAMDATA;
-    uint RAM143_RAMDATA;
-    uint RAM144_RAMDATA;
-    uint RAM145_RAMDATA;
-    uint RAM146_RAMDATA;
-    uint RAM147_RAMDATA;
-    uint RAM148_RAMDATA;
-    uint RAM149_RAMDATA;
-    uint RAM150_RAMDATA;
-    uint RAM151_RAMDATA;
-    uint RAM152_RAMDATA;
-    uint RAM153_RAMDATA;
-    uint RAM154_RAMDATA;
-    uint RAM155_RAMDATA;
-    uint RAM156_RAMDATA;
-    uint RAM157_RAMDATA;
-    uint RAM158_RAMDATA;
-    uint RAM159_RAMDATA;
-    uint RAM160_RAMDATA;
-    uint RAM161_RAMDATA;
-    uint RAM162_RAMDATA;
-    uint RAM163_RAMDATA;
-    uint RAM164_RAMDATA;
-    uint RAM165_RAMDATA;
-    uint RAM166_RAMDATA;
-    uint RAM167_RAMDATA;
-    uint RAM168_RAMDATA;
-    uint RAM169_RAMDATA;
-    uint RAM170_RAMDATA;
-    uint RAM171_RAMDATA;
-    uint RAM172_RAMDATA;
-    uint RAM173_RAMDATA;
-    uint RAM174_RAMDATA;
-    uint RAM175_RAMDATA;
-    uint RAM176_RAMDATA;
-    uint RAM177_RAMDATA;
-    uint RAM178_RAMDATA;
-    uint RAM179_RAMDATA;
-    uint RAM180_RAMDATA;
-    uint RAM181_RAMDATA;
-    uint RAM182_RAMDATA;
-    uint RAM183_RAMDATA;
-    uint RAM184_RAMDATA;
-    uint RAM185_RAMDATA;
-    uint RAM186_RAMDATA;
-    uint RAM187_RAMDATA;
-    uint RAM188_RAMDATA;
-    uint RAM189_RAMDATA;
-    uint RAM190_RAMDATA;
-    uint RAM191_RAMDATA;
-    uint RAM192_RAMDATA;
-    uint RAM193_RAMDATA;
-    uint RAM194_RAMDATA;
-    uint RAM195_RAMDATA;
-    uint RAM196_RAMDATA;
-    uint RAM197_RAMDATA;
-    uint RAM198_RAMDATA;
-    uint RAM199_RAMDATA;
-    uint RAM200_RAMDATA;
-    uint RAM201_RAMDATA;
-    uint RAM202_RAMDATA;
-    uint RAM203_RAMDATA;
-    uint RAM204_RAMDATA;
-    uint RAM205_RAMDATA;
-    uint RAM206_RAMDATA;
-    uint RAM207_RAMDATA;
-    uint RAM208_RAMDATA;
-    uint RAM209_RAMDATA;
-    uint RAM210_RAMDATA;
-    uint RAM211_RAMDATA;
-    uint RAM212_RAMDATA;
-    uint RAM213_RAMDATA;
-    uint RAM214_RAMDATA;
-    uint RAM215_RAMDATA;
-    uint RAM216_RAMDATA;
-    uint RAM217_RAMDATA;
-    uint RAM218_RAMDATA;
-    uint RAM219_RAMDATA;
-    uint RAM220_RAMDATA;
-    uint RAM221_RAMDATA;
-    uint RAM222_RAMDATA;
-    uint RAM223_RAMDATA;
-    uint RAM224_RAMDATA;
-    uint RAM225_RAMDATA;
-    uint RAM226_RAMDATA;
-    uint RAM227_RAMDATA;
-    uint RAM228_RAMDATA;
-    uint RAM229_RAMDATA;
-    uint RAM230_RAMDATA;
-    uint RAM231_RAMDATA;
-    uint RAM232_RAMDATA;
-    uint RAM233_RAMDATA;
-    uint RAM234_RAMDATA;
-    uint RAM235_RAMDATA;
-    uint RAM236_RAMDATA;
-    uint RAM237_RAMDATA;
-    uint RAM238_RAMDATA;
-    uint RAM239_RAMDATA;
-    uint RAM240_RAMDATA;
-    uint RAM241_RAMDATA;
-    uint RAM242_RAMDATA;
-    uint RAM243_RAMDATA;
-    uint RAM244_RAMDATA;
-    uint RAM245_RAMDATA;
-    uint RAM246_RAMDATA;
-    uint RAM247_RAMDATA;
-    uint RAM248_RAMDATA;
-    uint RAM249_RAMDATA;
-    uint RAM250_RAMDATA;
-    uint RAM251_RAMDATA;
-    uint RAM252_RAMDATA;
-    uint RAM253_RAMDATA;
-    uint RAM254_RAMDATA;
-    uint RAM255_RAMDATA;
+    uint32_t RAM0_RAMDATA;
+    uint32_t RAM1_RAMDATA;
+    uint32_t RAM2_RAMDATA;
+    uint32_t RAM3_RAMDATA;
+    uint32_t RAM4_RAMDATA;
+    uint32_t RAM5_RAMDATA;
+    uint32_t RAM6_RAMDATA;
+    uint32_t RAM7_RAMDATA;
+    uint32_t RAM8_RAMDATA;
+    uint32_t RAM9_RAMDATA;
+    uint32_t RAM10_RAMDATA;
+    uint32_t RAM11_RAMDATA;
+    uint32_t RAM12_RAMDATA;
+    uint32_t RAM13_RAMDATA;
+    uint32_t RAM14_RAMDATA;
+    uint32_t RAM15_RAMDATA;
+    uint32_t RAM16_RAMDATA;
+    uint32_t RAM17_RAMDATA;
+    uint32_t RAM18_RAMDATA;
+    uint32_t RAM19_RAMDATA;
+    uint32_t RAM20_RAMDATA;
+    uint32_t RAM21_RAMDATA;
+    uint32_t RAM22_RAMDATA;
+    uint32_t RAM23_RAMDATA;
+    uint32_t RAM24_RAMDATA;
+    uint32_t RAM25_RAMDATA;
+    uint32_t RAM26_RAMDATA;
+    uint32_t RAM27_RAMDATA;
+    uint32_t RAM28_RAMDATA;
+    uint32_t RAM29_RAMDATA;
+    uint32_t RAM30_RAMDATA;
+    uint32_t RAM31_RAMDATA;
+    uint32_t RAM32_RAMDATA;
+    uint32_t RAM33_RAMDATA;
+    uint32_t RAM34_RAMDATA;
+    uint32_t RAM35_RAMDATA;
+    uint32_t RAM36_RAMDATA;
+    uint32_t RAM37_RAMDATA;
+    uint32_t RAM38_RAMDATA;
+    uint32_t RAM39_RAMDATA;
+    uint32_t RAM40_RAMDATA;
+    uint32_t RAM41_RAMDATA;
+    uint32_t RAM42_RAMDATA;
+    uint32_t RAM43_RAMDATA;
+    uint32_t RAM44_RAMDATA;
+    uint32_t RAM45_RAMDATA;
+    uint32_t RAM46_RAMDATA;
+    uint32_t RAM47_RAMDATA;
+    uint32_t RAM48_RAMDATA;
+    uint32_t RAM49_RAMDATA;
+    uint32_t RAM50_RAMDATA;
+    uint32_t RAM51_RAMDATA;
+    uint32_t RAM52_RAMDATA;
+    uint32_t RAM53_RAMDATA;
+    uint32_t RAM54_RAMDATA;
+    uint32_t RAM55_RAMDATA;
+    uint32_t RAM56_RAMDATA;
+    uint32_t RAM57_RAMDATA;
+    uint32_t RAM58_RAMDATA;
+    uint32_t RAM59_RAMDATA;
+    uint32_t RAM60_RAMDATA;
+    uint32_t RAM61_RAMDATA;
+    uint32_t RAM62_RAMDATA;
+    uint32_t RAM63_RAMDATA;
+    uint32_t RAM64_RAMDATA;
+    uint32_t RAM65_RAMDATA;
+    uint32_t RAM66_RAMDATA;
+    uint32_t RAM67_RAMDATA;
+    uint32_t RAM68_RAMDATA;
+    uint32_t RAM69_RAMDATA;
+    uint32_t RAM70_RAMDATA;
+    uint32_t RAM71_RAMDATA;
+    uint32_t RAM72_RAMDATA;
+    uint32_t RAM73_RAMDATA;
+    uint32_t RAM74_RAMDATA;
+    uint32_t RAM75_RAMDATA;
+    uint32_t RAM76_RAMDATA;
+    uint32_t RAM77_RAMDATA;
+    uint32_t RAM78_RAMDATA;
+    uint32_t RAM79_RAMDATA;
+    uint32_t RAM80_RAMDATA;
+    uint32_t RAM81_RAMDATA;
+    uint32_t RAM82_RAMDATA;
+    uint32_t RAM83_RAMDATA;
+    uint32_t RAM84_RAMDATA;
+    uint32_t RAM85_RAMDATA;
+    uint32_t RAM86_RAMDATA;
+    uint32_t RAM87_RAMDATA;
+    uint32_t RAM88_RAMDATA;
+    uint32_t RAM89_RAMDATA;
+    uint32_t RAM90_RAMDATA;
+    uint32_t RAM91_RAMDATA;
+    uint32_t RAM92_RAMDATA;
+    uint32_t RAM93_RAMDATA;
+    uint32_t RAM94_RAMDATA;
+    uint32_t RAM95_RAMDATA;
+    uint32_t RAM96_RAMDATA;
+    uint32_t RAM97_RAMDATA;
+    uint32_t RAM98_RAMDATA;
+    uint32_t RAM99_RAMDATA;
+    uint32_t RAM100_RAMDATA;
+    uint32_t RAM101_RAMDATA;
+    uint32_t RAM102_RAMDATA;
+    uint32_t RAM103_RAMDATA;
+    uint32_t RAM104_RAMDATA;
+    uint32_t RAM105_RAMDATA;
+    uint32_t RAM106_RAMDATA;
+    uint32_t RAM107_RAMDATA;
+    uint32_t RAM108_RAMDATA;
+    uint32_t RAM109_RAMDATA;
+    uint32_t RAM110_RAMDATA;
+    uint32_t RAM111_RAMDATA;
+    uint32_t RAM112_RAMDATA;
+    uint32_t RAM113_RAMDATA;
+    uint32_t RAM114_RAMDATA;
+    uint32_t RAM115_RAMDATA;
+    uint32_t RAM116_RAMDATA;
+    uint32_t RAM117_RAMDATA;
+    uint32_t RAM118_RAMDATA;
+    uint32_t RAM119_RAMDATA;
+    uint32_t RAM120_RAMDATA;
+    uint32_t RAM121_RAMDATA;
+    uint32_t RAM122_RAMDATA;
+    uint32_t RAM123_RAMDATA;
+    uint32_t RAM124_RAMDATA;
+    uint32_t RAM125_RAMDATA;
+    uint32_t RAM126_RAMDATA;
+    uint32_t RAM127_RAMDATA;
+    uint32_t RAM128_RAMDATA;
+    uint32_t RAM129_RAMDATA;
+    uint32_t RAM130_RAMDATA;
+    uint32_t RAM131_RAMDATA;
+    uint32_t RAM132_RAMDATA;
+    uint32_t RAM133_RAMDATA;
+    uint32_t RAM134_RAMDATA;
+    uint32_t RAM135_RAMDATA;
+    uint32_t RAM136_RAMDATA;
+    uint32_t RAM137_RAMDATA;
+    uint32_t RAM138_RAMDATA;
+    uint32_t RAM139_RAMDATA;
+    uint32_t RAM140_RAMDATA;
+    uint32_t RAM141_RAMDATA;
+    uint32_t RAM142_RAMDATA;
+    uint32_t RAM143_RAMDATA;
+    uint32_t RAM144_RAMDATA;
+    uint32_t RAM145_RAMDATA;
+    uint32_t RAM146_RAMDATA;
+    uint32_t RAM147_RAMDATA;
+    uint32_t RAM148_RAMDATA;
+    uint32_t RAM149_RAMDATA;
+    uint32_t RAM150_RAMDATA;
+    uint32_t RAM151_RAMDATA;
+    uint32_t RAM152_RAMDATA;
+    uint32_t RAM153_RAMDATA;
+    uint32_t RAM154_RAMDATA;
+    uint32_t RAM155_RAMDATA;
+    uint32_t RAM156_RAMDATA;
+    uint32_t RAM157_RAMDATA;
+    uint32_t RAM158_RAMDATA;
+    uint32_t RAM159_RAMDATA;
+    uint32_t RAM160_RAMDATA;
+    uint32_t RAM161_RAMDATA;
+    uint32_t RAM162_RAMDATA;
+    uint32_t RAM163_RAMDATA;
+    uint32_t RAM164_RAMDATA;
+    uint32_t RAM165_RAMDATA;
+    uint32_t RAM166_RAMDATA;
+    uint32_t RAM167_RAMDATA;
+    uint32_t RAM168_RAMDATA;
+    uint32_t RAM169_RAMDATA;
+    uint32_t RAM170_RAMDATA;
+    uint32_t RAM171_RAMDATA;
+    uint32_t RAM172_RAMDATA;
+    uint32_t RAM173_RAMDATA;
+    uint32_t RAM174_RAMDATA;
+    uint32_t RAM175_RAMDATA;
+    uint32_t RAM176_RAMDATA;
+    uint32_t RAM177_RAMDATA;
+    uint32_t RAM178_RAMDATA;
+    uint32_t RAM179_RAMDATA;
+    uint32_t RAM180_RAMDATA;
+    uint32_t RAM181_RAMDATA;
+    uint32_t RAM182_RAMDATA;
+    uint32_t RAM183_RAMDATA;
+    uint32_t RAM184_RAMDATA;
+    uint32_t RAM185_RAMDATA;
+    uint32_t RAM186_RAMDATA;
+    uint32_t RAM187_RAMDATA;
+    uint32_t RAM188_RAMDATA;
+    uint32_t RAM189_RAMDATA;
+    uint32_t RAM190_RAMDATA;
+    uint32_t RAM191_RAMDATA;
+    uint32_t RAM192_RAMDATA;
+    uint32_t RAM193_RAMDATA;
+    uint32_t RAM194_RAMDATA;
+    uint32_t RAM195_RAMDATA;
+    uint32_t RAM196_RAMDATA;
+    uint32_t RAM197_RAMDATA;
+    uint32_t RAM198_RAMDATA;
+    uint32_t RAM199_RAMDATA;
+    uint32_t RAM200_RAMDATA;
+    uint32_t RAM201_RAMDATA;
+    uint32_t RAM202_RAMDATA;
+    uint32_t RAM203_RAMDATA;
+    uint32_t RAM204_RAMDATA;
+    uint32_t RAM205_RAMDATA;
+    uint32_t RAM206_RAMDATA;
+    uint32_t RAM207_RAMDATA;
+    uint32_t RAM208_RAMDATA;
+    uint32_t RAM209_RAMDATA;
+    uint32_t RAM210_RAMDATA;
+    uint32_t RAM211_RAMDATA;
+    uint32_t RAM212_RAMDATA;
+    uint32_t RAM213_RAMDATA;
+    uint32_t RAM214_RAMDATA;
+    uint32_t RAM215_RAMDATA;
+    uint32_t RAM216_RAMDATA;
+    uint32_t RAM217_RAMDATA;
+    uint32_t RAM218_RAMDATA;
+    uint32_t RAM219_RAMDATA;
+    uint32_t RAM220_RAMDATA;
+    uint32_t RAM221_RAMDATA;
+    uint32_t RAM222_RAMDATA;
+    uint32_t RAM223_RAMDATA;
+    uint32_t RAM224_RAMDATA;
+    uint32_t RAM225_RAMDATA;
+    uint32_t RAM226_RAMDATA;
+    uint32_t RAM227_RAMDATA;
+    uint32_t RAM228_RAMDATA;
+    uint32_t RAM229_RAMDATA;
+    uint32_t RAM230_RAMDATA;
+    uint32_t RAM231_RAMDATA;
+    uint32_t RAM232_RAMDATA;
+    uint32_t RAM233_RAMDATA;
+    uint32_t RAM234_RAMDATA;
+    uint32_t RAM235_RAMDATA;
+    uint32_t RAM236_RAMDATA;
+    uint32_t RAM237_RAMDATA;
+    uint32_t RAM238_RAMDATA;
+    uint32_t RAM239_RAMDATA;
+    uint32_t RAM240_RAMDATA;
+    uint32_t RAM241_RAMDATA;
+    uint32_t RAM242_RAMDATA;
+    uint32_t RAM243_RAMDATA;
+    uint32_t RAM244_RAMDATA;
+    uint32_t RAM245_RAMDATA;
+    uint32_t RAM246_RAMDATA;
+    uint32_t RAM247_RAMDATA;
+    uint32_t RAM248_RAMDATA;
+    uint32_t RAM249_RAMDATA;
+    uint32_t RAM250_RAMDATA;
+    uint32_t RAM251_RAMDATA;
+    uint32_t RAM252_RAMDATA;
+    uint32_t RAM253_RAMDATA;
+    uint32_t RAM254_RAMDATA;
+    uint32_t RAM255_RAMDATA;
 };
 
 typedef struct I2C0 I2C0, *PI2C0;
 
 struct I2C0 {
-    uint CTRL; // Control Register
-    uint CMD; // Command Register
-    uint STATE; // State Register
-    uint STATUS; // Status Register
-    uint CLKDIV; // Clock Division Register
-    uint SADDR; // Slave Address Register
-    uint SADDRMASK; // Slave Address Mask Register
-    uint RXDATA; // Receive Buffer Data Register
-    uint RXDOUBLE; // Receive Buffer Double Data Register
-    uint RXDATAP; // Receive Buffer Data Peek Register
-    uint RXDOUBLEP; // Receive Buffer Double Data Peek Register
-    uint TXDATA; // Transmit Buffer Data Register
-    uint TXDOUBLE; // Transmit Buffer Double Data Register
-    uint IF; // Interrupt Flag Register
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
-    uint ROUTEPEN; // I/O Routing Pin Enable Register
-    uint ROUTELOC0; // I/O Routing Location Register
+    uint32_t CTRL; // Control Register
+    uint32_t CMD; // Command Register
+    uint32_t STATE; // State Register
+    uint32_t STATUS; // Status Register
+    uint32_t CLKDIV; // Clock Division Register
+    uint32_t SADDR; // Slave Address Register
+    uint32_t SADDRMASK; // Slave Address Mask Register
+    uint32_t RXDATA; // Receive Buffer Data Register
+    uint32_t RXDOUBLE; // Receive Buffer Double Data Register
+    uint32_t RXDATAP; // Receive Buffer Data Peek Register
+    uint32_t RXDOUBLEP; // Receive Buffer Double Data Peek Register
+    uint32_t TXDATA; // Transmit Buffer Data Register
+    uint32_t TXDOUBLE; // Transmit Buffer Double Data Register
+    uint32_t IF; // Interrupt Flag Register
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
+    uint32_t ROUTEPEN; // I/O Routing Pin Enable Register
+    uint32_t ROUTELOC0; // I/O Routing Location Register
 };
 
 typedef struct ACMP0 ACMP0, *PACMP0;
 
 struct ACMP0 {
-    uint CTRL; // Control Register
-    uint INPUTSEL; // Input Selection Register
-    uint STATUS; // Status Register
-    uint IF; // Interrupt Flag Register
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
+    uint32_t CTRL; // Control Register
+    uint32_t INPUTSEL; // Input Selection Register
+    uint32_t STATUS; // Status Register
+    uint32_t IF; // Interrupt Flag Register
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
     undefined field_0x1c;
     undefined field_0x1d;
     undefined field_0x1e;
     undefined field_0x1f;
-    uint APORTREQ; // APORT Request Status Register
-    uint APORTCONFLICT; // APORT Conflict Status Register
-    uint HYSTERESIS0; // Hysteresis 0 Register
-    uint HYSTERESIS1; // Hysteresis 1 Register
+    uint32_t APORTREQ; // APORT Request Status Register
+    uint32_t APORTCONFLICT; // APORT Conflict Status Register
+    uint32_t HYSTERESIS0; // Hysteresis 0 Register
+    uint32_t HYSTERESIS1; // Hysteresis 1 Register
     undefined field_0x30;
     undefined field_0x31;
     undefined field_0x32;
@@ -3316,58 +3316,58 @@ struct ACMP0 {
     undefined field_0x3d;
     undefined field_0x3e;
     undefined field_0x3f;
-    uint ROUTEPEN; // I/O Routing Pine Enable Register
-    uint ROUTELOC0; // I/O Routing Location Register
+    uint32_t ROUTEPEN; // I/O Routing Pine Enable Register
+    uint32_t ROUTELOC0; // I/O Routing Location Register
 };
 
 typedef struct RAC_CLR RAC_CLR, *PRAC_CLR;
 
 struct RAC_CLR {
-    uint RXENSRCEN;
-    uint STATUS;
-    uint CMD;
-    uint CTRL;
-    uint FORCESTATE;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
-    uint LVDSCTRL;
-    uint LVDSIDLESEQ;
-    uint LVDSROUTE;
-    uint HFXORETIMECTRL;
-    uint HFXORETIMESTATUS;
-    uint TESTCTRL;
-    uint SEQSTATUS;
-    uint SEQCMD;
-    uint BREAKPOINT;
-    uint R0;
-    uint R1;
-    uint R2;
-    uint R3;
-    uint R4;
-    uint R5;
-    uint R6;
-    uint R7;
+    uint32_t RXENSRCEN;
+    uint32_t STATUS;
+    uint32_t CMD;
+    uint32_t CTRL;
+    uint32_t FORCESTATE;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
+    uint32_t LVDSCTRL;
+    uint32_t LVDSIDLESEQ;
+    uint32_t LVDSROUTE;
+    uint32_t HFXORETIMECTRL;
+    uint32_t HFXORETIMESTATUS;
+    uint32_t TESTCTRL;
+    uint32_t SEQSTATUS;
+    uint32_t SEQCMD;
+    uint32_t BREAKPOINT;
+    uint32_t R0;
+    uint32_t R1;
+    uint32_t R2;
+    uint32_t R3;
+    uint32_t R4;
+    uint32_t R5;
+    uint32_t R6;
+    uint32_t R7;
     undefined field_0x68;
     undefined field_0x69;
     undefined field_0x6a;
     undefined field_0x6b;
-    uint WAITMASK;
-    uint WAITSNSH;
-    uint STIMER;
-    uint STIMERCOMP;
-    uint VECTADDR;
-    uint SEQCTRL;
-    uint PRESC;
-    uint SR0;
-    uint SR1;
-    uint SR2;
-    uint SR3;
-    uint SYNTHENCTRL;
-    uint SYNTHREGCTRL;
-    uint VCOCTRL;
-    uint MMDCTRL;
+    uint32_t WAITMASK;
+    uint32_t WAITSNSH;
+    uint32_t STIMER;
+    uint32_t STIMERCOMP;
+    uint32_t VECTADDR;
+    uint32_t SEQCTRL;
+    uint32_t PRESC;
+    uint32_t SR0;
+    uint32_t SR1;
+    uint32_t SR2;
+    uint32_t SR3;
+    uint32_t SYNTHENCTRL;
+    uint32_t SYNTHREGCTRL;
+    uint32_t VCOCTRL;
+    uint32_t MMDCTRL;
     undefined field_0xa8;
     undefined field_0xa9;
     undefined field_0xaa;
@@ -3376,12 +3376,12 @@ struct RAC_CLR {
     undefined field_0xad;
     undefined field_0xae;
     undefined field_0xaf;
-    uint CHPCTRL;
-    uint CHPCAL;
-    uint LPFCTRL;
-    uint SYNTHCTRL;
-    uint AUXCTRL;
-    uint AUXENCTRL;
+    uint32_t CHPCTRL;
+    uint32_t CHPCAL;
+    uint32_t LPFCTRL;
+    uint32_t SYNTHCTRL;
+    uint32_t AUXCTRL;
+    uint32_t AUXENCTRL;
     undefined field_0xc8;
     undefined field_0xc9;
     undefined field_0xca;
@@ -3426,152 +3426,152 @@ struct RAC_CLR {
     undefined field_0xf1;
     undefined field_0xf2;
     undefined field_0xf3;
-    uint RFENCTRL;
-    uint RFENCTRL0;
-    uint LNAMIXCTRL;
-    uint PACTRL0;
-    uint PAPKDCTRL;
-    uint PABIASCTRL0;
-    uint PABIASCTRL1;
-    uint SGRFENCTRL0;
-    uint SGLNAMIXCTRL;
-    uint SGPACTRL0;
-    uint SGPAPKDCTRL;
-    uint SGPABIASCTRL0;
-    uint SGPABIASCTRL1;
-    uint RFSTATUS;
-    uint RFBIASCTRL;
-    uint RFBIASCAL;
-    uint LNAMIXCTRL1;
-    uint IFPGACTRL;
-    uint IFPGACAL;
-    uint IFFILTCTRL;
-    uint IFADCCTRL;
-    uint IFADCCAL;
-    uint PAENCTRL;
-    uint PACTUNECTRL;
-    uint RCTUNE;
-    uint APC;
-    uint SPARE;
+    uint32_t RFENCTRL;
+    uint32_t RFENCTRL0;
+    uint32_t LNAMIXCTRL;
+    uint32_t PACTRL0;
+    uint32_t PAPKDCTRL;
+    uint32_t PABIASCTRL0;
+    uint32_t PABIASCTRL1;
+    uint32_t SGRFENCTRL0;
+    uint32_t SGLNAMIXCTRL;
+    uint32_t SGPACTRL0;
+    uint32_t SGPAPKDCTRL;
+    uint32_t SGPABIASCTRL0;
+    uint32_t SGPABIASCTRL1;
+    uint32_t RFSTATUS;
+    uint32_t RFBIASCTRL;
+    uint32_t RFBIASCAL;
+    uint32_t LNAMIXCTRL1;
+    uint32_t IFPGACTRL;
+    uint32_t IFPGACAL;
+    uint32_t IFFILTCTRL;
+    uint32_t IFADCCTRL;
+    uint32_t IFADCCAL;
+    uint32_t PAENCTRL;
+    uint32_t PACTUNECTRL;
+    uint32_t RCTUNE;
+    uint32_t APC;
+    uint32_t SPARE;
 };
 
 typedef struct CRC_SET CRC_SET, *PCRC_SET;
 
 struct CRC_SET {
-    uint CTRL;
-    uint STATUS;
-    uint CMD;
-    uint INPUTDATA;
-    uint INIT;
-    uint DATA;
-    uint POLY;
+    uint32_t CTRL;
+    uint32_t STATUS;
+    uint32_t CMD;
+    uint32_t INPUTDATA;
+    uint32_t INIT;
+    uint32_t DATA;
+    uint32_t POLY;
 };
 
 typedef struct RFSENSE RFSENSE, *PRFSENSE;
 
 struct RFSENSE {
-    uint CTRL;
-    uint PERIODSEL;
-    uint CNT;
+    uint32_t CTRL;
+    uint32_t PERIODSEL;
+    uint32_t CNT;
     undefined field_0xc;
     undefined field_0xd;
     undefined field_0xe;
     undefined field_0xf;
-    uint EM4WUEN;
-    uint CALIB;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
+    uint32_t EM4WUEN;
+    uint32_t CALIB;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
 };
 
 typedef struct SEQ SEQ, *PSEQ;
 
 struct SEQ {
-    uint REG000;
-    uint REG004;
-    uint REG008;
-    uint REG00C;
-    uint REG010;
-    uint REG014;
-    uint REG018;
-    uint REG01C;
-    uint REG020;
-    uint REG024;
-    uint REG028;
-    uint REG02C;
-    uint REG030;
-    uint REG034;
-    uint REG038;
-    uint REG03C;
-    uint REG040;
-    uint REG044;
-    uint REG048;
-    uint REG04C;
-    uint REG050;
-    uint REG054;
-    uint REG058;
-    uint REG05C;
-    uint REG060;
-    uint REG064;
-    uint REG068;
-    uint REG06C;
-    uint REG070;
-    uint REG074;
-    uint REG078;
-    uint REG07C;
-    uint REG080;
-    uint REG084;
-    uint REG088;
-    uint REG08C;
-    uint REG090;
-    uint REG094;
-    uint REG098;
-    uint REG09C;
-    uint REG0A0;
-    uint REG0A4;
-    uint REG0A8;
-    uint REG0AC;
-    uint REG0B0;
-    uint REG0B4;
-    uint REG0B8;
-    uint REG0BC;
-    uint REG0C0;
-    uint REG0C4;
-    uint REG0C8;
-    uint REG0CC;
-    uint REG0D0;
-    uint REG0D4;
-    uint REG0D8;
-    uint REG0DC;
-    uint REG0E0;
-    uint REG0E4;
-    uint REG0E8;
-    uint DYNAMIC_CHPWR_TABLE;
-    uint PHYINFO;
-    uint MISC;
-    uint SYNTHLPFCTRLRX;
-    uint SYNTHLPFCTRLTX;
+    uint32_t REG000;
+    uint32_t REG004;
+    uint32_t REG008;
+    uint32_t REG00C;
+    uint32_t REG010;
+    uint32_t REG014;
+    uint32_t REG018;
+    uint32_t REG01C;
+    uint32_t REG020;
+    uint32_t REG024;
+    uint32_t REG028;
+    uint32_t REG02C;
+    uint32_t REG030;
+    uint32_t REG034;
+    uint32_t REG038;
+    uint32_t REG03C;
+    uint32_t REG040;
+    uint32_t REG044;
+    uint32_t REG048;
+    uint32_t REG04C;
+    uint32_t REG050;
+    uint32_t REG054;
+    uint32_t REG058;
+    uint32_t REG05C;
+    uint32_t REG060;
+    uint32_t REG064;
+    uint32_t REG068;
+    uint32_t REG06C;
+    uint32_t REG070;
+    uint32_t REG074;
+    uint32_t REG078;
+    uint32_t REG07C;
+    uint32_t REG080;
+    uint32_t REG084;
+    uint32_t REG088;
+    uint32_t REG08C;
+    uint32_t REG090;
+    uint32_t REG094;
+    uint32_t REG098;
+    uint32_t REG09C;
+    uint32_t REG0A0;
+    uint32_t REG0A4;
+    uint32_t REG0A8;
+    uint32_t REG0AC;
+    uint32_t REG0B0;
+    uint32_t REG0B4;
+    uint32_t REG0B8;
+    uint32_t REG0BC;
+    uint32_t REG0C0;
+    uint32_t REG0C4;
+    uint32_t REG0C8;
+    uint32_t REG0CC;
+    uint32_t REG0D0;
+    uint32_t REG0D4;
+    uint32_t REG0D8;
+    uint32_t REG0DC;
+    uint32_t REG0E0;
+    uint32_t REG0E4;
+    uint32_t REG0E8;
+    uint32_t DYNAMIC_CHPWR_TABLE;
+    uint32_t PHYINFO;
+    uint32_t MISC;
+    uint32_t SYNTHLPFCTRLRX;
+    uint32_t SYNTHLPFCTRLTX;
 };
 
 typedef struct ACMP1 ACMP1, *PACMP1;
 
 struct ACMP1 {
-    uint CTRL; // Control Register
-    uint INPUTSEL; // Input Selection Register
-    uint STATUS; // Status Register
-    uint IF; // Interrupt Flag Register
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
+    uint32_t CTRL; // Control Register
+    uint32_t INPUTSEL; // Input Selection Register
+    uint32_t STATUS; // Status Register
+    uint32_t IF; // Interrupt Flag Register
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
     undefined field_0x1c;
     undefined field_0x1d;
     undefined field_0x1e;
     undefined field_0x1f;
-    uint APORTREQ; // APORT Request Status Register
-    uint APORTCONFLICT; // APORT Conflict Status Register
-    uint HYSTERESIS0; // Hysteresis 0 Register
-    uint HYSTERESIS1; // Hysteresis 1 Register
+    uint32_t APORTREQ; // APORT Request Status Register
+    uint32_t APORTCONFLICT; // APORT Conflict Status Register
+    uint32_t HYSTERESIS0; // Hysteresis 0 Register
+    uint32_t HYSTERESIS1; // Hysteresis 1 Register
     undefined field_0x30;
     undefined field_0x31;
     undefined field_0x32;
@@ -3588,29 +3588,29 @@ struct ACMP1 {
     undefined field_0x3d;
     undefined field_0x3e;
     undefined field_0x3f;
-    uint ROUTEPEN; // I/O Routing Pine Enable Register
-    uint ROUTELOC0; // I/O Routing Location Register
+    uint32_t ROUTEPEN; // I/O Routing Pine Enable Register
+    uint32_t ROUTELOC0; // I/O Routing Location Register
 };
 
 typedef struct CRYPTO CRYPTO, *PCRYPTO;
 
 struct CRYPTO {
-    uint CTRL; // Control Register
-    uint WAC; // Wide Arithmetic Configuration
-    uint CMD; // Command Register
+    uint32_t CTRL; // Control Register
+    uint32_t WAC; // Wide Arithmetic Configuration
+    uint32_t CMD; // Command Register
     undefined field_0xc;
     undefined field_0xd;
     undefined field_0xe;
     undefined field_0xf;
-    uint STATUS; // Status Register
-    uint DSTATUS; // Data Status Register
-    uint CSTATUS; // Control Status Register
+    uint32_t STATUS; // Status Register
+    uint32_t DSTATUS; // Data Status Register
+    uint32_t CSTATUS; // Control Status Register
     undefined field_0x1c;
     undefined field_0x1d;
     undefined field_0x1e;
     undefined field_0x1f;
-    uint KEY; // KEY Register Access
-    uint KEYBUF; // KEY Buffer Register Access
+    uint32_t KEY; // KEY Register Access
+    uint32_t KEYBUF; // KEY Buffer Register Access
     undefined field_0x28;
     undefined field_0x29;
     undefined field_0x2a;
@@ -3619,8 +3619,8 @@ struct CRYPTO {
     undefined field_0x2d;
     undefined field_0x2e;
     undefined field_0x2f;
-    uint SEQCTRL; // Sequence Control
-    uint SEQCTRLB; // Sequence Control B
+    uint32_t SEQCTRL; // Sequence Control
+    uint32_t SEQCTRLB; // Sequence Control B
     undefined field_0x38;
     undefined field_0x39;
     undefined field_0x3a;
@@ -3629,15 +3629,15 @@ struct CRYPTO {
     undefined field_0x3d;
     undefined field_0x3e;
     undefined field_0x3f;
-    uint IF; // AES Interrupt Flags
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
-    uint SEQ0; // Sequence Register 0
-    uint SEQ1; // Sequence Register 1
-    uint SEQ2; // Sequence Register 2
-    uint SEQ3; // Sequence Register 3
-    uint SEQ4; // Sequence Register 4
+    uint32_t IF; // AES Interrupt Flags
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
+    uint32_t SEQ0; // Sequence Register 0
+    uint32_t SEQ1; // Sequence Register 1
+    uint32_t SEQ2; // Sequence Register 2
+    uint32_t SEQ3; // Sequence Register 3
+    uint32_t SEQ4; // Sequence Register 4
     undefined field_0x64;
     undefined field_0x65;
     undefined field_0x66;
@@ -3666,10 +3666,10 @@ struct CRYPTO {
     undefined field_0x7d;
     undefined field_0x7e;
     undefined field_0x7f;
-    uint DATA0; // DATA0 Register Access
-    uint DATA1; // DATA1 Register Access
-    uint DATA2; // DATA2 Register Access
-    uint DATA3; // DATA3 Register Access
+    uint32_t DATA0; // DATA0 Register Access
+    uint32_t DATA1; // DATA1 Register Access
+    uint32_t DATA2; // DATA2 Register Access
+    uint32_t DATA3; // DATA3 Register Access
     undefined field_0x90;
     undefined field_0x91;
     undefined field_0x92;
@@ -3686,7 +3686,7 @@ struct CRYPTO {
     undefined field_0x9d;
     undefined field_0x9e;
     undefined field_0x9f;
-    uint DATA0XOR; // DATA0XOR Register Access
+    uint32_t DATA0XOR; // DATA0XOR Register Access
     undefined field_0xa4;
     undefined field_0xa5;
     undefined field_0xa6;
@@ -3699,17 +3699,17 @@ struct CRYPTO {
     undefined field_0xad;
     undefined field_0xae;
     undefined field_0xaf;
-    uint DATA0BYTE; // DATA0 Register Byte Access
-    uint DATA1BYTE; // DATA1 Register Byte Access
+    uint32_t DATA0BYTE; // DATA0 Register Byte Access
+    uint32_t DATA1BYTE; // DATA1 Register Byte Access
     undefined field_0xb8;
     undefined field_0xb9;
     undefined field_0xba;
     undefined field_0xbb;
-    uint DATA0XORBYTE; // DATA0 Register Byte XOR Access
-    uint DATA0BYTE12; // DATA0 Register Byte 12 Access
-    uint DATA0BYTE13; // DATA0 Register Byte 13 Access
-    uint DATA0BYTE14; // DATA0 Register Byte 14 Access
-    uint DATA0BYTE15; // DATA0 Register Byte 15 Access
+    uint32_t DATA0XORBYTE; // DATA0 Register Byte XOR Access
+    uint32_t DATA0BYTE12; // DATA0 Register Byte 12 Access
+    uint32_t DATA0BYTE13; // DATA0 Register Byte 13 Access
+    uint32_t DATA0BYTE14; // DATA0 Register Byte 14 Access
+    uint32_t DATA0BYTE15; // DATA0 Register Byte 15 Access
     undefined field_0xd0;
     undefined field_0xd1;
     undefined field_0xd2;
@@ -3758,11 +3758,11 @@ struct CRYPTO {
     undefined field_0xfd;
     undefined field_0xfe;
     undefined field_0xff;
-    uint DDATA0; // DDATA0 Register Access
-    uint DDATA1; // DDATA1 Register Access
-    uint DDATA2; // DDATA2 Register Access
-    uint DDATA3; // DDATA3 Register Access
-    uint DDATA4; // DDATA4 Register Access
+    uint32_t DDATA0; // DDATA0 Register Access
+    uint32_t DDATA1; // DDATA1 Register Access
+    uint32_t DDATA2; // DDATA2 Register Access
+    uint32_t DDATA3; // DDATA3 Register Access
+    uint32_t DDATA4; // DDATA4 Register Access
     undefined field_0x114;
     undefined field_0x115;
     undefined field_0x116;
@@ -3791,7 +3791,7 @@ struct CRYPTO {
     undefined field_0x12d;
     undefined field_0x12e;
     undefined field_0x12f;
-    uint DDATA0BIG; // DDATA0 Register Big Endian Access
+    uint32_t DDATA0BIG; // DDATA0 Register Big Endian Access
     undefined field_0x134;
     undefined field_0x135;
     undefined field_0x136;
@@ -3804,9 +3804,9 @@ struct CRYPTO {
     undefined field_0x13d;
     undefined field_0x13e;
     undefined field_0x13f;
-    uint DDATA0BYTE; // DDATA0 Register Byte Access
-    uint DDATA1BYTE; // DDATA1 Register Byte Access
-    uint DDATA0BYTE32; // DDATA0 Register Byte 32 Access
+    uint32_t DDATA0BYTE; // DDATA0 Register Byte Access
+    uint32_t DDATA1BYTE; // DDATA1 Register Byte Access
+    uint32_t DDATA0BYTE32; // DDATA0 Register Byte 32 Access
     undefined field_0x14c;
     undefined field_0x14d;
     undefined field_0x14e;
@@ -3859,8 +3859,8 @@ struct CRYPTO {
     undefined field_0x17d;
     undefined field_0x17e;
     undefined field_0x17f;
-    uint QDATA0; // QDATA0 Register Access
-    uint QDATA1; // QDATA1 Register Access
+    uint32_t QDATA0; // QDATA0 Register Access
+    uint32_t QDATA1; // QDATA1 Register Access
     undefined field_0x188;
     undefined field_0x189;
     undefined field_0x18a;
@@ -3889,7 +3889,7 @@ struct CRYPTO {
     undefined field_0x1a1;
     undefined field_0x1a2;
     undefined field_0x1a3;
-    uint QDATA1BIG; // QDATA1 Register Big Endian Access
+    uint32_t QDATA1BIG; // QDATA1 Register Big Endian Access
     undefined field_0x1a8;
     undefined field_0x1a9;
     undefined field_0x1aa;
@@ -3914,57 +3914,57 @@ struct CRYPTO {
     undefined field_0x1bd;
     undefined field_0x1be;
     undefined field_0x1bf;
-    uint QDATA0BYTE; // QDATA0 Register Byte Access
-    uint QDATA1BYTE; // QDATA1 Register Byte Access
+    uint32_t QDATA0BYTE; // QDATA0 Register Byte Access
+    uint32_t QDATA1BYTE; // QDATA1 Register Byte Access
 };
 
 typedef struct FRC_SET FRC_SET, *PFRC_SET;
 
 struct FRC_SET {
-    uint STATUS;
-    uint DFLCTRL;
-    uint MAXLENGTH;
-    uint ADDRFILTCTRL;
-    uint DATABUFFER;
-    uint WCNT;
-    uint WCNTCMP0;
-    uint WCNTCMP1;
-    uint WCNTCMP2;
-    uint CMD;
-    uint WHITECTRL;
-    uint WHITEPOLY;
-    uint WHITEINIT;
-    uint FECCTRL;
-    uint BLOCKRAMADDR;
-    uint CONVRAMADDR;
-    uint CTRL;
-    uint RXCTRL;
-    uint TRAILTXDATACTRL;
-    uint TRAILRXDATA;
-    uint SCNT;
-    uint CONVGENERATOR;
-    uint PUNCTCTRL;
-    uint PAUSECTRL;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
-    uint BUFFERMODE;
-    uint ROUTEPEN;
-    uint ROUTELOC0;
-    uint SNIFFCTRL;
-    uint AUXDATA;
-    uint RAWCTRL;
-    uint RXRAWDATA;
-    uint PAUSEDATA;
-    uint LIKELYCONVSTATE;
-    uint INTELEMENTNEXT;
-    uint INTWRITEPOINT;
-    uint INTREADPOINT;
-    uint FCD0;
-    uint FCD1;
-    uint FCD2;
-    uint FCD3;
+    uint32_t STATUS;
+    uint32_t DFLCTRL;
+    uint32_t MAXLENGTH;
+    uint32_t ADDRFILTCTRL;
+    uint32_t DATABUFFER;
+    uint32_t WCNT;
+    uint32_t WCNTCMP0;
+    uint32_t WCNTCMP1;
+    uint32_t WCNTCMP2;
+    uint32_t CMD;
+    uint32_t WHITECTRL;
+    uint32_t WHITEPOLY;
+    uint32_t WHITEINIT;
+    uint32_t FECCTRL;
+    uint32_t BLOCKRAMADDR;
+    uint32_t CONVRAMADDR;
+    uint32_t CTRL;
+    uint32_t RXCTRL;
+    uint32_t TRAILTXDATACTRL;
+    uint32_t TRAILRXDATA;
+    uint32_t SCNT;
+    uint32_t CONVGENERATOR;
+    uint32_t PUNCTCTRL;
+    uint32_t PAUSECTRL;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
+    uint32_t BUFFERMODE;
+    uint32_t ROUTEPEN;
+    uint32_t ROUTELOC0;
+    uint32_t SNIFFCTRL;
+    uint32_t AUXDATA;
+    uint32_t RAWCTRL;
+    uint32_t RXRAWDATA;
+    uint32_t PAUSEDATA;
+    uint32_t LIKELYCONVSTATE;
+    uint32_t INTELEMENTNEXT;
+    uint32_t INTWRITEPOINT;
+    uint32_t INTREADPOINT;
+    uint32_t FCD0;
+    uint32_t FCD1;
+    uint32_t FCD2;
+    uint32_t FCD3;
     undefined field_0xb0;
     undefined field_0xb1;
     undefined field_0xb2;
@@ -3981,137 +3981,137 @@ struct FRC_SET {
     undefined field_0xbd;
     undefined field_0xbe;
     undefined field_0xbf;
-    uint INTELEMENT0;
-    uint INTELEMENT1;
-    uint INTELEMENT2;
-    uint INTELEMENT3;
-    uint INTELEMENT4;
-    uint INTELEMENT5;
-    uint INTELEMENT6;
-    uint INTELEMENT7;
-    uint INTELEMENT8;
-    uint INTELEMENT9;
-    uint INTELEMENT10;
-    uint INTELEMENT11;
-    uint INTELEMENT12;
-    uint INTELEMENT13;
-    uint INTELEMENT14;
-    uint INTELEMENT15;
+    uint32_t INTELEMENT0;
+    uint32_t INTELEMENT1;
+    uint32_t INTELEMENT2;
+    uint32_t INTELEMENT3;
+    uint32_t INTELEMENT4;
+    uint32_t INTELEMENT5;
+    uint32_t INTELEMENT6;
+    uint32_t INTELEMENT7;
+    uint32_t INTELEMENT8;
+    uint32_t INTELEMENT9;
+    uint32_t INTELEMENT10;
+    uint32_t INTELEMENT11;
+    uint32_t INTELEMENT12;
+    uint32_t INTELEMENT13;
+    uint32_t INTELEMENT14;
+    uint32_t INTELEMENT15;
 };
 
 typedef struct PROTIMER_CLR PROTIMER_CLR, *PPROTIMER_CLR;
 
 struct PROTIMER_CLR {
-    uint CTRL;
-    uint CMD;
-    uint PRSCTRL;
-    uint STATUS;
-    uint PRECNT;
-    uint BASECNT;
-    uint WRAPCNT;
-    uint BASEPRE;
-    uint LWRAPCNT;
-    uint PRECNTTOPADJ;
-    uint PRECNTTOP;
-    uint BASECNTTOP;
-    uint WRAPCNTTOP;
-    uint TOUT0CNT;
-    uint TOUT0CNTTOP;
-    uint TOUT0COMP;
-    uint TOUT1CNT;
-    uint TOUT1CNTTOP;
-    uint TOUT1COMP;
-    uint LBTCTRL;
-    uint LBTPRSCTRL;
-    uint LBTSTATE;
-    uint RANDOM;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
-    uint RXCTRL;
-    uint TXCTRL;
-    uint CC0_CTRL;
-    uint CC0_PRE;
-    uint CC0_BASE;
-    uint CC0_WRAP;
-    uint CC1_CTRL;
-    uint CC1_PRE;
-    uint CC1_BASE;
-    uint CC1_WRAP;
-    uint CC2_CTRL;
-    uint CC2_PRE;
-    uint CC2_BASE;
-    uint CC2_WRAP;
-    uint CC3_CTRL;
-    uint CC3_PRE;
-    uint CC3_BASE;
-    uint CC3_WRAP;
-    uint CC4_CTRL;
-    uint CC4_PRE;
-    uint CC4_BASE;
-    uint CC4_WRAP;
+    uint32_t CTRL;
+    uint32_t CMD;
+    uint32_t PRSCTRL;
+    uint32_t STATUS;
+    uint32_t PRECNT;
+    uint32_t BASECNT;
+    uint32_t WRAPCNT;
+    uint32_t BASEPRE;
+    uint32_t LWRAPCNT;
+    uint32_t PRECNTTOPADJ;
+    uint32_t PRECNTTOP;
+    uint32_t BASECNTTOP;
+    uint32_t WRAPCNTTOP;
+    uint32_t TOUT0CNT;
+    uint32_t TOUT0CNTTOP;
+    uint32_t TOUT0COMP;
+    uint32_t TOUT1CNT;
+    uint32_t TOUT1CNTTOP;
+    uint32_t TOUT1COMP;
+    uint32_t LBTCTRL;
+    uint32_t LBTPRSCTRL;
+    uint32_t LBTSTATE;
+    uint32_t RANDOM;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
+    uint32_t RXCTRL;
+    uint32_t TXCTRL;
+    uint32_t CC0_CTRL;
+    uint32_t CC0_PRE;
+    uint32_t CC0_BASE;
+    uint32_t CC0_WRAP;
+    uint32_t CC1_CTRL;
+    uint32_t CC1_PRE;
+    uint32_t CC1_BASE;
+    uint32_t CC1_WRAP;
+    uint32_t CC2_CTRL;
+    uint32_t CC2_PRE;
+    uint32_t CC2_BASE;
+    uint32_t CC2_WRAP;
+    uint32_t CC3_CTRL;
+    uint32_t CC3_PRE;
+    uint32_t CC3_BASE;
+    uint32_t CC3_WRAP;
+    uint32_t CC4_CTRL;
+    uint32_t CC4_PRE;
+    uint32_t CC4_BASE;
+    uint32_t CC4_WRAP;
 };
 
 typedef struct BUFC BUFC, *PBUFC;
 
 struct BUFC {
-    uint BUF0_CTRL;
-    uint BUF0_ADDR;
-    uint BUF0_WRITEOFFSET;
-    uint BUF0_READOFFSET;
-    uint BUF0_WRITESTART;
-    uint BUF0_READDATA;
-    uint BUF0_WRITEDATA;
-    uint BUF0_XWRITE;
-    uint BUF0_STATUS;
-    uint BUF0_THRESHOLDCTRL;
-    uint BUF0_CMD;
+    uint32_t BUF0_CTRL;
+    uint32_t BUF0_ADDR;
+    uint32_t BUF0_WRITEOFFSET;
+    uint32_t BUF0_READOFFSET;
+    uint32_t BUF0_WRITESTART;
+    uint32_t BUF0_READDATA;
+    uint32_t BUF0_WRITEDATA;
+    uint32_t BUF0_XWRITE;
+    uint32_t BUF0_STATUS;
+    uint32_t BUF0_THRESHOLDCTRL;
+    uint32_t BUF0_CMD;
     undefined field_0x2c;
     undefined field_0x2d;
     undefined field_0x2e;
     undefined field_0x2f;
-    uint BUF1_CTRL;
-    uint BUF1_ADDR;
-    uint BUF1_WRITEOFFSET;
-    uint BUF1_READOFFSET;
-    uint BUF1_WRITESTART;
-    uint BUF1_READDATA;
-    uint BUF1_WRITEDATA;
-    uint BUF1_XWRITE;
-    uint BUF1_STATUS;
-    uint BUF1_THRESHOLDCTRL;
-    uint BUF1_CMD;
+    uint32_t BUF1_CTRL;
+    uint32_t BUF1_ADDR;
+    uint32_t BUF1_WRITEOFFSET;
+    uint32_t BUF1_READOFFSET;
+    uint32_t BUF1_WRITESTART;
+    uint32_t BUF1_READDATA;
+    uint32_t BUF1_WRITEDATA;
+    uint32_t BUF1_XWRITE;
+    uint32_t BUF1_STATUS;
+    uint32_t BUF1_THRESHOLDCTRL;
+    uint32_t BUF1_CMD;
     undefined field_0x5c;
     undefined field_0x5d;
     undefined field_0x5e;
     undefined field_0x5f;
-    uint BUF2_CTRL;
-    uint BUF2_ADDR;
-    uint BUF2_WRITEOFFSET;
-    uint BUF2_READOFFSET;
-    uint BUF2_WRITESTART;
-    uint BUF2_READDATA;
-    uint BUF2_WRITEDATA;
-    uint BUF2_XWRITE;
-    uint BUF2_STATUS;
-    uint BUF2_THRESHOLDCTR;
-    uint BUF2_CMD;
+    uint32_t BUF2_CTRL;
+    uint32_t BUF2_ADDR;
+    uint32_t BUF2_WRITEOFFSET;
+    uint32_t BUF2_READOFFSET;
+    uint32_t BUF2_WRITESTART;
+    uint32_t BUF2_READDATA;
+    uint32_t BUF2_WRITEDATA;
+    uint32_t BUF2_XWRITE;
+    uint32_t BUF2_STATUS;
+    uint32_t BUF2_THRESHOLDCTR;
+    uint32_t BUF2_CMD;
     undefined field_0x8c;
     undefined field_0x8d;
     undefined field_0x8e;
     undefined field_0x8f;
-    uint BUF3_CTRL;
-    uint BUF3_ADDR;
-    uint BUF3_WRITEOFFSET;
-    uint BUF3_READOFFSET;
-    uint BUF3_WRITESTART;
-    uint BUF3_READDATA;
-    uint BUF3_WRITEDATA;
-    uint BUF3_XWRITE;
-    uint BUF3_STATUS;
-    uint BUF3_THRESHOLDCTRL;
-    uint BUF3_CMD;
+    uint32_t BUF3_CTRL;
+    uint32_t BUF3_ADDR;
+    uint32_t BUF3_WRITEOFFSET;
+    uint32_t BUF3_READOFFSET;
+    uint32_t BUF3_WRITESTART;
+    uint32_t BUF3_READDATA;
+    uint32_t BUF3_WRITEDATA;
+    uint32_t BUF3_XWRITE;
+    uint32_t BUF3_STATUS;
+    uint32_t BUF3_THRESHOLDCTRL;
+    uint32_t BUF3_CMD;
     undefined field_0xbc;
     undefined field_0xbd;
     undefined field_0xbe;
@@ -4148,70 +4148,70 @@ struct BUFC {
     undefined field_0xdd;
     undefined field_0xde;
     undefined field_0xdf;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
 };
 
 typedef struct USART1 USART1, *PUSART1;
 
 struct USART1 {
-    uint CTRL; // Control Register
-    uint FRAME; // USART Frame Format Register
-    uint TRIGCTRL; // USART Trigger Control Register
-    uint CMD; // Command Register
-    uint STATUS; // USART Status Register
-    uint CLKDIV; // Clock Control Register
-    uint RXDATAX; // RX Buffer Data Extended Register
-    uint RXDATA; // RX Buffer Data Register
-    uint RXDOUBLEX; // RX Buffer Double Data Extended Register
-    uint RXDOUBLE; // RX FIFO Double Data Register
-    uint RXDATAXP; // RX Buffer Data Extended Peek Register
-    uint RXDOUBLEXP; // RX Buffer Double Data Extended Peek Register
-    uint TXDATAX; // TX Buffer Data Extended Register
-    uint TXDATA; // TX Buffer Data Register
-    uint TXDOUBLEX; // TX Buffer Double Data Extended Register
-    uint TXDOUBLE; // TX Buffer Double Data Register
-    uint IF; // Interrupt Flag Register
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
-    uint IRCTRL; // IrDA Control Register
+    uint32_t CTRL; // Control Register
+    uint32_t FRAME; // USART Frame Format Register
+    uint32_t TRIGCTRL; // USART Trigger Control Register
+    uint32_t CMD; // Command Register
+    uint32_t STATUS; // USART Status Register
+    uint32_t CLKDIV; // Clock Control Register
+    uint32_t RXDATAX; // RX Buffer Data Extended Register
+    uint32_t RXDATA; // RX Buffer Data Register
+    uint32_t RXDOUBLEX; // RX Buffer Double Data Extended Register
+    uint32_t RXDOUBLE; // RX FIFO Double Data Register
+    uint32_t RXDATAXP; // RX Buffer Data Extended Peek Register
+    uint32_t RXDOUBLEXP; // RX Buffer Double Data Extended Peek Register
+    uint32_t TXDATAX; // TX Buffer Data Extended Register
+    uint32_t TXDATA; // TX Buffer Data Register
+    uint32_t TXDOUBLEX; // TX Buffer Double Data Extended Register
+    uint32_t TXDOUBLE; // TX Buffer Double Data Register
+    uint32_t IF; // Interrupt Flag Register
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
+    uint32_t IRCTRL; // IrDA Control Register
     undefined field_0x54;
     undefined field_0x55;
     undefined field_0x56;
     undefined field_0x57;
-    uint INPUT; // USART Input Register
-    uint I2SCTRL; // I2S Control Register
-    uint TIMING; // Timing Register
-    uint CTRLX; // Control Register Extended
-    uint TIMECMP0; // Used to Generate Interrupts and Various Delays
-    uint TIMECMP1; // Used to Generate Interrupts and Various Delays
-    uint TIMECMP2; // Used to Generate Interrupts and Various Delays
-    uint ROUTEPEN; // I/O Routing Pin Enable Register
-    uint ROUTELOC0; // I/O Routing Location Register
-    uint ROUTELOC1; // I/O Routing Location Register
+    uint32_t INPUT; // USART Input Register
+    uint32_t I2SCTRL; // I2S Control Register
+    uint32_t TIMING; // Timing Register
+    uint32_t CTRLX; // Control Register Extended
+    uint32_t TIMECMP0; // Used to Generate Interrupts and Various Delays
+    uint32_t TIMECMP1; // Used to Generate Interrupts and Various Delays
+    uint32_t TIMECMP2; // Used to Generate Interrupts and Various Delays
+    uint32_t ROUTEPEN; // I/O Routing Pin Enable Register
+    uint32_t ROUTELOC0; // I/O Routing Location Register
+    uint32_t ROUTELOC1; // I/O Routing Location Register
 };
 
 typedef struct PCNT0 PCNT0, *PPCNT0;
 
 struct PCNT0 {
-    uint CTRL; // Control Register
-    uint CMD; // Command Register
-    uint STATUS; // Status Register
-    uint CNT; // Counter Value Register
-    uint TOP; // Top Value Register
-    uint TOPB; // Top Value Buffer Register
-    uint IF; // Interrupt Flag Register
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
+    uint32_t CTRL; // Control Register
+    uint32_t CMD; // Command Register
+    uint32_t STATUS; // Status Register
+    uint32_t CNT; // Counter Value Register
+    uint32_t TOP; // Top Value Register
+    uint32_t TOPB; // Top Value Buffer Register
+    uint32_t IF; // Interrupt Flag Register
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
     undefined field_0x28;
     undefined field_0x29;
     undefined field_0x2a;
     undefined field_0x2b;
-    uint ROUTELOC0; // I/O Routing Location Register
+    uint32_t ROUTELOC0; // I/O Routing Location Register
     undefined field_0x30;
     undefined field_0x31;
     undefined field_0x32;
@@ -4228,8 +4228,8 @@ struct PCNT0 {
     undefined field_0x3d;
     undefined field_0x3e;
     undefined field_0x3f;
-    uint FREEZE; // Freeze Register
-    uint SYNCBUSY; // Synchronization Busy Register
+    uint32_t FREEZE; // Freeze Register
+    uint32_t SYNCBUSY; // Synchronization Busy Register
     undefined field_0x48;
     undefined field_0x49;
     undefined field_0x4a;
@@ -4258,36 +4258,36 @@ struct PCNT0 {
     undefined field_0x61;
     undefined field_0x62;
     undefined field_0x63;
-    uint AUXCNT; // Auxiliary Counter Value Register
-    uint INPUT; // PCNT Input Register
-    uint OVSCFG; // Oversampling Config Register
+    uint32_t AUXCNT; // Auxiliary Counter Value Register
+    uint32_t INPUT; // PCNT Input Register
+    uint32_t OVSCFG; // Oversampling Config Register
 };
 
 typedef struct TIMER1 TIMER1, *PTIMER1;
 
 struct TIMER1 {
-    uint CTRL; // Control Register
-    uint CMD; // Command Register
-    uint STATUS; // Status Register
-    uint IF; // Interrupt Flag Register
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
-    uint TOP; // Counter Top Value Register
-    uint TOPB; // Counter Top Value Buffer Register
-    uint CNT; // Counter Value Register
+    uint32_t CTRL; // Control Register
+    uint32_t CMD; // Command Register
+    uint32_t STATUS; // Status Register
+    uint32_t IF; // Interrupt Flag Register
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
+    uint32_t TOP; // Counter Top Value Register
+    uint32_t TOPB; // Counter Top Value Buffer Register
+    uint32_t CNT; // Counter Value Register
     undefined field_0x28;
     undefined field_0x29;
     undefined field_0x2a;
     undefined field_0x2b;
-    uint LOCK; // TIMER Configuration Lock Register
-    uint ROUTEPEN; // I/O Routing Pin Enable Register
-    uint ROUTELOC0; // I/O Routing Location Register
+    uint32_t LOCK; // TIMER Configuration Lock Register
+    uint32_t ROUTEPEN; // I/O Routing Pin Enable Register
+    uint32_t ROUTELOC0; // I/O Routing Location Register
     undefined field_0x38;
     undefined field_0x39;
     undefined field_0x3a;
     undefined field_0x3b;
-    uint ROUTELOC2; // I/O Routing Location Register
+    uint32_t ROUTELOC2; // I/O Routing Location Register
     undefined field_0x40;
     undefined field_0x41;
     undefined field_0x42;
@@ -4320,56 +4320,56 @@ struct TIMER1 {
     undefined field_0x5d;
     undefined field_0x5e;
     undefined field_0x5f;
-    uint CC0_CTRL; // CC Channel Control Register
-    uint CC0_CCV; // CC Channel Value Register
-    uint CC0_CCVP; // CC Channel Value Peek Register
-    uint CC0_CCVB; // CC Channel Buffer Register
-    uint CC1_CTRL; // CC Channel Control Register
-    uint CC1_CCV; // CC Channel Value Register
-    uint CC1_CCVP; // CC Channel Value Peek Register
-    uint CC1_CCVB; // CC Channel Buffer Register
-    uint CC2_CTRL; // CC Channel Control Register
-    uint CC2_CCV; // CC Channel Value Register
-    uint CC2_CCVP; // CC Channel Value Peek Register
-    uint CC2_CCVB; // CC Channel Buffer Register
-    uint CC3_CTRL; // CC Channel Control Register
-    uint CC3_CCV; // CC Channel Value Register
-    uint CC3_CCVP; // CC Channel Value Peek Register
-    uint CC3_CCVB; // CC Channel Buffer Register
-    uint DTCTRL; // DTI Control Register
-    uint DTTIME; // DTI Time Control Register
-    uint DTFC; // DTI Fault Configuration Register
-    uint DTOGEN; // DTI Output Generation Enable Register
-    uint DTFAULT; // DTI Fault Register
-    uint DTFAULTC; // DTI Fault Clear Register
-    uint DTLOCK; // DTI Configuration Lock Register
+    uint32_t CC0_CTRL; // CC Channel Control Register
+    uint32_t CC0_CCV; // CC Channel Value Register
+    uint32_t CC0_CCVP; // CC Channel Value Peek Register
+    uint32_t CC0_CCVB; // CC Channel Buffer Register
+    uint32_t CC1_CTRL; // CC Channel Control Register
+    uint32_t CC1_CCV; // CC Channel Value Register
+    uint32_t CC1_CCVP; // CC Channel Value Peek Register
+    uint32_t CC1_CCVB; // CC Channel Buffer Register
+    uint32_t CC2_CTRL; // CC Channel Control Register
+    uint32_t CC2_CCV; // CC Channel Value Register
+    uint32_t CC2_CCVP; // CC Channel Value Peek Register
+    uint32_t CC2_CCVB; // CC Channel Buffer Register
+    uint32_t CC3_CTRL; // CC Channel Control Register
+    uint32_t CC3_CCV; // CC Channel Value Register
+    uint32_t CC3_CCVP; // CC Channel Value Peek Register
+    uint32_t CC3_CCVB; // CC Channel Buffer Register
+    uint32_t DTCTRL; // DTI Control Register
+    uint32_t DTTIME; // DTI Time Control Register
+    uint32_t DTFC; // DTI Fault Configuration Register
+    uint32_t DTOGEN; // DTI Output Generation Enable Register
+    uint32_t DTFAULT; // DTI Fault Register
+    uint32_t DTFAULTC; // DTI Fault Clear Register
+    uint32_t DTLOCK; // DTI Configuration Lock Register
 };
 
 typedef struct TIMER0 TIMER0, *PTIMER0;
 
 struct TIMER0 {
-    uint CTRL; // Control Register
-    uint CMD; // Command Register
-    uint STATUS; // Status Register
-    uint IF; // Interrupt Flag Register
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
-    uint TOP; // Counter Top Value Register
-    uint TOPB; // Counter Top Value Buffer Register
-    uint CNT; // Counter Value Register
+    uint32_t CTRL; // Control Register
+    uint32_t CMD; // Command Register
+    uint32_t STATUS; // Status Register
+    uint32_t IF; // Interrupt Flag Register
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
+    uint32_t TOP; // Counter Top Value Register
+    uint32_t TOPB; // Counter Top Value Buffer Register
+    uint32_t CNT; // Counter Value Register
     undefined field_0x28;
     undefined field_0x29;
     undefined field_0x2a;
     undefined field_0x2b;
-    uint LOCK; // TIMER Configuration Lock Register
-    uint ROUTEPEN; // I/O Routing Pin Enable Register
-    uint ROUTELOC0; // I/O Routing Location Register
+    uint32_t LOCK; // TIMER Configuration Lock Register
+    uint32_t ROUTEPEN; // I/O Routing Pin Enable Register
+    uint32_t ROUTELOC0; // I/O Routing Location Register
     undefined field_0x38;
     undefined field_0x39;
     undefined field_0x3a;
     undefined field_0x3b;
-    uint ROUTELOC2; // I/O Routing Location Register
+    uint32_t ROUTELOC2; // I/O Routing Location Register
     undefined field_0x40;
     undefined field_0x41;
     undefined field_0x42;
@@ -4402,90 +4402,90 @@ struct TIMER0 {
     undefined field_0x5d;
     undefined field_0x5e;
     undefined field_0x5f;
-    uint CC0_CTRL; // CC Channel Control Register
-    uint CC0_CCV; // CC Channel Value Register
-    uint CC0_CCVP; // CC Channel Value Peek Register
-    uint CC0_CCVB; // CC Channel Buffer Register
-    uint CC1_CTRL; // CC Channel Control Register
-    uint CC1_CCV; // CC Channel Value Register
-    uint CC1_CCVP; // CC Channel Value Peek Register
-    uint CC1_CCVB; // CC Channel Buffer Register
-    uint CC2_CTRL; // CC Channel Control Register
-    uint CC2_CCV; // CC Channel Value Register
-    uint CC2_CCVP; // CC Channel Value Peek Register
-    uint CC2_CCVB; // CC Channel Buffer Register
-    uint CC3_CTRL; // CC Channel Control Register
-    uint CC3_CCV; // CC Channel Value Register
-    uint CC3_CCVP; // CC Channel Value Peek Register
-    uint CC3_CCVB; // CC Channel Buffer Register
-    uint DTCTRL; // DTI Control Register
-    uint DTTIME; // DTI Time Control Register
-    uint DTFC; // DTI Fault Configuration Register
-    uint DTOGEN; // DTI Output Generation Enable Register
-    uint DTFAULT; // DTI Fault Register
-    uint DTFAULTC; // DTI Fault Clear Register
-    uint DTLOCK; // DTI Configuration Lock Register
+    uint32_t CC0_CTRL; // CC Channel Control Register
+    uint32_t CC0_CCV; // CC Channel Value Register
+    uint32_t CC0_CCVP; // CC Channel Value Peek Register
+    uint32_t CC0_CCVB; // CC Channel Buffer Register
+    uint32_t CC1_CTRL; // CC Channel Control Register
+    uint32_t CC1_CCV; // CC Channel Value Register
+    uint32_t CC1_CCVP; // CC Channel Value Peek Register
+    uint32_t CC1_CCVB; // CC Channel Buffer Register
+    uint32_t CC2_CTRL; // CC Channel Control Register
+    uint32_t CC2_CCV; // CC Channel Value Register
+    uint32_t CC2_CCVP; // CC Channel Value Peek Register
+    uint32_t CC2_CCVB; // CC Channel Buffer Register
+    uint32_t CC3_CTRL; // CC Channel Control Register
+    uint32_t CC3_CCV; // CC Channel Value Register
+    uint32_t CC3_CCVP; // CC Channel Value Peek Register
+    uint32_t CC3_CCVB; // CC Channel Buffer Register
+    uint32_t DTCTRL; // DTI Control Register
+    uint32_t DTTIME; // DTI Time Control Register
+    uint32_t DTFC; // DTI Fault Configuration Register
+    uint32_t DTOGEN; // DTI Output Generation Enable Register
+    uint32_t DTFAULT; // DTI Fault Register
+    uint32_t DTFAULTC; // DTI Fault Clear Register
+    uint32_t DTLOCK; // DTI Configuration Lock Register
 };
 
 typedef struct BUFC_CLR BUFC_CLR, *PBUFC_CLR;
 
 struct BUFC_CLR {
-    uint BUF0_CTRL;
-    uint BUF0_ADDR;
-    uint BUF0_WRITEOFFSET;
-    uint BUF0_READOFFSET;
-    uint BUF0_WRITESTART;
-    uint BUF0_READDATA;
-    uint BUF0_WRITEDATA;
-    uint BUF0_XWRITE;
-    uint BUF0_STATUS;
-    uint BUF0_THRESHOLDCTRL;
-    uint BUF0_CMD;
+    uint32_t BUF0_CTRL;
+    uint32_t BUF0_ADDR;
+    uint32_t BUF0_WRITEOFFSET;
+    uint32_t BUF0_READOFFSET;
+    uint32_t BUF0_WRITESTART;
+    uint32_t BUF0_READDATA;
+    uint32_t BUF0_WRITEDATA;
+    uint32_t BUF0_XWRITE;
+    uint32_t BUF0_STATUS;
+    uint32_t BUF0_THRESHOLDCTRL;
+    uint32_t BUF0_CMD;
     undefined field_0x2c;
     undefined field_0x2d;
     undefined field_0x2e;
     undefined field_0x2f;
-    uint BUF1_CTRL;
-    uint BUF1_ADDR;
-    uint BUF1_WRITEOFFSET;
-    uint BUF1_READOFFSET;
-    uint BUF1_WRITESTART;
-    uint BUF1_READDATA;
-    uint BUF1_WRITEDATA;
-    uint BUF1_XWRITE;
-    uint BUF1_STATUS;
-    uint BUF1_THRESHOLDCTRL;
-    uint BUF1_CMD;
+    uint32_t BUF1_CTRL;
+    uint32_t BUF1_ADDR;
+    uint32_t BUF1_WRITEOFFSET;
+    uint32_t BUF1_READOFFSET;
+    uint32_t BUF1_WRITESTART;
+    uint32_t BUF1_READDATA;
+    uint32_t BUF1_WRITEDATA;
+    uint32_t BUF1_XWRITE;
+    uint32_t BUF1_STATUS;
+    uint32_t BUF1_THRESHOLDCTRL;
+    uint32_t BUF1_CMD;
     undefined field_0x5c;
     undefined field_0x5d;
     undefined field_0x5e;
     undefined field_0x5f;
-    uint BUF2_CTRL;
-    uint BUF2_ADDR;
-    uint BUF2_WRITEOFFSET;
-    uint BUF2_READOFFSET;
-    uint BUF2_WRITESTART;
-    uint BUF2_READDATA;
-    uint BUF2_WRITEDATA;
-    uint BUF2_XWRITE;
-    uint BUF2_STATUS;
-    uint BUF2_THRESHOLDCTR;
-    uint BUF2_CMD;
+    uint32_t BUF2_CTRL;
+    uint32_t BUF2_ADDR;
+    uint32_t BUF2_WRITEOFFSET;
+    uint32_t BUF2_READOFFSET;
+    uint32_t BUF2_WRITESTART;
+    uint32_t BUF2_READDATA;
+    uint32_t BUF2_WRITEDATA;
+    uint32_t BUF2_XWRITE;
+    uint32_t BUF2_STATUS;
+    uint32_t BUF2_THRESHOLDCTR;
+    uint32_t BUF2_CMD;
     undefined field_0x8c;
     undefined field_0x8d;
     undefined field_0x8e;
     undefined field_0x8f;
-    uint BUF3_CTRL;
-    uint BUF3_ADDR;
-    uint BUF3_WRITEOFFSET;
-    uint BUF3_READOFFSET;
-    uint BUF3_WRITESTART;
-    uint BUF3_READDATA;
-    uint BUF3_WRITEDATA;
-    uint BUF3_XWRITE;
-    uint BUF3_STATUS;
-    uint BUF3_THRESHOLDCTRL;
-    uint BUF3_CMD;
+    uint32_t BUF3_CTRL;
+    uint32_t BUF3_ADDR;
+    uint32_t BUF3_WRITEOFFSET;
+    uint32_t BUF3_READOFFSET;
+    uint32_t BUF3_WRITESTART;
+    uint32_t BUF3_READDATA;
+    uint32_t BUF3_WRITEDATA;
+    uint32_t BUF3_XWRITE;
+    uint32_t BUF3_STATUS;
+    uint32_t BUF3_THRESHOLDCTRL;
+    uint32_t BUF3_CMD;
     undefined field_0xbc;
     undefined field_0xbd;
     undefined field_0xbe;
@@ -4522,66 +4522,66 @@ struct BUFC_CLR {
     undefined field_0xdd;
     undefined field_0xde;
     undefined field_0xdf;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
 };
 
 typedef struct USART0 USART0, *PUSART0;
 
 struct USART0 {
-    uint CTRL; // Control Register
-    uint FRAME; // USART Frame Format Register
-    uint TRIGCTRL; // USART Trigger Control Register
-    uint CMD; // Command Register
-    uint STATUS; // USART Status Register
-    uint CLKDIV; // Clock Control Register
-    uint RXDATAX; // RX Buffer Data Extended Register
-    uint RXDATA; // RX Buffer Data Register
-    uint RXDOUBLEX; // RX Buffer Double Data Extended Register
-    uint RXDOUBLE; // RX FIFO Double Data Register
-    uint RXDATAXP; // RX Buffer Data Extended Peek Register
-    uint RXDOUBLEXP; // RX Buffer Double Data Extended Peek Register
-    uint TXDATAX; // TX Buffer Data Extended Register
-    uint TXDATA; // TX Buffer Data Register
-    uint TXDOUBLEX; // TX Buffer Double Data Extended Register
-    uint TXDOUBLE; // TX Buffer Double Data Register
-    uint IF; // Interrupt Flag Register
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
-    uint IRCTRL; // IrDA Control Register
+    uint32_t CTRL; // Control Register
+    uint32_t FRAME; // USART Frame Format Register
+    uint32_t TRIGCTRL; // USART Trigger Control Register
+    uint32_t CMD; // Command Register
+    uint32_t STATUS; // USART Status Register
+    uint32_t CLKDIV; // Clock Control Register
+    uint32_t RXDATAX; // RX Buffer Data Extended Register
+    uint32_t RXDATA; // RX Buffer Data Register
+    uint32_t RXDOUBLEX; // RX Buffer Double Data Extended Register
+    uint32_t RXDOUBLE; // RX FIFO Double Data Register
+    uint32_t RXDATAXP; // RX Buffer Data Extended Peek Register
+    uint32_t RXDOUBLEXP; // RX Buffer Double Data Extended Peek Register
+    uint32_t TXDATAX; // TX Buffer Data Extended Register
+    uint32_t TXDATA; // TX Buffer Data Register
+    uint32_t TXDOUBLEX; // TX Buffer Double Data Extended Register
+    uint32_t TXDOUBLE; // TX Buffer Double Data Register
+    uint32_t IF; // Interrupt Flag Register
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
+    uint32_t IRCTRL; // IrDA Control Register
     undefined field_0x54;
     undefined field_0x55;
     undefined field_0x56;
     undefined field_0x57;
-    uint INPUT; // USART Input Register
-    uint I2SCTRL; // I2S Control Register
-    uint TIMING; // Timing Register
-    uint CTRLX; // Control Register Extended
-    uint TIMECMP0; // Used to Generate Interrupts and Various Delays
-    uint TIMECMP1; // Used to Generate Interrupts and Various Delays
-    uint TIMECMP2; // Used to Generate Interrupts and Various Delays
-    uint ROUTEPEN; // I/O Routing Pin Enable Register
-    uint ROUTELOC0; // I/O Routing Location Register
-    uint ROUTELOC1; // I/O Routing Location Register
+    uint32_t INPUT; // USART Input Register
+    uint32_t I2SCTRL; // I2S Control Register
+    uint32_t TIMING; // Timing Register
+    uint32_t CTRLX; // Control Register Extended
+    uint32_t TIMECMP0; // Used to Generate Interrupts and Various Delays
+    uint32_t TIMECMP1; // Used to Generate Interrupts and Various Delays
+    uint32_t TIMECMP2; // Used to Generate Interrupts and Various Delays
+    uint32_t ROUTEPEN; // I/O Routing Pin Enable Register
+    uint32_t ROUTELOC0; // I/O Routing Location Register
+    uint32_t ROUTELOC1; // I/O Routing Location Register
 };
 
 typedef struct MSC MSC, *PMSC;
 
 struct MSC {
-    uint CTRL; // Memory System Control Register
-    uint READCTRL; // Read Control Register
-    uint WRITECTRL; // Write Control Register
-    uint WRITECMD; // Write Command Register
-    uint ADDRB; // Page Erase/Write Address Buffer
+    uint32_t CTRL; // Memory System Control Register
+    uint32_t READCTRL; // Read Control Register
+    uint32_t WRITECTRL; // Write Control Register
+    uint32_t WRITECMD; // Write Command Register
+    uint32_t ADDRB; // Page Erase/Write Address Buffer
     undefined field_0x14;
     undefined field_0x15;
     undefined field_0x16;
     undefined field_0x17;
-    uint WDATA; // Write Data Register
-    uint STATUS; // Status Register
+    uint32_t WDATA; // Write Data Register
+    uint32_t STATUS; // Status Register
     undefined field_0x20;
     undefined field_0x21;
     undefined field_0x22;
@@ -4598,24 +4598,24 @@ struct MSC {
     undefined field_0x2d;
     undefined field_0x2e;
     undefined field_0x2f;
-    uint IF; // Interrupt Flag Register
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
-    uint LOCK; // Configuration Lock Register
-    uint CACHECMD; // Flash Cache Command Register
-    uint CACHEHITS; // Cache Hits Performance Counter
-    uint CACHEMISSES; // Cache Misses Performance Counter
+    uint32_t IF; // Interrupt Flag Register
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
+    uint32_t LOCK; // Configuration Lock Register
+    uint32_t CACHECMD; // Flash Cache Command Register
+    uint32_t CACHEHITS; // Cache Hits Performance Counter
+    uint32_t CACHEMISSES; // Cache Misses Performance Counter
     undefined field_0x50;
     undefined field_0x51;
     undefined field_0x52;
     undefined field_0x53;
-    uint MASSLOCK; // Mass Erase Lock Register
+    uint32_t MASSLOCK; // Mass Erase Lock Register
     undefined field_0x58;
     undefined field_0x59;
     undefined field_0x5a;
     undefined field_0x5b;
-    uint STARTUP; // Startup Control
+    uint32_t STARTUP; // Startup Control
     undefined field_0x60;
     undefined field_0x61;
     undefined field_0x62;
@@ -4636,123 +4636,123 @@ struct MSC {
     undefined field_0x71;
     undefined field_0x72;
     undefined field_0x73;
-    uint CMD; // Command Register
+    uint32_t CMD; // Command Register
 };
 
 typedef struct RFSENSE_CLR RFSENSE_CLR, *PRFSENSE_CLR;
 
 struct RFSENSE_CLR {
-    uint CTRL;
-    uint PERIODSEL;
-    uint CNT;
+    uint32_t CTRL;
+    uint32_t PERIODSEL;
+    uint32_t CNT;
     undefined field_0xc;
     undefined field_0xd;
     undefined field_0xe;
     undefined field_0xf;
-    uint EM4WUEN;
-    uint CALIB;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
+    uint32_t EM4WUEN;
+    uint32_t CALIB;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
 };
 
 typedef struct AGC AGC, *PAGC;
 
 struct AGC {
-    uint STATUS0;
-    uint STATUS1;
-    uint RSSI;
-    uint FRAMERSSI;
+    uint32_t STATUS0;
+    uint32_t STATUS1;
+    uint32_t RSSI;
+    uint32_t FRAMERSSI;
     undefined field_0x10;
     undefined field_0x11;
     undefined field_0x12;
     undefined field_0x13;
-    uint CTRL0;
-    uint CTRL1;
-    uint CTRL2;
-    uint RSSISTEPTHR;
-    uint IFPEAKDET;
-    uint MANGAIN;
+    uint32_t CTRL0;
+    uint32_t CTRL1;
+    uint32_t CTRL2;
+    uint32_t RSSISTEPTHR;
+    uint32_t IFPEAKDET;
+    uint32_t MANGAIN;
     undefined field_0x2c;
     undefined field_0x2d;
     undefined field_0x2e;
     undefined field_0x2f;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
-    uint CMD;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
+    uint32_t CMD;
     undefined field_0x44;
     undefined field_0x45;
     undefined field_0x46;
     undefined field_0x47;
-    uint GAINRANGE;
-    uint GAININDEX;
-    uint SLICECODE;
-    uint ATTENCODE1;
-    uint ATTENCODE2;
-    uint ATTENCODE3;
-    uint GAINERROR1;
-    uint GAINERROR2;
-    uint GAINERROR3;
-    uint MANUALCTRL;
-    uint GAINSTEPLIM;
-    uint LOOPDEL;
-    uint MININDEX;
+    uint32_t GAINRANGE;
+    uint32_t GAININDEX;
+    uint32_t SLICECODE;
+    uint32_t ATTENCODE1;
+    uint32_t ATTENCODE2;
+    uint32_t ATTENCODE3;
+    uint32_t GAINERROR1;
+    uint32_t GAINERROR2;
+    uint32_t GAINERROR3;
+    uint32_t MANUALCTRL;
+    uint32_t GAINSTEPLIM;
+    uint32_t LOOPDEL;
+    uint32_t MININDEX;
 };
 
 typedef struct AGC_CLR AGC_CLR, *PAGC_CLR;
 
 struct AGC_CLR {
-    uint STATUS0;
-    uint STATUS1;
-    uint RSSI;
-    uint FRAMERSSI;
+    uint32_t STATUS0;
+    uint32_t STATUS1;
+    uint32_t RSSI;
+    uint32_t FRAMERSSI;
     undefined field_0x10;
     undefined field_0x11;
     undefined field_0x12;
     undefined field_0x13;
-    uint CTRL0;
-    uint CTRL1;
-    uint CTRL2;
-    uint RSSISTEPTHR;
-    uint IFPEAKDET;
-    uint MANGAIN;
+    uint32_t CTRL0;
+    uint32_t CTRL1;
+    uint32_t CTRL2;
+    uint32_t RSSISTEPTHR;
+    uint32_t IFPEAKDET;
+    uint32_t MANGAIN;
     undefined field_0x2c;
     undefined field_0x2d;
     undefined field_0x2e;
     undefined field_0x2f;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
-    uint CMD;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
+    uint32_t CMD;
     undefined field_0x44;
     undefined field_0x45;
     undefined field_0x46;
     undefined field_0x47;
-    uint GAINRANGE;
-    uint GAININDEX;
-    uint SLICECODE;
-    uint ATTENCODE1;
-    uint ATTENCODE2;
-    uint ATTENCODE3;
-    uint GAINERROR1;
-    uint GAINERROR2;
-    uint GAINERROR3;
-    uint MANUALCTRL;
-    uint GAINSTEPLIM;
-    uint LOOPDEL;
-    uint MININDEX;
+    uint32_t GAINRANGE;
+    uint32_t GAININDEX;
+    uint32_t SLICECODE;
+    uint32_t ATTENCODE1;
+    uint32_t ATTENCODE2;
+    uint32_t ATTENCODE3;
+    uint32_t GAINERROR1;
+    uint32_t GAINERROR2;
+    uint32_t GAINERROR3;
+    uint32_t MANUALCTRL;
+    uint32_t GAINSTEPLIM;
+    uint32_t LOOPDEL;
+    uint32_t MININDEX;
 };
 
 typedef struct DEVINFO DEVINFO, *PDEVINFO;
 
 struct DEVINFO {
-    uint CAL;
-    uint MODULEINFO;
-    uint MODXOCAL;
+    uint32_t CAL;
+    uint32_t MODULEINFO;
+    uint32_t MODXOCAL;
     undefined field_0xc;
     undefined field_0xd;
     undefined field_0xe;
@@ -4773,15 +4773,15 @@ struct DEVINFO {
     undefined field_0x1d;
     undefined field_0x1e;
     undefined field_0x1f;
-    uint EXTINFO;
+    uint32_t EXTINFO;
     undefined field_0x24;
     undefined field_0x25;
     undefined field_0x26;
     undefined field_0x27;
-    uint EUI48L;
-    uint EUI48H;
-    uint CUSTOMINFO;
-    uint MEMINFO;
+    uint32_t EUI48L;
+    uint32_t EUI48H;
+    uint32_t CUSTOMINFO;
+    uint32_t MEMINFO;
     undefined field_0x38;
     undefined field_0x39;
     undefined field_0x3a;
@@ -4790,12 +4790,12 @@ struct DEVINFO {
     undefined field_0x3d;
     undefined field_0x3e;
     undefined field_0x3f;
-    uint UNIQUEL;
-    uint UNIQUEH;
-    uint MSIZE;
-    uint PART;
-    uint DEVINFOREV;
-    uint EMUTEMP;
+    uint32_t UNIQUEL;
+    uint32_t UNIQUEH;
+    uint32_t MSIZE;
+    uint32_t PART;
+    uint32_t DEVINFOREV;
+    uint32_t EMUTEMP;
     undefined field_0x58;
     undefined field_0x59;
     undefined field_0x5a;
@@ -4804,10 +4804,10 @@ struct DEVINFO {
     undefined field_0x5d;
     undefined field_0x5e;
     undefined field_0x5f;
-    uint ADC0CAL0;
-    uint ADC0CAL1;
-    uint ADC0CAL2;
-    uint ADC0CAL3;
+    uint32_t ADC0CAL0;
+    uint32_t ADC0CAL1;
+    uint32_t ADC0CAL2;
+    uint32_t ADC0CAL3;
     undefined field_0x70;
     undefined field_0x71;
     undefined field_0x72;
@@ -4824,7 +4824,7 @@ struct DEVINFO {
     undefined field_0x7d;
     undefined field_0x7e;
     undefined field_0x7f;
-    uint HFRCOCAL0;
+    uint32_t HFRCOCAL0;
     undefined field_0x84;
     undefined field_0x85;
     undefined field_0x86;
@@ -4833,7 +4833,7 @@ struct DEVINFO {
     undefined field_0x89;
     undefined field_0x8a;
     undefined field_0x8b;
-    uint HFRCOCAL3;
+    uint32_t HFRCOCAL3;
     undefined field_0x90;
     undefined field_0x91;
     undefined field_0x92;
@@ -4842,16 +4842,16 @@ struct DEVINFO {
     undefined field_0x95;
     undefined field_0x96;
     undefined field_0x97;
-    uint HFRCOCAL6;
-    uint HFRCOCAL7;
-    uint HFRCOCAL8;
+    uint32_t HFRCOCAL6;
+    uint32_t HFRCOCAL7;
+    uint32_t HFRCOCAL8;
     undefined field_0xa4;
     undefined field_0xa5;
     undefined field_0xa6;
     undefined field_0xa7;
-    uint HFRCOCAL10;
-    uint HFRCOCAL11;
-    uint HFRCOCAL12;
+    uint32_t HFRCOCAL10;
+    uint32_t HFRCOCAL11;
+    uint32_t HFRCOCAL12;
     undefined field_0xb4;
     undefined field_0xb5;
     undefined field_0xb6;
@@ -4896,7 +4896,7 @@ struct DEVINFO {
     undefined field_0xdd;
     undefined field_0xde;
     undefined field_0xdf;
-    uint AUXHFRCOCAL0;
+    uint32_t AUXHFRCOCAL0;
     undefined field_0xe4;
     undefined field_0xe5;
     undefined field_0xe6;
@@ -4905,7 +4905,7 @@ struct DEVINFO {
     undefined field_0xe9;
     undefined field_0xea;
     undefined field_0xeb;
-    uint AUXHFRCOCAL3;
+    uint32_t AUXHFRCOCAL3;
     undefined field_0xf0;
     undefined field_0xf1;
     undefined field_0xf2;
@@ -4914,16 +4914,16 @@ struct DEVINFO {
     undefined field_0xf5;
     undefined field_0xf6;
     undefined field_0xf7;
-    uint AUXHFRCOCAL6;
-    uint AUXHFRCOCAL7;
-    uint AUXHFRCOCAL8;
+    uint32_t AUXHFRCOCAL6;
+    uint32_t AUXHFRCOCAL7;
+    uint32_t AUXHFRCOCAL8;
     undefined field_0x104;
     undefined field_0x105;
     undefined field_0x106;
     undefined field_0x107;
-    uint AUXHFRCOCAL10;
-    uint AUXHFRCOCAL11;
-    uint AUXHFRCOCAL12;
+    uint32_t AUXHFRCOCAL10;
+    uint32_t AUXHFRCOCAL11;
+    uint32_t AUXHFRCOCAL12;
     undefined field_0x114;
     undefined field_0x115;
     undefined field_0x116;
@@ -4968,9 +4968,9 @@ struct DEVINFO {
     undefined field_0x13d;
     undefined field_0x13e;
     undefined field_0x13f;
-    uint VMONCAL0;
-    uint VMONCAL1;
-    uint VMONCAL2;
+    uint32_t VMONCAL0;
+    uint32_t VMONCAL1;
+    uint32_t VMONCAL2;
     undefined field_0x14c;
     undefined field_0x14d;
     undefined field_0x14e;
@@ -4983,8 +4983,8 @@ struct DEVINFO {
     undefined field_0x155;
     undefined field_0x156;
     undefined field_0x157;
-    uint IDAC0CAL0;
-    uint IDAC0CAL1;
+    uint32_t IDAC0CAL0;
+    uint32_t IDAC0CAL1;
     undefined field_0x160;
     undefined field_0x161;
     undefined field_0x162;
@@ -4993,64 +4993,64 @@ struct DEVINFO {
     undefined field_0x165;
     undefined field_0x166;
     undefined field_0x167;
-    uint DCDCLNVCTRL0;
-    uint DCDCLPVCTRL0;
-    uint DCDCLPVCTRL1;
-    uint DCDCLPVCTRL2;
-    uint DCDCLPVCTRL3;
-    uint DCDCLPCMPHYSSEL0;
-    uint DCDCLPCMPHYSSEL1;
+    uint32_t DCDCLNVCTRL0;
+    uint32_t DCDCLPVCTRL0;
+    uint32_t DCDCLPVCTRL1;
+    uint32_t DCDCLPVCTRL2;
+    uint32_t DCDCLPVCTRL3;
+    uint32_t DCDCLPCMPHYSSEL0;
+    uint32_t DCDCLPCMPHYSSEL1;
 };
 
 typedef struct MODEM MODEM, *PMODEM;
 
 struct MODEM {
-    uint STATUS;
-    uint TIMDETSTATUS;
-    uint FREQOFFEST;
-    uint AFCADJRX;
-    uint AFCADJTX;
-    uint MIXCTRL;
-    uint CTRL0;
-    uint CTRL1;
-    uint CTRL2;
-    uint CTRL3;
-    uint CTRL4;
-    uint CTRL5;
-    uint TXBR;
-    uint RXBR;
-    uint CF;
-    uint PRE;
-    uint SYNC0;
-    uint SYNC1;
-    uint TIMING;
-    uint DSSS0;
-    uint MODINDEX;
-    uint AFC;
-    uint AFCADJLIM;
-    uint SHAPING0;
-    uint SHAPING1;
-    uint SHAPING2;
-    uint RAMPCTRL;
-    uint RAMPLEV;
-    uint ROUTEPEN;
-    uint ROUTELOC0;
-    uint ROUTELOC1;
+    uint32_t STATUS;
+    uint32_t TIMDETSTATUS;
+    uint32_t FREQOFFEST;
+    uint32_t AFCADJRX;
+    uint32_t AFCADJTX;
+    uint32_t MIXCTRL;
+    uint32_t CTRL0;
+    uint32_t CTRL1;
+    uint32_t CTRL2;
+    uint32_t CTRL3;
+    uint32_t CTRL4;
+    uint32_t CTRL5;
+    uint32_t TXBR;
+    uint32_t RXBR;
+    uint32_t CF;
+    uint32_t PRE;
+    uint32_t SYNC0;
+    uint32_t SYNC1;
+    uint32_t TIMING;
+    uint32_t DSSS0;
+    uint32_t MODINDEX;
+    uint32_t AFC;
+    uint32_t AFCADJLIM;
+    uint32_t SHAPING0;
+    uint32_t SHAPING1;
+    uint32_t SHAPING2;
+    uint32_t RAMPCTRL;
+    uint32_t RAMPLEV;
+    uint32_t ROUTEPEN;
+    uint32_t ROUTELOC0;
+    uint32_t ROUTELOC1;
     undefined field_0x7c;
     undefined field_0x7d;
     undefined field_0x7e;
     undefined field_0x7f;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
-    uint CMD;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
+    uint32_t CMD;
     undefined field_0x94;
     undefined field_0x95;
     undefined field_0x96;
     undefined field_0x97;
-    uint DCCOMP;
-    uint DCCOMPFILTINIT;
+    uint32_t DCCOMP;
+    uint32_t DCCOMPFILTINIT;
     undefined field_0xa0;
     undefined field_0xa1;
     undefined field_0xa2;
@@ -5147,7 +5147,7 @@ struct MODEM {
     undefined field_0xfd;
     undefined field_0xfe;
     undefined field_0xff;
-    uint DCESTI;
+    uint32_t DCESTI;
     undefined field_0x104;
     undefined field_0x105;
     undefined field_0x106;
@@ -5912,313 +5912,313 @@ struct MODEM {
     undefined field_0x3fd;
     undefined field_0x3fe;
     undefined field_0x3ff;
-    uint RAM0_RAMDATA;
-    uint RAM1_RAMDATA;
-    uint RAM2_RAMDATA;
-    uint RAM3_RAMDATA;
-    uint RAM4_RAMDATA;
-    uint RAM5_RAMDATA;
-    uint RAM6_RAMDATA;
-    uint RAM7_RAMDATA;
-    uint RAM8_RAMDATA;
-    uint RAM9_RAMDATA;
-    uint RAM10_RAMDATA;
-    uint RAM11_RAMDATA;
-    uint RAM12_RAMDATA;
-    uint RAM13_RAMDATA;
-    uint RAM14_RAMDATA;
-    uint RAM15_RAMDATA;
-    uint RAM16_RAMDATA;
-    uint RAM17_RAMDATA;
-    uint RAM18_RAMDATA;
-    uint RAM19_RAMDATA;
-    uint RAM20_RAMDATA;
-    uint RAM21_RAMDATA;
-    uint RAM22_RAMDATA;
-    uint RAM23_RAMDATA;
-    uint RAM24_RAMDATA;
-    uint RAM25_RAMDATA;
-    uint RAM26_RAMDATA;
-    uint RAM27_RAMDATA;
-    uint RAM28_RAMDATA;
-    uint RAM29_RAMDATA;
-    uint RAM30_RAMDATA;
-    uint RAM31_RAMDATA;
-    uint RAM32_RAMDATA;
-    uint RAM33_RAMDATA;
-    uint RAM34_RAMDATA;
-    uint RAM35_RAMDATA;
-    uint RAM36_RAMDATA;
-    uint RAM37_RAMDATA;
-    uint RAM38_RAMDATA;
-    uint RAM39_RAMDATA;
-    uint RAM40_RAMDATA;
-    uint RAM41_RAMDATA;
-    uint RAM42_RAMDATA;
-    uint RAM43_RAMDATA;
-    uint RAM44_RAMDATA;
-    uint RAM45_RAMDATA;
-    uint RAM46_RAMDATA;
-    uint RAM47_RAMDATA;
-    uint RAM48_RAMDATA;
-    uint RAM49_RAMDATA;
-    uint RAM50_RAMDATA;
-    uint RAM51_RAMDATA;
-    uint RAM52_RAMDATA;
-    uint RAM53_RAMDATA;
-    uint RAM54_RAMDATA;
-    uint RAM55_RAMDATA;
-    uint RAM56_RAMDATA;
-    uint RAM57_RAMDATA;
-    uint RAM58_RAMDATA;
-    uint RAM59_RAMDATA;
-    uint RAM60_RAMDATA;
-    uint RAM61_RAMDATA;
-    uint RAM62_RAMDATA;
-    uint RAM63_RAMDATA;
-    uint RAM64_RAMDATA;
-    uint RAM65_RAMDATA;
-    uint RAM66_RAMDATA;
-    uint RAM67_RAMDATA;
-    uint RAM68_RAMDATA;
-    uint RAM69_RAMDATA;
-    uint RAM70_RAMDATA;
-    uint RAM71_RAMDATA;
-    uint RAM72_RAMDATA;
-    uint RAM73_RAMDATA;
-    uint RAM74_RAMDATA;
-    uint RAM75_RAMDATA;
-    uint RAM76_RAMDATA;
-    uint RAM77_RAMDATA;
-    uint RAM78_RAMDATA;
-    uint RAM79_RAMDATA;
-    uint RAM80_RAMDATA;
-    uint RAM81_RAMDATA;
-    uint RAM82_RAMDATA;
-    uint RAM83_RAMDATA;
-    uint RAM84_RAMDATA;
-    uint RAM85_RAMDATA;
-    uint RAM86_RAMDATA;
-    uint RAM87_RAMDATA;
-    uint RAM88_RAMDATA;
-    uint RAM89_RAMDATA;
-    uint RAM90_RAMDATA;
-    uint RAM91_RAMDATA;
-    uint RAM92_RAMDATA;
-    uint RAM93_RAMDATA;
-    uint RAM94_RAMDATA;
-    uint RAM95_RAMDATA;
-    uint RAM96_RAMDATA;
-    uint RAM97_RAMDATA;
-    uint RAM98_RAMDATA;
-    uint RAM99_RAMDATA;
-    uint RAM100_RAMDATA;
-    uint RAM101_RAMDATA;
-    uint RAM102_RAMDATA;
-    uint RAM103_RAMDATA;
-    uint RAM104_RAMDATA;
-    uint RAM105_RAMDATA;
-    uint RAM106_RAMDATA;
-    uint RAM107_RAMDATA;
-    uint RAM108_RAMDATA;
-    uint RAM109_RAMDATA;
-    uint RAM110_RAMDATA;
-    uint RAM111_RAMDATA;
-    uint RAM112_RAMDATA;
-    uint RAM113_RAMDATA;
-    uint RAM114_RAMDATA;
-    uint RAM115_RAMDATA;
-    uint RAM116_RAMDATA;
-    uint RAM117_RAMDATA;
-    uint RAM118_RAMDATA;
-    uint RAM119_RAMDATA;
-    uint RAM120_RAMDATA;
-    uint RAM121_RAMDATA;
-    uint RAM122_RAMDATA;
-    uint RAM123_RAMDATA;
-    uint RAM124_RAMDATA;
-    uint RAM125_RAMDATA;
-    uint RAM126_RAMDATA;
-    uint RAM127_RAMDATA;
-    uint RAM128_RAMDATA;
-    uint RAM129_RAMDATA;
-    uint RAM130_RAMDATA;
-    uint RAM131_RAMDATA;
-    uint RAM132_RAMDATA;
-    uint RAM133_RAMDATA;
-    uint RAM134_RAMDATA;
-    uint RAM135_RAMDATA;
-    uint RAM136_RAMDATA;
-    uint RAM137_RAMDATA;
-    uint RAM138_RAMDATA;
-    uint RAM139_RAMDATA;
-    uint RAM140_RAMDATA;
-    uint RAM141_RAMDATA;
-    uint RAM142_RAMDATA;
-    uint RAM143_RAMDATA;
-    uint RAM144_RAMDATA;
-    uint RAM145_RAMDATA;
-    uint RAM146_RAMDATA;
-    uint RAM147_RAMDATA;
-    uint RAM148_RAMDATA;
-    uint RAM149_RAMDATA;
-    uint RAM150_RAMDATA;
-    uint RAM151_RAMDATA;
-    uint RAM152_RAMDATA;
-    uint RAM153_RAMDATA;
-    uint RAM154_RAMDATA;
-    uint RAM155_RAMDATA;
-    uint RAM156_RAMDATA;
-    uint RAM157_RAMDATA;
-    uint RAM158_RAMDATA;
-    uint RAM159_RAMDATA;
-    uint RAM160_RAMDATA;
-    uint RAM161_RAMDATA;
-    uint RAM162_RAMDATA;
-    uint RAM163_RAMDATA;
-    uint RAM164_RAMDATA;
-    uint RAM165_RAMDATA;
-    uint RAM166_RAMDATA;
-    uint RAM167_RAMDATA;
-    uint RAM168_RAMDATA;
-    uint RAM169_RAMDATA;
-    uint RAM170_RAMDATA;
-    uint RAM171_RAMDATA;
-    uint RAM172_RAMDATA;
-    uint RAM173_RAMDATA;
-    uint RAM174_RAMDATA;
-    uint RAM175_RAMDATA;
-    uint RAM176_RAMDATA;
-    uint RAM177_RAMDATA;
-    uint RAM178_RAMDATA;
-    uint RAM179_RAMDATA;
-    uint RAM180_RAMDATA;
-    uint RAM181_RAMDATA;
-    uint RAM182_RAMDATA;
-    uint RAM183_RAMDATA;
-    uint RAM184_RAMDATA;
-    uint RAM185_RAMDATA;
-    uint RAM186_RAMDATA;
-    uint RAM187_RAMDATA;
-    uint RAM188_RAMDATA;
-    uint RAM189_RAMDATA;
-    uint RAM190_RAMDATA;
-    uint RAM191_RAMDATA;
-    uint RAM192_RAMDATA;
-    uint RAM193_RAMDATA;
-    uint RAM194_RAMDATA;
-    uint RAM195_RAMDATA;
-    uint RAM196_RAMDATA;
-    uint RAM197_RAMDATA;
-    uint RAM198_RAMDATA;
-    uint RAM199_RAMDATA;
-    uint RAM200_RAMDATA;
-    uint RAM201_RAMDATA;
-    uint RAM202_RAMDATA;
-    uint RAM203_RAMDATA;
-    uint RAM204_RAMDATA;
-    uint RAM205_RAMDATA;
-    uint RAM206_RAMDATA;
-    uint RAM207_RAMDATA;
-    uint RAM208_RAMDATA;
-    uint RAM209_RAMDATA;
-    uint RAM210_RAMDATA;
-    uint RAM211_RAMDATA;
-    uint RAM212_RAMDATA;
-    uint RAM213_RAMDATA;
-    uint RAM214_RAMDATA;
-    uint RAM215_RAMDATA;
-    uint RAM216_RAMDATA;
-    uint RAM217_RAMDATA;
-    uint RAM218_RAMDATA;
-    uint RAM219_RAMDATA;
-    uint RAM220_RAMDATA;
-    uint RAM221_RAMDATA;
-    uint RAM222_RAMDATA;
-    uint RAM223_RAMDATA;
-    uint RAM224_RAMDATA;
-    uint RAM225_RAMDATA;
-    uint RAM226_RAMDATA;
-    uint RAM227_RAMDATA;
-    uint RAM228_RAMDATA;
-    uint RAM229_RAMDATA;
-    uint RAM230_RAMDATA;
-    uint RAM231_RAMDATA;
-    uint RAM232_RAMDATA;
-    uint RAM233_RAMDATA;
-    uint RAM234_RAMDATA;
-    uint RAM235_RAMDATA;
-    uint RAM236_RAMDATA;
-    uint RAM237_RAMDATA;
-    uint RAM238_RAMDATA;
-    uint RAM239_RAMDATA;
-    uint RAM240_RAMDATA;
-    uint RAM241_RAMDATA;
-    uint RAM242_RAMDATA;
-    uint RAM243_RAMDATA;
-    uint RAM244_RAMDATA;
-    uint RAM245_RAMDATA;
-    uint RAM246_RAMDATA;
-    uint RAM247_RAMDATA;
-    uint RAM248_RAMDATA;
-    uint RAM249_RAMDATA;
-    uint RAM250_RAMDATA;
-    uint RAM251_RAMDATA;
-    uint RAM252_RAMDATA;
-    uint RAM253_RAMDATA;
-    uint RAM254_RAMDATA;
-    uint RAM255_RAMDATA;
+    uint32_t RAM0_RAMDATA;
+    uint32_t RAM1_RAMDATA;
+    uint32_t RAM2_RAMDATA;
+    uint32_t RAM3_RAMDATA;
+    uint32_t RAM4_RAMDATA;
+    uint32_t RAM5_RAMDATA;
+    uint32_t RAM6_RAMDATA;
+    uint32_t RAM7_RAMDATA;
+    uint32_t RAM8_RAMDATA;
+    uint32_t RAM9_RAMDATA;
+    uint32_t RAM10_RAMDATA;
+    uint32_t RAM11_RAMDATA;
+    uint32_t RAM12_RAMDATA;
+    uint32_t RAM13_RAMDATA;
+    uint32_t RAM14_RAMDATA;
+    uint32_t RAM15_RAMDATA;
+    uint32_t RAM16_RAMDATA;
+    uint32_t RAM17_RAMDATA;
+    uint32_t RAM18_RAMDATA;
+    uint32_t RAM19_RAMDATA;
+    uint32_t RAM20_RAMDATA;
+    uint32_t RAM21_RAMDATA;
+    uint32_t RAM22_RAMDATA;
+    uint32_t RAM23_RAMDATA;
+    uint32_t RAM24_RAMDATA;
+    uint32_t RAM25_RAMDATA;
+    uint32_t RAM26_RAMDATA;
+    uint32_t RAM27_RAMDATA;
+    uint32_t RAM28_RAMDATA;
+    uint32_t RAM29_RAMDATA;
+    uint32_t RAM30_RAMDATA;
+    uint32_t RAM31_RAMDATA;
+    uint32_t RAM32_RAMDATA;
+    uint32_t RAM33_RAMDATA;
+    uint32_t RAM34_RAMDATA;
+    uint32_t RAM35_RAMDATA;
+    uint32_t RAM36_RAMDATA;
+    uint32_t RAM37_RAMDATA;
+    uint32_t RAM38_RAMDATA;
+    uint32_t RAM39_RAMDATA;
+    uint32_t RAM40_RAMDATA;
+    uint32_t RAM41_RAMDATA;
+    uint32_t RAM42_RAMDATA;
+    uint32_t RAM43_RAMDATA;
+    uint32_t RAM44_RAMDATA;
+    uint32_t RAM45_RAMDATA;
+    uint32_t RAM46_RAMDATA;
+    uint32_t RAM47_RAMDATA;
+    uint32_t RAM48_RAMDATA;
+    uint32_t RAM49_RAMDATA;
+    uint32_t RAM50_RAMDATA;
+    uint32_t RAM51_RAMDATA;
+    uint32_t RAM52_RAMDATA;
+    uint32_t RAM53_RAMDATA;
+    uint32_t RAM54_RAMDATA;
+    uint32_t RAM55_RAMDATA;
+    uint32_t RAM56_RAMDATA;
+    uint32_t RAM57_RAMDATA;
+    uint32_t RAM58_RAMDATA;
+    uint32_t RAM59_RAMDATA;
+    uint32_t RAM60_RAMDATA;
+    uint32_t RAM61_RAMDATA;
+    uint32_t RAM62_RAMDATA;
+    uint32_t RAM63_RAMDATA;
+    uint32_t RAM64_RAMDATA;
+    uint32_t RAM65_RAMDATA;
+    uint32_t RAM66_RAMDATA;
+    uint32_t RAM67_RAMDATA;
+    uint32_t RAM68_RAMDATA;
+    uint32_t RAM69_RAMDATA;
+    uint32_t RAM70_RAMDATA;
+    uint32_t RAM71_RAMDATA;
+    uint32_t RAM72_RAMDATA;
+    uint32_t RAM73_RAMDATA;
+    uint32_t RAM74_RAMDATA;
+    uint32_t RAM75_RAMDATA;
+    uint32_t RAM76_RAMDATA;
+    uint32_t RAM77_RAMDATA;
+    uint32_t RAM78_RAMDATA;
+    uint32_t RAM79_RAMDATA;
+    uint32_t RAM80_RAMDATA;
+    uint32_t RAM81_RAMDATA;
+    uint32_t RAM82_RAMDATA;
+    uint32_t RAM83_RAMDATA;
+    uint32_t RAM84_RAMDATA;
+    uint32_t RAM85_RAMDATA;
+    uint32_t RAM86_RAMDATA;
+    uint32_t RAM87_RAMDATA;
+    uint32_t RAM88_RAMDATA;
+    uint32_t RAM89_RAMDATA;
+    uint32_t RAM90_RAMDATA;
+    uint32_t RAM91_RAMDATA;
+    uint32_t RAM92_RAMDATA;
+    uint32_t RAM93_RAMDATA;
+    uint32_t RAM94_RAMDATA;
+    uint32_t RAM95_RAMDATA;
+    uint32_t RAM96_RAMDATA;
+    uint32_t RAM97_RAMDATA;
+    uint32_t RAM98_RAMDATA;
+    uint32_t RAM99_RAMDATA;
+    uint32_t RAM100_RAMDATA;
+    uint32_t RAM101_RAMDATA;
+    uint32_t RAM102_RAMDATA;
+    uint32_t RAM103_RAMDATA;
+    uint32_t RAM104_RAMDATA;
+    uint32_t RAM105_RAMDATA;
+    uint32_t RAM106_RAMDATA;
+    uint32_t RAM107_RAMDATA;
+    uint32_t RAM108_RAMDATA;
+    uint32_t RAM109_RAMDATA;
+    uint32_t RAM110_RAMDATA;
+    uint32_t RAM111_RAMDATA;
+    uint32_t RAM112_RAMDATA;
+    uint32_t RAM113_RAMDATA;
+    uint32_t RAM114_RAMDATA;
+    uint32_t RAM115_RAMDATA;
+    uint32_t RAM116_RAMDATA;
+    uint32_t RAM117_RAMDATA;
+    uint32_t RAM118_RAMDATA;
+    uint32_t RAM119_RAMDATA;
+    uint32_t RAM120_RAMDATA;
+    uint32_t RAM121_RAMDATA;
+    uint32_t RAM122_RAMDATA;
+    uint32_t RAM123_RAMDATA;
+    uint32_t RAM124_RAMDATA;
+    uint32_t RAM125_RAMDATA;
+    uint32_t RAM126_RAMDATA;
+    uint32_t RAM127_RAMDATA;
+    uint32_t RAM128_RAMDATA;
+    uint32_t RAM129_RAMDATA;
+    uint32_t RAM130_RAMDATA;
+    uint32_t RAM131_RAMDATA;
+    uint32_t RAM132_RAMDATA;
+    uint32_t RAM133_RAMDATA;
+    uint32_t RAM134_RAMDATA;
+    uint32_t RAM135_RAMDATA;
+    uint32_t RAM136_RAMDATA;
+    uint32_t RAM137_RAMDATA;
+    uint32_t RAM138_RAMDATA;
+    uint32_t RAM139_RAMDATA;
+    uint32_t RAM140_RAMDATA;
+    uint32_t RAM141_RAMDATA;
+    uint32_t RAM142_RAMDATA;
+    uint32_t RAM143_RAMDATA;
+    uint32_t RAM144_RAMDATA;
+    uint32_t RAM145_RAMDATA;
+    uint32_t RAM146_RAMDATA;
+    uint32_t RAM147_RAMDATA;
+    uint32_t RAM148_RAMDATA;
+    uint32_t RAM149_RAMDATA;
+    uint32_t RAM150_RAMDATA;
+    uint32_t RAM151_RAMDATA;
+    uint32_t RAM152_RAMDATA;
+    uint32_t RAM153_RAMDATA;
+    uint32_t RAM154_RAMDATA;
+    uint32_t RAM155_RAMDATA;
+    uint32_t RAM156_RAMDATA;
+    uint32_t RAM157_RAMDATA;
+    uint32_t RAM158_RAMDATA;
+    uint32_t RAM159_RAMDATA;
+    uint32_t RAM160_RAMDATA;
+    uint32_t RAM161_RAMDATA;
+    uint32_t RAM162_RAMDATA;
+    uint32_t RAM163_RAMDATA;
+    uint32_t RAM164_RAMDATA;
+    uint32_t RAM165_RAMDATA;
+    uint32_t RAM166_RAMDATA;
+    uint32_t RAM167_RAMDATA;
+    uint32_t RAM168_RAMDATA;
+    uint32_t RAM169_RAMDATA;
+    uint32_t RAM170_RAMDATA;
+    uint32_t RAM171_RAMDATA;
+    uint32_t RAM172_RAMDATA;
+    uint32_t RAM173_RAMDATA;
+    uint32_t RAM174_RAMDATA;
+    uint32_t RAM175_RAMDATA;
+    uint32_t RAM176_RAMDATA;
+    uint32_t RAM177_RAMDATA;
+    uint32_t RAM178_RAMDATA;
+    uint32_t RAM179_RAMDATA;
+    uint32_t RAM180_RAMDATA;
+    uint32_t RAM181_RAMDATA;
+    uint32_t RAM182_RAMDATA;
+    uint32_t RAM183_RAMDATA;
+    uint32_t RAM184_RAMDATA;
+    uint32_t RAM185_RAMDATA;
+    uint32_t RAM186_RAMDATA;
+    uint32_t RAM187_RAMDATA;
+    uint32_t RAM188_RAMDATA;
+    uint32_t RAM189_RAMDATA;
+    uint32_t RAM190_RAMDATA;
+    uint32_t RAM191_RAMDATA;
+    uint32_t RAM192_RAMDATA;
+    uint32_t RAM193_RAMDATA;
+    uint32_t RAM194_RAMDATA;
+    uint32_t RAM195_RAMDATA;
+    uint32_t RAM196_RAMDATA;
+    uint32_t RAM197_RAMDATA;
+    uint32_t RAM198_RAMDATA;
+    uint32_t RAM199_RAMDATA;
+    uint32_t RAM200_RAMDATA;
+    uint32_t RAM201_RAMDATA;
+    uint32_t RAM202_RAMDATA;
+    uint32_t RAM203_RAMDATA;
+    uint32_t RAM204_RAMDATA;
+    uint32_t RAM205_RAMDATA;
+    uint32_t RAM206_RAMDATA;
+    uint32_t RAM207_RAMDATA;
+    uint32_t RAM208_RAMDATA;
+    uint32_t RAM209_RAMDATA;
+    uint32_t RAM210_RAMDATA;
+    uint32_t RAM211_RAMDATA;
+    uint32_t RAM212_RAMDATA;
+    uint32_t RAM213_RAMDATA;
+    uint32_t RAM214_RAMDATA;
+    uint32_t RAM215_RAMDATA;
+    uint32_t RAM216_RAMDATA;
+    uint32_t RAM217_RAMDATA;
+    uint32_t RAM218_RAMDATA;
+    uint32_t RAM219_RAMDATA;
+    uint32_t RAM220_RAMDATA;
+    uint32_t RAM221_RAMDATA;
+    uint32_t RAM222_RAMDATA;
+    uint32_t RAM223_RAMDATA;
+    uint32_t RAM224_RAMDATA;
+    uint32_t RAM225_RAMDATA;
+    uint32_t RAM226_RAMDATA;
+    uint32_t RAM227_RAMDATA;
+    uint32_t RAM228_RAMDATA;
+    uint32_t RAM229_RAMDATA;
+    uint32_t RAM230_RAMDATA;
+    uint32_t RAM231_RAMDATA;
+    uint32_t RAM232_RAMDATA;
+    uint32_t RAM233_RAMDATA;
+    uint32_t RAM234_RAMDATA;
+    uint32_t RAM235_RAMDATA;
+    uint32_t RAM236_RAMDATA;
+    uint32_t RAM237_RAMDATA;
+    uint32_t RAM238_RAMDATA;
+    uint32_t RAM239_RAMDATA;
+    uint32_t RAM240_RAMDATA;
+    uint32_t RAM241_RAMDATA;
+    uint32_t RAM242_RAMDATA;
+    uint32_t RAM243_RAMDATA;
+    uint32_t RAM244_RAMDATA;
+    uint32_t RAM245_RAMDATA;
+    uint32_t RAM246_RAMDATA;
+    uint32_t RAM247_RAMDATA;
+    uint32_t RAM248_RAMDATA;
+    uint32_t RAM249_RAMDATA;
+    uint32_t RAM250_RAMDATA;
+    uint32_t RAM251_RAMDATA;
+    uint32_t RAM252_RAMDATA;
+    uint32_t RAM253_RAMDATA;
+    uint32_t RAM254_RAMDATA;
+    uint32_t RAM255_RAMDATA;
 };
 
 typedef struct MODEM_SET MODEM_SET, *PMODEM_SET;
 
 struct MODEM_SET {
-    uint STATUS;
-    uint TIMDETSTATUS;
-    uint FREQOFFEST;
-    uint AFCADJRX;
-    uint AFCADJTX;
-    uint MIXCTRL;
-    uint CTRL0;
-    uint CTRL1;
-    uint CTRL2;
-    uint CTRL3;
-    uint CTRL4;
-    uint CTRL5;
-    uint TXBR;
-    uint RXBR;
-    uint CF;
-    uint PRE;
-    uint SYNC0;
-    uint SYNC1;
-    uint TIMING;
-    uint DSSS0;
-    uint MODINDEX;
-    uint AFC;
-    uint AFCADJLIM;
-    uint SHAPING0;
-    uint SHAPING1;
-    uint SHAPING2;
-    uint RAMPCTRL;
-    uint RAMPLEV;
-    uint ROUTEPEN;
-    uint ROUTELOC0;
-    uint ROUTELOC1;
+    uint32_t STATUS;
+    uint32_t TIMDETSTATUS;
+    uint32_t FREQOFFEST;
+    uint32_t AFCADJRX;
+    uint32_t AFCADJTX;
+    uint32_t MIXCTRL;
+    uint32_t CTRL0;
+    uint32_t CTRL1;
+    uint32_t CTRL2;
+    uint32_t CTRL3;
+    uint32_t CTRL4;
+    uint32_t CTRL5;
+    uint32_t TXBR;
+    uint32_t RXBR;
+    uint32_t CF;
+    uint32_t PRE;
+    uint32_t SYNC0;
+    uint32_t SYNC1;
+    uint32_t TIMING;
+    uint32_t DSSS0;
+    uint32_t MODINDEX;
+    uint32_t AFC;
+    uint32_t AFCADJLIM;
+    uint32_t SHAPING0;
+    uint32_t SHAPING1;
+    uint32_t SHAPING2;
+    uint32_t RAMPCTRL;
+    uint32_t RAMPLEV;
+    uint32_t ROUTEPEN;
+    uint32_t ROUTELOC0;
+    uint32_t ROUTELOC1;
     undefined field_0x7c;
     undefined field_0x7d;
     undefined field_0x7e;
     undefined field_0x7f;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
-    uint CMD;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
+    uint32_t CMD;
     undefined field_0x94;
     undefined field_0x95;
     undefined field_0x96;
     undefined field_0x97;
-    uint DCCOMP;
-    uint DCCOMPFILTINIT;
+    uint32_t DCCOMP;
+    uint32_t DCCOMPFILTINIT;
     undefined field_0xa0;
     undefined field_0xa1;
     undefined field_0xa2;
@@ -6315,7 +6315,7 @@ struct MODEM_SET {
     undefined field_0xfd;
     undefined field_0xfe;
     undefined field_0xff;
-    uint DCESTI;
+    uint32_t DCESTI;
     undefined field_0x104;
     undefined field_0x105;
     undefined field_0x106;
@@ -7080,271 +7080,271 @@ struct MODEM_SET {
     undefined field_0x3fd;
     undefined field_0x3fe;
     undefined field_0x3ff;
-    uint RAM0_RAMDATA;
-    uint RAM1_RAMDATA;
-    uint RAM2_RAMDATA;
-    uint RAM3_RAMDATA;
-    uint RAM4_RAMDATA;
-    uint RAM5_RAMDATA;
-    uint RAM6_RAMDATA;
-    uint RAM7_RAMDATA;
-    uint RAM8_RAMDATA;
-    uint RAM9_RAMDATA;
-    uint RAM10_RAMDATA;
-    uint RAM11_RAMDATA;
-    uint RAM12_RAMDATA;
-    uint RAM13_RAMDATA;
-    uint RAM14_RAMDATA;
-    uint RAM15_RAMDATA;
-    uint RAM16_RAMDATA;
-    uint RAM17_RAMDATA;
-    uint RAM18_RAMDATA;
-    uint RAM19_RAMDATA;
-    uint RAM20_RAMDATA;
-    uint RAM21_RAMDATA;
-    uint RAM22_RAMDATA;
-    uint RAM23_RAMDATA;
-    uint RAM24_RAMDATA;
-    uint RAM25_RAMDATA;
-    uint RAM26_RAMDATA;
-    uint RAM27_RAMDATA;
-    uint RAM28_RAMDATA;
-    uint RAM29_RAMDATA;
-    uint RAM30_RAMDATA;
-    uint RAM31_RAMDATA;
-    uint RAM32_RAMDATA;
-    uint RAM33_RAMDATA;
-    uint RAM34_RAMDATA;
-    uint RAM35_RAMDATA;
-    uint RAM36_RAMDATA;
-    uint RAM37_RAMDATA;
-    uint RAM38_RAMDATA;
-    uint RAM39_RAMDATA;
-    uint RAM40_RAMDATA;
-    uint RAM41_RAMDATA;
-    uint RAM42_RAMDATA;
-    uint RAM43_RAMDATA;
-    uint RAM44_RAMDATA;
-    uint RAM45_RAMDATA;
-    uint RAM46_RAMDATA;
-    uint RAM47_RAMDATA;
-    uint RAM48_RAMDATA;
-    uint RAM49_RAMDATA;
-    uint RAM50_RAMDATA;
-    uint RAM51_RAMDATA;
-    uint RAM52_RAMDATA;
-    uint RAM53_RAMDATA;
-    uint RAM54_RAMDATA;
-    uint RAM55_RAMDATA;
-    uint RAM56_RAMDATA;
-    uint RAM57_RAMDATA;
-    uint RAM58_RAMDATA;
-    uint RAM59_RAMDATA;
-    uint RAM60_RAMDATA;
-    uint RAM61_RAMDATA;
-    uint RAM62_RAMDATA;
-    uint RAM63_RAMDATA;
-    uint RAM64_RAMDATA;
-    uint RAM65_RAMDATA;
-    uint RAM66_RAMDATA;
-    uint RAM67_RAMDATA;
-    uint RAM68_RAMDATA;
-    uint RAM69_RAMDATA;
-    uint RAM70_RAMDATA;
-    uint RAM71_RAMDATA;
-    uint RAM72_RAMDATA;
-    uint RAM73_RAMDATA;
-    uint RAM74_RAMDATA;
-    uint RAM75_RAMDATA;
-    uint RAM76_RAMDATA;
-    uint RAM77_RAMDATA;
-    uint RAM78_RAMDATA;
-    uint RAM79_RAMDATA;
-    uint RAM80_RAMDATA;
-    uint RAM81_RAMDATA;
-    uint RAM82_RAMDATA;
-    uint RAM83_RAMDATA;
-    uint RAM84_RAMDATA;
-    uint RAM85_RAMDATA;
-    uint RAM86_RAMDATA;
-    uint RAM87_RAMDATA;
-    uint RAM88_RAMDATA;
-    uint RAM89_RAMDATA;
-    uint RAM90_RAMDATA;
-    uint RAM91_RAMDATA;
-    uint RAM92_RAMDATA;
-    uint RAM93_RAMDATA;
-    uint RAM94_RAMDATA;
-    uint RAM95_RAMDATA;
-    uint RAM96_RAMDATA;
-    uint RAM97_RAMDATA;
-    uint RAM98_RAMDATA;
-    uint RAM99_RAMDATA;
-    uint RAM100_RAMDATA;
-    uint RAM101_RAMDATA;
-    uint RAM102_RAMDATA;
-    uint RAM103_RAMDATA;
-    uint RAM104_RAMDATA;
-    uint RAM105_RAMDATA;
-    uint RAM106_RAMDATA;
-    uint RAM107_RAMDATA;
-    uint RAM108_RAMDATA;
-    uint RAM109_RAMDATA;
-    uint RAM110_RAMDATA;
-    uint RAM111_RAMDATA;
-    uint RAM112_RAMDATA;
-    uint RAM113_RAMDATA;
-    uint RAM114_RAMDATA;
-    uint RAM115_RAMDATA;
-    uint RAM116_RAMDATA;
-    uint RAM117_RAMDATA;
-    uint RAM118_RAMDATA;
-    uint RAM119_RAMDATA;
-    uint RAM120_RAMDATA;
-    uint RAM121_RAMDATA;
-    uint RAM122_RAMDATA;
-    uint RAM123_RAMDATA;
-    uint RAM124_RAMDATA;
-    uint RAM125_RAMDATA;
-    uint RAM126_RAMDATA;
-    uint RAM127_RAMDATA;
-    uint RAM128_RAMDATA;
-    uint RAM129_RAMDATA;
-    uint RAM130_RAMDATA;
-    uint RAM131_RAMDATA;
-    uint RAM132_RAMDATA;
-    uint RAM133_RAMDATA;
-    uint RAM134_RAMDATA;
-    uint RAM135_RAMDATA;
-    uint RAM136_RAMDATA;
-    uint RAM137_RAMDATA;
-    uint RAM138_RAMDATA;
-    uint RAM139_RAMDATA;
-    uint RAM140_RAMDATA;
-    uint RAM141_RAMDATA;
-    uint RAM142_RAMDATA;
-    uint RAM143_RAMDATA;
-    uint RAM144_RAMDATA;
-    uint RAM145_RAMDATA;
-    uint RAM146_RAMDATA;
-    uint RAM147_RAMDATA;
-    uint RAM148_RAMDATA;
-    uint RAM149_RAMDATA;
-    uint RAM150_RAMDATA;
-    uint RAM151_RAMDATA;
-    uint RAM152_RAMDATA;
-    uint RAM153_RAMDATA;
-    uint RAM154_RAMDATA;
-    uint RAM155_RAMDATA;
-    uint RAM156_RAMDATA;
-    uint RAM157_RAMDATA;
-    uint RAM158_RAMDATA;
-    uint RAM159_RAMDATA;
-    uint RAM160_RAMDATA;
-    uint RAM161_RAMDATA;
-    uint RAM162_RAMDATA;
-    uint RAM163_RAMDATA;
-    uint RAM164_RAMDATA;
-    uint RAM165_RAMDATA;
-    uint RAM166_RAMDATA;
-    uint RAM167_RAMDATA;
-    uint RAM168_RAMDATA;
-    uint RAM169_RAMDATA;
-    uint RAM170_RAMDATA;
-    uint RAM171_RAMDATA;
-    uint RAM172_RAMDATA;
-    uint RAM173_RAMDATA;
-    uint RAM174_RAMDATA;
-    uint RAM175_RAMDATA;
-    uint RAM176_RAMDATA;
-    uint RAM177_RAMDATA;
-    uint RAM178_RAMDATA;
-    uint RAM179_RAMDATA;
-    uint RAM180_RAMDATA;
-    uint RAM181_RAMDATA;
-    uint RAM182_RAMDATA;
-    uint RAM183_RAMDATA;
-    uint RAM184_RAMDATA;
-    uint RAM185_RAMDATA;
-    uint RAM186_RAMDATA;
-    uint RAM187_RAMDATA;
-    uint RAM188_RAMDATA;
-    uint RAM189_RAMDATA;
-    uint RAM190_RAMDATA;
-    uint RAM191_RAMDATA;
-    uint RAM192_RAMDATA;
-    uint RAM193_RAMDATA;
-    uint RAM194_RAMDATA;
-    uint RAM195_RAMDATA;
-    uint RAM196_RAMDATA;
-    uint RAM197_RAMDATA;
-    uint RAM198_RAMDATA;
-    uint RAM199_RAMDATA;
-    uint RAM200_RAMDATA;
-    uint RAM201_RAMDATA;
-    uint RAM202_RAMDATA;
-    uint RAM203_RAMDATA;
-    uint RAM204_RAMDATA;
-    uint RAM205_RAMDATA;
-    uint RAM206_RAMDATA;
-    uint RAM207_RAMDATA;
-    uint RAM208_RAMDATA;
-    uint RAM209_RAMDATA;
-    uint RAM210_RAMDATA;
-    uint RAM211_RAMDATA;
-    uint RAM212_RAMDATA;
-    uint RAM213_RAMDATA;
-    uint RAM214_RAMDATA;
-    uint RAM215_RAMDATA;
-    uint RAM216_RAMDATA;
-    uint RAM217_RAMDATA;
-    uint RAM218_RAMDATA;
-    uint RAM219_RAMDATA;
-    uint RAM220_RAMDATA;
-    uint RAM221_RAMDATA;
-    uint RAM222_RAMDATA;
-    uint RAM223_RAMDATA;
-    uint RAM224_RAMDATA;
-    uint RAM225_RAMDATA;
-    uint RAM226_RAMDATA;
-    uint RAM227_RAMDATA;
-    uint RAM228_RAMDATA;
-    uint RAM229_RAMDATA;
-    uint RAM230_RAMDATA;
-    uint RAM231_RAMDATA;
-    uint RAM232_RAMDATA;
-    uint RAM233_RAMDATA;
-    uint RAM234_RAMDATA;
-    uint RAM235_RAMDATA;
-    uint RAM236_RAMDATA;
-    uint RAM237_RAMDATA;
-    uint RAM238_RAMDATA;
-    uint RAM239_RAMDATA;
-    uint RAM240_RAMDATA;
-    uint RAM241_RAMDATA;
-    uint RAM242_RAMDATA;
-    uint RAM243_RAMDATA;
-    uint RAM244_RAMDATA;
-    uint RAM245_RAMDATA;
-    uint RAM246_RAMDATA;
-    uint RAM247_RAMDATA;
-    uint RAM248_RAMDATA;
-    uint RAM249_RAMDATA;
-    uint RAM250_RAMDATA;
-    uint RAM251_RAMDATA;
-    uint RAM252_RAMDATA;
-    uint RAM253_RAMDATA;
-    uint RAM254_RAMDATA;
-    uint RAM255_RAMDATA;
+    uint32_t RAM0_RAMDATA;
+    uint32_t RAM1_RAMDATA;
+    uint32_t RAM2_RAMDATA;
+    uint32_t RAM3_RAMDATA;
+    uint32_t RAM4_RAMDATA;
+    uint32_t RAM5_RAMDATA;
+    uint32_t RAM6_RAMDATA;
+    uint32_t RAM7_RAMDATA;
+    uint32_t RAM8_RAMDATA;
+    uint32_t RAM9_RAMDATA;
+    uint32_t RAM10_RAMDATA;
+    uint32_t RAM11_RAMDATA;
+    uint32_t RAM12_RAMDATA;
+    uint32_t RAM13_RAMDATA;
+    uint32_t RAM14_RAMDATA;
+    uint32_t RAM15_RAMDATA;
+    uint32_t RAM16_RAMDATA;
+    uint32_t RAM17_RAMDATA;
+    uint32_t RAM18_RAMDATA;
+    uint32_t RAM19_RAMDATA;
+    uint32_t RAM20_RAMDATA;
+    uint32_t RAM21_RAMDATA;
+    uint32_t RAM22_RAMDATA;
+    uint32_t RAM23_RAMDATA;
+    uint32_t RAM24_RAMDATA;
+    uint32_t RAM25_RAMDATA;
+    uint32_t RAM26_RAMDATA;
+    uint32_t RAM27_RAMDATA;
+    uint32_t RAM28_RAMDATA;
+    uint32_t RAM29_RAMDATA;
+    uint32_t RAM30_RAMDATA;
+    uint32_t RAM31_RAMDATA;
+    uint32_t RAM32_RAMDATA;
+    uint32_t RAM33_RAMDATA;
+    uint32_t RAM34_RAMDATA;
+    uint32_t RAM35_RAMDATA;
+    uint32_t RAM36_RAMDATA;
+    uint32_t RAM37_RAMDATA;
+    uint32_t RAM38_RAMDATA;
+    uint32_t RAM39_RAMDATA;
+    uint32_t RAM40_RAMDATA;
+    uint32_t RAM41_RAMDATA;
+    uint32_t RAM42_RAMDATA;
+    uint32_t RAM43_RAMDATA;
+    uint32_t RAM44_RAMDATA;
+    uint32_t RAM45_RAMDATA;
+    uint32_t RAM46_RAMDATA;
+    uint32_t RAM47_RAMDATA;
+    uint32_t RAM48_RAMDATA;
+    uint32_t RAM49_RAMDATA;
+    uint32_t RAM50_RAMDATA;
+    uint32_t RAM51_RAMDATA;
+    uint32_t RAM52_RAMDATA;
+    uint32_t RAM53_RAMDATA;
+    uint32_t RAM54_RAMDATA;
+    uint32_t RAM55_RAMDATA;
+    uint32_t RAM56_RAMDATA;
+    uint32_t RAM57_RAMDATA;
+    uint32_t RAM58_RAMDATA;
+    uint32_t RAM59_RAMDATA;
+    uint32_t RAM60_RAMDATA;
+    uint32_t RAM61_RAMDATA;
+    uint32_t RAM62_RAMDATA;
+    uint32_t RAM63_RAMDATA;
+    uint32_t RAM64_RAMDATA;
+    uint32_t RAM65_RAMDATA;
+    uint32_t RAM66_RAMDATA;
+    uint32_t RAM67_RAMDATA;
+    uint32_t RAM68_RAMDATA;
+    uint32_t RAM69_RAMDATA;
+    uint32_t RAM70_RAMDATA;
+    uint32_t RAM71_RAMDATA;
+    uint32_t RAM72_RAMDATA;
+    uint32_t RAM73_RAMDATA;
+    uint32_t RAM74_RAMDATA;
+    uint32_t RAM75_RAMDATA;
+    uint32_t RAM76_RAMDATA;
+    uint32_t RAM77_RAMDATA;
+    uint32_t RAM78_RAMDATA;
+    uint32_t RAM79_RAMDATA;
+    uint32_t RAM80_RAMDATA;
+    uint32_t RAM81_RAMDATA;
+    uint32_t RAM82_RAMDATA;
+    uint32_t RAM83_RAMDATA;
+    uint32_t RAM84_RAMDATA;
+    uint32_t RAM85_RAMDATA;
+    uint32_t RAM86_RAMDATA;
+    uint32_t RAM87_RAMDATA;
+    uint32_t RAM88_RAMDATA;
+    uint32_t RAM89_RAMDATA;
+    uint32_t RAM90_RAMDATA;
+    uint32_t RAM91_RAMDATA;
+    uint32_t RAM92_RAMDATA;
+    uint32_t RAM93_RAMDATA;
+    uint32_t RAM94_RAMDATA;
+    uint32_t RAM95_RAMDATA;
+    uint32_t RAM96_RAMDATA;
+    uint32_t RAM97_RAMDATA;
+    uint32_t RAM98_RAMDATA;
+    uint32_t RAM99_RAMDATA;
+    uint32_t RAM100_RAMDATA;
+    uint32_t RAM101_RAMDATA;
+    uint32_t RAM102_RAMDATA;
+    uint32_t RAM103_RAMDATA;
+    uint32_t RAM104_RAMDATA;
+    uint32_t RAM105_RAMDATA;
+    uint32_t RAM106_RAMDATA;
+    uint32_t RAM107_RAMDATA;
+    uint32_t RAM108_RAMDATA;
+    uint32_t RAM109_RAMDATA;
+    uint32_t RAM110_RAMDATA;
+    uint32_t RAM111_RAMDATA;
+    uint32_t RAM112_RAMDATA;
+    uint32_t RAM113_RAMDATA;
+    uint32_t RAM114_RAMDATA;
+    uint32_t RAM115_RAMDATA;
+    uint32_t RAM116_RAMDATA;
+    uint32_t RAM117_RAMDATA;
+    uint32_t RAM118_RAMDATA;
+    uint32_t RAM119_RAMDATA;
+    uint32_t RAM120_RAMDATA;
+    uint32_t RAM121_RAMDATA;
+    uint32_t RAM122_RAMDATA;
+    uint32_t RAM123_RAMDATA;
+    uint32_t RAM124_RAMDATA;
+    uint32_t RAM125_RAMDATA;
+    uint32_t RAM126_RAMDATA;
+    uint32_t RAM127_RAMDATA;
+    uint32_t RAM128_RAMDATA;
+    uint32_t RAM129_RAMDATA;
+    uint32_t RAM130_RAMDATA;
+    uint32_t RAM131_RAMDATA;
+    uint32_t RAM132_RAMDATA;
+    uint32_t RAM133_RAMDATA;
+    uint32_t RAM134_RAMDATA;
+    uint32_t RAM135_RAMDATA;
+    uint32_t RAM136_RAMDATA;
+    uint32_t RAM137_RAMDATA;
+    uint32_t RAM138_RAMDATA;
+    uint32_t RAM139_RAMDATA;
+    uint32_t RAM140_RAMDATA;
+    uint32_t RAM141_RAMDATA;
+    uint32_t RAM142_RAMDATA;
+    uint32_t RAM143_RAMDATA;
+    uint32_t RAM144_RAMDATA;
+    uint32_t RAM145_RAMDATA;
+    uint32_t RAM146_RAMDATA;
+    uint32_t RAM147_RAMDATA;
+    uint32_t RAM148_RAMDATA;
+    uint32_t RAM149_RAMDATA;
+    uint32_t RAM150_RAMDATA;
+    uint32_t RAM151_RAMDATA;
+    uint32_t RAM152_RAMDATA;
+    uint32_t RAM153_RAMDATA;
+    uint32_t RAM154_RAMDATA;
+    uint32_t RAM155_RAMDATA;
+    uint32_t RAM156_RAMDATA;
+    uint32_t RAM157_RAMDATA;
+    uint32_t RAM158_RAMDATA;
+    uint32_t RAM159_RAMDATA;
+    uint32_t RAM160_RAMDATA;
+    uint32_t RAM161_RAMDATA;
+    uint32_t RAM162_RAMDATA;
+    uint32_t RAM163_RAMDATA;
+    uint32_t RAM164_RAMDATA;
+    uint32_t RAM165_RAMDATA;
+    uint32_t RAM166_RAMDATA;
+    uint32_t RAM167_RAMDATA;
+    uint32_t RAM168_RAMDATA;
+    uint32_t RAM169_RAMDATA;
+    uint32_t RAM170_RAMDATA;
+    uint32_t RAM171_RAMDATA;
+    uint32_t RAM172_RAMDATA;
+    uint32_t RAM173_RAMDATA;
+    uint32_t RAM174_RAMDATA;
+    uint32_t RAM175_RAMDATA;
+    uint32_t RAM176_RAMDATA;
+    uint32_t RAM177_RAMDATA;
+    uint32_t RAM178_RAMDATA;
+    uint32_t RAM179_RAMDATA;
+    uint32_t RAM180_RAMDATA;
+    uint32_t RAM181_RAMDATA;
+    uint32_t RAM182_RAMDATA;
+    uint32_t RAM183_RAMDATA;
+    uint32_t RAM184_RAMDATA;
+    uint32_t RAM185_RAMDATA;
+    uint32_t RAM186_RAMDATA;
+    uint32_t RAM187_RAMDATA;
+    uint32_t RAM188_RAMDATA;
+    uint32_t RAM189_RAMDATA;
+    uint32_t RAM190_RAMDATA;
+    uint32_t RAM191_RAMDATA;
+    uint32_t RAM192_RAMDATA;
+    uint32_t RAM193_RAMDATA;
+    uint32_t RAM194_RAMDATA;
+    uint32_t RAM195_RAMDATA;
+    uint32_t RAM196_RAMDATA;
+    uint32_t RAM197_RAMDATA;
+    uint32_t RAM198_RAMDATA;
+    uint32_t RAM199_RAMDATA;
+    uint32_t RAM200_RAMDATA;
+    uint32_t RAM201_RAMDATA;
+    uint32_t RAM202_RAMDATA;
+    uint32_t RAM203_RAMDATA;
+    uint32_t RAM204_RAMDATA;
+    uint32_t RAM205_RAMDATA;
+    uint32_t RAM206_RAMDATA;
+    uint32_t RAM207_RAMDATA;
+    uint32_t RAM208_RAMDATA;
+    uint32_t RAM209_RAMDATA;
+    uint32_t RAM210_RAMDATA;
+    uint32_t RAM211_RAMDATA;
+    uint32_t RAM212_RAMDATA;
+    uint32_t RAM213_RAMDATA;
+    uint32_t RAM214_RAMDATA;
+    uint32_t RAM215_RAMDATA;
+    uint32_t RAM216_RAMDATA;
+    uint32_t RAM217_RAMDATA;
+    uint32_t RAM218_RAMDATA;
+    uint32_t RAM219_RAMDATA;
+    uint32_t RAM220_RAMDATA;
+    uint32_t RAM221_RAMDATA;
+    uint32_t RAM222_RAMDATA;
+    uint32_t RAM223_RAMDATA;
+    uint32_t RAM224_RAMDATA;
+    uint32_t RAM225_RAMDATA;
+    uint32_t RAM226_RAMDATA;
+    uint32_t RAM227_RAMDATA;
+    uint32_t RAM228_RAMDATA;
+    uint32_t RAM229_RAMDATA;
+    uint32_t RAM230_RAMDATA;
+    uint32_t RAM231_RAMDATA;
+    uint32_t RAM232_RAMDATA;
+    uint32_t RAM233_RAMDATA;
+    uint32_t RAM234_RAMDATA;
+    uint32_t RAM235_RAMDATA;
+    uint32_t RAM236_RAMDATA;
+    uint32_t RAM237_RAMDATA;
+    uint32_t RAM238_RAMDATA;
+    uint32_t RAM239_RAMDATA;
+    uint32_t RAM240_RAMDATA;
+    uint32_t RAM241_RAMDATA;
+    uint32_t RAM242_RAMDATA;
+    uint32_t RAM243_RAMDATA;
+    uint32_t RAM244_RAMDATA;
+    uint32_t RAM245_RAMDATA;
+    uint32_t RAM246_RAMDATA;
+    uint32_t RAM247_RAMDATA;
+    uint32_t RAM248_RAMDATA;
+    uint32_t RAM249_RAMDATA;
+    uint32_t RAM250_RAMDATA;
+    uint32_t RAM251_RAMDATA;
+    uint32_t RAM252_RAMDATA;
+    uint32_t RAM253_RAMDATA;
+    uint32_t RAM254_RAMDATA;
+    uint32_t RAM255_RAMDATA;
 };
 
 typedef struct GPIO GPIO, *PGPIO;
 
 struct GPIO {
-    uint PA_CTRL; // Port Control Register
-    uint PA_MODEL; // Port Pin Mode Low Register
-    uint PA_MODEH; // Port Pin Mode High Register
-    uint PA_DOUT; // Port Data Out Register
+    uint32_t PA_CTRL; // Port Control Register
+    uint32_t PA_MODEL; // Port Pin Mode Low Register
+    uint32_t PA_MODEH; // Port Pin Mode High Register
+    uint32_t PA_DOUT; // Port Data Out Register
     undefined field_0x10;
     undefined field_0x11;
     undefined field_0x12;
@@ -7353,22 +7353,22 @@ struct GPIO {
     undefined field_0x15;
     undefined field_0x16;
     undefined field_0x17;
-    uint PA_DOUTTGL; // Port Data Out Toggle Register
-    uint PA_DIN; // Port Data in Register
-    uint PA_PINLOCKN; // Port Unlocked Pins Register
+    uint32_t PA_DOUTTGL; // Port Data Out Toggle Register
+    uint32_t PA_DIN; // Port Data in Register
+    uint32_t PA_PINLOCKN; // Port Unlocked Pins Register
     undefined field_0x24;
     undefined field_0x25;
     undefined field_0x26;
     undefined field_0x27;
-    uint PA_OVTDIS; // Over Voltage Disable for All Modes
+    uint32_t PA_OVTDIS; // Over Voltage Disable for All Modes
     undefined field_0x2c;
     undefined field_0x2d;
     undefined field_0x2e;
     undefined field_0x2f;
-    uint PB_CTRL; // Port Control Register
-    uint PB_MODEL; // Port Pin Mode Low Register
-    uint PB_MODEH; // Port Pin Mode High Register
-    uint PB_DOUT; // Port Data Out Register
+    uint32_t PB_CTRL; // Port Control Register
+    uint32_t PB_MODEL; // Port Pin Mode Low Register
+    uint32_t PB_MODEH; // Port Pin Mode High Register
+    uint32_t PB_DOUT; // Port Data Out Register
     undefined field_0x40;
     undefined field_0x41;
     undefined field_0x42;
@@ -7377,22 +7377,22 @@ struct GPIO {
     undefined field_0x45;
     undefined field_0x46;
     undefined field_0x47;
-    uint PB_DOUTTGL; // Port Data Out Toggle Register
-    uint PB_DIN; // Port Data in Register
-    uint PB_PINLOCKN; // Port Unlocked Pins Register
+    uint32_t PB_DOUTTGL; // Port Data Out Toggle Register
+    uint32_t PB_DIN; // Port Data in Register
+    uint32_t PB_PINLOCKN; // Port Unlocked Pins Register
     undefined field_0x54;
     undefined field_0x55;
     undefined field_0x56;
     undefined field_0x57;
-    uint PB_OVTDIS; // Over Voltage Disable for All Modes
+    uint32_t PB_OVTDIS; // Over Voltage Disable for All Modes
     undefined field_0x5c;
     undefined field_0x5d;
     undefined field_0x5e;
     undefined field_0x5f;
-    uint PC_CTRL; // Port Control Register
-    uint PC_MODEL; // Port Pin Mode Low Register
-    uint PC_MODEH; // Port Pin Mode High Register
-    uint PC_DOUT; // Port Data Out Register
+    uint32_t PC_CTRL; // Port Control Register
+    uint32_t PC_MODEL; // Port Pin Mode Low Register
+    uint32_t PC_MODEH; // Port Pin Mode High Register
+    uint32_t PC_DOUT; // Port Data Out Register
     undefined field_0x70;
     undefined field_0x71;
     undefined field_0x72;
@@ -7401,22 +7401,22 @@ struct GPIO {
     undefined field_0x75;
     undefined field_0x76;
     undefined field_0x77;
-    uint PC_DOUTTGL; // Port Data Out Toggle Register
-    uint PC_DIN; // Port Data in Register
-    uint PC_PINLOCKN; // Port Unlocked Pins Register
+    uint32_t PC_DOUTTGL; // Port Data Out Toggle Register
+    uint32_t PC_DIN; // Port Data in Register
+    uint32_t PC_PINLOCKN; // Port Unlocked Pins Register
     undefined field_0x84;
     undefined field_0x85;
     undefined field_0x86;
     undefined field_0x87;
-    uint PC_OVTDIS; // Over Voltage Disable for All Modes
+    uint32_t PC_OVTDIS; // Over Voltage Disable for All Modes
     undefined field_0x8c;
     undefined field_0x8d;
     undefined field_0x8e;
     undefined field_0x8f;
-    uint PD_CTRL; // Port Control Register
-    uint PD_MODEL; // Port Pin Mode Low Register
-    uint PD_MODEH; // Port Pin Mode High Register
-    uint PD_DOUT; // Port Data Out Register
+    uint32_t PD_CTRL; // Port Control Register
+    uint32_t PD_MODEL; // Port Pin Mode Low Register
+    uint32_t PD_MODEH; // Port Pin Mode High Register
+    uint32_t PD_DOUT; // Port Data Out Register
     undefined field_0xa0;
     undefined field_0xa1;
     undefined field_0xa2;
@@ -7425,22 +7425,22 @@ struct GPIO {
     undefined field_0xa5;
     undefined field_0xa6;
     undefined field_0xa7;
-    uint PD_DOUTTGL; // Port Data Out Toggle Register
-    uint PD_DIN; // Port Data in Register
-    uint PD_PINLOCKN; // Port Unlocked Pins Register
+    uint32_t PD_DOUTTGL; // Port Data Out Toggle Register
+    uint32_t PD_DIN; // Port Data in Register
+    uint32_t PD_PINLOCKN; // Port Unlocked Pins Register
     undefined field_0xb4;
     undefined field_0xb5;
     undefined field_0xb6;
     undefined field_0xb7;
-    uint PD_OVTDIS; // Over Voltage Disable for All Modes
+    uint32_t PD_OVTDIS; // Over Voltage Disable for All Modes
     undefined field_0xbc;
     undefined field_0xbd;
     undefined field_0xbe;
     undefined field_0xbf;
-    uint PE_CTRL; // Port Control Register
-    uint PE_MODEL; // Port Pin Mode Low Register
-    uint PE_MODEH; // Port Pin Mode High Register
-    uint PE_DOUT; // Port Data Out Register
+    uint32_t PE_CTRL; // Port Control Register
+    uint32_t PE_MODEL; // Port Pin Mode Low Register
+    uint32_t PE_MODEH; // Port Pin Mode High Register
+    uint32_t PE_DOUT; // Port Data Out Register
     undefined field_0xd0;
     undefined field_0xd1;
     undefined field_0xd2;
@@ -7449,22 +7449,22 @@ struct GPIO {
     undefined field_0xd5;
     undefined field_0xd6;
     undefined field_0xd7;
-    uint PE_DOUTTGL; // Port Data Out Toggle Register
-    uint PE_DIN; // Port Data in Register
-    uint PE_PINLOCKN; // Port Unlocked Pins Register
+    uint32_t PE_DOUTTGL; // Port Data Out Toggle Register
+    uint32_t PE_DIN; // Port Data in Register
+    uint32_t PE_PINLOCKN; // Port Unlocked Pins Register
     undefined field_0xe4;
     undefined field_0xe5;
     undefined field_0xe6;
     undefined field_0xe7;
-    uint PE_OVTDIS; // Over Voltage Disable for All Modes
+    uint32_t PE_OVTDIS; // Over Voltage Disable for All Modes
     undefined field_0xec;
     undefined field_0xed;
     undefined field_0xee;
     undefined field_0xef;
-    uint PF_CTRL; // Port Control Register
-    uint PF_MODEL; // Port Pin Mode Low Register
-    uint PF_MODEH; // Port Pin Mode High Register
-    uint PF_DOUT; // Port Data Out Register
+    uint32_t PF_CTRL; // Port Control Register
+    uint32_t PF_MODEL; // Port Pin Mode Low Register
+    uint32_t PF_MODEH; // Port Pin Mode High Register
+    uint32_t PF_DOUT; // Port Data Out Register
     undefined field_0x100;
     undefined field_0x101;
     undefined field_0x102;
@@ -7473,14 +7473,14 @@ struct GPIO {
     undefined field_0x105;
     undefined field_0x106;
     undefined field_0x107;
-    uint PF_DOUTTGL; // Port Data Out Toggle Register
-    uint PF_DIN; // Port Data in Register
-    uint PF_PINLOCKN; // Port Unlocked Pins Register
+    uint32_t PF_DOUTTGL; // Port Data Out Toggle Register
+    uint32_t PF_DIN; // Port Data in Register
+    uint32_t PF_PINLOCKN; // Port Unlocked Pins Register
     undefined field_0x114;
     undefined field_0x115;
     undefined field_0x116;
     undefined field_0x117;
-    uint PF_OVTDIS; // Over Voltage Disable for All Modes
+    uint32_t PF_OVTDIS; // Over Voltage Disable for All Modes
     undefined field_0x11c;
     undefined field_0x11d;
     undefined field_0x11e;
@@ -8221,18 +8221,18 @@ struct GPIO {
     undefined field_0x3fd;
     undefined field_0x3fe;
     undefined field_0x3ff;
-    uint EXTIPSELL; // External Interrupt Port Select Low Register
-    uint EXTIPSELH; // External Interrupt Port Select High Register
-    uint EXTIPINSELL; // External Interrupt Pin Select Low Register
-    uint EXTIPINSELH; // External Interrupt Pin Select High Register
-    uint EXTIRISE; // External Interrupt Rising Edge Trigger Register
-    uint EXTIFALL; // External Interrupt Falling Edge Trigger Register
-    uint EXTILEVEL; // External Interrupt Level Register
-    uint IF; // Interrupt Flag Register
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
-    uint EM4WUEN; // EM4 Wake Up Enable Register
+    uint32_t EXTIPSELL; // External Interrupt Port Select Low Register
+    uint32_t EXTIPSELH; // External Interrupt Port Select High Register
+    uint32_t EXTIPINSELL; // External Interrupt Pin Select Low Register
+    uint32_t EXTIPINSELH; // External Interrupt Pin Select High Register
+    uint32_t EXTIRISE; // External Interrupt Rising Edge Trigger Register
+    uint32_t EXTIFALL; // External Interrupt Falling Edge Trigger Register
+    uint32_t EXTILEVEL; // External Interrupt Level Register
+    uint32_t IF; // Interrupt Flag Register
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
+    uint32_t EM4WUEN; // EM4 Wake Up Enable Register
     undefined field_0x430;
     undefined field_0x431;
     undefined field_0x432;
@@ -8249,8 +8249,8 @@ struct GPIO {
     undefined field_0x43d;
     undefined field_0x43e;
     undefined field_0x43f;
-    uint ROUTEPEN; // I/O Routing Pin Enable Register
-    uint ROUTELOC0; // I/O Routing Location Register
+    uint32_t ROUTEPEN; // I/O Routing Pin Enable Register
+    uint32_t ROUTELOC0; // I/O Routing Location Register
     undefined field_0x448;
     undefined field_0x449;
     undefined field_0x44a;
@@ -8259,58 +8259,58 @@ struct GPIO {
     undefined field_0x44d;
     undefined field_0x44e;
     undefined field_0x44f;
-    uint INSENSE; // Input Sense Register
-    uint LOCK; // Configuration Lock Register
+    uint32_t INSENSE; // Input Sense Register
+    uint32_t LOCK; // Configuration Lock Register
 };
 
 typedef struct RAC_SET RAC_SET, *PRAC_SET;
 
 struct RAC_SET {
-    uint RXENSRCEN;
-    uint STATUS;
-    uint CMD;
-    uint CTRL;
-    uint FORCESTATE;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
-    uint LVDSCTRL;
-    uint LVDSIDLESEQ;
-    uint LVDSROUTE;
-    uint HFXORETIMECTRL;
-    uint HFXORETIMESTATUS;
-    uint TESTCTRL;
-    uint SEQSTATUS;
-    uint SEQCMD;
-    uint BREAKPOINT;
-    uint R0;
-    uint R1;
-    uint R2;
-    uint R3;
-    uint R4;
-    uint R5;
-    uint R6;
-    uint R7;
+    uint32_t RXENSRCEN;
+    uint32_t STATUS;
+    uint32_t CMD;
+    uint32_t CTRL;
+    uint32_t FORCESTATE;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
+    uint32_t LVDSCTRL;
+    uint32_t LVDSIDLESEQ;
+    uint32_t LVDSROUTE;
+    uint32_t HFXORETIMECTRL;
+    uint32_t HFXORETIMESTATUS;
+    uint32_t TESTCTRL;
+    uint32_t SEQSTATUS;
+    uint32_t SEQCMD;
+    uint32_t BREAKPOINT;
+    uint32_t R0;
+    uint32_t R1;
+    uint32_t R2;
+    uint32_t R3;
+    uint32_t R4;
+    uint32_t R5;
+    uint32_t R6;
+    uint32_t R7;
     undefined field_0x68;
     undefined field_0x69;
     undefined field_0x6a;
     undefined field_0x6b;
-    uint WAITMASK;
-    uint WAITSNSH;
-    uint STIMER;
-    uint STIMERCOMP;
-    uint VECTADDR;
-    uint SEQCTRL;
-    uint PRESC;
-    uint SR0;
-    uint SR1;
-    uint SR2;
-    uint SR3;
-    uint SYNTHENCTRL;
-    uint SYNTHREGCTRL;
-    uint VCOCTRL;
-    uint MMDCTRL;
+    uint32_t WAITMASK;
+    uint32_t WAITSNSH;
+    uint32_t STIMER;
+    uint32_t STIMERCOMP;
+    uint32_t VECTADDR;
+    uint32_t SEQCTRL;
+    uint32_t PRESC;
+    uint32_t SR0;
+    uint32_t SR1;
+    uint32_t SR2;
+    uint32_t SR3;
+    uint32_t SYNTHENCTRL;
+    uint32_t SYNTHREGCTRL;
+    uint32_t VCOCTRL;
+    uint32_t MMDCTRL;
     undefined field_0xa8;
     undefined field_0xa9;
     undefined field_0xaa;
@@ -8319,12 +8319,12 @@ struct RAC_SET {
     undefined field_0xad;
     undefined field_0xae;
     undefined field_0xaf;
-    uint CHPCTRL;
-    uint CHPCAL;
-    uint LPFCTRL;
-    uint SYNTHCTRL;
-    uint AUXCTRL;
-    uint AUXENCTRL;
+    uint32_t CHPCTRL;
+    uint32_t CHPCAL;
+    uint32_t LPFCTRL;
+    uint32_t SYNTHCTRL;
+    uint32_t AUXCTRL;
+    uint32_t AUXENCTRL;
     undefined field_0xc8;
     undefined field_0xc9;
     undefined field_0xca;
@@ -8369,95 +8369,95 @@ struct RAC_SET {
     undefined field_0xf1;
     undefined field_0xf2;
     undefined field_0xf3;
-    uint RFENCTRL;
-    uint RFENCTRL0;
-    uint LNAMIXCTRL;
-    uint PACTRL0;
-    uint PAPKDCTRL;
-    uint PABIASCTRL0;
-    uint PABIASCTRL1;
-    uint SGRFENCTRL0;
-    uint SGLNAMIXCTRL;
-    uint SGPACTRL0;
-    uint SGPAPKDCTRL;
-    uint SGPABIASCTRL0;
-    uint SGPABIASCTRL1;
-    uint RFSTATUS;
-    uint RFBIASCTRL;
-    uint RFBIASCAL;
-    uint LNAMIXCTRL1;
-    uint IFPGACTRL;
-    uint IFPGACAL;
-    uint IFFILTCTRL;
-    uint IFADCCTRL;
-    uint IFADCCAL;
-    uint PAENCTRL;
-    uint PACTUNECTRL;
-    uint RCTUNE;
-    uint APC;
-    uint SPARE;
+    uint32_t RFENCTRL;
+    uint32_t RFENCTRL0;
+    uint32_t LNAMIXCTRL;
+    uint32_t PACTRL0;
+    uint32_t PAPKDCTRL;
+    uint32_t PABIASCTRL0;
+    uint32_t PABIASCTRL1;
+    uint32_t SGRFENCTRL0;
+    uint32_t SGLNAMIXCTRL;
+    uint32_t SGPACTRL0;
+    uint32_t SGPAPKDCTRL;
+    uint32_t SGPABIASCTRL0;
+    uint32_t SGPABIASCTRL1;
+    uint32_t RFSTATUS;
+    uint32_t RFBIASCTRL;
+    uint32_t RFBIASCAL;
+    uint32_t LNAMIXCTRL1;
+    uint32_t IFPGACTRL;
+    uint32_t IFPGACAL;
+    uint32_t IFFILTCTRL;
+    uint32_t IFADCCTRL;
+    uint32_t IFADCCAL;
+    uint32_t PAENCTRL;
+    uint32_t PACTUNECTRL;
+    uint32_t RCTUNE;
+    uint32_t APC;
+    uint32_t SPARE;
 };
 
 typedef struct CRC_CLR CRC_CLR, *PCRC_CLR;
 
 struct CRC_CLR {
-    uint CTRL;
-    uint STATUS;
-    uint CMD;
-    uint INPUTDATA;
-    uint INIT;
-    uint DATA;
-    uint POLY;
+    uint32_t CTRL;
+    uint32_t STATUS;
+    uint32_t CMD;
+    uint32_t INPUTDATA;
+    uint32_t INIT;
+    uint32_t DATA;
+    uint32_t POLY;
 };
 
 typedef struct RAC RAC, *PRAC;
 
 struct RAC {
-    uint RXENSRCEN;
-    uint STATUS;
-    uint CMD;
-    uint CTRL;
-    uint FORCESTATE;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
-    uint LVDSCTRL;
-    uint LVDSIDLESEQ;
-    uint LVDSROUTE;
-    uint HFXORETIMECTRL;
-    uint HFXORETIMESTATUS;
-    uint TESTCTRL;
-    uint SEQSTATUS;
-    uint SEQCMD;
-    uint BREAKPOINT;
-    uint R0;
-    uint R1;
-    uint R2;
-    uint R3;
-    uint R4;
-    uint R5;
-    uint R6;
-    uint R7;
+    uint32_t RXENSRCEN;
+    uint32_t STATUS;
+    uint32_t CMD;
+    uint32_t CTRL;
+    uint32_t FORCESTATE;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
+    uint32_t LVDSCTRL;
+    uint32_t LVDSIDLESEQ;
+    uint32_t LVDSROUTE;
+    uint32_t HFXORETIMECTRL;
+    uint32_t HFXORETIMESTATUS;
+    uint32_t TESTCTRL;
+    uint32_t SEQSTATUS;
+    uint32_t SEQCMD;
+    uint32_t BREAKPOINT;
+    uint32_t R0;
+    uint32_t R1;
+    uint32_t R2;
+    uint32_t R3;
+    uint32_t R4;
+    uint32_t R5;
+    uint32_t R6;
+    uint32_t R7;
     undefined field_0x68;
     undefined field_0x69;
     undefined field_0x6a;
     undefined field_0x6b;
-    uint WAITMASK;
-    uint WAITSNSH;
-    uint STIMER;
-    uint STIMERCOMP;
-    uint VECTADDR;
-    uint SEQCTRL;
-    uint PRESC;
-    uint SR0;
-    uint SR1;
-    uint SR2;
-    uint SR3;
-    uint SYNTHENCTRL;
-    uint SYNTHREGCTRL;
-    uint VCOCTRL;
-    uint MMDCTRL;
+    uint32_t WAITMASK;
+    uint32_t WAITSNSH;
+    uint32_t STIMER;
+    uint32_t STIMERCOMP;
+    uint32_t VECTADDR;
+    uint32_t SEQCTRL;
+    uint32_t PRESC;
+    uint32_t SR0;
+    uint32_t SR1;
+    uint32_t SR2;
+    uint32_t SR3;
+    uint32_t SYNTHENCTRL;
+    uint32_t SYNTHREGCTRL;
+    uint32_t VCOCTRL;
+    uint32_t MMDCTRL;
     undefined field_0xa8;
     undefined field_0xa9;
     undefined field_0xaa;
@@ -8466,12 +8466,12 @@ struct RAC {
     undefined field_0xad;
     undefined field_0xae;
     undefined field_0xaf;
-    uint CHPCTRL;
-    uint CHPCAL;
-    uint LPFCTRL;
-    uint SYNTHCTRL;
-    uint AUXCTRL;
-    uint AUXENCTRL;
+    uint32_t CHPCTRL;
+    uint32_t CHPCAL;
+    uint32_t LPFCTRL;
+    uint32_t SYNTHCTRL;
+    uint32_t AUXCTRL;
+    uint32_t AUXENCTRL;
     undefined field_0xc8;
     undefined field_0xc9;
     undefined field_0xca;
@@ -8516,39 +8516,39 @@ struct RAC {
     undefined field_0xf1;
     undefined field_0xf2;
     undefined field_0xf3;
-    uint RFENCTRL;
-    uint RFENCTRL0;
-    uint LNAMIXCTRL;
-    uint PACTRL0;
-    uint PAPKDCTRL;
-    uint PABIASCTRL0;
-    uint PABIASCTRL1;
-    uint SGRFENCTRL0;
-    uint SGLNAMIXCTRL;
-    uint SGPACTRL0;
-    uint SGPAPKDCTRL;
-    uint SGPABIASCTRL0;
-    uint SGPABIASCTRL1;
-    uint RFSTATUS;
-    uint RFBIASCTRL;
-    uint RFBIASCAL;
-    uint LNAMIXCTRL1;
-    uint IFPGACTRL;
-    uint IFPGACAL;
-    uint IFFILTCTRL;
-    uint IFADCCTRL;
-    uint IFADCCAL;
-    uint PAENCTRL;
-    uint PACTUNECTRL;
-    uint RCTUNE;
-    uint APC;
-    uint SPARE;
+    uint32_t RFENCTRL;
+    uint32_t RFENCTRL0;
+    uint32_t LNAMIXCTRL;
+    uint32_t PACTRL0;
+    uint32_t PAPKDCTRL;
+    uint32_t PABIASCTRL0;
+    uint32_t PABIASCTRL1;
+    uint32_t SGRFENCTRL0;
+    uint32_t SGLNAMIXCTRL;
+    uint32_t SGPACTRL0;
+    uint32_t SGPAPKDCTRL;
+    uint32_t SGPABIASCTRL0;
+    uint32_t SGPABIASCTRL1;
+    uint32_t RFSTATUS;
+    uint32_t RFBIASCTRL;
+    uint32_t RFBIASCAL;
+    uint32_t LNAMIXCTRL1;
+    uint32_t IFPGACTRL;
+    uint32_t IFPGACAL;
+    uint32_t IFFILTCTRL;
+    uint32_t IFADCCTRL;
+    uint32_t IFADCCAL;
+    uint32_t PAENCTRL;
+    uint32_t PACTUNECTRL;
+    uint32_t RCTUNE;
+    uint32_t APC;
+    uint32_t SPARE;
 };
 
 typedef struct CMU_CLR CMU_CLR, *PCMU_CLR;
 
 struct CMU_CLR {
-    uint CTRL; // CMU Control Register
+    uint32_t CTRL; // CMU Control Register
     undefined field_0x4;
     undefined field_0x5;
     undefined field_0x6;
@@ -8561,24 +8561,24 @@ struct CMU_CLR {
     undefined field_0xd;
     undefined field_0xe;
     undefined field_0xf;
-    uint HFRCOCTRL; // HFRCO Control Register
+    uint32_t HFRCOCTRL; // HFRCO Control Register
     undefined field_0x14;
     undefined field_0x15;
     undefined field_0x16;
     undefined field_0x17;
-    uint AUXHFRCOCTRL; // AUXHFRCO Control Register
+    uint32_t AUXHFRCOCTRL; // AUXHFRCO Control Register
     undefined field_0x1c;
     undefined field_0x1d;
     undefined field_0x1e;
     undefined field_0x1f;
-    uint LFRCOCTRL; // LFRCO Control Register
-    uint HFXOCTRL; // HFXO Control Register
-    uint HFXOCTRL1; // HFXO Control 1
-    uint HFXOSTARTUPCTRL; // HFXO Startup Control
-    uint HFXOSTEADYSTATECTRL; // HFXO Steady State Control
-    uint HFXOTIMEOUTCTRL; // HFXO Timeout Control
-    uint LFXOCTRL; // LFXO Control Register
-    uint ULFRCOCTRL; // ULFRCO Control Register
+    uint32_t LFRCOCTRL; // LFRCO Control Register
+    uint32_t HFXOCTRL; // HFXO Control Register
+    uint32_t HFXOCTRL1; // HFXO Control 1
+    uint32_t HFXOSTARTUPCTRL; // HFXO Startup Control
+    uint32_t HFXOSTEADYSTATECTRL; // HFXO Steady State Control
+    uint32_t HFXOTIMEOUTCTRL; // HFXO Timeout Control
+    uint32_t LFXOCTRL; // LFXO Control Register
+    uint32_t ULFRCOCTRL; // ULFRCO Control Register
     undefined field_0x40;
     undefined field_0x41;
     undefined field_0x42;
@@ -8595,8 +8595,8 @@ struct CMU_CLR {
     undefined field_0x4d;
     undefined field_0x4e;
     undefined field_0x4f;
-    uint CALCTRL; // Calibration Control Register
-    uint CALCNT; // Calibration Counter Register
+    uint32_t CALCTRL; // Calibration Control Register
+    uint32_t CALCNT; // Calibration Counter Register
     undefined field_0x58;
     undefined field_0x59;
     undefined field_0x5a;
@@ -8605,8 +8605,8 @@ struct CMU_CLR {
     undefined field_0x5d;
     undefined field_0x5e;
     undefined field_0x5f;
-    uint OSCENCMD; // Oscillator Enable/Disable Command Register
-    uint CMD; // Command Register
+    uint32_t OSCENCMD; // Oscillator Enable/Disable Command Register
+    uint32_t CMD; // Command Register
     undefined field_0x68;
     undefined field_0x69;
     undefined field_0x6a;
@@ -8615,8 +8615,8 @@ struct CMU_CLR {
     undefined field_0x6d;
     undefined field_0x6e;
     undefined field_0x6f;
-    uint DBGCLKSEL; // Debug Trace Clock Select
-    uint HFCLKSEL; // High Frequency Clock Select Command Register
+    uint32_t DBGCLKSEL; // Debug Trace Clock Select
+    uint32_t HFCLKSEL; // High Frequency Clock Select Command Register
     undefined field_0x78;
     undefined field_0x79;
     undefined field_0x7a;
@@ -8625,25 +8625,25 @@ struct CMU_CLR {
     undefined field_0x7d;
     undefined field_0x7e;
     undefined field_0x7f;
-    uint LFACLKSEL; // Low Frequency A Clock Select Register
-    uint LFBCLKSEL; // Low Frequency B Clock Select Register
-    uint LFECLKSEL; // Low Frequency E Clock Select Register
+    uint32_t LFACLKSEL; // Low Frequency A Clock Select Register
+    uint32_t LFBCLKSEL; // Low Frequency B Clock Select Register
+    uint32_t LFECLKSEL; // Low Frequency E Clock Select Register
     undefined field_0x8c;
     undefined field_0x8d;
     undefined field_0x8e;
     undefined field_0x8f;
-    uint STATUS; // Status Register
-    uint HFCLKSTATUS; // HFCLK Status Register
+    uint32_t STATUS; // Status Register
+    uint32_t HFCLKSTATUS; // HFCLK Status Register
     undefined field_0x98;
     undefined field_0x99;
     undefined field_0x9a;
     undefined field_0x9b;
-    uint HFXOTRIMSTATUS; // HFXO Trim Status
-    uint IF; // Interrupt Flag Register
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
-    uint HFBUSCLKEN0; // High Frequency Bus Clock Enable Register 0
+    uint32_t HFXOTRIMSTATUS; // HFXO Trim Status
+    uint32_t IF; // Interrupt Flag Register
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
+    uint32_t HFBUSCLKEN0; // High Frequency Bus Clock Enable Register 0
     undefined field_0xb4;
     undefined field_0xb5;
     undefined field_0xb6;
@@ -8656,12 +8656,12 @@ struct CMU_CLR {
     undefined field_0xbd;
     undefined field_0xbe;
     undefined field_0xbf;
-    uint HFPERCLKEN0; // High Frequency Peripheral Clock Enable Register 0
+    uint32_t HFPERCLKEN0; // High Frequency Peripheral Clock Enable Register 0
     undefined field_0xc4;
     undefined field_0xc5;
     undefined field_0xc6;
     undefined field_0xc7;
-    uint HFRADIOCLKEN0; // High Frequency Peripheral Clock Enable Register 0
+    uint32_t HFRADIOCLKEN0; // High Frequency Peripheral Clock Enable Register 0
     undefined field_0xcc;
     undefined field_0xcd;
     undefined field_0xce;
@@ -8682,17 +8682,17 @@ struct CMU_CLR {
     undefined field_0xdd;
     undefined field_0xde;
     undefined field_0xdf;
-    uint LFACLKEN0; // Low Frequency a Clock Enable Register 0 (Async Reg)
+    uint32_t LFACLKEN0; // Low Frequency a Clock Enable Register 0 (Async Reg)
     undefined field_0xe4;
     undefined field_0xe5;
     undefined field_0xe6;
     undefined field_0xe7;
-    uint LFBCLKEN0; // Low Frequency B Clock Enable Register 0 (Async Reg)
+    uint32_t LFBCLKEN0; // Low Frequency B Clock Enable Register 0 (Async Reg)
     undefined field_0xec;
     undefined field_0xed;
     undefined field_0xee;
     undefined field_0xef;
-    uint LFECLKEN0; // Low Frequency E Clock Enable Register 0 (Async Reg)
+    uint32_t LFECLKEN0; // Low Frequency E Clock Enable Register 0 (Async Reg)
     undefined field_0xf4;
     undefined field_0xf5;
     undefined field_0xf6;
@@ -8705,15 +8705,15 @@ struct CMU_CLR {
     undefined field_0xfd;
     undefined field_0xfe;
     undefined field_0xff;
-    uint HFPRESC; // High Frequency Clock Prescaler Register
+    uint32_t HFPRESC; // High Frequency Clock Prescaler Register
     undefined field_0x104;
     undefined field_0x105;
     undefined field_0x106;
     undefined field_0x107;
-    uint HFCOREPRESC; // High Frequency Core Clock Prescaler Register
-    uint HFPERPRESC; // High Frequency Peripheral Clock Prescaler Register
-    uint HFRADIOPRESC; // Radio Clock Prescaler Register
-    uint HFEXPPRESC; // High Frequency Export Clock Prescaler Register
+    uint32_t HFCOREPRESC; // High Frequency Core Clock Prescaler Register
+    uint32_t HFPERPRESC; // High Frequency Peripheral Clock Prescaler Register
+    uint32_t HFRADIOPRESC; // Radio Clock Prescaler Register
+    uint32_t HFEXPPRESC; // High Frequency Export Clock Prescaler Register
     undefined field_0x118;
     undefined field_0x119;
     undefined field_0x11a;
@@ -8722,17 +8722,17 @@ struct CMU_CLR {
     undefined field_0x11d;
     undefined field_0x11e;
     undefined field_0x11f;
-    uint LFAPRESC0; // Low Frequency a Prescaler Register 0 (Async Reg)
+    uint32_t LFAPRESC0; // Low Frequency a Prescaler Register 0 (Async Reg)
     undefined field_0x124;
     undefined field_0x125;
     undefined field_0x126;
     undefined field_0x127;
-    uint LFBPRESC0; // Low Frequency B Prescaler Register 0 (Async Reg)
+    uint32_t LFBPRESC0; // Low Frequency B Prescaler Register 0 (Async Reg)
     undefined field_0x12c;
     undefined field_0x12d;
     undefined field_0x12e;
     undefined field_0x12f;
-    uint LFEPRESC0; // Low Frequency E Prescaler Register 0 (Async Reg)
+    uint32_t LFEPRESC0; // Low Frequency E Prescaler Register 0 (Async Reg)
     undefined field_0x134;
     undefined field_0x135;
     undefined field_0x136;
@@ -8745,8 +8745,8 @@ struct CMU_CLR {
     undefined field_0x13d;
     undefined field_0x13e;
     undefined field_0x13f;
-    uint SYNCBUSY; // Synchronization Busy Register
-    uint FREEZE; // Freeze Register
+    uint32_t SYNCBUSY; // Synchronization Busy Register
+    uint32_t FREEZE; // Freeze Register
     undefined field_0x148;
     undefined field_0x149;
     undefined field_0x14a;
@@ -8755,10 +8755,10 @@ struct CMU_CLR {
     undefined field_0x14d;
     undefined field_0x14e;
     undefined field_0x14f;
-    uint PCNTCTRL; // PCNT Control Register
-    uint LCDCTRL; // LCD Control Register
-    uint LVDSCTRL; // LVDSCTRL Control Register
-    uint ADCCTRL; // ADC Control Register
+    uint32_t PCNTCTRL; // PCNT Control Register
+    uint32_t LCDCTRL; // LCD Control Register
+    uint32_t LVDSCTRL; // LVDSCTRL Control Register
+    uint32_t ADCCTRL; // ADC Control Register
     undefined field_0x160;
     undefined field_0x161;
     undefined field_0x162;
@@ -8775,8 +8775,8 @@ struct CMU_CLR {
     undefined field_0x16d;
     undefined field_0x16e;
     undefined field_0x16f;
-    uint ROUTEPEN; // I/O Routing Pin Enable Register
-    uint ROUTELOC0; // I/O Routing Location Register
+    uint32_t ROUTEPEN; // I/O Routing Pin Enable Register
+    uint32_t ROUTELOC0; // I/O Routing Location Register
     undefined field_0x178;
     undefined field_0x179;
     undefined field_0x17a;
@@ -8785,22 +8785,22 @@ struct CMU_CLR {
     undefined field_0x17d;
     undefined field_0x17e;
     undefined field_0x17f;
-    uint LOCK; // Configuration Lock Register
+    uint32_t LOCK; // Configuration Lock Register
     undefined field_0x184;
     undefined field_0x185;
     undefined field_0x186;
     undefined field_0x187;
-    uint RFLOCK0; // RF LOCK Register
+    uint32_t RFLOCK0; // RF LOCK Register
     undefined field_0x18c;
     undefined field_0x18d;
     undefined field_0x18e;
     undefined field_0x18f;
-    uint HFBUSCLKENMASK0;
+    uint32_t HFBUSCLKENMASK0;
     undefined field_0x194;
     undefined field_0x195;
     undefined field_0x196;
     undefined field_0x197;
-    uint HFPERCLKENMASK0;
+    uint32_t HFPERCLKENMASK0;
     undefined field_0x19c;
     undefined field_0x19d;
     undefined field_0x19e;
@@ -8809,7 +8809,7 @@ struct CMU_CLR {
     undefined field_0x1a1;
     undefined field_0x1a2;
     undefined field_0x1a3;
-    uint HFRADIOCLKENMASK0;
+    uint32_t HFRADIOCLKENMASK0;
     undefined field_0x1a8;
     undefined field_0x1a9;
     undefined field_0x1aa;
@@ -8822,77 +8822,77 @@ struct CMU_CLR {
     undefined field_0x1b1;
     undefined field_0x1b2;
     undefined field_0x1b3;
-    uint LFACLKENMASK0;
+    uint32_t LFACLKENMASK0;
     undefined field_0x1b8;
     undefined field_0x1b9;
     undefined field_0x1ba;
     undefined field_0x1bb;
-    uint LFBCLKENMASK0;
+    uint32_t LFBCLKENMASK0;
     undefined field_0x1c0;
     undefined field_0x1c1;
     undefined field_0x1c2;
     undefined field_0x1c3;
-    uint LFECLKENMASK0;
+    uint32_t LFECLKENMASK0;
     undefined field_0x1c8;
     undefined field_0x1c9;
     undefined field_0x1ca;
     undefined field_0x1cb;
-    uint PCNTCLKENMASK;
-    uint TEST;
-    uint TESTHFRCOCTRL;
-    uint TESTAUXHFRCOCTRL;
-    uint TESTLFRCOCTRL;
-    uint TESTHFXOCTRL;
-    uint TESTLFXOCTRL;
+    uint32_t PCNTCLKENMASK;
+    uint32_t TEST;
+    uint32_t TESTHFRCOCTRL;
+    uint32_t TESTAUXHFRCOCTRL;
+    uint32_t TESTLFRCOCTRL;
+    uint32_t TESTHFXOCTRL;
+    uint32_t TESTLFXOCTRL;
 };
 
 typedef struct FRC FRC, *PFRC;
 
 struct FRC {
-    uint STATUS;
-    uint DFLCTRL;
-    uint MAXLENGTH;
-    uint ADDRFILTCTRL;
-    uint DATABUFFER;
-    uint WCNT;
-    uint WCNTCMP0;
-    uint WCNTCMP1;
-    uint WCNTCMP2;
-    uint CMD;
-    uint WHITECTRL;
-    uint WHITEPOLY;
-    uint WHITEINIT;
-    uint FECCTRL;
-    uint BLOCKRAMADDR;
-    uint CONVRAMADDR;
-    uint CTRL;
-    uint RXCTRL;
-    uint TRAILTXDATACTRL;
-    uint TRAILRXDATA;
-    uint SCNT;
-    uint CONVGENERATOR;
-    uint PUNCTCTRL;
-    uint PAUSECTRL;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
-    uint BUFFERMODE;
-    uint ROUTEPEN;
-    uint ROUTELOC0;
-    uint SNIFFCTRL;
-    uint AUXDATA;
-    uint RAWCTRL;
-    uint RXRAWDATA;
-    uint PAUSEDATA;
-    uint LIKELYCONVSTATE;
-    uint INTELEMENTNEXT;
-    uint INTWRITEPOINT;
-    uint INTREADPOINT;
-    uint FCD0;
-    uint FCD1;
-    uint FCD2;
-    uint FCD3;
+    uint32_t STATUS;
+    uint32_t DFLCTRL;
+    uint32_t MAXLENGTH;
+    uint32_t ADDRFILTCTRL;
+    uint32_t DATABUFFER;
+    uint32_t WCNT;
+    uint32_t WCNTCMP0;
+    uint32_t WCNTCMP1;
+    uint32_t WCNTCMP2;
+    uint32_t CMD;
+    uint32_t WHITECTRL;
+    uint32_t WHITEPOLY;
+    uint32_t WHITEINIT;
+    uint32_t FECCTRL;
+    uint32_t BLOCKRAMADDR;
+    uint32_t CONVRAMADDR;
+    uint32_t CTRL;
+    uint32_t RXCTRL;
+    uint32_t TRAILTXDATACTRL;
+    uint32_t TRAILRXDATA;
+    uint32_t SCNT;
+    uint32_t CONVGENERATOR;
+    uint32_t PUNCTCTRL;
+    uint32_t PAUSECTRL;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
+    uint32_t BUFFERMODE;
+    uint32_t ROUTEPEN;
+    uint32_t ROUTELOC0;
+    uint32_t SNIFFCTRL;
+    uint32_t AUXDATA;
+    uint32_t RAWCTRL;
+    uint32_t RXRAWDATA;
+    uint32_t PAUSEDATA;
+    uint32_t LIKELYCONVSTATE;
+    uint32_t INTELEMENTNEXT;
+    uint32_t INTWRITEPOINT;
+    uint32_t INTREADPOINT;
+    uint32_t FCD0;
+    uint32_t FCD1;
+    uint32_t FCD2;
+    uint32_t FCD3;
     undefined field_0xb0;
     undefined field_0xb1;
     undefined field_0xb2;
@@ -8909,34 +8909,34 @@ struct FRC {
     undefined field_0xbd;
     undefined field_0xbe;
     undefined field_0xbf;
-    uint INTELEMENT0;
-    uint INTELEMENT1;
-    uint INTELEMENT2;
-    uint INTELEMENT3;
-    uint INTELEMENT4;
-    uint INTELEMENT5;
-    uint INTELEMENT6;
-    uint INTELEMENT7;
-    uint INTELEMENT8;
-    uint INTELEMENT9;
-    uint INTELEMENT10;
-    uint INTELEMENT11;
-    uint INTELEMENT12;
-    uint INTELEMENT13;
-    uint INTELEMENT14;
-    uint INTELEMENT15;
+    uint32_t INTELEMENT0;
+    uint32_t INTELEMENT1;
+    uint32_t INTELEMENT2;
+    uint32_t INTELEMENT3;
+    uint32_t INTELEMENT4;
+    uint32_t INTELEMENT5;
+    uint32_t INTELEMENT6;
+    uint32_t INTELEMENT7;
+    uint32_t INTELEMENT8;
+    uint32_t INTELEMENT9;
+    uint32_t INTELEMENT10;
+    uint32_t INTELEMENT11;
+    uint32_t INTELEMENT12;
+    uint32_t INTELEMENT13;
+    uint32_t INTELEMENT14;
+    uint32_t INTELEMENT15;
 };
 
 typedef struct IDAC0 IDAC0, *PIDAC0;
 
 struct IDAC0 {
-    uint CTRL; // Control Register
-    uint CURPROG; // Current Programming Register
+    uint32_t CTRL; // Control Register
+    uint32_t CURPROG; // Current Programming Register
     undefined field_0x8;
     undefined field_0x9;
     undefined field_0xa;
     undefined field_0xb;
-    uint DUTYCONFIG; // Duty Cycle Configuration Register
+    uint32_t DUTYCONFIG; // Duty Cycle Configuration Register
     undefined field_0x10;
     undefined field_0x11;
     undefined field_0x12;
@@ -8945,80 +8945,80 @@ struct IDAC0 {
     undefined field_0x15;
     undefined field_0x16;
     undefined field_0x17;
-    uint STATUS; // Status Register
+    uint32_t STATUS; // Status Register
     undefined field_0x1c;
     undefined field_0x1d;
     undefined field_0x1e;
     undefined field_0x1f;
-    uint IF; // Interrupt Flag Register
-    uint IFS; // Interrupt Flag Set Register
-    uint IFC; // Interrupt Flag Clear Register
-    uint IEN; // Interrupt Enable Register
+    uint32_t IF; // Interrupt Flag Register
+    uint32_t IFS; // Interrupt Flag Set Register
+    uint32_t IFC; // Interrupt Flag Clear Register
+    uint32_t IEN; // Interrupt Enable Register
     undefined field_0x30;
     undefined field_0x31;
     undefined field_0x32;
     undefined field_0x33;
-    uint APORTREQ; // APORT Request Status Register
-    uint APORTCONFLICT; // APORT Request Status Register
+    uint32_t APORTREQ; // APORT Request Status Register
+    uint32_t APORTCONFLICT; // APORT Request Status Register
 };
 
 typedef struct RMU RMU, *PRMU;
 
 struct RMU {
-    uint CTRL; // Control Register
-    uint RSTCAUSE; // Reset Cause Register
-    uint CMD; // Command Register
-    uint RST; // Reset Control Register
-    uint LOCK; // Configuration Lock Register
+    uint32_t CTRL; // Control Register
+    uint32_t RSTCAUSE; // Reset Cause Register
+    uint32_t CMD; // Command Register
+    uint32_t RST; // Reset Control Register
+    uint32_t LOCK; // Configuration Lock Register
 };
 
 typedef struct FRC_CLR FRC_CLR, *PFRC_CLR;
 
 struct FRC_CLR {
-    uint STATUS;
-    uint DFLCTRL;
-    uint MAXLENGTH;
-    uint ADDRFILTCTRL;
-    uint DATABUFFER;
-    uint WCNT;
-    uint WCNTCMP0;
-    uint WCNTCMP1;
-    uint WCNTCMP2;
-    uint CMD;
-    uint WHITECTRL;
-    uint WHITEPOLY;
-    uint WHITEINIT;
-    uint FECCTRL;
-    uint BLOCKRAMADDR;
-    uint CONVRAMADDR;
-    uint CTRL;
-    uint RXCTRL;
-    uint TRAILTXDATACTRL;
-    uint TRAILRXDATA;
-    uint SCNT;
-    uint CONVGENERATOR;
-    uint PUNCTCTRL;
-    uint PAUSECTRL;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
-    uint BUFFERMODE;
-    uint ROUTEPEN;
-    uint ROUTELOC0;
-    uint SNIFFCTRL;
-    uint AUXDATA;
-    uint RAWCTRL;
-    uint RXRAWDATA;
-    uint PAUSEDATA;
-    uint LIKELYCONVSTATE;
-    uint INTELEMENTNEXT;
-    uint INTWRITEPOINT;
-    uint INTREADPOINT;
-    uint FCD0;
-    uint FCD1;
-    uint FCD2;
-    uint FCD3;
+    uint32_t STATUS;
+    uint32_t DFLCTRL;
+    uint32_t MAXLENGTH;
+    uint32_t ADDRFILTCTRL;
+    uint32_t DATABUFFER;
+    uint32_t WCNT;
+    uint32_t WCNTCMP0;
+    uint32_t WCNTCMP1;
+    uint32_t WCNTCMP2;
+    uint32_t CMD;
+    uint32_t WHITECTRL;
+    uint32_t WHITEPOLY;
+    uint32_t WHITEINIT;
+    uint32_t FECCTRL;
+    uint32_t BLOCKRAMADDR;
+    uint32_t CONVRAMADDR;
+    uint32_t CTRL;
+    uint32_t RXCTRL;
+    uint32_t TRAILTXDATACTRL;
+    uint32_t TRAILRXDATA;
+    uint32_t SCNT;
+    uint32_t CONVGENERATOR;
+    uint32_t PUNCTCTRL;
+    uint32_t PAUSECTRL;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
+    uint32_t BUFFERMODE;
+    uint32_t ROUTEPEN;
+    uint32_t ROUTELOC0;
+    uint32_t SNIFFCTRL;
+    uint32_t AUXDATA;
+    uint32_t RAWCTRL;
+    uint32_t RXRAWDATA;
+    uint32_t PAUSEDATA;
+    uint32_t LIKELYCONVSTATE;
+    uint32_t INTELEMENTNEXT;
+    uint32_t INTWRITEPOINT;
+    uint32_t INTREADPOINT;
+    uint32_t FCD0;
+    uint32_t FCD1;
+    uint32_t FCD2;
+    uint32_t FCD3;
     undefined field_0xb0;
     undefined field_0xb1;
     undefined field_0xb2;
@@ -9035,85 +9035,85 @@ struct FRC_CLR {
     undefined field_0xbd;
     undefined field_0xbe;
     undefined field_0xbf;
-    uint INTELEMENT0;
-    uint INTELEMENT1;
-    uint INTELEMENT2;
-    uint INTELEMENT3;
-    uint INTELEMENT4;
-    uint INTELEMENT5;
-    uint INTELEMENT6;
-    uint INTELEMENT7;
-    uint INTELEMENT8;
-    uint INTELEMENT9;
-    uint INTELEMENT10;
-    uint INTELEMENT11;
-    uint INTELEMENT12;
-    uint INTELEMENT13;
-    uint INTELEMENT14;
-    uint INTELEMENT15;
+    uint32_t INTELEMENT0;
+    uint32_t INTELEMENT1;
+    uint32_t INTELEMENT2;
+    uint32_t INTELEMENT3;
+    uint32_t INTELEMENT4;
+    uint32_t INTELEMENT5;
+    uint32_t INTELEMENT6;
+    uint32_t INTELEMENT7;
+    uint32_t INTELEMENT8;
+    uint32_t INTELEMENT9;
+    uint32_t INTELEMENT10;
+    uint32_t INTELEMENT11;
+    uint32_t INTELEMENT12;
+    uint32_t INTELEMENT13;
+    uint32_t INTELEMENT14;
+    uint32_t INTELEMENT15;
 };
 
 typedef struct PROTIMER_SET PROTIMER_SET, *PPROTIMER_SET;
 
 struct PROTIMER_SET {
-    uint CTRL;
-    uint CMD;
-    uint PRSCTRL;
-    uint STATUS;
-    uint PRECNT;
-    uint BASECNT;
-    uint WRAPCNT;
-    uint BASEPRE;
-    uint LWRAPCNT;
-    uint PRECNTTOPADJ;
-    uint PRECNTTOP;
-    uint BASECNTTOP;
-    uint WRAPCNTTOP;
-    uint TOUT0CNT;
-    uint TOUT0CNTTOP;
-    uint TOUT0COMP;
-    uint TOUT1CNT;
-    uint TOUT1CNTTOP;
-    uint TOUT1COMP;
-    uint LBTCTRL;
-    uint LBTPRSCTRL;
-    uint LBTSTATE;
-    uint RANDOM;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
-    uint RXCTRL;
-    uint TXCTRL;
-    uint CC0_CTRL;
-    uint CC0_PRE;
-    uint CC0_BASE;
-    uint CC0_WRAP;
-    uint CC1_CTRL;
-    uint CC1_PRE;
-    uint CC1_BASE;
-    uint CC1_WRAP;
-    uint CC2_CTRL;
-    uint CC2_PRE;
-    uint CC2_BASE;
-    uint CC2_WRAP;
-    uint CC3_CTRL;
-    uint CC3_PRE;
-    uint CC3_BASE;
-    uint CC3_WRAP;
-    uint CC4_CTRL;
-    uint CC4_PRE;
-    uint CC4_BASE;
-    uint CC4_WRAP;
+    uint32_t CTRL;
+    uint32_t CMD;
+    uint32_t PRSCTRL;
+    uint32_t STATUS;
+    uint32_t PRECNT;
+    uint32_t BASECNT;
+    uint32_t WRAPCNT;
+    uint32_t BASEPRE;
+    uint32_t LWRAPCNT;
+    uint32_t PRECNTTOPADJ;
+    uint32_t PRECNTTOP;
+    uint32_t BASECNTTOP;
+    uint32_t WRAPCNTTOP;
+    uint32_t TOUT0CNT;
+    uint32_t TOUT0CNTTOP;
+    uint32_t TOUT0COMP;
+    uint32_t TOUT1CNT;
+    uint32_t TOUT1CNTTOP;
+    uint32_t TOUT1COMP;
+    uint32_t LBTCTRL;
+    uint32_t LBTPRSCTRL;
+    uint32_t LBTSTATE;
+    uint32_t RANDOM;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
+    uint32_t RXCTRL;
+    uint32_t TXCTRL;
+    uint32_t CC0_CTRL;
+    uint32_t CC0_PRE;
+    uint32_t CC0_BASE;
+    uint32_t CC0_WRAP;
+    uint32_t CC1_CTRL;
+    uint32_t CC1_PRE;
+    uint32_t CC1_BASE;
+    uint32_t CC1_WRAP;
+    uint32_t CC2_CTRL;
+    uint32_t CC2_PRE;
+    uint32_t CC2_BASE;
+    uint32_t CC2_WRAP;
+    uint32_t CC3_CTRL;
+    uint32_t CC3_PRE;
+    uint32_t CC3_BASE;
+    uint32_t CC3_WRAP;
+    uint32_t CC4_CTRL;
+    uint32_t CC4_PRE;
+    uint32_t CC4_BASE;
+    uint32_t CC4_WRAP;
 };
 
 typedef struct SYNTH_CLR SYNTH_CLR, *PSYNTH_CLR;
 
 struct SYNTH_CLR {
-    uint STATUS;
-    uint CMD;
-    uint CTRL;
-    uint CALCTRL;
+    uint32_t STATUS;
+    uint32_t CMD;
+    uint32_t CTRL;
+    uint32_t CALCTRL;
     undefined field_0x10;
     undefined field_0x11;
     undefined field_0x12;
@@ -9134,29 +9134,29 @@ struct SYNTH_CLR {
     undefined field_0x21;
     undefined field_0x22;
     undefined field_0x23;
-    uint VCDACCTRL;
+    uint32_t VCDACCTRL;
     undefined field_0x28;
     undefined field_0x29;
     undefined field_0x2a;
     undefined field_0x2b;
-    uint FREQ;
-    uint IFFREQ;
-    uint DIVCTRL;
-    uint CHCTRL;
-    uint CHSP;
-    uint CALOFFSET;
-    uint VCOTUNING;
+    uint32_t FREQ;
+    uint32_t IFFREQ;
+    uint32_t DIVCTRL;
+    uint32_t CHCTRL;
+    uint32_t CHSP;
+    uint32_t CALOFFSET;
+    uint32_t VCOTUNING;
     undefined field_0x48;
     undefined field_0x49;
     undefined field_0x4a;
     undefined field_0x4b;
-    uint VCORANGE;
-    uint VCOGAIN;
-    uint AUXVCOTUNING;
-    uint AUXFREQ;
-    uint AUXVCDACCTRL;
-    uint CHPDACCTRL;
-    uint CAPCALCYCLECNT;
+    uint32_t VCORANGE;
+    uint32_t VCOGAIN;
+    uint32_t AUXVCOTUNING;
+    uint32_t AUXFREQ;
+    uint32_t AUXVCDACCTRL;
+    uint32_t CHPDACCTRL;
+    uint32_t CAPCALCYCLECNT;
     undefined field_0x68;
     undefined field_0x69;
     undefined field_0x6a;
@@ -9165,10 +9165,10 @@ struct SYNTH_CLR {
     undefined field_0x6d;
     undefined field_0x6e;
     undefined field_0x6f;
-    uint IF;
-    uint IFS;
-    uint IFC;
-    uint IEN;
+    uint32_t IF;
+    uint32_t IFS;
+    uint32_t IFC;
+    uint32_t IEN;
 };
 
 typedef struct Elf32_Shdr Elf32_Shdr, *PElf32_Shdr;
@@ -9229,8 +9229,8 @@ struct Elf32_Sym {
     dword st_name;
     dword st_value;
     dword st_size;
-    byte st_info;
-    byte st_other;
+    uint8_t st_info;
+    uint8_t st_other;
     word st_shndx;
 };
 
@@ -9244,14 +9244,14 @@ struct Elf32_Rel {
 typedef struct Elf32_Ehdr Elf32_Ehdr, *PElf32_Ehdr;
 
 struct Elf32_Ehdr {
-    byte e_ident_magic_num;
+    uint8_t e_ident_magic_num;
     char e_ident_magic_str[3];
-    byte e_ident_class;
-    byte e_ident_data;
-    byte e_ident_version;
-    byte e_ident_osabi;
-    byte e_ident_abiversion;
-    byte e_ident_pad[7];
+    uint8_t e_ident_class;
+    uint8_t e_ident_data;
+    uint8_t e_ident_version;
+    uint8_t e_ident_osabi;
+    uint8_t e_ident_abiversion;
+    uint8_t e_ident_pad[7];
     word e_type;
     word e_machine;
     dword e_version;
@@ -9273,27 +9273,27 @@ struct Elf32_Ehdr {
 int TIMING_PreambleSyncBits(void);
 undefined4 TIMING_CalcAdjustUs(int param_1,int param_2);
 void TIMING_SeqTimingInit(void);
-int TIMING_NsToStimerTickCalcSigned(uint param_1);
-uint TIMING_NsToStimerTickCalc(void);
+int TIMING_NsToStimerTickCalcSigned(uint32_t param_1);
+uint32_t TIMING_NsToStimerTickCalc(void);
 void TIMING_InitStimer(void);
 void TIMING_TxWarmTimeRecalculate(int param_1);
-uint TIMING_TxWarmTimeSet(int param_1,uint param_2);
+uint32_t TIMING_TxWarmTimeSet(int param_1,uint32_t param_2);
 undefined2 TIMING_TxWarmTimeGet(int param_1);
 void TIMING_RxToTxTimeRecalculate(int param_1);
-uint TIMING_RxToTxTimeSet(int param_1,uint param_2);
+uint32_t TIMING_RxToTxTimeSet(int param_1,uint32_t param_2);
 void TIMING_RxFrameToTxTimeRecalculate(int param_1);
-uint TIMING_RxFrameToTxTimeSet(int param_1,uint param_2);
+uint32_t TIMING_RxFrameToTxTimeSet(int param_1,uint32_t param_2);
 void TIMING_TxToTxTimeRecalculate(int param_1);
-void TIMING_TxToTxTimeSet(int param_1,uint param_2);
+void TIMING_TxToTxTimeSet(int param_1,uint32_t param_2);
 void TIMING_TxToRxTimeRecalculate(int param_1);
-uint TIMING_TxToRxTimeSet(int param_1,uint param_2);
+uint32_t TIMING_TxToRxTimeSet(int param_1,uint32_t param_2);
 void TIMING_RxWarmTimeRecalculate(int param_1);
-uint TIMING_RxWarmTimeSet(int param_1,uint param_2);
+uint32_t TIMING_RxWarmTimeSet(int param_1,uint32_t param_2);
 undefined2 TIMING_RxWarmTimeGet(int param_1);
 void TIMING_RxSearchTimeRecalculate(int *param_1);
-uint TIMING_RxSearchTimeSet(int param_1,uint param_2);
+uint32_t TIMING_RxSearchTimeSet(int param_1,uint32_t param_2);
 void TIMING_TxToRxSearchTimeRecalculate(int *param_1);
-uint TIMING_TxToRxSearchTimeSet(int param_1,uint param_2);
+uint32_t TIMING_TxToRxSearchTimeSet(int param_1,uint32_t param_2);
 void TIMING_RecalculateAll(int param_1);
 void TIMING_RecalculatePaRampChanged(int param_1);
 void TIMING_RecalculateViterbiChanged(int param_1);

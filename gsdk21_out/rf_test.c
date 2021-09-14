@@ -6,17 +6,17 @@ void RFTEST_SaveRadioConfiguration(void)
 
 {
   if (testModeRegisterState == '\0') {
-    DAT_000101e0 = read_volatile_4(Peripherals::MODEM.CTRL0);
-    DAT_000101e4 = read_volatile_4(Peripherals::MODEM.MODINDEX);
-    DAT_000101e8 = read_volatile_4(Peripherals::MODEM.PRE);
-    DAT_000101ec = read_volatile_4(Peripherals::FRC.DFLCTRL);
-    DAT_000101f0 = read_volatile_4(Peripherals::FRC.FECCTRL);
-    DAT_000101f4 = read_volatile_4(Peripherals::FRC.FCD0);
-    DAT_000101f8 = read_volatile_4(Peripherals::FRC.FCD1);
-    DAT_000101fc = read_volatile_4(Peripherals::FRC.WHITECTRL);
-    DAT_00010200 = read_volatile_4(Peripherals::FRC.WHITEPOLY);
-    DAT_00010204 = read_volatile_4(Peripherals::FRC.WHITEINIT);
-    DAT_00010208 = read_volatile_4(Peripherals::SEQ.SYNTHLPFCTRLTX);
+    DAT_000101e0 = (MODEM->CTRL0);
+    DAT_000101e4 = (MODEM->MODINDEX);
+    DAT_000101e8 = (MODEM->PRE);
+    DAT_000101ec = (FRC->DFLCTRL);
+    DAT_000101f0 = (FRC->FECCTRL);
+    DAT_000101f4 = (FRC->FCD0);
+    DAT_000101f8 = (FRC->FCD1);
+    DAT_000101fc = (FRC->WHITECTRL);
+    DAT_00010200 = (FRC->WHITEPOLY);
+    DAT_00010204 = (FRC->WHITEINIT);
+    DAT_00010208 = (SEQ->SYNTHLPFCTRLTX);
     testModeRegisterState = '\x01';
   }
   return;
@@ -27,26 +27,26 @@ void RFTEST_SaveRadioConfiguration(void)
 void RFTEST_StartCwTx(void)
 
 {
-  uint uVar1;
-  uint uVar2;
+  uint32_t uVar1;
+  uint32_t uVar2;
   
-  uVar1 = read_volatile_4(Peripherals::SEQ.SYNTHLPFCTRLTX);
-  write_volatile_4(Peripherals::SEQ.SYNTHLPFCTRLTX,uVar1 & 0xfffffff0);
-  uVar1 = read_volatile_4(Peripherals::MODEM.CTRL0);
+  uVar1 = (SEQ->SYNTHLPFCTRLTX);
+  write_volatile_4(SEQ->SYNTHLPFCTRLTX,uVar1 & 0xfffffff0);
+  uVar1 = (MODEM->CTRL0);
   uVar2 = uVar1 & 0x1c0;
   if (uVar2 == 0xc0) {
-    write_volatile_4(Peripherals::MODEM.CTRL0,uVar1 & 0xfffffe3f | 0x80);
+    write_volatile_4(MODEM->CTRL0,uVar1 & 0xfffffe3f | 0x80);
   }
   else {
     if ((uVar2 != 0x180) && (uVar2 != 0x80)) {
-      write_volatile_4(Peripherals::MODEM.MODINDEX,0);
+      write_volatile_4(MODEM->MODINDEX,0);
     }
   }
-  write_volatile_4(Peripherals::MODEM_SET.PRE,0xffff000f);
-  write_volatile_4(Peripherals::MODEM_CLR.PRE,0x30);
-  write_volatile_4(Peripherals::FRC.DFLCTRL,5);
-  write_volatile_4(Peripherals::FRC_SET.CTRL,1);
-  write_volatile_4(Peripherals::RAC.CMD,1);
+  BUS_RegMaskedSet(&MODEM->PRE,0xffff000f);
+  BUS_RegMaskedClear(&MODEM->PRE,0x30);
+  write_volatile_4(FRC->DFLCTRL,5);
+  BUS_RegMaskedSet(&FRC->CTRL,1);
+  write_volatile_4(RAC->CMD,1);
   return;
 }
 
@@ -55,20 +55,20 @@ void RFTEST_StartCwTx(void)
 void RFTEST_StartStreamTx(void)
 
 {
-  uint uVar1;
+  uint32_t uVar1;
   
-  uVar1 = read_volatile_4(Peripherals::FRC.FCD0);
-  write_volatile_4(Peripherals::FRC.FCD0,uVar1 & 0xffffbfff);
-  uVar1 = read_volatile_4(Peripherals::FRC.FCD1);
-  write_volatile_4(Peripherals::FRC.FCD1,uVar1 & 0xffffbfff);
-  write_volatile_4(Peripherals::FRC.FECCTRL,1);
-  write_volatile_4(Peripherals::FRC.WHITECTRL,0x24);
-  write_volatile_4(Peripherals::FRC.WHITEPOLY,0x100);
-  write_volatile_4(Peripherals::FRC.WHITEINIT,0x138);
-  write_volatile_4(Peripherals::FRC_CLR.SNIFFCTRL,0x10);
-  write_volatile_4(Peripherals::FRC.DFLCTRL,5);
-  write_volatile_4(Peripherals::FRC_SET.CTRL,1);
-  write_volatile_4(Peripherals::RAC.CMD,1);
+  uVar1 = (FRC->FCD0);
+  write_volatile_4(FRC->FCD0,uVar1 & 0xffffbfff);
+  uVar1 = (FRC->FCD1);
+  write_volatile_4(FRC->FCD1,uVar1 & 0xffffbfff);
+  write_volatile_4(FRC->FECCTRL,1);
+  write_volatile_4(FRC->WHITECTRL,0x24);
+  write_volatile_4(FRC->WHITEPOLY,0x100);
+  write_volatile_4(FRC->WHITEINIT,0x138);
+  BUS_RegMaskedClear(&FRC->SNIFFCTRL,0x10);
+  write_volatile_4(FRC->DFLCTRL,5);
+  BUS_RegMaskedSet(&FRC->CTRL,1);
+  write_volatile_4(RAC->CMD,1);
   return;
 }
 
@@ -77,7 +77,7 @@ void RFTEST_StartStreamTx(void)
 void RFTEST_StartTx(void)
 
 {
-  write_volatile_4(Peripherals::RAC.CMD,1);
+  write_volatile_4(RAC->CMD,1);
   return;
 }
 
@@ -86,23 +86,23 @@ void RFTEST_StartTx(void)
 void RFTEST_StopTx(void)
 
 {
-  uint uVar1;
+  uint32_t uVar1;
   int iVar2;
   
   CORE_EnterCritical();
-  uVar1 = read_volatile_4(Peripherals::RAC.STATUS);
+  uVar1 = (RAC->STATUS);
   if ((uVar1 & 0x9000000) != 0) {
-    write_volatile_4(Peripherals::RAC.CMD,0x20);
-    uVar1 = read_volatile_4(Peripherals::FRC.DFLCTRL);
+    write_volatile_4(RAC->CMD,0x20);
+    uVar1 = (FRC->DFLCTRL);
     if ((uVar1 & 7) == 5) {
       iVar2 = 0;
       do {
-        uVar1 = read_volatile_4(Peripherals::FRC.IF);
+        uVar1 = (FRC->IF);
         if ((int)(uVar1 << 0x1d) < 0) break;
         iVar2 = iVar2 + 1;
       } while (iVar2 != 0x10000);
     }
-    write_volatile_4(Peripherals::FRC_SET.IFC,4);
+    BUS_RegMaskedSet(&FRC->IFC,4);
   }
   CORE_ExitCritical();
   return;
@@ -115,19 +115,19 @@ void RFTEST_RestoreRadioConfiguration(void)
 {
   if (testModeRegisterState != '\0') {
     RFTEST_StopTx();
-    write_volatile_4(Peripherals::MODEM.CTRL0,DAT_000101e0);
-    write_volatile_4(Peripherals::MODEM.MODINDEX,DAT_000101e4);
-    write_volatile_4(Peripherals::MODEM.PRE,DAT_000101e8);
-    write_volatile_4(Peripherals::FRC.DFLCTRL,DAT_000101ec);
-    write_volatile_4(Peripherals::FRC.FECCTRL,DAT_000101f0);
-    write_volatile_4(Peripherals::FRC.FCD0,DAT_000101f4);
-    write_volatile_4(Peripherals::FRC.FCD1,DAT_000101f8);
-    write_volatile_4(Peripherals::FRC.WHITECTRL,DAT_000101fc);
-    write_volatile_4(Peripherals::FRC.WHITEPOLY,DAT_00010200);
-    write_volatile_4(Peripherals::FRC.WHITEINIT,DAT_00010204);
-    write_volatile_4(Peripherals::SEQ.SYNTHLPFCTRLTX,DAT_00010208);
-    write_volatile_4(Peripherals::FRC_CLR.CTRL,1);
-    write_volatile_4(Peripherals::FRC_SET.SNIFFCTRL,0x10);
+    write_volatile_4(MODEM->CTRL0,DAT_000101e0);
+    write_volatile_4(MODEM->MODINDEX,DAT_000101e4);
+    write_volatile_4(MODEM->PRE,DAT_000101e8);
+    write_volatile_4(FRC->DFLCTRL,DAT_000101ec);
+    write_volatile_4(FRC->FECCTRL,DAT_000101f0);
+    write_volatile_4(FRC->FCD0,DAT_000101f4);
+    write_volatile_4(FRC->FCD1,DAT_000101f8);
+    write_volatile_4(FRC->WHITECTRL,DAT_000101fc);
+    write_volatile_4(FRC->WHITEPOLY,DAT_00010200);
+    write_volatile_4(FRC->WHITEINIT,DAT_00010204);
+    write_volatile_4(SEQ->SYNTHLPFCTRLTX,DAT_00010208);
+    BUS_RegMaskedClear(&FRC->CTRL,1);
+    BUS_RegMaskedSet(&FRC->SNIFFCTRL,0x10);
     testModeRegisterState = '\0';
   }
   return;

@@ -1,11 +1,11 @@
 typedef unsigned char   undefined;
 
-typedef unsigned char    byte;
+typedef unsigned char    uint8_t;
 typedef unsigned int    dword;
-typedef unsigned int    uint;
+typedef unsigned int    uint32_t;
 typedef unsigned char    undefined1;
 typedef unsigned int    undefined4;
-typedef unsigned short    word;
+typedef unsigned int16_t    word;
 #define unkbyte9   unsigned long long
 #define unkbyte10   unsigned long long
 #define unkbyte11   unsigned long long
@@ -56,8 +56,8 @@ struct Elf32_Sym {
     dword st_name;
     dword st_value;
     dword st_size;
-    byte st_info;
-    byte st_other;
+    uint8_t st_info;
+    uint8_t st_other;
     word st_shndx;
 };
 
@@ -123,14 +123,14 @@ struct Elf32_Shdr {
 typedef struct Elf32_Ehdr Elf32_Ehdr, *PElf32_Ehdr;
 
 struct Elf32_Ehdr {
-    byte e_ident_magic_num;
+    uint8_t e_ident_magic_num;
     char e_ident_magic_str[3];
-    byte e_ident_class;
-    byte e_ident_data;
-    byte e_ident_version;
-    byte e_ident_osabi;
-    byte e_ident_abiversion;
-    byte e_ident_pad[7];
+    uint8_t e_ident_class;
+    uint8_t e_ident_data;
+    uint8_t e_ident_version;
+    uint8_t e_ident_osabi;
+    uint8_t e_ident_abiversion;
+    uint8_t e_ident_pad[7];
     word e_type;
     word e_machine;
     dword e_version;
@@ -152,14 +152,14 @@ struct Elf32_Ehdr {
 undefined4 SYNTH_RfFreqGet(void);
 undefined4 SYNTH_ChSpacingGet(void);
 undefined4 SYNTH_IfFreqGet(void);
-uint SYNTH_LoDivGet(void);
-uint SYNTH_Is2p4GHz(void);
-uint SYNTH_VcoRangeIsValid(uint param_1);
-uint SYNTH_ChannelGet(void);
-void SYNTH_RetimeLimitsConfig(uint param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4);
+uint32_t SYNTH_LoDivGet(void);
+uint32_t SYNTH_Is2p4GHz(void);
+uint32_t SYNTH_VcoRangeIsValid(uint32_t param_1);
+uint32_t SYNTH_ChannelGet(void);
+void SYNTH_RetimeLimitsConfig(uint32_t param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4);
 void SYNTH_RetimeClkConfig(void);
-undefined4 SYNTH_Config(int param_1,uint param_2);
-void SYNTH_ChannelSet(uint param_1,int param_2);
+undefined4 SYNTH_Config(int param_1,uint32_t param_2);
+void SYNTH_ChannelSet(uint32_t param_1,int param_2);
 void SYNTH_DigRouteRetimeEnable(void);
 void SYNTH_DigRouteRetimeDisable(void);
 void SYNTH_DCDCRetimeClkSet(int param_1);

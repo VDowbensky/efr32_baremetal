@@ -66,7 +66,7 @@ int RAILCore_IEEE802154_SetAddresses(undefined4 param_1,undefined2 *param_2)
 
 {
   int iVar1;
-  uint uVar2;
+  uint32_t uVar2;
   undefined2 *puVar3;
   undefined2 local_44;
   undefined2 local_42;
@@ -76,7 +76,7 @@ int RAILCore_IEEE802154_SetAddresses(undefined4 param_1,undefined2 *param_2)
   undefined2 local_3a;
   
   memset(&local_44,0,0x24);
-  if (param_2 == (undefined2 *)0x0) {
+  if (param_2 == NULL) {
     param_2 = &local_44;
   }
   uVar2 = 0;
@@ -155,7 +155,7 @@ RAIL_Status_t RAIL_IEEE802154_SetAddresses(RAIL_Handle_t railHandle,
 
 
 
-//undefined4 RAIL_IEEE802154_SetPanId(int param_1,undefined4 param_2,uint param_3)
+//undefined4 RAIL_IEEE802154_SetPanId(int param_1,undefined4 param_2,uint32_t param_3)
 RAIL_Status_t RAIL_IEEE802154_SetPanId(RAIL_Handle_t railHandle,
                                        uint16_t panId,
                                        uint8_t index)
@@ -171,9 +171,9 @@ RAIL_Status_t RAIL_IEEE802154_SetPanId(RAIL_Handle_t railHandle,
 
 
 
-//undefined4 RAIL_IEEE802154_SetShortAddress(int param_1,undefined4 param_2,uint param_3)
+//undefined4 RAIL_IEEE802154_SetShortAddress(int param_1,undefined4 param_2,uint32_t param_3)
 RAIL_Status_t RAIL_IEEE802154_SetShortAddress(RAIL_Handle_t railHandle,
-                                              uint16_t shortAddr,
+                                              uint16_t int16_tAddr,
                                               uint8_t index)
 {
   undefined4 uVar1;
@@ -187,7 +187,7 @@ RAIL_Status_t RAIL_IEEE802154_SetShortAddress(RAIL_Handle_t railHandle,
 
 
 
-//undefined4 RAIL_IEEE802154_SetLongAddress(int param_1,undefined4 param_2,uint param_3)
+//undefined4 RAIL_IEEE802154_SetLongAddress(int param_1,undefined4 param_2,uint32_t param_3)
 RAIL_Status_t RAIL_IEEE802154_SetLongAddress(RAIL_Handle_t railHandle,
                                              const uint8_t *longAddr,
                                              uint8_t index)

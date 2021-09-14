@@ -2,7 +2,7 @@
 
 
 
-void RAILCore_BLE_Init(byte *param_1)
+void RAILCore_BLE_Init(uint8_t *param_1)
 
 {
   RFHAL_BleInit();
@@ -22,10 +22,10 @@ void RAIL_BLE_Init(RAIL_Handle_t railHandle)
 
 
 
-void RAILCore_BLE_Deinit(byte *param_1)
+void RAILCore_BLE_Deinit(uint8_t *param_1)
 
 {
-  if ((int)((uint)*param_1 << 0x1f) < 0) {
+  if ((int)((uint32_t)*param_1 << 0x1f) < 0) {
     RFHAL_BleDeinit();
     *param_1 = *param_1 & 0xfe;
     RFHAL_SetPtiProtocol(param_1,0);
@@ -45,21 +45,21 @@ void RAIL_BLE_Deinit(RAIL_Handle_t railHandle)
 
 
 
-//byte RAIL_BLE_IsEnabled(int param_1)
+//uint8_t RAIL_BLE_IsEnabled(int param_1)
 bool RAIL_BLE_IsEnabled(RAIL_Handle_t railHandle)
 {
-  return *(byte *)(param_1 + 0xc) & 1;
+  return *(uint8_t *)(param_1 + 0xc) & 1;
 }
 
 
 
-undefined4 RAILCore_BLE_ConfigPhy1MbpsViterbi(byte *param_1)
+undefined4 RAILCore_BLE_ConfigPhy1MbpsViterbi(uint8_t *param_1)
 
 {
   int iVar1;
   undefined4 uVar2;
   
-  if (((int)((uint)*param_1 << 0x1f) < 0) && (iVar1 = RFHAL_GetRadioState(), iVar1 == 1)) {
+  if (((int)((uint32_t)*param_1 << 0x1f) < 0) && (iVar1 = RFHAL_GetRadioState(), iVar1 == 1)) {
     uVar2 = RFHAL_ConfigBle1MbpsViterbi(param_1);
     return uVar2;
   }
@@ -77,13 +77,13 @@ RAIL_Status_t RAIL_BLE_ConfigPhy1MbpsViterbi(RAIL_Handle_t railHandle)
 
 
 
-undefined4 RAILCore_BLE_ConfigPhy1Mbps(byte *param_1)
+undefined4 RAILCore_BLE_ConfigPhy1Mbps(uint8_t *param_1)
 
 {
   int iVar1;
   undefined4 uVar2;
   
-  if (((int)((uint)*param_1 << 0x1f) < 0) && (iVar1 = RFHAL_GetRadioState(), iVar1 == 1)) {
+  if (((int)((uint32_t)*param_1 << 0x1f) < 0) && (iVar1 = RFHAL_GetRadioState(), iVar1 == 1)) {
     uVar2 = RFHAL_ConfigBle1Mbps(param_1);
     return uVar2;
   }
@@ -101,13 +101,13 @@ RAIL_Status_t RAIL_BLE_ConfigPhy1Mbps(RAIL_Handle_t railHandle)
 
 
 
-undefined4 RAILCore_BLE_ConfigPhy2MbpsViterbi(byte *param_1)
+undefined4 RAILCore_BLE_ConfigPhy2MbpsViterbi(uint8_t *param_1)
 
 {
   int iVar1;
   undefined4 uVar2;
   
-  if (((int)((uint)*param_1 << 0x1f) < 0) && (iVar1 = RFHAL_GetRadioState(), iVar1 == 1)) {
+  if (((int)((uint32_t)*param_1 << 0x1f) < 0) && (iVar1 = RFHAL_GetRadioState(), iVar1 == 1)) {
     uVar2 = RFHAL_ConfigBle2MbpsViterbi(param_1);
     return uVar2;
   }
@@ -125,13 +125,13 @@ RAIL_Status_t RAIL_BLE_ConfigPhy2MbpsViterbi(RAIL_Handle_t railHandle)
 
 
 
-undefined4 RAILCore_BLE_ConfigPhy2Mbps(byte *param_1)
+undefined4 RAILCore_BLE_ConfigPhy2Mbps(uint8_t *param_1)
 
 {
   int iVar1;
   undefined4 uVar2;
   
-  if (((int)((uint)*param_1 << 0x1f) < 0) && (iVar1 = RFHAL_GetRadioState(), iVar1 == 1)) {
+  if (((int)((uint32_t)*param_1 << 0x1f) < 0) && (iVar1 = RFHAL_GetRadioState(), iVar1 == 1)) {
     uVar2 = RFHAL_ConfigBle2Mbps(param_1);
     return uVar2;
   }
@@ -149,13 +149,13 @@ RAIL_Status_t RAIL_BLE_ConfigPhy2Mbps(RAIL_Handle_t railHandle)
 
 
 
-undefined4 RAILCore_BLE_ConfigPhyCoded(byte *param_1,undefined4 param_2)
+undefined4 RAILCore_BLE_ConfigPhyCoded(uint8_t *param_1,undefined4 param_2)
 
 {
   int iVar1;
   undefined4 uVar2;
   
-  if (((int)((uint)*param_1 << 0x1f) < 0) && (iVar1 = RFHAL_GetRadioState(), iVar1 << 0x1f < 0)) {
+  if (((int)((uint32_t)*param_1 << 0x1f) < 0) && (iVar1 = RFHAL_GetRadioState(), iVar1 << 0x1f < 0)) {
     uVar2 = RFHAL_ConfigBleCoded(param_1,param_2);
     return uVar2;
   }
@@ -181,27 +181,27 @@ RAIL_Status_t RAIL_BLE_ConfigPhyCoded(RAIL_Handle_t railHandle,
 
 undefined4
 RAILCore_BLE_ConfigChannelRadioParams
-          (byte *param_1,undefined4 param_2,int param_3,uint param_4,char param_5)
+          (uint8_t *param_1,undefined4 param_2,int param_3,uint32_t param_4,char param_5)
 
 {
-  byte bVar1;
-  byte bVar2;
-  byte bVar3;
+  uint8_t bVar1;
+  uint8_t bVar2;
+  uint8_t bVar3;
   int iVar4;
   undefined4 uVar5;
   
-  if ((int)((uint)*param_1 << 0x1f) < 0) {
-    bVar1 = (byte)param_2;
-    bVar2 = (byte)((uint)param_2 >> 8);
-    bVar3 = (byte)((uint)param_2 >> 0x10);
-    RFHAL_SetCRCInitVal(((uint)(byte)((((((((bVar1 & 1) << 1 | bVar1 >> 1 & 1) << 1 | bVar1 >> 2 & 1
+  if ((int)((uint32_t)*param_1 << 0x1f) < 0) {
+    bVar1 = (uint8_t)param_2;
+    bVar2 = (uint8_t)((uint32_t)param_2 >> 8);
+    bVar3 = (uint8_t)((uint32_t)param_2 >> 0x10);
+    RFHAL_SetCRCInitVal(((uint32_t)(uint8_t)((((((((bVar1 & 1) << 1 | bVar1 >> 1 & 1) << 1 | bVar1 >> 2 & 1
                                           ) << 1 | bVar1 >> 3 & 1) << 1 | bVar1 >> 4 & 1) << 1 |
                                        bVar1 >> 5 & 1) << 1 | bVar1 >> 6 & 1) << 1 | bVar1 >> 7) <<
-                         0x18 | (uint)(byte)((((((((bVar2 & 1) << 1 | bVar2 >> 1 & 1) << 1 |
+                         0x18 | (uint32_t)(uint8_t)((((((((bVar2 & 1) << 1 | bVar2 >> 1 & 1) << 1 |
                                                  bVar2 >> 2 & 1) << 1 | bVar2 >> 3 & 1) << 1 |
                                                bVar2 >> 4 & 1) << 1 | bVar2 >> 5 & 1) << 1 |
                                              bVar2 >> 6 & 1) << 1 | bVar2 >> 7) << 0x10 |
-                        (uint)(byte)((((((((bVar3 & 1) << 1 | bVar3 >> 1 & 1) << 1 | bVar3 >> 2 & 1)
+                        (uint32_t)(uint8_t)((((((((bVar3 & 1) << 1 | bVar3 >> 1 & 1) << 1 | bVar3 >> 2 & 1)
                                          << 1 | bVar3 >> 3 & 1) << 1 | bVar3 >> 4 & 1) << 1 |
                                       bVar3 >> 5 & 1) << 1 | bVar3 >> 6 & 1) << 1 | bVar3 >> 7) << 8
                         ) >> 8);

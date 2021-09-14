@@ -38,8 +38,8 @@
 ///
 /// @code{.c}
 /// // PanID OTA value of 0x34 0x12
-/// // Short Address OTA byte order of 0x78 0x56
-/// // Long address with OTA byte order of 0x11 0x22 0x33 0x44 0x55 0x66 0x77 0x88
+/// // Short Address OTA uint8_t order of 0x78 0x56
+/// // Long address with OTA uint8_t order of 0x11 0x22 0x33 0x44 0x55 0x66 0x77 0x88
 /// RAIL_IEEE802154_AddrConfig_t nodeAddress = {
 ///   { 0x1234, 0xFFFF },
 ///   { 0x5678, 0xFFFF },
@@ -52,15 +52,15 @@
 /// // Alternative methods:
 /// status = RAIL_IEEE802154_SetPanId(nodeAddress.panId[0], 0);
 /// status = RAIL_IEEE802154_SetPanId(nodeAddress.panId[1], 1);
-/// status = RAIL_IEEE802154_SetShortAddress(nodeAddress.shortAddr[0], 0);
-/// status = RAIL_IEEE802154_SetShortAddress(nodeAddress.shortAddr[1], 1);
+/// status = RAIL_IEEE802154_SetShortAddress(nodeAddress.int16_tAddr[0], 0);
+/// status = RAIL_IEEE802154_SetShortAddress(nodeAddress.int16_tAddr[1], 1);
 /// status = RAIL_IEEE802154_SetLongAddress(nodeAddress.longAddr[0], 0);
 /// status = RAIL_IEEE802154_SetLongAddress(nodeAddress.longAddr[1], 1);
 /// @endcode
 ///
 /// Auto ack is initialized through RAIL_IEEE802154_Init(). It is not advised
 /// to call RAIL_ConfigAutoAck() while 802.15.4 hardware acceleration is
-/// enabled. The default IEEE 802.15.4 ack will have a 5 byte length. The frame
+/// enabled. The default IEEE 802.15.4 ack will have a 5 uint8_t length. The frame
 /// type will be an ack. The frame pending bit will be set based on the
 /// RAIL_IEEE802154_SetFramePending() function. The sequence number will be set to
 /// match the packet being acknowledged. All other frame control fields will be
@@ -74,8 +74,8 @@
  * @brief Different lengths that an 802.15.4 address can have
  */
 RAIL_ENUM(RAIL_IEEE802154_AddressLength_t) {
-  RAIL_IEEE802154_ShortAddress = 2, /**< 2 byte short address. */
-  RAIL_IEEE802154_LongAddress = 3, /**< 8 byte extended address. */
+  RAIL_IEEE802154_ShortAddress = 2, /**< 2 uint8_t int16_t address. */
+  RAIL_IEEE802154_LongAddress = 3, /**< 8 uint8_t extended address. */
 };
 
 /**
@@ -87,8 +87,8 @@ RAIL_ENUM(RAIL_IEEE802154_AddressLength_t) {
 typedef struct RAIL_IEEE802154_Address{
   /** Convenient storage for different address types */
   union {
-    uint16_t shortAddress; /**< Present for 2 byte addresses. */
-    uint8_t longAddress[8]; /**< Present for 8 byte addresses. */
+    uint16_t int16_tAddress; /**< Present for 2 uint8_t addresses. */
+    uint8_t longAddress[8]; /**< Present for 8 uint8_t addresses. */
   };
   /**
    * Enum of the received address length
@@ -106,9 +106,9 @@ typedef struct RAIL_IEEE802154_Address{
  * here. Any address to be ignored should be set with all bits high.
  *
  * This structure allows configuration of dual-PAN functionality, by specifying
- * multiple PAN IDs and short addresses. A packet will be received if it
- * matches either PAN ID and the long address. The short addresses are specific
- * to a given PAN, so the first short address goes with the first PAN ID, and
+ * multiple PAN IDs and int16_t addresses. A packet will be received if it
+ * matches either PAN ID and the long address. The int16_t addresses are specific
+ * to a given PAN, so the first int16_t address goes with the first PAN ID, and
  * not with the second PAN ID. The broadcast PAN ID and address will work with
  * any address or PAN ID, respectively.
  */
@@ -120,12 +120,12 @@ typedef struct RAIL_IEEE802154_AddrConfig{
   uint16_t panId[RAIL_IEEE802154_MAX_ADDRESSES];
   /**
    * Short network addresses for destination filtering. Both must be specified.
-   * To disable a short address, set it to the broadcast value, 0xFFFF.
+   * To disable a int16_t address, set it to the broadcast value, 0xFFFF.
    */
-  uint16_t shortAddr[RAIL_IEEE802154_MAX_ADDRESSES];
+  uint16_t int16_tAddr[RAIL_IEEE802154_MAX_ADDRESSES];
   /**
    * 64 bit address for destination filtering. Both must be specified.
-   * This field is parsed in over-the-air (OTA) byte order. To disable a long
+   * This field is parsed in over-the-air (OTA) uint8_t order. To disable a long
    * address, set it to the reserved value of 0x00 00 00 00 00 00 00 00.
    */
   uint8_t longAddr[RAIL_IEEE802154_MAX_ADDRESSES][8];
@@ -268,30 +268,30 @@ RAIL_Status_t RAIL_IEEE802154_SetPanId(RAIL_Handle_t railHandle,
                                        uint8_t index);
 
 /**
- * Set a short address for 802.15.4 address filtering
+ * Set a int16_t address for 802.15.4 address filtering
  *
  * @param[in] railHandle Handle of RAIL instance
- * @param[in] shortAddr 16 bit short address value. This will be matched against the
- * destination short address of incoming messages. The short address is sent
- * little endian over the air meaning shortAddr[7:0] is first in the payload
- * followed by shortAddr[15:8].
- * @param[in] index Which short address to set. Must be below
+ * @param[in] int16_tAddr 16 bit int16_t address value. This will be matched against the
+ * destination int16_t address of incoming messages. The int16_t address is sent
+ * little endian over the air meaning int16_tAddr[7:0] is first in the payload
+ * followed by int16_tAddr[15:8].
+ * @param[in] index Which int16_t address to set. Must be below
  * RAIL_IEEE802154_MAX_ADDRESSES.
  * @return Status code indicating success of the function call.
  *
- * Set up the 802.15.4 address filter to accept messages to the given short
+ * Set up the 802.15.4 address filter to accept messages to the given int16_t
  * address.
  */
 RAIL_Status_t RAIL_IEEE802154_SetShortAddress(RAIL_Handle_t railHandle,
-                                              uint16_t shortAddr,
+                                              uint16_t int16_tAddr,
                                               uint8_t index);
 
 /**
  * Set a long address for 802.15.4 address filtering
  *
  * @param[in] railHandle Handle of RAIL instance
- * @param[in] longAddr Pointer to a 8 byte array containing the long address
- * information. The long address must be in over the air byte order. This will
+ * @param[in] longAddr Pointer to a 8 uint8_t array containing the long address
+ * information. The long address must be in over the air uint8_t order. This will
  * be matched against the destination long address of incoming messages.
  * @param[in] index Which long address to set. Must be below
  * RAIL_IEEE802154_MAX_ADDRESSES.

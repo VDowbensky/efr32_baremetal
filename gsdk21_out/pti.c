@@ -5,12 +5,12 @@
 //undefined4 PTI_Config(undefined4 *param_1)
 RAIL_Status_t PTI_Config(const RAIL_PtiConfig_t *config)
 {
-  uint uVar1;
+  uint32_t uVar1;
   undefined4 uVar2;
   undefined4 *puVar3;
   undefined4 *puVar4;
   
-  if (param_1 == (undefined4 *)0x0) {
+  if (param_1 == NULL) {
     return 1;
   }
   puVar3 = &ptiState;
@@ -25,15 +25,15 @@ RAIL_Status_t PTI_Config(const RAIL_PtiConfig_t *config)
   *puVar3 = *puVar4;
   RADIOCMU_ClockEnable(0x63400,1);
   CMU_ClockEnable(0x82500,1);
-  write_volatile_4(Peripherals::FRC.SNIFFCTRL,0xf8);
-  write_volatile_4(Peripherals::FRC.ROUTELOC0,
-                   (uint)*(byte *)((int)param_1 + 0xe) << 0x10 |
-                   (uint)*(byte *)((int)param_1 + 0xb) << 8 | (uint)*(byte *)(param_1 + 2));
-  uVar1 = (uint)*(byte *)param_1;
+  write_volatile_4(FRC->SNIFFCTRL,0xf8);
+  write_volatile_4(FRC->ROUTELOC0,
+                   (uint32_t)*(uint8_t *)((int)param_1 + 0xe) << 0x10 |
+                   (uint32_t)*(uint8_t *)((int)param_1 + 0xb) << 8 | (uint32_t)*(uint8_t *)(param_1 + 2));
+  uVar1 = (uint32_t)*(uint8_t *)param_1;
   if (uVar1 == 1) {
     sniffMode = 2;
-    write_volatile_4(Peripherals::FRC.ROUTEPEN,7);
-    GPIO_PinModeSet(*(byte *)(param_1 + 3),*(byte *)((int)param_1 + 0xd),4,0);
+    write_volatile_4(FRC->ROUTEPEN,7);
+    GPIO_PinModeSet(*(uint8_t *)(param_1 + 3),*(uint8_t *)((int)param_1 + 0xd),4,0);
   }
   else {
     if (uVar1 != 2) {
@@ -41,20 +41,20 @@ RAIL_Status_t PTI_Config(const RAIL_PtiConfig_t *config)
         if (uVar1 != 0) {
           return 1;
         }
-        write_volatile_4(Peripherals::FRC.ROUTEPEN,0);
+        write_volatile_4(FRC->ROUTEPEN,0);
         sniffMode = uVar1;
         return 0;
       }
       sniffMode = 5;
-      write_volatile_4(Peripherals::FRC.ROUTEPEN,1);
+      write_volatile_4(FRC->ROUTEPEN,1);
       goto LAB_000100a2;
     }
     sniffMode = 1;
-    write_volatile_4(Peripherals::FRC.ROUTEPEN,5);
+    write_volatile_4(FRC->ROUTEPEN,5);
   }
-  GPIO_PinModeSet(*(byte *)((int)param_1 + 0xf),*(byte *)(param_1 + 4),4,0);
+  GPIO_PinModeSet(*(uint8_t *)((int)param_1 + 0xf),*(uint8_t *)(param_1 + 4),4,0);
 LAB_000100a2:
-  GPIO_PinModeSet(*(byte *)((int)param_1 + 9),*(byte *)((int)param_1 + 10),4,1);
+  GPIO_PinModeSet(*(uint8_t *)((int)param_1 + 9),*(uint8_t *)((int)param_1 + 10),4,1);
   return 0;
 }
 
@@ -103,10 +103,10 @@ void PTI_EnableAppendedInfo(int param_1)
 RAIL_Status_t PTI_Enable(bool enable)
 {
   int iVar1;
-  uint uVar2;
+  uint32_t uVar2;
   
   if (param_1 == 0) {
-    write_volatile_4(Peripherals::FRC_CLR.SNIFFCTRL,3);
+    BUS_RegMaskedClear(&FRC->SNIFFCTRL,3);
   }
   else {
     uVar2 = DAT_000101b4;
@@ -114,8 +114,8 @@ RAIL_Status_t PTI_Enable(bool enable)
       iVar1 = RADIOCMU_ClockFreqGet(0x63400);
       uVar2 = ((iVar1 + (DAT_000101b4 >> 1)) / DAT_000101b4 - 1) * 0x100;
     }
-    write_volatile_4(Peripherals::FRC_CLR.SNIFFCTRL,0xff03);
-    write_volatile_4(Peripherals::FRC_SET.SNIFFCTRL,uVar2 | sniffMode);
+    BUS_RegMaskedClear(&FRC->SNIFFCTRL,0xff03);
+    BUS_RegMaskedSet(&FRC->SNIFFCTRL,uVar2 | sniffMode);
   }
   PTI_EnableAppendedInfo(param_1);
   return 0;
@@ -123,13 +123,13 @@ RAIL_Status_t PTI_Enable(bool enable)
 
 
 
-void PTI_AuxdataOutput(uint param_1)
+void PTI_AuxdataOutput(uint32_t param_1)
 
 {
   FRC *pFVar1;
   bool bVar2;
   
-  pFVar1 = (FRC *)read_volatile_4(Peripherals::RAC.SR3);
+  pFVar1 = (FRC *)(RAC->SR3);
   bVar2 = (int)pFVar1 < 0;
   if (bVar2) {
     pFVar1 = &Peripherals::FRC;

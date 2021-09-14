@@ -362,7 +362,7 @@ RAIL_ENUM_GENERIC(RAIL_Events_t, uint64_t) {
 
 /**
  * Indicates a Data Request is being received when using IEEE 802.15.4
- * functionality. This occurs when the command byte of an incoming frame is
+ * functionality. This occurs when the command uint8_t of an incoming frame is
  * for a data request, which requests an ACK. This callback is called before
  * the packet is fully received to allow the node to have more time to decide
  * whether to set the frame pending in the outgoing ACK. This event only ever
@@ -617,13 +617,13 @@ typedef struct RAIL_FrameType {
    */
   uint16_t *frameLen;
   /**
-   * Zero-indexed location of the byte containing the frame type field.
+   * Zero-indexed location of the uint8_t containing the frame type field.
    */
   uint8_t offset;
   /**
    * Bit mask of the frame type field. Determines number of frames expected
    * based on the number of bits set. No more than 3 bits can be set in mask.
-   * Must be contiguous ones. For example, if the highest three bits of the byte
+   * Must be contiguous ones. For example, if the highest three bits of the uint8_t
    * specified by offset constitute the frame type, then mask should be 0xE0,
    * which has 3 bits set, indicating 8 possible frame types.
    */
@@ -1787,7 +1787,7 @@ typedef struct RAIL_AddrConfig {
    *
    * These offsets are specified relative to the previous field's end. In the
    * case of the first field it's relative to either the beginning of the packet
-   * or the end of the frame type byte if frame type decoding is enabled. If a
+   * or the end of the frame type uint8_t if frame type decoding is enabled. If a
    * field is unused, it's offset should be set to 0.
    */
   uint8_t offsets[ADDRCONFIG_MAX_ADDRESS_FIELDS];
@@ -1931,7 +1931,7 @@ RAIL_ENUM(RAIL_RfSenseBand_t) {
  */
 RAIL_ENUM(RAIL_StreamMode_t) {
   RAIL_STREAM_CARRIER_WAVE = 0, /**< Unmodulated carrier wave */
-  RAIL_STREAM_PN9_STREAM = 1,   /**< PN9 byte sequence */
+  RAIL_STREAM_PN9_STREAM = 1,   /**< PN9 uint8_t sequence */
 };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

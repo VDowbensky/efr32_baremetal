@@ -5,8 +5,8 @@
 void RFSENSE_Disable(void)
 
 {
-  uint uVar1;
-  uint uVar2;
+  uint32_t uVar1;
+  uint32_t uVar2;
   
   uVar2 = em4Flag;
   RFSENSE_Cb = 0;
@@ -17,7 +17,7 @@ void RFSENSE_Disable(void)
   if (em4Flag != 0) {
     em4Flag = 0;
     CORE_EnterCritical();
-    uVar1 = read_volatile_4(Peripherals::EMU.EM4CTRL);
+    uVar1 = (Peripherals::EMU.EM4CTRL);
     write_volatile_4(Peripherals::EMU.EM4CTRL,uVar1 & ~uVar2);
     CORE_ExitCritical();
     return;
@@ -28,13 +28,13 @@ void RFSENSE_Disable(void)
 
 
 
-int RFSENSE_CalcPeriod(uint param_1,uint param_2,char *param_3,undefined4 param_4)
+int RFSENSE_CalcPeriod(uint32_t param_1,uint32_t param_2,char *param_3,undefined4 param_4)
 
 {
-  uint uVar1;
-  uint uVar2;
+  uint32_t uVar1;
+  uint32_t uVar2;
   char cVar3;
-  uint uVar4;
+  uint32_t uVar4;
   
   switch(param_1 & 0xc) {
   case 0:
@@ -89,31 +89,31 @@ void RFSENSE_ReInit(void)
 
 // WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
-uint RFSENSE_Sensed(void)
+uint32_t RFSENSE_Sensed(void)
 
 {
   code *pcVar1;
   int iVar2;
-  uint uVar3;
+  uint32_t uVar3;
   
   iVar2 = _DAT_43c81904;
-  write_volatile_4(Peripherals::CMU_SET.HFRADIOCLKEN0,2);
-  uVar3 = read_volatile_4(Peripherals::RFSENSE.IF);
+  BUS_RegMaskedSet(&CMU->HFRADIOCLKEN0,2);
+  uVar3 = (Peripherals::RFSENSE.IF);
   if (uVar3 != 0) {
     uVar3 = 1;
   }
   if (uVar3 != 0) {
     CORE_EnterCritical();
     pcVar1 = RFSENSE_Cb;
-    RFSENSE_Cb = (code *)0x0;
+    RFSENSE_Cb = NULL;
     CORE_ExitCritical();
     RFSENSE_Disable();
-    if (pcVar1 != (code *)0x0) {
+    if (pcVar1 != NULL) {
       (*pcVar1)();
     }
   }
   if (iVar2 == 0) {
-    write_volatile_4(Peripherals::CMU_CLR.HFRADIOCLKEN0,2);
+    BUS_RegMaskedClear(&CMU->HFRADIOCLKEN0,2);
   }
   return uVar3;
 }
@@ -122,31 +122,31 @@ uint RFSENSE_Sensed(void)
 
 // WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
-uint RFSENSE_IRQHandler(void)
+uint32_t RFSENSE_IRQHandler(void)
 
 {
   code *pcVar1;
   int iVar2;
-  uint uVar3;
+  uint32_t uVar3;
   
   iVar2 = _DAT_43c81904;
-  write_volatile_4(Peripherals::CMU_SET.HFRADIOCLKEN0,2);
-  uVar3 = read_volatile_4(Peripherals::RFSENSE.IF);
+  BUS_RegMaskedSet(&CMU->HFRADIOCLKEN0,2);
+  uVar3 = (Peripherals::RFSENSE.IF);
   if (uVar3 != 0) {
     uVar3 = 1;
   }
   if (uVar3 != 0) {
     CORE_EnterCritical();
     pcVar1 = RFSENSE_Cb;
-    RFSENSE_Cb = (code *)0x0;
+    RFSENSE_Cb = NULL;
     CORE_ExitCritical();
     RFSENSE_Disable();
-    if (pcVar1 != (code *)0x0) {
+    if (pcVar1 != NULL) {
       (*pcVar1)();
     }
   }
   if (iVar2 == 0) {
-    write_volatile_4(Peripherals::CMU_CLR.HFRADIOCLKEN0,2);
+    BUS_RegMaskedClear(&CMU->HFRADIOCLKEN0,2);
   }
   return uVar3;
 }
@@ -157,7 +157,7 @@ void RFSENSE_DeInit(void)
 
 {
   RFSENSE_ReInit();
-  write_volatile_4(Peripherals::CMU_CLR.HFRADIOCLKEN0,2);
+  BUS_RegMaskedClear(&CMU->HFRADIOCLKEN0,2);
   return;
 }
 
@@ -165,27 +165,27 @@ void RFSENSE_DeInit(void)
 
 // WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
-uint RFSENSE_Init(undefined4 *param_1,uint param_2)
+uint32_t RFSENSE_Init(undefined4 *param_1,uint32_t param_2)
 
 {
-  byte bVar1;
-  uint uVar2;
-  uint uVar3;
-  uint uVar4;
-  uint uVar5;
-  uint uVar6;
+  uint8_t bVar1;
+  uint32_t uVar2;
+  uint32_t uVar3;
+  uint32_t uVar4;
+  uint32_t uVar5;
+  uint32_t uVar6;
   undefined4 *puVar7;
   
-  write_volatile_4(Peripherals::CMU_SET.HFRADIOCLKEN0,2);
+  BUS_RegMaskedSet(&CMU->HFRADIOCLKEN0,2);
   puVar7 = param_1;
   RFSENSE_ReInit();
-  if (param_1 == (undefined4 *)0x0) {
+  if (param_1 == NULL) {
 LAB_00010176:
     RFSENSE_DeInit();
     return 0;
   }
-  bVar1 = *(byte *)(param_1 + 2);
-  uVar5 = (uint)bVar1;
+  bVar1 = *(uint8_t *)(param_1 + 2);
+  uVar5 = (uint32_t)bVar1;
   if ((((bVar1 & 3) == 0) || (param_1[1] == 0)) ||
      (uVar2 = RFSENSE_CalcPeriod(uVar5,param_1[1],&stack0xffffffe6), uVar2 == 0)) goto LAB_00010176;
   if (((bVar1 & 0xc) == 0) && (uVar3 = param_1[1], 100000 < uVar3)) {
@@ -216,7 +216,7 @@ LAB_00010176:
   write_volatile_4(Peripherals::RFSENSE.EM4WUEN,1);
   uVar3 = uVar5 & 0xc;
   if (uVar3 == 8) {
-    uVar3 = read_volatile_4(Peripherals::EMU.EM4CTRL);
+    uVar3 = (Peripherals::EMU.EM4CTRL);
     if (-1 < (int)(uVar3 << 0x1d)) {
       uVar3 = 4;
       goto LAB_00010234;
@@ -224,7 +224,7 @@ LAB_00010176:
   }
   else {
     if (uVar3 == 0xc) {
-      uVar3 = read_volatile_4(Peripherals::EMU.EM4CTRL);
+      uVar3 = (Peripherals::EMU.EM4CTRL);
       if (-1 < (int)(uVar3 << 0x1c)) {
         uVar3 = 8;
         goto LAB_00010234;
@@ -232,11 +232,11 @@ LAB_00010176:
     }
     else {
       if ((uVar3 == 4) &&
-         (uVar3 = read_volatile_4(Peripherals::EMU.EM4CTRL), -1 < (int)(uVar3 << 0x1e))) {
+         (uVar3 = (Peripherals::EMU.EM4CTRL), -1 < (int)(uVar3 << 0x1e))) {
         uVar3 = 2;
 LAB_00010234:
         CORE_EnterCritical();
-        uVar6 = read_volatile_4(Peripherals::EMU.EM4CTRL);
+        uVar6 = (Peripherals::EMU.EM4CTRL);
         write_volatile_4(Peripherals::EMU.EM4CTRL,uVar6 | uVar3);
         CORE_ExitCritical();
         em4Flag = uVar3;
@@ -257,34 +257,34 @@ LAB_00010210:
 
 // WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
-int RFSENSE_CalRfOscFreq(uint param_1)
+int RFSENSE_CalRfOscFreq(uint32_t param_1)
 
 {
-  uint uVar1;
+  uint32_t uVar1;
   int iVar2;
   int iVar3;
   
   if (param_1 - 8 < 4) {
-    write_volatile_4(Peripherals::CMU_SET.HFRADIOCLKEN0,2);
+    BUS_RegMaskedSet(&CMU->HFRADIOCLKEN0,2);
     RFSENSE_ReInit();
     write_volatile_4(Peripherals::RFSENSE.PERIODSEL,0xf);
     write_volatile_4(Peripherals::RFSENSE.CTRL,3);
-    write_volatile_4(Peripherals::CMU_SET.HFBUSCLKEN0,8);
+    BUS_RegMaskedSet(&CMU->HFBUSCLKEN0,8);
     (&Peripherals::PRS.CH0_CTRL)[param_1] = 0x3b02;
     iVar3 = 1 << (param_1 & 0xff);
-    write_volatile_4(Peripherals::CMU.CALCTRL,param_1 << 0x10 | 0x25);
+    write_volatile_4(CMU->CALCTRL,param_1 << 0x10 | 0x25);
     _DAT_460e6008 = iVar3;
     iVar2 = SystemLFXOClockGet();
-    write_volatile_4(Peripherals::CMU.CALCNT,iVar2 - 1);
-    write_volatile_4(Peripherals::CMU_CLR.IEN,0x20);
-    write_volatile_4(Peripherals::CMU.IFC,0x20);
-    write_volatile_4(Peripherals::CMU.CMD,1);
+    write_volatile_4(CMU->CALCNT,iVar2 - 1);
+    BUS_RegMaskedClear(&CMU->IEN,0x20);
+    write_volatile_4(CMU->IFC,0x20);
+    write_volatile_4(CMU->CMD,1);
     do {
     } while (_DAT_43c81414 == 0);
-    uVar1 = read_volatile_4(Peripherals::CMU.CALCNT);
-    write_volatile_4(Peripherals::CMU.CMD,2);
-    write_volatile_4(Peripherals::CMU.CALCTRL,0);
-    write_volatile_4(Peripherals::CMU.IFC,0x20);
+    uVar1 = (CMU->CALCNT);
+    write_volatile_4(CMU->CMD,2);
+    write_volatile_4(CMU->CALCTRL,0);
+    write_volatile_4(CMU->IFC,0x20);
     _DAT_440e6008 = iVar3;
     (&Peripherals::PRS.CH0_CTRL)[param_1] = 0;
     iVar2 = uVar1 + 1;

@@ -5,7 +5,7 @@
 void RADIO_LNA_calNPath(void)
 
 {
-  return;
+
 }
 
 

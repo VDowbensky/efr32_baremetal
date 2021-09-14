@@ -49,7 +49,7 @@ int RFHAL_IEEE802154SetBroadcastAddresses
   int local_10;
   int local_c;
   
-  local_14 = CONCAT22((short)((uint)param_2 >> 0x10),0xffff);
+  local_14 = CONCAT22((int16_t)((uint32_t)param_2 >> 0x10),0xffff);
   local_10 = param_3;
   local_c = param_4;
   iVar1 = GENERIC_PHY_SetIeeePanId(param_1,0,&local_14,0xffff,param_1);
@@ -149,11 +149,11 @@ RFHAL_IEEE802154AcceptFrames(undefined4 param_1,int param_2,undefined4 param_3,u
 
 
 
-undefined4 RFHAL_IEEE802154SetFeatures(undefined4 param_1,int param_2,int param_3,uint param_4)
+undefined4 RFHAL_IEEE802154SetFeatures(undefined4 param_1,int param_2,int param_3,uint32_t param_4)
 
 {
-  uint uVar1;
-  uint uVar2;
+  uint32_t uVar1;
+  uint32_t uVar2;
   
   uVar1 = 0x8000b0;
   if (param_2 == 0) {
@@ -172,23 +172,23 @@ undefined4 RFHAL_IEEE802154SetFeatures(undefined4 param_1,int param_2,int param_
 
 
 
-uint RFHAL_IEEE802154SetFramePending(void)
+uint32_t RFHAL_IEEE802154SetFramePending(void)
 
 {
-  uint uVar1;
+  uint32_t uVar1;
   int iVar2;
-  uint uVar3;
+  uint32_t uVar3;
   
   iVar2 = GENERIC_PHY_CanModifyAck();
   uVar3 = 2;
   if (iVar2 != 0) {
-    write_volatile_4(Peripherals::RAC_SET.SR0,2);
-    uVar1 = read_volatile_4(Peripherals::RAC.SR0);
+    BUS_RegMaskedSet(&RAC->SR0,2);
+    uVar1 = (RAC->SR0);
     if ((uVar1 & 0x20000) == 0) {
-      write_volatile_4(Peripherals::RAC_SET.SR2,0x10);
+      BUS_RegMaskedSet(&RAC->SR2,0x10);
       uVar3 = uVar1 & 0x20000;
     }
-    write_volatile_4(Peripherals::RAC_CLR.SR0,2);
+    BUS_RegMaskedClear(&RAC->SR0,2);
     return uVar3;
   }
   return 2;
@@ -202,7 +202,7 @@ void RFHAL_IEEE802154LoadAck(undefined4 param_1,undefined4 param_2,undefined4 pa
   undefined4 local_c;
   undefined4 uStack8;
   
-  local_c = CONCAT31((int3)((uint)param_2 >> 8),5);
+  local_c = CONCAT31((int3)((uint32_t)param_2 >> 8),5);
   uStack8 = param_3;
   RFHAL_WriteAutoAckFifo(param_1,&local_c,1,5,param_1);
   return;

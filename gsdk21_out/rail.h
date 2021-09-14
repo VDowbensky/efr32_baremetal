@@ -876,7 +876,7 @@ uint16_t RAIL_SetTxFifoThreshold(RAIL_Handle_t railHandle,
  * Depending on the size of the receive FIFO hardware, the maximum value can
  * vary. If the rxThreshold value exceeds the capability of the hardware, the
  * RX threshold will be configured so that it fires only when the FIFO is one
- * byte away from being full.
+ * uint8_t away from being full.
  */
 uint16_t RAIL_SetRxFifoThreshold(RAIL_Handle_t railHandle,
                                  uint16_t rxThreshold);
@@ -1751,7 +1751,7 @@ RAIL_RxPacketHandle_t RAIL_HoldRxPacket(RAIL_Handle_t railHandle);
  * @param[out] pDst A pointer to the location where the received bytes will
  *   be copied. If NULL, no copying occurs.
  * @param[in] len A number of packet data bytes to copy.
- * @param[in] offset A byte offset within remaining packet data from which
+ * @param[in] offset A uint8_t offset within remaining packet data from which
  *   to copy.
  * @return Number of packet bytes copied.
  *
@@ -1905,7 +1905,7 @@ int16_t RAIL_GetAverageRssi(RAIL_Handle_t railHandle);
  * \ref RAIL_AddrConfig_t structure. A size of zero indicates that a field is
  * disabled. The start offset for a field is relative to the previous start
  * offset and, if you're using FrameType decoding, the first start offset is
- * relative to the end of the byte containing the frame type.
+ * relative to the end of the uint8_t containing the frame type.
  *
  * Configuring which combinations of Field0 and Field1 constitute a match is
  * the most complex portion of the address filter. The easiest way to think
@@ -2065,11 +2065,11 @@ RAIL_Status_t RAIL_EnableAddressFilterAddress(RAIL_Handle_t railHandle,
 ///
 /// The acknowledgment transmits based on the frame format configured via
 /// the Radio Configurator. For example, if the frame format is using a variable
-/// length scheme, the ACK will be sent according to that scheme. If a 10-byte
+/// length scheme, the ACK will be sent according to that scheme. If a 10-uint8_t
 /// packet is loaded into the ACK, but the variable length field of the ACK
 /// payload specifies a length of 5, only 5 bytes will transmit for the ACK.
 /// The converse is also true, if the frame length is configured to be a fixed
-/// 10-byte packet but only 5 bytes are loaded into the ACK buffer, a TX
+/// 10-uint8_t packet but only 5 bytes are loaded into the ACK buffer, a TX
 /// underflow occurs during the ACK transmit.
 ///
 /// Unlike in non-ACK mode, ACK mode will always return to a single
