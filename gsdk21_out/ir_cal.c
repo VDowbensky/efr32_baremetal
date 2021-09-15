@@ -189,51 +189,51 @@ void IRCAL_SetSubGhzPllLoopback(void)
 void IRCAL_SetSubGhzPaLoopback(void)
 
 {
-  AGC->GAINRANGE &= 0xffffc000; 
-  AGC->GAINRANGE | 0x383e;
+  AGC->GAINRANGE &= ~(AGC_GAINRANGE_MINGAIN_Msk | AGC_GAINRANGE_MAXGAIN_Msk); //0xffffc000; 
+  AGC->GAINRANGE |= 0x383e;
   AGC->GAININDEX &= 0xfff00000;
   AGC->GAININDEX |= 0x25bc;
   AGC->MININDEX &= 0xff000000;
   AGC->MININDEX | 0x6d8480;
-  AGC->MANGAIN &= 0xffffff40;
+  AGC->MANGAIN &= ~(AGC_MANGAIN_MANGAININDEXEN_Msk | AGC_MANGAIN_MANGAININDEX_Msk);//0xffffff40;
   AGC->MANGAIN |= 0xa7;
-  BUS_RegMaskedSet(&AGC->CTRL0,0x400000);
+  BUS_RegMaskedSet(&AGC->CTRL0,AGC_CTRL0_DISRESETCHPWR_Msk); //0x400000);
   MODEM->MODINDEX = 0;
-  MODEM->CTRL0 &= 0xfffffe3f;
+  MODEM->CTRL0 &= ~MODEM_CTRL0_MODFORMAT_Msk; //0xfffffe3f;
   MODEM->CTRL0 |= 0x100;
-  FRC->DFLCTRL &= 0xfffffff8;
+  FRC->DFLCTRL &= ~7; //0xfffffff8;
   FRC->DFLCTRL |= 5;
-  BUS_RegMaskedClear(&RAC->SGRFENCTRL0,0x80000);
-  RAC->SGPACTRL0 &= 0x3fffffff;
-  RAC->SGPACTRL0 |= 0x40000000;
-  BUS_RegMaskedClear(&RAC->SGPAPKDCTRL,0xc000);
-  BUS_RegMaskedSet(&RAC->SGPAPKDCTRL,0xc000);
-  RAC->SGPABIASCTRL0 &= 0xff3ff332;
+  BUS_RegMaskedClear(&RAC->SGRFENCTRL0,RAC_SGRFENCTRL0_TRSW_Msk); //0x80000);
+  RAC->SGPACTRL0 &= ~(RAC_SGPACTRL0_CASCODEBYPASSEN_Msk | RAC_SGPACTRL0_DACGLITCHCTRL_Msk); //0x3fffffff;
+  RAC->SGPACTRL0 |= RAC_SGPACTRL0_DACGLITCHCTRL_Msk; //0x40000000;
+  BUS_RegMaskedClear(&RAC->SGPAPKDCTRL,RAC_SGPAPKDCTRL_CAPSEL_Msk); //0xc000);
+  BUS_RegMaskedSet(&RAC->SGPAPKDCTRL,RAC_SGPAPKDCTRL_CAPSEL_Msk); //0xc000);
+  RAC->SGPABIASCTRL0 &= ~(RAC_SGPABIASCTRL0_CMGAIN_Msk | RAC_SGPABIASCTRL0_TXPOWER_Msk | RAC_SGPABIASCTRL0_BUF12BIAS_Msk | RAC_SGPABIASCTRL0_BUF0BIAS_Msk | RAC_SGPABIASCTRL0_PABIAS_Msk | RAC_SGPABIASCTRL0_LDOBIAS_Msk); //0xff3ff332;
   RAC->SGPABIASCTRL0 |= 0x445;
-  RAC->SGPABIASCTRL1 &= 0xffffffc8;
+  RAC->SGPABIASCTRL1 &= ~(RAC_SGPABIASCTRL1_VLDOFB_Msk | RAC_SGPABIASCTRL1_VLDO_Msk); //0xffffffc8;
   RAC->SGPABIASCTRL1 |= 0x20;
-  RAC->SGPABIASCTRL1 &= 0xfff388ff;
+  RAC->SGPABIASCTRL1 &= ~(RAC_SGPABIASCTRL1_SGVBATDETTHRESHOLD_Msk | RAC_SGPABIASCTRL1_VCASCODELV_Msk | RAC_SGPABIASCTRL1_VCASCODEHV_Msk); //0xfff388ff;
   RAC->SGPABIASCTRL1 |= 0x84500;
-  BUS_RegMaskedClear(&RAC->PACTUNECTRL,0x1f0);
-  BUS_RegMaskedSet(&RAC->SGPACTRL0,8);
-  BUS_RegMaskedSet(&RAC->SGRFENCTRL0,0x10000);
+  BUS_RegMaskedClear(&RAC->PACTUNECTRL,RAC_PACTUNECTRL_SGPACTUNE_Msk); //0x1f0);
+  BUS_RegMaskedSet(&RAC->SGPACTRL0,RAC_SGPACTRL0_BOOTSTRAP_Msk); //8);
+  BUS_RegMaskedSet(&RAC->SGRFENCTRL0,RAC_SGRFENCTRL0_PASTANDBY_Msk); //0x10000);
   PROTIMER_DelayUs(20);
-  RAC->SGPACTRL0 &= 0xffffc03f;
+  RAC->SGPACTRL0 &= ~RAC_SGPACTRL0_CASCODE_Msk; //0xffffc03f;
   RAC->SGPACTRL0 |= 0x40;
-  BUS_RegMaskedSet(&RAC->SGRFENCTRL0,0x20000);
+  BUS_RegMaskedSet(&RAC->SGRFENCTRL0,RAC_SGRFENCTRL0_PAEN_Msk); //0x20000);
   PROTIMER_DelayUs(20);
-  RAC->SGPACTRL0 &= 0xe0c03fff;
+  RAC->SGPACTRL0 &= ~(RAC_SGPACTRL0_STRIPE_Msk | RAC_SGPACTRL0_SLICE_Msk); //0xe0c03fff;
   RAC->SGPACTRL0 |= 0x1004000;
   PROTIMER_DelayUs(20);
-  BUS_RegMaskedSet(&RAC->SGRFENCTRL0,0x40000);
+  BUS_RegMaskedSet(&RAC->SGRFENCTRL0,RAC_SGRFENCTRL0_PAOUTEN_Msk); //0x40000);
   PROTIMER_DelayUs(20);
   BUS_RegMaskedSet(&RAC->TESTCTRL,9);
   PROTIMER_DelayUs(20);
-  RAC->SGPACTRL0 &= 0xe0c03fff;
-  RAC->SGPACTRL0 | 0x1004000;
+  RAC->SGPACTRL0 &= ~(RAC_SGPACTRL0_STRIPE_Msk | RAC_SGPACTRL0_SLICE_Msk); //0xe0c03fff;
+  RAC->SGPACTRL0 |= 0x1004000;
   PROTIMER_DelayUs(20);
-  MODEM->RAMPCTRL &= 0x7fffff;
-  MODEM->RAMPCTRL |= 0x800000 | (uint32_t)rcIrCalData[2] << 0x18);
+  MODEM->RAMPCTRL &= ~(MODEM_RAMPCTRL_RAMPVAL_Msk | MODEM_RAMPCTRL_RAMPDIS_Msk); //0x7fffff;
+  MODEM->RAMPCTRL |= MODEM_RAMPCTRL_RAMPDIS_Msk | (uint32_t)rcIrCalData[2] << MODEM_RAMPCTRL_RAMPVAL_Pos);
   PROTIMER_DelayUs(20);
 }
 
@@ -287,19 +287,19 @@ int IRCAL_ReadRssi(uint32_t param_1,uint32_t param_2,uint32_t param_3,undefined4
   if ((param_2 & 0x80) != 0) param_2 = 0x7f;
   if (param_3 < 0xf) 
   {
-	RAC->IFPGACAL &= 0xffff8080;
-	RAC->IFPGACAL |= param_1 << 8 | param_2;
+	RAC->IFPGACAL &= ~(RAC_IFPGACAL_IRPHASE_Msk | RAC_IFPGACAL_IRAMP_Msk); //0xffff8080;
+	RAC->IFPGACAL |= param_1 << RAC_IFPGACAL_IRPHASE_Pos | param_2;
     PROTIMER_DelayUs(param_4);
-    if (rcIrCalData[9] == 0) AGC->IFC = 0x20;
+    if (rcIrCalData[9] == 0) AGC->IFC = AGC_IFC_RSSIDONE_Msk; //0x20;
     uVar5 = 0;
     uVar4 = 0;
-    for (uVar6 = 0; uVar6 >> (param_3 & 0xff) == 0; uVar6 = uVar6 + 1) 
+    for (uVar6 = 0; uVar6 >> (param_3 & 0xff) == 0; uVar6 ++) 
 	{
       PROTIMER_DelayUs(param_5);
       if (rcIrCalData[9] == 0) 
 	  {
-        AGC->CMD = 1;
-        while (-1 < (int)(AGC->IF << 0x1a));  
+        AGC->CMD = AGC_CMD_RSSISTART_Msk; //1;
+        while (!(AGC->IF & AGC_IF_RSSIDONE_Msk));  
       }
       if (rcIrCalData[11] <= uVar6) 
 	  {
@@ -307,7 +307,7 @@ int IRCAL_ReadRssi(uint32_t param_1,uint32_t param_2,uint32_t param_3,undefined4
         uVar5 = uVar5 + 1;
         uVar4 = uVar4 + iVar3;
       }
-      if (rcIrCalData[9] == 0) AGC->IFC = 0x20;
+      if (rcIrCalData[9] == 0) AGC->IFC = AGC_IFC_RSSIDONE_Msk; //0x20;
     }
     if (uVar5 == 0) uVar5 = 1;
     sVar2 = (int16_t)(uVar4 / uVar5);
@@ -436,10 +436,10 @@ void IRCAL_SaveRegStates(void)
   regbuf[19] = SYNTH_RfFreqGet();
   regbuf[20] = SYNTH_ChSpacingGet();
   MODEM->AFC = 0;
-  BUS_RegMaskedSet(&FRC->CTRL,1);
-  BUS_RegMaskedSet(&RAC->CTRL,0x40);
-  AGC->CTRL1 &= 0xfffff0ff;
-  AGC->CTRL1 |= (rcIrCalData[16] & 0xf) << 8;
+  BUS_RegMaskedSet(&FRC->CTRL,FRC_CTRL_RANDOMTX_Msk); //1);
+  BUS_RegMaskedSet(&RAC->CTRL,RAC_CTRL_TXPOSTPONE_Msk); //0x40);
+  AGC->CTRL1 &= ~AGC_CTRL1_RSSIPERIOD_Msk; 0xfffff0ff;
+  AGC->CTRL1 |= (rcIrCalData[16] & 0xf) << AGC_CTRL1_RSSIPERIOD_Pos;
 }
 
 
@@ -448,8 +448,6 @@ void IRCAL_SaveRegStates(void)
 void IRCAL_Teardown(void)
 
 {
-  undefined4 in_r3;
-  
   IRCAL_StopRx();
   AUXPLL_Stop();
   RAC->SGRFENCTRL0 = regbuf[0];
@@ -473,8 +471,8 @@ void IRCAL_Teardown(void)
   MODEM->AFC = regbuf[18];
   SYNTH_Config(regbuf[19],regbuf[20]);
   BUFC_RxBufferReset();
-  BUS_RegMaskedClear(&FRC->CTRL,1);
-  BUS_RegMaskedClear(&RAC->CTRL,0x40);
+  BUS_RegMaskedClear(&FRC->CTRL,FRC_CTRL_RANDOMTX_Msk); //1);
+  BUS_RegMaskedClear(&RAC->CTRL,RAC_CTRL_TXPOSTPONE_Msk); //0x40);
   FRC->IFC = 0xffffffff;
 }
 
@@ -499,7 +497,7 @@ uint32_t IRCAL_GetDiValue(void)
     if (SYNTH_RfFreqGet() < 1000000000) val = (DAT_0fe081c8);
     else 
 	{
-      if ((MODEM->CTRL0 << 0x17) >> 0x1d == 4) val = (DAT_0fe081c4);
+      if ((MODEM->CTRL0 & MODEM_CTRL0_MODFORMAT_Msk) >> MODEM_CTRL0_MODFORMAT_Pos == 4) val = (DAT_0fe081c4);
       else val = (DAT_0fe081c0);
     }
     if (val != 0xffffffff) return val & 0xffff;
@@ -537,8 +535,7 @@ uint32_t IRCAL_PerformSubfunction(uint32_t param_1,undefined4 param_2,undefined4
       IRCAL_Teardown();
     }
   }
-  uVar3 = PROTIMER->WRAPCNT;
-  lVar6 = PROTIMER_PrecntOverflowToUs(uVar3,0);
+  lVar6 = PROTIMER_PrecntOverflowToUs(PROTIMER->WRAPCNT,0);
   uVar7 = __aeabi_uldivmod((int)(lVar6 - lVar5),(int)((ulonglong)(lVar6 - lVar5) >> 0x20),1000,0);
   iVar1 = (int)((ulonglong)uVar7 >> 0x20);
   bVar4 = iVar1 == 0;

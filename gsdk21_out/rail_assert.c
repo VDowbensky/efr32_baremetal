@@ -5,9 +5,7 @@
 //void RAILCb_AssertFailed(void)
 void RAILCb_AssertFailed(RAIL_Handle_t railHandle, uint32_t errorCode);
 {
-  do {
-                    // WARNING: Do nothing block with infinite loop
-  } while( true );
+  while(1);
 }
 
 
@@ -15,14 +13,11 @@ void RAILCb_AssertFailed(RAIL_Handle_t railHandle, uint32_t errorCode);
 void RAILInt_Assert(int param_1,undefined4 param_2)
 
 {
-  undefined4 uVar1;
-  
-  if (param_1 == 0) {
+  if (param_1 == 0) 
+  {
     errorCodeEncountered = param_2;
-    uVar1 = RAILInt_GetActiveConfig();
-    RAILCb_AssertFailed(uVar1,param_2);
+    RAILCb_AssertFailed(RAILInt_GetActiveConfig(),param_2);
   }
-  return;
 }
 
 

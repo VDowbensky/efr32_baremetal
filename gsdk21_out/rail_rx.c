@@ -7,8 +7,7 @@ RAIL_Status_t RAIL_ConfigRxOptions(RAIL_Handle_t railHandle,
                                    RAIL_RxOptions_t mask,
                                    RAIL_RxOptions_t options)
 {
-  RFHAL_ConfigRxOptions(param_1 + 0xc);
-  return;
+  return RFHAL_ConfigRxOptions(railHandle + 0xc,mask,options);
 }
 
 
@@ -16,43 +15,27 @@ RAIL_Status_t RAIL_ConfigRxOptions(RAIL_Handle_t railHandle,
 void RAILCore_StartRx(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
 
 {
-  int iVar1;
-  
-  iVar1 = RAILInt_SetChannel();
-  if (iVar1 == 0) {
-    RFHAL_StartRx(param_1,param_2,param_3,param_4);
-    return;
-  }
-  return;
+  if (RAILInt_SetChannel() == 0) RFHAL_StartRx(param_1,param_2,param_3,param_4);
 }
 
 
 
-int RAILCore_ScheduleRx(undefined4 param_1,undefined4 param_2,undefined4 param_3)
+RAIL_Status_t RAILCore_ScheduleRx(undefined4 param_1,undefined4 param_2,undefined4 param_3)
 
 {
-  int iVar1;
-  
-  iVar1 = RAILCore_GetRadioState();
-  if (iVar1 == 1) {
-    iVar1 = RAILInt_SetChannel(param_1,param_2);
-    if (iVar1 == 0) {
-      iVar1 = RFHAL_ScheduleRx(param_1,param_2,param_3);
-      return iVar1;
-    }
+  if (RAILCore_GetRadioState() == 1) 
+  {
+    if (RAILInt_SetChannel(param_1,param_2) == 0) return RFHAL_ScheduleRx(param_1,param_2,param_3);
   }
-  else {
-    iVar1 = 2;
-  }
-  return iVar1;
+  else return RAIL_STATUS_INVALID_STATE;
 }
 
 
 
-void RAILInt_ConfigFrameTypeLength(int param_1)
+void RAILInt_ConfigFrameTypeLength(RAIL_Handle_t railHandle)
 
 {
-  RFHAL_ConfigFrameTypeLength(param_1 + 0xc);
+  RFHAL_ConfigFrameTypeLength(railHandle + 0xc);
   return;
 }
 

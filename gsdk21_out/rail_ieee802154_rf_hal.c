@@ -15,16 +15,14 @@ void RFHAL_IEEE802154Disable(void)
 
 {
   GENERIC_PHY_DisableIEEE802154();
-  return;
 }
 
 
 
-void RFHAL_IEEE802154IsEnabled(void)
+bool RFHAL_IEEE802154IsEnabled(void)
 
 {
-  GENERIC_PHY_IsEnabledIEEE802154();
-  return;
+  return GENERIC_PHY_IsEnabledIEEE802154();
 }
 
 
@@ -205,7 +203,6 @@ void RFHAL_IEEE802154LoadAck(undefined4 param_1,undefined4 param_2,undefined4 pa
   local_c = CONCAT31((int3)((uint32_t)param_2 >> 8),5);
   uStack8 = param_3;
   RFHAL_WriteAutoAckFifo(param_1,&local_c,1,5,param_1);
-  return;
 }
 
 

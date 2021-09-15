@@ -8,9 +8,7 @@ int RAILInt_GetActiveConfig(void)
   int iVar1;
   
   iVar1 = activeRailConfig;
-  if (activeRailConfig != 0) {
-    iVar1 = 1;
-  }
+  if (activeRailConfig != 0) iVar1 = 1;
   RAILInt_Assert(iVar1,0x26);
   return activeRailConfig;
 }
@@ -18,37 +16,42 @@ int RAILInt_GetActiveConfig(void)
 
 
 //void RAIL_Init(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
-RAIL_Handle_t RAIL_Init(RAIL_Config_t *railCfg,
-                        RAIL_InitCompleteCallbackPtr_t cb)
+RAIL_Handle_t RAIL_Init(RAIL_Config_t *railCfg,RAIL_InitCompleteCallbackPtr_t cb)
 {
   activeRailConfig = param_1;
   RFHAL_SetCallbackConfig();
-  RAILCore_Init(param_1,param_2,param_3,param_4);
-  return;
+  return RAILCore_Init(param_1,param_2,param_3,param_4);
 }
 
 
-
+/* RAIL_ENUM(RAIL_SchedulerStatus_t) {
+  RAIL_SCHEDULER_STATUS_NO_ERROR,
+  RAIL_SCHEDULER_STATUS_UNSUPPORTED,
+  RAIL_SCHEDULER_STATUS_EVENT_INTERRUPTED,
+  RAIL_SCHEDULER_STATUS_SCHEDULE_FAIL,
+  RAIL_SCHEDULER_STATUS_SCHEDULED_TX_FAIL,
+  RAIL_SCHEDULER_STATUS_SINGLE_TX_FAIL,
+  RAIL_SCHEDULER_STATUS_CCA_CSMA_TX_FAIL,
+  RAIL_SCHEDULER_STATUS_CCA_LBT_TX_FAIL,
+  RAIL_SCHEDULER_STATUS_SCHEDULED_RX_FAIL,
+  RAIL_SCHEDULER_STATUS_TX_STREAM_FAIL,
+  RAIL_SCHEDULER_STATUS_AVERAGE_RSSI_FAIL,
+  RAIL_SCHEDULER_STATUS_INTERNAL_ERROR,
+}; */
 //undefined4 RAIL_GetSchedulerStatus(void)
 RAIL_SchedulerStatus_t RAIL_GetSchedulerStatus(RAIL_Handle_t railHandle)
 {
-  return 1;
+  return RAIL_SCHEDULER_STATUS_UNSUPPORTED;
 }
 
 
 
 //undefined4 RAIL_ConfigSleep(undefined4 param_1,int param_2)
-RAIL_Status_t RAIL_ConfigSleep(RAIL_Handle_t railHandle,
-                               RAIL_SleepConfig_t sleepConfig)
+RAIL_Status_t RAIL_ConfigSleep(RAIL_Handle_t railHandle,RAIL_SleepConfig_t sleepConfig)
 {
-  undefined4 uVar1;
-  
-  railSleepConfig = (undefined)param_2;
-  if (param_2 == 1) {
-    uVar1 = RAILCore_InitTimerSync();
-    return uVar1;
-  }
-  return 0;
+  railSleepConfig = (undefined)sleepConfig;
+  if (sleepConfig == 1) return RAILCore_InitTimerSync();
+  return RAIL_STATUS_NO_ERROR;
 }
 
 
@@ -56,8 +59,7 @@ RAIL_Status_t RAIL_ConfigSleep(RAIL_Handle_t railHandle,
 //void RAIL_Wake(void)
 RAIL_Status_t RAIL_Wake(uint32_t elapsedTime)
 {
-  RAILCore_Wake();
-  return;
+  return RAILCore_Wake();
 }
 
 
@@ -65,8 +67,7 @@ RAIL_Status_t RAIL_Wake(uint32_t elapsedTime)
 //void RAIL_Sleep(undefined4 param_1,undefined4 param_2)
 RAIL_Status_t RAIL_Sleep(uint16_t wakeupProcessTime, bool *deepSleepAllowed)
 {
-  RAILCore_Sleep(railSleepConfig == '\x01',param_1,param_2);
-  return;
+  return RAILCore_Sleep(railSleepConfig == '\x01',param_1,param_2);
 }
 
 
@@ -74,8 +75,7 @@ RAIL_Status_t RAIL_Sleep(uint16_t wakeupProcessTime, bool *deepSleepAllowed)
 //void RAIL_GetRadioState(void)
 RAIL_RadioState_t RAIL_GetRadioState(RAIL_Handle_t railHandle)
 {
-  RAILCore_GetRadioState();
-  return;
+  return RAILCore_GetRadioState();
 }
 
 
@@ -85,8 +85,7 @@ void RAIL_Idle(RAIL_Handle_t railHandle,
                RAIL_IdleMode_t mode,
                bool wait)
 {
-  RAILCore_Idle(param_2,param_3);
-  return;
+  RAILCore_Idle(mode,wait);
 }
 
 
@@ -105,8 +104,7 @@ uint32_t RAIL_StartRfSense(RAIL_Handle_t railHandle,
                            uint32_t senseTime,
                            RAIL_RfSense_CallbackPtr_t cb)
 {
-  RAILCore_StartRfSense(param_2,param_3,param_4);
-  return;
+  return RAILCore_StartRfSense(band,senseTime,cb);
 }
 
 
@@ -114,8 +112,7 @@ uint32_t RAIL_StartRfSense(RAIL_Handle_t railHandle,
 //void RAIL_IsRfSensed(void)
 bool RAIL_IsRfSensed(RAIL_Handle_t railHandle)
 {
-  RAILCore_IsRfSensed();
-  return;
+  return RAILCore_IsRfSensed();
 }
 
 
@@ -125,8 +122,7 @@ uint16_t RAIL_GetRadioEntropy(RAIL_Handle_t railHandle,
                               uint8_t *buffer,
                               uint16_t bytes)
 {
-  RAILCore_GetRadioEntropy(param_2,param_3);
-  return;
+  return RAILCore_GetRadioEntropy(&buffer,bytes);
 }
 
 
@@ -137,8 +133,7 @@ RAIL_Status_t RAIL_SetTimer(RAIL_Handle_t railHandle,
                             RAIL_TimeMode_t mode,
                             RAIL_TimerCallback_t cb)
 {
-  RFHAL_SetTimer(param_2,param_3,param_4,param_1);
-  return;
+  return RFHAL_SetTimer(time,mode,cb,railHandle);
 }
 
 
@@ -146,8 +141,7 @@ RAIL_Status_t RAIL_SetTimer(RAIL_Handle_t railHandle,
 //void RAIL_GetTimer(void)
 uint32_t RAIL_GetTimer(RAIL_Handle_t railHandle)
 {
-  RFHAL_GetTimer();
-  return;
+  return RFHAL_GetTimer();
 }
 
 
@@ -156,7 +150,6 @@ uint32_t RAIL_GetTimer(RAIL_Handle_t railHandle)
 void RAIL_CancelTimer(RAIL_Handle_t railHandle)
 {
   RFHAL_CancelTimer();
-  return;
 }
 
 
@@ -164,8 +157,7 @@ void RAIL_CancelTimer(RAIL_Handle_t railHandle)
 //void RAIL_IsTimerExpired(void)
 bool RAIL_IsTimerExpired(RAIL_Handle_t railHandle)
 {
-  RFHAL_IsTimerExpired();
-  return;
+  return RFHAL_IsTimerExpired();
 }
 
 
@@ -173,8 +165,7 @@ bool RAIL_IsTimerExpired(RAIL_Handle_t railHandle)
 //void RAIL_IsTimerRunning(void)
 bool RAIL_IsTimerRunning(RAIL_Handle_t railHandle)
 {
-  RFHAL_IsTimerRunning();
-  return;
+  return RFHAL_IsTimerRunning();
 }
 
 
@@ -185,8 +176,7 @@ RAIL_Status_t RAIL_StartTx(RAIL_Handle_t railHandle,
                            RAIL_TxOptions_t options,
                            const RAIL_SchedulerInfo_t *schedulerInfo)
 {
-  RAILCore_StartTx(param_1 + 0xc);
-  return;
+  return RAILCore_StartTx(railHandle + 0xc,channel,options,&schedulerInfo);
 }
 
 
@@ -198,8 +188,7 @@ RAIL_Status_t RAIL_StartScheduledTx(RAIL_Handle_t railHandle,
                                     const RAIL_ScheduleTxConfig_t *config,
                                     const RAIL_SchedulerInfo_t *schedulerInfo)
 {
-  RAILCore_StartScheduledTx(param_1 + 0xc);
-  return;
+  return RAILCore_StartScheduledTx(railHandle + 0xc,channel,options,&config,&schedulerInfo);
 }
 
 
@@ -211,8 +200,7 @@ RAIL_Status_t RAIL_StartCcaCsmaTx(RAIL_Handle_t railHandle,
                                   const RAIL_CsmaConfig_t *csmaConfig,
                                   const RAIL_SchedulerInfo_t *schedulerInfo)
 {
-  RAILCore_StartCcaCsmaTx(param_1 + 0xc);
-  return;
+  return RAILCore_StartCcaCsmaTx(railHandle + 0xc,channel,options,&csmaConfig,&schedulerInfo);
 }
 
 
@@ -224,8 +212,7 @@ RAIL_Status_t RAIL_StartCcaLbtTx(RAIL_Handle_t railHandle,
                                  const RAIL_LbtConfig_t *lbtConfig,
                                  const RAIL_SchedulerInfo_t *schedulerInfo)
 {
-  RAILCore_StartCcaLbtTx(param_1 + 0xc);
-  return;
+  return RAILCore_StartCcaLbtTx(railHandle + 0xc,channel,&lbtConfig,&schedulerInfo);
 }
 
 
@@ -235,8 +222,7 @@ RAIL_Status_t RAIL_StartTxStream(RAIL_Handle_t railHandle,
                                  uint16_t channel,
                                  RAIL_StreamMode_t mode)
 {
-  RAILCore_StartTxStream(param_1 + 0xc);
-  return;
+  return RAILCore_StartTxStream(railHandle + 0xc,channel,mode);
 }
 
 
@@ -245,7 +231,7 @@ RAIL_Status_t RAIL_StartTxStream(RAIL_Handle_t railHandle,
 RAIL_Status_t RAIL_StopTxStream(RAIL_Handle_t railHandle)
 {
   RFHAL_StopTestMode();
-  return 0;
+  return RAIL_STATUS_NO_ERROR;
 }
 
 
@@ -255,8 +241,7 @@ RAIL_Status_t RAIL_StartRx(RAIL_Handle_t railHandle,
                            uint16_t channel,
                            const RAIL_SchedulerInfo_t *schedulerInfo)
 {
-  RAILCore_StartRx(param_1 + 0xc);
-  return;
+  return RAILCore_StartRx(railHandle + 0xc,channel,&schedulerInfo);
 }
 
 
@@ -267,8 +252,7 @@ RAIL_Status_t RAIL_ScheduleRx(RAIL_Handle_t railHandle,
                               const RAIL_ScheduleRxConfig_t *cfg,
                               const RAIL_SchedulerInfo_t *schedulerInfo)
 {
-  RAILCore_ScheduleRx(param_1 + 0xc);
-  return;
+  return RAILCore_ScheduleRx(railHandle + 0xc,channel,&cfg,&schedulerInfo);
 }
 
 
@@ -276,8 +260,7 @@ RAIL_Status_t RAIL_ScheduleRx(RAIL_Handle_t railHandle,
 //void RAIL_GetRssi(int param_1)
 int16_t RAIL_GetRssi(RAIL_Handle_t railHandle, bool wait)
 {
-  RAILCore_GetRssi(param_1 + 0xc);
-  return;
+  return RAILCore_GetRssi(railHandle + 0xc,wait);
 }
 
 
@@ -288,8 +271,7 @@ RAIL_Status_t RAIL_StartAverageRssi(RAIL_Handle_t railHandle,
                                     uint32_t averagingTimeUs,
                                     const RAIL_SchedulerInfo_t *schedulerInfo)
 {
-  RAILCore_StartAverageRssi(param_1 + 0xc);
-  return;
+  return RAILCore_StartAverageRssi(railHandle + 0xc,channel,averagingTimeUs,&schedulerInfo);
 }
 
 
@@ -299,7 +281,7 @@ RAIL_Status_t RAIL_EnableDirectMode(RAIL_Handle_t railHandle,
                                     bool enable)
 {
   RAILCore_EnableDirectMode(param_2);
-  return 0;
+  return RAIL_STATUS_NO_ERROR;
 }
 
 
@@ -308,8 +290,7 @@ RAIL_Status_t RAIL_EnableDirectMode(RAIL_Handle_t railHandle,
 RAIL_Status_t RAIL_OverrideDebugFrequency(RAIL_Handle_t railHandle,
                                           uint32_t freq)
 {
-  RAILCore_OverrideDebugFrequency(param_2);
-  return;
+  return RAILCore_OverrideDebugFrequency(freq);
 }
 
 

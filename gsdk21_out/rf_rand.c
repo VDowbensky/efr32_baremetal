@@ -12,14 +12,14 @@ uint32_t RFRAND_GetRadioEntropy(void *param_1,uint32_t param_2)
   undefined4 uVar5;
   size_t __n;
   uint32_t local_24;
+  CORE_irqState_t irqState;
   
-  uVar4 = (CMU->HFRADIOCLKEN0);
+  uVar4 = CMU->HFRADIOCLKEN0;
   local_24 = param_2;
   memset(param_1,0,param_2);
-  if ((((uVar4 | 0xcc) == uVar4) &&
-      (uVar4 = (RAC->CTRL), -1 < (int)(uVar4 << 0x1f))) &&
-     (uVar4 = RADIOCMU_ClockPrescGet(0x75160), uVar4 == 0)) {
-    uVar5 = CORE_EnterCritical();
+  if ((((uVar4 | 0xcc) == uVar4) &&(uVar4 = (RAC->CTRL), -1 < (int)(uVar4 << 0x1f))) && (uVar4 = RADIOCMU_ClockPrescGet(0x75160), uVar4 == 0)) 
+  {
+    irqState = CORE_EnterCritical();
     uVar3 = (MODEM->CTRL0);
     uVar2 = (FRC->RAWCTRL);
     BUS_RegMaskedClear(&MODEM->CTRL0,0x38000000);
@@ -47,7 +47,7 @@ uint32_t RFRAND_GetRadioEntropy(void *param_1,uint32_t param_2)
     write_volatile_4(FRC->RAWCTRL,uVar2);
     write_volatile_4(MODEM->CTRL0,uVar3);
     write_volatile_4(FRC->IFC,0x4000);
-    CORE_ExitCritical(uVar5);
+    CORE_ExitCritical(irqState);
   }
   else {
     param_2 = 0;
@@ -71,16 +71,13 @@ RFRAND_SeedProtimerRandom(undefined4 param_1,uint32_t param_2,undefined4 param_3
   uStack12 = param_2;
   uStack8 = param_3;
   iVar1 = RFRAND_GetRadioEntropy((int)&uStack12 + 2,2,param_3,param_4,param_1);
-  if (iVar1 == 2) {
-    if (uStack12._2_2_ == -0x7fc) {
-      uStack12 = 0xf8050000;
-    }
-    write_volatile_4(PROTIMER->RANDOM,uStack12 >> 0x10);
+  if (iVar1 == 2) 
+  {
+    if (uStack12._2_2_ == -0x7fc) uStack12 = 0xf8050000;
+    PROTIMER->RANDOM = uStack12 >> 0x10;
     uVar2 = 1;
   }
-  else {
-    uVar2 = 0;
-  }
+  else uVar2 = 0;
   return uVar2;
 }
 
@@ -89,10 +86,7 @@ RFRAND_SeedProtimerRandom(undefined4 param_1,uint32_t param_2,undefined4 param_3
 uint32_t RFRAND_GetProtimerRandom(void)
 
 {
-  uint32_t uVar1;
-  
-  uVar1 = (PROTIMER->RANDOM);
-  return uVar1 & 0xffff;
+  return PROTIMER->RANDOM & 0xffff;
 }
 
 
@@ -100,18 +94,12 @@ uint32_t RFRAND_GetProtimerRandom(void)
 void RFRAND_SeedPseudoRandom(void)
 
 {
-  uint32_t uVar1;
-  int iVar2;
-  
-  iVar2 = RFRAND_SeedProtimerRandom();
-  if (iVar2 != 0) {
-    uVar1 = (PROTIMER->RANDOM);
-    seed0 = (undefined2)uVar1;
-    uVar1 = (PROTIMER->RANDOM);
-    seed1 = (undefined2)uVar1;
+  if (RFRAND_SeedProtimerRandom() != 0) 
+  {
+    seed0 = (undefined2)PROTIMER->RANDOM;
+    seed1 = (undefined2)PROTIMER->RANDOM;
     pseudoRandomSeeded = 1;
   }
-  return;
 }
 
 
@@ -122,17 +110,11 @@ uint32_t RFRAND_GetPseudoRandom(void)
   uint32_t uVar1;
   uint32_t uVar2;
   
-  if (pseudoRandomSeeded == '\0') {
-    RFRAND_SeedPseudoRandom();
-  }
+  if (pseudoRandomSeeded == '\0') RFRAND_SeedPseudoRandom();
   uVar1 = (uint32_t)seed0;
-  if ((int)(uVar1 << 0x10) < 0) {
-    uVar1 = uVar1 ^ 0x62;
-  }
+  if ((int)(uVar1 << 0x10) < 0) uVar1 = uVar1 ^ 0x62;
   uVar2 = (uint32_t)seed1;
-  if ((int)(uVar2 << 0x10) < 0) {
-    uVar2 = uVar2 ^ 0x100b;
-  }
+  if ((int)(uVar2 << 0x10) < 0) uVar2 = uVar2 ^ 0x100b;
   seed0 = (int16_t)(uVar1 << 1);
   seed1 = (int16_t)(uVar2 << 1);
   return uVar1 ^ uVar2;

@@ -1,4 +1,4 @@
-#include "rail_ieee802154.o.h"
+#include "rail_ieee802154.h"
 
 
 
@@ -6,7 +6,6 @@ void RAILCore_IEEE802154_Reinit2p4(void)
 
 {
   RFHAL_IEEE802154LoadAck();
-  return;
 }
 
 
@@ -15,7 +14,6 @@ void RAILCore_IEEE802154_Config2p4GHzRadio(void)
 
 {
   RFHAL_IEEE802154RadioConfig2p4GHz();
-  return;
 }
 
 
@@ -23,20 +21,17 @@ void RAILCore_IEEE802154_Config2p4GHzRadio(void)
 //void RAIL_IEEE802154_Config2p4GHzRadio(int param_1)
 RAIL_Status_t RAIL_IEEE802154_Config2p4GHzRadio(RAIL_Handle_t railHandle)
 {
-  RFHAL_IEEE802154RadioConfig2p4GHz(param_1 + 0xc);
-  return;
+  return RFHAL_IEEE802154RadioConfig2p4GHz(railHandle + 0xc);
 }
 
 
 
-undefined4 RAILCore_IEEE802154_Deinit(undefined4 param_1)
+RAIL_Status_t RAILCore_IEEE802154_Deinit(RAIL_Handle_t railHandle)
 
 {
-  int iVar1;
-  
-  iVar1 = RAILCore_GetRadioState();
-  if (iVar1 == 1) {
-    RFHAL_IEEE802154Disable(param_1);
+  if (RAILCore_GetRadioState() == 1) 
+  {
+    RFHAL_IEEE802154Disable();
     return 0;
   }
   return 2;
@@ -47,8 +42,7 @@ undefined4 RAILCore_IEEE802154_Deinit(undefined4 param_1)
 //void RAIL_IEEE802154_Deinit(int param_1)
 RAIL_Status_t RAIL_IEEE802154_Deinit(RAIL_Handle_t railHandle)
 {
-  RAILCore_IEEE802154_Deinit(param_1 + 0xc);
-  return;
+  return RAILCore_IEEE802154_Deinit(railHandle + 0xc);
 }
 
 
@@ -56,13 +50,12 @@ RAIL_Status_t RAIL_IEEE802154_Deinit(RAIL_Handle_t railHandle)
 //void RAIL_IEEE802154_IsEnabled(int param_1)
 bool RAIL_IEEE802154_IsEnabled(RAIL_Handle_t railHandle)
 {
-  RFHAL_IEEE802154IsEnabled(param_1 + 0xc);
-  return;
+  return RFHAL_IEEE802154IsEnabled(railHandle + 0xc);
 }
 
 
 
-int RAILCore_IEEE802154_SetAddresses(undefined4 param_1,undefined2 *param_2)
+int RAILCore_IEEE802154_SetAddresses(RAIL_Handle_t railHandle,undefined2 *param_2)
 
 {
   int iVar1;
@@ -76,9 +69,7 @@ int RAILCore_IEEE802154_SetAddresses(undefined4 param_1,undefined2 *param_2)
   undefined2 local_3a;
   
   memset(&local_44,0,0x24);
-  if (param_2 == NULL) {
-    param_2 = &local_44;
-  }
+  if (param_2 == NULL) param_2 = &local_44;
   uVar2 = 0;
   local_44 = 0xffff;
   local_42 = 0xffff;
@@ -88,16 +79,14 @@ int RAILCore_IEEE802154_SetAddresses(undefined4 param_1,undefined2 *param_2)
   local_3a = 0xffff;
   puVar3 = param_2 + 6;
   iVar1 = 0;
-  do {
-    if (iVar1 == 0) {
-      iVar1 = RFHAL_IEEE802154SetPanId(param_1,param_2[uVar2],uVar2 & 0xff);
-      if ((iVar1 == 0) &&
-         (iVar1 = RFHAL_IEEE802154SetShortAddress(param_1,param_2[uVar2 + 3],uVar2 & 0xff),
-         iVar1 == 0)) {
-        iVar1 = RFHAL_IEEE802154SetLongAddress(param_1,puVar3);
-      }
+  do 
+  {
+    if (iVar1 == 0) 
+	{
+      iVar1 = RFHAL_IEEE802154SetPanId(railHandle,param_2[uVar2],uVar2 & 0xff);
+      if ((iVar1 == 0) && (iVar1 = RFHAL_IEEE802154SetShortAddress(railHandle,param_2[uVar2 + 3],uVar2 & 0xff),iVar1 == 0)) iVar1 = RFHAL_IEEE802154SetLongAddress(railHandle,puVar3);
     }
-    uVar2 = uVar2 + 1;
+    uVar2 ++;
     puVar3 = puVar3 + 4;
   } while (uVar2 != 3);
   return iVar1;
@@ -105,9 +94,10 @@ int RAILCore_IEEE802154_SetAddresses(undefined4 param_1,undefined2 *param_2)
 
 
 
-int RAILCore_IEEE802154_Init
-              (undefined4 param_1,undefined4 *param_2,undefined4 param_3,undefined4 param_4)
-
+//RAIL_Status_t RAILCore_IEEE802154_Init
+//              (RAIL_Handle_t railHandle,undefined4 *param_2,undefined4 param_3,undefined4 param_4)
+RAIL_Status_t RAILCore_IEEE802154_Init(RAIL_Handle_t railHandle,
+                                   const RAIL_IEEE802154_Config_t *fifteenFourConfig)
 {
   int iVar1;
   undefined4 *local_1c;
@@ -118,18 +108,18 @@ int RAILCore_IEEE802154_Init
   uStack24 = param_3;
   uStack20 = param_4;
   RFHAL_IEEE802154SetFeatures
-            (param_1,*(undefined *)((int)param_2 + 0x1a),*(undefined *)((int)param_2 + 0x19),
-             *(undefined *)(param_2 + 6),param_1);
+            (railHandle,*(undefined *)((int)param_2 + 0x1a),*(undefined *)((int)param_2 + 0x19),
+             *(undefined *)(param_2 + 6),railHandle);
   local_1c = (undefined4 *)param_2[3];
   uStack24 = param_2[4];
   uStack20 = param_2[5];
-  RFHAL_SetStateTiming(param_1,&local_1c);
-  iVar1 = RAILCore_ConfigAutoAck(param_1,param_2 + 1);
-  if (((iVar1 == 0) && (iVar1 = RFHAL_IEEE802154LoadAck(param_1), iVar1 == 0)) &&
-     (iVar1 = RFHAL_ConfigAddressFilter(param_1,&initialAddrConfig), iVar1 == 0)) {
-    iVar1 = RFHAL_IEEE802154SetBroadcastAddresses(param_1);
+  RFHAL_SetStateTiming(railHandle,&local_1c);
+  iVar1 = RAILCore_ConfigAutoAck(railHandle,param_2 + 1);
+  if (((iVar1 == 0) && (iVar1 = RFHAL_IEEE802154LoadAck(railHandle), iVar1 == 0)) && (iVar1 = RFHAL_ConfigAddressFilter(railHandle,&initialAddrConfig), iVar1 == 0)) 
+  {
+    iVar1 = RFHAL_IEEE802154SetBroadcastAddresses(railHandle);
   }
-  RAILCore_IEEE802154_SetAddresses(param_1,*param_2);
+  RAILCore_IEEE802154_SetAddresses(railHandle,*param_2);
   return iVar1;
 }
 
@@ -139,8 +129,7 @@ int RAILCore_IEEE802154_Init
 RAIL_Status_t RAIL_IEEE802154_Init(RAIL_Handle_t railHandle,
                                    const RAIL_IEEE802154_Config_t *fifteenFourConfig)
 {
-  RAILCore_IEEE802154_Init(param_1 + 0xc);
-  return;
+  return RAILCore_IEEE802154_Init(railHandle + 0xc, &fifteenFourConfig);
 }
 
 
@@ -149,8 +138,7 @@ RAIL_Status_t RAIL_IEEE802154_Init(RAIL_Handle_t railHandle,
 RAIL_Status_t RAIL_IEEE802154_SetAddresses(RAIL_Handle_t railHandle,
                                            const RAIL_IEEE802154_AddrConfig_t *addresses)
 {
-  RAILCore_IEEE802154_SetAddresses(param_1 + 0xc);
-  return;
+  return RAILCore_IEEE802154_SetAddresses(railHandle + 0xc);
 }
 
 
@@ -160,12 +148,7 @@ RAIL_Status_t RAIL_IEEE802154_SetPanId(RAIL_Handle_t railHandle,
                                        uint16_t panId,
                                        uint8_t index)
 {
-  undefined4 uVar1;
-  
-  if (param_3 < 3) {
-    uVar1 = RFHAL_IEEE802154SetPanId(param_1 + 0xc);
-    return uVar1;
-  }
+  if (param_3 < 3) return RFHAL_IEEE802154SetPanId(railHandle + 0xc);
   return 1;
 }
 
@@ -176,12 +159,7 @@ RAIL_Status_t RAIL_IEEE802154_SetShortAddress(RAIL_Handle_t railHandle,
                                               uint16_t int16_tAddr,
                                               uint8_t index)
 {
-  undefined4 uVar1;
-  
-  if (param_3 < 3) {
-    uVar1 = RFHAL_IEEE802154SetShortAddress(param_1 + 0xc);
-    return uVar1;
-  }
+  if (param_3 < 3) return RFHAL_IEEE802154SetShortAddress(railHandle + 0xc);
   return 1;
 }
 
@@ -192,29 +170,17 @@ RAIL_Status_t RAIL_IEEE802154_SetLongAddress(RAIL_Handle_t railHandle,
                                              const uint8_t *longAddr,
                                              uint8_t index)
 {
-  undefined4 uVar1;
-  
-  if (param_3 < 3) {
-    uVar1 = RFHAL_IEEE802154SetLongAddress(param_1 + 0xc);
-    return uVar1;
-  }
+  if (param_3 < 3) return RFHAL_IEEE802154SetLongAddress(railHandle + 0xc);
   return 1;
 }
 
 
 
-undefined4 RAIL_IEEE802154_SetPanCoordinator(int param_1,undefined4 param_2)
+//undefined4 RAIL_IEEE802154_SetPanCoordinator(int param_1,undefined4 param_2)
 RAIL_Status_t RAIL_IEEE802154_SetPanCoordinator(RAIL_Handle_t railHandle,
                                                 bool isPanCoordinator)
 {
-  int iVar1;
-  undefined4 uVar2;
-  
-  iVar1 = RFHAL_IEEE802154IsEnabled(param_1 + 0xc);
-  if (iVar1 != 0) {
-    uVar2 = RFHAL_IEEE802154SetPanCoordinator(param_1 + 0xc,param_2);
-    return uVar2;
-  }
+  if (RFHAL_IEEE802154IsEnabled(param_1 + 0xc) != 0) return RFHAL_IEEE802154SetPanCoordinator(railHandle + 0xc,param_2);
   return 2;
 }
 
@@ -224,14 +190,7 @@ RAIL_Status_t RAIL_IEEE802154_SetPanCoordinator(RAIL_Handle_t railHandle,
 RAIL_Status_t RAIL_IEEE802154_SetPromiscuousMode(RAIL_Handle_t railHandle,
                                                  bool enable)
 {
-  int iVar1;
-  undefined4 uVar2;
-  
-  iVar1 = RFHAL_IEEE802154IsEnabled(param_1 + 0xc);
-  if (iVar1 != 0) {
-    uVar2 = RFHAL_IEEE802154SetPromiscuousMode(param_1 + 0xc,param_2);
-    return uVar2;
-  }
+  if (RFHAL_IEEE802154IsEnabled(railHandle + 0xc) != 0) return RFHAL_IEEE802154SetPromiscuousMode(railHandle + 0xc,param_2);
   return 2;
 }
 
@@ -241,14 +200,7 @@ RAIL_Status_t RAIL_IEEE802154_SetPromiscuousMode(RAIL_Handle_t railHandle,
 RAIL_Status_t RAIL_IEEE802154_AcceptFrames(RAIL_Handle_t railHandle,
                                            uint8_t framesMask)
 {
-  int iVar1;
-  undefined4 uVar2;
-  
-  iVar1 = RFHAL_IEEE802154IsEnabled(param_1 + 0xc);
-  if (iVar1 != 0) {
-    uVar2 = RFHAL_IEEE802154AcceptFrames(param_1 + 0xc,param_2);
-    return uVar2;
-  }
+  if (RFHAL_IEEE802154IsEnabled(railHandle + 0xc) != 0) return RFHAL_IEEE802154AcceptFrames(railHandle + 0xc,param_2);
   return 2;
 }
 
@@ -257,8 +209,7 @@ RAIL_Status_t RAIL_IEEE802154_AcceptFrames(RAIL_Handle_t railHandle,
 //void RAIL_IEEE802154_SetFramePending(int param_1)
 RAIL_Status_t RAIL_IEEE802154_SetFramePending(RAIL_Handle_t railHandle)
 {
-  RFHAL_IEEE802154SetFramePending(param_1 + 0xc);
-  return;
+  return RFHAL_IEEE802154SetFramePending(railHandle + 0xc);
 }
 
 
@@ -267,8 +218,7 @@ RAIL_Status_t RAIL_IEEE802154_SetFramePending(RAIL_Handle_t railHandle)
 RAIL_Status_t RAIL_IEEE802154_GetAddress(RAIL_Handle_t railHandle,
                                          RAIL_IEEE802154_Address_t *pAddress)
 {
-  RFHAL_IEEE802154GetAddress(param_2);
-  return;
+  return RFHAL_IEEE802154GetAddress(&pAddress);
 }
 
 

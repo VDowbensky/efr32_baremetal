@@ -5,8 +5,7 @@
 void RAILCore_GetRssi(void)
 
 {
-  RFHAL_GetRssi();
-  return;
+  return RFHAL_GetRssi();
 }
 
 
@@ -14,8 +13,7 @@ void RAILCore_GetRssi(void)
 void RAILCore_StartAverageRssi(void)
 
 {
-  RFHAL_StartAverageRssi();
-  return;
+  return RFHAL_StartAverageRssi();
 }
 
 
@@ -23,8 +21,7 @@ void RAILCore_StartAverageRssi(void)
 //void RAIL_GetAverageRssi(int param_1)
 int16_t RAIL_GetAverageRssi(RAIL_Handle_t railHandle)
 {
-  RFHAL_GetAverageRssi(param_1 + 0xc);
-  return;
+  return RFHAL_GetAverageRssi(param_1 + 0xc);
 }
 
 
@@ -34,10 +31,8 @@ bool RAIL_IsAverageRssiReady(RAIL_Handle_t railHandle)
 {
   int iVar1;
   
-  iVar1 = RFHAL_GetAverageRssi(param_1 + 0xc);
-  if (iVar1 != 0) {
-    iVar1 = 1;
-  }
+  iVar1 = RFHAL_GetAverageRssi(railHandle + 0xc);
+  if (RFHAL_GetAverageRssi(railHandle + 0xc) != 0) iVar1 = 1;
   return iVar1;
 }
 
@@ -61,11 +56,10 @@ void RAILCore_StartRfSense(void)
 
 
 
-void RAILCore_IsRfSensed(void)
+bool RAILCore_IsRfSensed(void)
 
 {
-  RFHAL_IsRfSensed();
-  return;
+  return RFHAL_IsRfSensed();
 }
 
 

@@ -250,7 +250,7 @@ undefined4 RFHAL_IEEE802154GetAddress(uint16_t *param_1)
 
 
 
-undefined4 RFHAL_GetTxPacketDetails(int param_1,int param_2,undefined4 param_3,undefined4 param_4)
+RAIL_Status_t RFHAL_GetTxPacketDetails(int param_1,int param_2,undefined4 param_3,undefined4 param_4)
 
 {
   int *piVar1;
@@ -274,18 +274,50 @@ undefined4 RFHAL_GetTxPacketDetails(int param_1,int param_2,undefined4 param_3,u
 }
 
 
-
-undefined4
-RFHAL_IntEnable(int param_1,undefined4 param_2,uint32_t param_3,uint32_t param_4,uint32_t param_5,uint32_t param_6)
-
+/* RAIL_ENUM_GENERIC(RAIL_Events_t, uint64_t) {
+  RAIL_EVENT_RSSI_AVERAGE_DONE_SHIFT = 0,
+  RAIL_EVENT_RX_ACK_TIMEOUT_SHIFT,
+  RAIL_EVENT_RX_FIFO_ALMOST_FULL_SHIFT,
+  RAIL_EVENT_RX_PACKET_RECEIVED_SHIFT,
+  RAIL_EVENT_RX_PREAMBLE_DETECT_SHIFT,
+  RAIL_EVENT_RX_SYNC1_DETECT_SHIFT,
+  RAIL_EVENT_RX_SYNC2_DETECT_SHIFT,
+  RAIL_EVENT_RX_FRAME_ERROR_SHIFT,
+  RAIL_EVENT_RX_FIFO_OVERFLOW_SHIFT,
+  RAIL_EVENT_RX_ADDRESS_FILTERED_SHIFT,
+  RAIL_EVENT_RX_TIMEOUT_SHIFT,
+  RAIL_EVENT_RX_SCHEDULED_RX_END_SHIFT,
+  RAIL_EVENT_RX_PACKET_ABORTED_SHIFT,
+  RAIL_EVENT_RX_FILTER_PASSED_SHIFT,
+  RAIL_EVENT_RX_TIMING_LOST_SHIFT,
+  RAIL_EVENT_RX_TIMING_DETECT_SHIFT,
+  RAIL_EVENT_IEEE802154_DATA_REQUEST_COMMAND_SHIFT,
+  RAIL_EVENT_TX_FIFO_ALMOST_EMPTY_SHIFT,
+  RAIL_EVENT_TX_PACKET_SENT_SHIFT,
+  RAIL_EVENT_TXACK_PACKET_SENT_SHIFT,
+  RAIL_EVENT_TX_ABORTED_SHIFT,
+  RAIL_EVENT_TXACK_ABORTED_SHIFT,
+  RAIL_EVENT_TX_BLOCKED_SHIFT,
+  RAIL_EVENT_TXACK_BLOCKED_SHIFT,
+  RAIL_EVENT_TX_UNDERFLOW_SHIFT,
+  RAIL_EVENT_TXACK_UNDERFLOW_SHIFT,
+  RAIL_EVENT_TX_CHANNEL_CLEAR_SHIFT,
+  RAIL_EVENT_TX_CHANNEL_BUSY_SHIFT,
+  RAIL_EVENT_TX_CCA_RETRY_SHIFT,
+  RAIL_EVENT_TX_START_CCA_SHIFT,
+  RAIL_EVENT_CONFIG_UNSCHEDULED_SHIFT,
+  RAIL_EVENT_CONFIG_SCHEDULED_SHIFT,
+  RAIL_EVENT_SCHEDULER_STATUS_SHIFT,
+  RAIL_EVENT_CAL_NEEDED_SHIFT,
+}; */
+//undefined4 RFHAL_IntEnable(int param_1,undefined4 param_2,uint32_t param_3,uint32_t param_4,uint32_t param_5,uint32_t param_6)
+RAIL_Status_t RFHAL_IntEnable(RAIL_Handle_t railHandle,RAIL_Events_t mask,RAIL_Events_t events)
 {
-  *(uint32_t *)(param_1 + 0x48) = *(uint32_t *)(param_1 + 0x48) & ~param_3 | param_3 & param_5;
-  *(uint32_t *)(param_1 + 0x4c) = *(uint32_t *)(param_1 + 0x4c) & ~param_4 | param_4 & param_6;
-  GENERIC_PHY_ConfigureEvents
-            (param_3 & 0xfffffffe,param_4,param_3 & 0xfffffffe & param_5 | 0xc000000,
-             param_4 & param_6 | 2,0,0);
-  RFHAL_NotifyUserOfIrCal(param_1);
-  return 0;
+  *(uint32_t *)(railHandle + 0x48) = *(uint32_t *)(railHandle + 0x48) & ~param_3 | param_3 & param_5;
+  *(uint32_t *)(railHandle + 0x4c) = *(uint32_t *)(railHandle + 0x4c) & ~param_4 | param_4 & param_6;
+  GENERIC_PHY_ConfigureEvents(param_3 & 0xfffffffe,param_4,param_3 & 0xfffffffe & param_5 | 0xc000000,param_4 & param_6 | 2,0,0);
+  RFHAL_NotifyUserOfIrCal(railHandle);
+  return RAIL_STATUS_NO_ERROR;
 }
 
 
@@ -327,40 +359,40 @@ void RFHAL_SetCallbackConfig(code **param_1)
 
 
 
-uint32_t RFHAL_PeekRxPacket(uint32_t param_1,uint32_t param_2,uint32_t param_3,int param_4)
-
+//uint32_t RFHAL_PeekRxPacket(uint32_t param_1,uint32_t param_2,uint32_t param_3,int param_4)
+uint16_t RAIL_PeekRxPacket(RAIL_RxPacketHandle_t packetHandle,uint8_t *pDst,uint16_t len,uint16_t offset)
 {
   uint16_t uVar1;
   uint32_t uVar2;
   uint16_t local_2a;
   undefined auStack40 [2];
   uint16_t local_26;
+  CORE_irqState_t irqState;
   
-  uVar2 = param_2;
-  if (((param_2 != 0) && (uVar2 = param_3, param_3 != 0)) && (uVar2 = param_1, param_1 != 0)) {
-    CORE_EnterCritical();
+  uVar2 = pDst;
+  if ((pDst != 0) && (len != 0) && (packetHandle != 0)) 
+  {
+    irqState = CORE_EnterCritical();
     uVar1 = cachedPacketBytes;
-    if (param_1 == cachedPacketHandle) {
+    if (packetHandle == cachedPacketHandle) 
+	{
       local_2a = cachedPacketStartOffset;
-      CORE_ExitCritical();
+      CORE_ExitCritical(irqState);
       local_26 = uVar1;
     }
-    else {
-      CORE_ExitCritical();
-      uVar2 = BUFC_GetRxPacketInfo(param_1,auStack40,&local_2a);
-      if (uVar2 == 0) {
-        return 0;
-      }
-      CORE_EnterCritical();
+    else 
+	{
+      CORE_ExitCritical(irqState);
+      uVar2 = BUFC_GetRxPacketInfo(packetHandle,auStack40,&local_2a);
+      if (BUFC_GetRxPacketInfo(packetHandle,auStack40,&local_2a) == 0) return 0;
+      irqState = CORE_EnterCritical();
       cachedPacketStartOffset = local_2a;
       cachedPacketBytes = local_26;
       cachedPacketHandle = uVar2;
-      CORE_ExitCritical();
+      CORE_ExitCritical(irqState);
     }
-    if ((int)(uint32_t)local_26 < (int)(param_4 + param_3)) {
-      param_3 = (uint32_t)(uint16_t)(local_26 - (int16_t)param_4);
-    }
-    uVar2 = BUFC_Peek(1,param_2,param_3,(uint32_t)local_2a + param_4 & 0xffff);
+    if ((int)(uint32_t)local_26 < (int)(offset + len)) len = (uint32_t)(uint16_t)(local_26 - (int16_t)offset);
+    uVar2 = BUFC_Peek(1,pDst,len,(uint32_t)local_2a + offset & 0xffff);
   }
   return uVar2;
 }
@@ -378,24 +410,21 @@ uint32_t RFHAL_GetPtiProtocol(void)
 
 
 
-uint32_t RFHAL_SetPtiProtocol(undefined4 param_1,uint32_t param_2,int param_3,uint32_t param_4)
-
+//uint32_t RFHAL_SetPtiProtocol(undefined4 param_1,uint32_t param_2,int param_3,uint32_t param_4)
+RAIL_Status_t RFHAL_SetPtiProtocol(RAIL_Handle_t railHandle,RAIL_PtiProtocol_t protocol)
 {
   uint32_t uVar1;
   uint32_t uVar2;
   
   uVar2 = param_2 & 0xfffffff0;
-  if (uVar2 == 0) {
+  if (uVar2 == 0) 
+  {
     param_3 = 0x21000f7c;
     uVar1 = (SEQ->REG080);
     param_4 = uVar1 & 0xfffffff0 | param_2 & 0xf;
   }
-  if (uVar2 == 0) {
-    *(uint32_t *)(param_3 + 4) = param_4;
-  }
-  else {
-    uVar2 = 1;
-  }
+  if (uVar2 == 0) *(uint32_t *)(param_3 + 4) = param_4;
+  else uVar2 = 1;
   return uVar2;
 }
 
@@ -741,54 +770,38 @@ void RFHAL_AcceptCrcErrors(int param_1)
 }
 
 
-
-undefined4 RFHAL_ConfigRxOptions(undefined4 param_1,int param_2,uint32_t param_3)
-
+/* RAIL_ENUM_GENERIC(RAIL_RxOptions_t, uint32_t) {
+  RAIL_RX_OPTION_STORE_CRC_SHIFT = 0,
+  RAIL_RX_OPTION_IGNORE_CRC_ERRORS_SHIFT,
+  RAIL_RX_OPTION_ENABLE_DUALSYNC_SHIFT,
+  RAIL_RX_OPTION_TRACK_ABORTED_FRAMES_SHIFT,
+  RAIL_RX_OPTION_REMOVE_APPENDED_INFO_SHIFT,
+}; */
+//undefined4 RFHAL_ConfigRxOptions(undefined4 param_1,int param_2,uint32_t param_3)
+RAIL_Status_t RFHAL_ConfigRxOptions(RAIL_Handle_t railHandle,RAIL_RxOptions_t mask,RAIL_RxOptions_t options)
 {
-  FRC_SET *pFVar1;
-  MODEM_SET *pMVar2;
-  uint32_t uVar3;
-  
-  if (param_2 << 0x1c < 0) {
-    if ((param_3 & 8) == 0) {
-      pFVar1 = (FRC_SET *)&Peripherals::FRC_CLR;
-    }
-    else {
-      pFVar1 = &Peripherals::FRC_SET;
-    }
-    ((FRC_CLR *)pFVar1)->RXCTRL = 8;
+  if (mask & 0x08) 
+  {
+    if ((options & 8) == 0) BUS_RegMaskedClear(&FRC->RXCTRL,8); 
+    else BUS_RegMaskedSet(&FRC->RXCTRL,8);
   }
-  if (param_2 << 0x1f < 0) {
-    if ((param_3 & 1) == 0) {
-      pFVar1 = (FRC_SET *)&Peripherals::FRC_CLR;
-    }
-    else {
-      pFVar1 = &Peripherals::FRC_SET;
-    }
-    ((FRC_CLR *)pFVar1)->RXCTRL = 1;
+  if (mask & 0x01) 
+  {
+    if ((options & 1) == 0) BUS_RegMaskedClear(&FRC->RXCTRL,1); 
+    else BUS_RegMaskedSet(&FRC->RXCTRL,1);
   }
-  if (param_2 << 0x1d < 0) {
-    if ((param_3 & 4) == 0) {
-      pMVar2 = (MODEM_SET *)&Peripherals::MODEM_CLR;
-    }
-    else {
-      pMVar2 = &Peripherals::MODEM_SET;
-    }
-    ((MODEM_CLR *)pMVar2)->CTRL1 = 0x200;
+  if (mask & 0x04) 
+  {
+    if ((options & 4) == 0) BUS_RegMaskedClear(&MODEM->CTRL1,0x200); 
+    else BUS_RegMaskedSet(&MODEM->CTRL1,0x200); 
   }
-  if (param_2 << 0x1e < 0) {
-    RFHAL_AcceptCrcErrors((param_3 << 0x1e) >> 0x1f);
+  if (mask & 0x02) RFHAL_AcceptCrcErrors((options << 0x1e) >> 0x1f);
+  if (mask << 0x1b < 0) 
+  {
+    if ((options & 0x10) == 0) FRC->TRAILRXDATA = 0x1b;
+    else FRC->TRAILRXDATA = 0;
   }
-  if (param_2 << 0x1b < 0) {
-    if ((param_3 & 0x10) == 0) {
-      uVar3 = 0x1b;
-    }
-    else {
-      uVar3 = 0;
-    }
-    write_volatile_4(FRC->TRAILRXDATA,uVar3);
-  }
-  return 0;
+  return RAIL_STATUS_NO_ERROR;
 }
 
 
@@ -803,14 +816,10 @@ RFHAL_SetPaCTune(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefi
 
 
 
-void RFHAL_GetTimer(void)
+uint32_t RAIL_GetTimer(void)
 
 {
-  undefined4 uVar1;
-  
-  uVar1 = GENERIC_PHY_GetTimerTimeout();
-  PROTIMER_PrecntOverflowToUs(uVar1,0);
-  return;
+  return PROTIMER_PrecntOverflowToUs(GENERIC_PHY_GetTimerTimeout());
 }
 
 
@@ -821,44 +830,42 @@ void RFHAL_CancelTimer(void)
   GENERIC_PHY_ConfigureEvents(0,0,0,0,4,0);
   GENERIC_PHY_TimerStop();
   timerExpiredCb = 0;
-  return;
 }
 
 
-
-undefined4 RFHAL_SetTimer(undefined4 param_1,int param_2,int param_3,undefined4 param_4)
+/* RAIL_ENUM(RAIL_TimeMode_t) {
+  RAIL_TIME_ABSOLUTE,
+  RAIL_TIME_DELAY,
+  RAIL_TIME_DISABLED
+}; */
+RAIL_Status_t RFHAL_SetTimer(uint32_t time,RAIL_TimeMode_t mode,RAIL_TimerCallback_t cb,RAIL_Handle_t railHandle)
 
 {
-  undefined4 uVar1;
-  undefined4 uVar2;
   int iVar3;
+  CORE_irqState_t irqState;
   
-  if (param_2 == 2) {
-    RFHAL_CancelTimer();
-  }
-  else {
-    uVar1 = CORE_EnterCritical();
-    if ((timerExpiredCb == 0) || (timerExpiredCb == param_3)) {
-      timerExpiredCb = param_3;
-      timerExpiredCbArg = param_4;
+  if (mode == RAIL_TIME_DISABLED) RFHAL_CancelTimer();
+  else 
+  {
+    irqState = CORE_EnterCritical();
+    if ((timerExpiredCb == 0) || (timerExpiredCb == cb)) 
+	{
+      timerExpiredCb = cb;
+      timerExpiredCbArg = railHandle;
       GENERIC_PHY_ConfigureEvents(0,0,0,0,4,4);
-      timerExpired = 0;
-      uVar2 = PROTIMER_UsToPrecntOverflow(param_1);
-      if (param_2 != 0) {
-        param_2 = 1;
-      }
-      iVar3 = GENERIC_PHY_TimerStart(uVar2,param_2);
+      timerExpired = false;
+      if (mode != RAIL_TIME_ABSOLUTE) mode = RAIL_TIME_DELAY;
+      iVar3 = GENERIC_PHY_TimerStart(PROTIMER_UsToPrecntOverflow(time),mode);
     }
-    else {
-      iVar3 = 0;
-    }
-    CORE_ExitCritical(uVar1);
-    if (iVar3 == 0) {
+    else iVar3 = 0;
+    CORE_ExitCritical(irqState);
+    if (iVar3 == 0) 
+	{
       timerExpiredCb = iVar3;
-      return 1;
+      return RAIL_STATUS_INVALID_PARAMETER;
     }
   }
-  return 0;
+  return RAIL_STATUS_NO_ERROR;
 }
 
 
@@ -879,11 +886,10 @@ uint8_t RFHAL_IsTimerExpired(void)
 
 
 
-void RFHAL_IsTimerRunning(void)
+bool RFHAL_IsTimerRunning(void)
 
 {
-  GENERIC_PHY_IsTimerRunning();
-  return;
+  return GENERIC_PHY_IsTimerRunning();
 }
 
 
@@ -1617,60 +1623,72 @@ uint32_t RFHAL_IsAutoAckWaitingForAck(void)
 }
 
 
-
-uint32_t RFHAL_ReadRxFifo(undefined4 param_1,undefined4 param_2,uint32_t param_3)
-
+uint16_t RFHAL_ReadRxFifo(RAIL_Handle_t railHandle,uint8_t *dataPtr,uint16_t readLength)
 {
   uint32_t uVar1;
-  uint32_t uVar2;
+  uint32_t len;
   undefined auStack32 [2];
   uint16_t local_1e;
   
   uVar1 = BUFC_GetRxPacketInfo(1,auStack32,0);
-  uVar2 = uVar1;
-  if (uVar1 != 0) {
-    uVar2 = param_3;
-    if (local_1e <= param_3) {
-      uVar2 = (uint32_t)local_1e;
-    }
-    if (uVar1 == cachedPacketHandle) {
-      cachedPacketHandle = 0;
-    }
-    BUFC_ReadBuffer(1,param_2,uVar2);
+  len = uVar1;
+  if (uVar1 != 0) 
+  {
+    len = readLength;
+    if (local_1e <= readLength) len = (uint32_t)local_1e;
+    if (uVar1 == cachedPacketHandle) cachedPacketHandle = 0;
+    BUFC_ReadBuffer(1,dataPtr,len);
   }
-  return uVar2;
+  return len;
 }
 
 
 
-// WARNING: Could not reconcile some variable overlaps
+/* typedef struct RAIL_RxPacketInfo {
+  RAIL_RxPacketStatus_t packetStatus; 
+  uint16_t packetBytes;              
+  uint16_t firstPortionBytes;         
+  uint8_t *firstPortionData;      
+  uint8_t *lastPortionData;           
+} RAIL_RxPacketInfo_t; */
 
-int RFHAL_GetRxPacketInfo(undefined4 param_1,int param_2,undefined4 param_3,undefined4 param_4)
-
+//int RFHAL_GetRxPacketInfo(undefined4 param_1,int param_2,undefined4 param_3,undefined4 param_4)
+RAIL_RxPacketHandle_t RFHAL_GetRxPacketInfo(RAIL_Handle_t railHandle,RAIL_RxPacketHandle_t packetHandle,RAIL_RxPacketInfo_t *pPacketInfo)
 {
   int iVar1;
   undefined4 uStack20;
   undefined4 uStack16;
+  CORE_irqState_t irqState;
   
   uStack20 = param_2;
   uStack16 = param_3;
   iVar1 = BUFC_GetRxPacketInfo(param_1,param_2,(int)&uStack20 + 2,param_4,param_1);
-  if (iVar1 != 0) {
-    CORE_EnterCritical();
+  if (iVar1 != 0) 
+  {
+    irqState = CORE_EnterCritical();
     cachedPacketStartOffset = uStack20._2_2_;
     cachedPacketBytes = *(undefined2 *)(param_2 + 2);
     cachedPacketHandle = iVar1;
-    CORE_ExitCritical();
+    CORE_ExitCritical(irqState);
   }
   return iVar1;
 }
 
 
 
-// WARNING: Could not reconcile some variable overlaps
+/* typedef struct RAIL_RxPacketDetails {
+  RAIL_PacketTimeStamp_t timeReceived;
+  bool crcPassed;
+  bool isAck;
+  int8_t rssi;
+  uint8_t lqi;
+  uint8_t syncWordId;
+  uint8_t subPhyId;
+} RAIL_RxPacketDetails_t; */
+//typedef const void *RAIL_RxPacketHandle_t;
 
-undefined4 RFHAL_GetRxPacketDetails(int16_t *param_1,undefined4 *param_2,undefined4 param_3)
-
+//undefined4 RFHAL_GetRxPacketDetails(int16_t *param_1,undefined4 *param_2,undefined4 param_3)
+RAIL_Status_t RFHAL_GetRxPacketDetails(RAIL_Handle_t railHandle,RAIL_RxPacketHandle_t packetHandle,RAIL_RxPacketDetails_t *pPacketDetails)
 {
   int16_t sVar1;
   uint32_t uVar2;
@@ -1684,45 +1702,46 @@ undefined4 RFHAL_GetRxPacketDetails(int16_t *param_1,undefined4 *param_2,undefin
   undefined4 *local_14;
   undefined4 uStack16;
   
-  if (((param_1 == (int16_t *)0x0) || (param_2 == NULL)) ||
-     ((local_18 = param_1, local_14 = param_2, uStack16 = param_3, param_1 < (int16_t *)0x3 &&
-      (param_1 = (int16_t *)BUFC_GetRxPacketInfo(param_1,0,0), param_1 == (int16_t *)0x0)))) {
+  if (((param_1 == NULL) || (param_2 == NULL)) || ((local_18 = param_1, local_14 = param_2, uStack16 = param_3, param_1 < (int16_t *)0x3 && (param_1 = (int16_t *)BUFC_GetRxPacketInfo(param_1,0,0), param_1 == (int16_t *)0x0)))) 
+  {
     uVar5 = 1;
   }
-  else {
+  else 
+  {
     sVar1 = *param_1;
     uVar7 = (uint32_t)*(uint8_t *)(param_1 + 1);
-    if ((sVar1 < 0) || ((uVar7 & 7) < 6)) {
-      uVar5 = 2;
-    }
-    else {
+    if ((sVar1 < 0) || ((uVar7 & 7) < 6)) uVar5 = 2;
+    else 
+	{
       *(uint8_t *)((int)param_2 + 0xd) = (uint8_t)((uVar7 << 0x1b) >> 0x1f);
       *(uint8_t *)((int)param_2 + 0x11) = (uint8_t)((uVar7 << 0x1a) >> 0x1f);
       *(bool *)(param_2 + 3) = (uVar7 & 7) == 7;
       *(uint8_t *)(param_2 + 4) = (uint8_t)((uVar7 << 0x19) >> 0x1f);
       cVar4 = RADIO_RxTrailDataLength();
-      if (cVar4 == '\0') {
+      if (cVar4 == '\0') 
+	  {
         *(undefined *)((int)param_2 + 0xf) = 0;
         *(undefined *)((int)param_2 + 0xe) = 0x80;
         *param_2 = 0;
         *(undefined *)(param_2 + 2) = 0;
       }
-      else {
-        if (*(char *)(param_2 + 2) == '\0') {
+      else 
+	  {
+        if (*(char *)(param_2 + 2) == '\0') 
+		{
           cVar4 = '\x02';
         }
         BUFC_Peek(1,&local_18,cVar4,sVar1 + -6);
         *(char *)((int)param_2 + 0xf) = local_18._1_1_ << 1;
         *(undefined *)((int)param_2 + 0xe) = (undefined)local_18;
-        if (*(char *)(param_2 + 2) != '\0') {
+        if (*(char *)(param_2 + 2) != '\0') 
+		{
           uVar8 = (uint32_t)local_14 & 0xff;
           uVar7 = (uint32_t)local_18 >> 0x18;
           uVar2 = (uint32_t)local_18 >> 0x10;
           uVar3 = (uint32_t)local_14 >> 8;
           iVar6 = RAILInt_GetActiveConfig();
-          TIMING_CalcRxTimeStampUs
-                    (iVar6 + 0x34,uVar2 & 0xff | uVar8 << 0x10 | uVar7 << 8 | uVar3 << 0x18,param_2)
-          ;
+          TIMING_CalcRxTimeStampUs(iVar6 + 0x34,uVar2 & 0xff | uVar8 << 0x10 | uVar7 << 8 | uVar3 << 0x18,param_2);
         }
       }
       uVar5 = 0;
@@ -1733,21 +1752,18 @@ undefined4 RFHAL_GetRxPacketDetails(int16_t *param_1,undefined4 *param_2,undefin
 
 
 
-void RFHAL_HoldRxPacket(void)
-
+//void RFHAL_HoldRxPacket(void)
+RAIL_RxPacketHandle_t RFHAL_HoldRxPacket(RAIL_Handle_t railHandle)
 {
   BUFC_HoldRxPacket();
-  return;
 }
 
 
 
-void RFHAL_ReleaseRxPacket(uint32_t param_1)
-
+//void RFHAL_ReleaseRxPacket(uint32_t param_1)
+RAIL_Status_t RFHAL_ReleaseRxPacket(RAIL_RxPacketHandle_t packetHandle)
 {
-  if ((param_1 == cachedPacketHandle) || (param_1 < 3)) {
-    cachedPacketHandle = 0;
-  }
+  if ((param_1 == cachedPacketHandle) || (param_1 < 3)) cachedPacketHandle = 0;
   GENERIC_PHY_ReleaseRxPacket();
   return;
 }
@@ -1771,81 +1787,67 @@ uint32_t RFHAL_SetTxFifoThreshold(int param_1,uint32_t param_2)
 }
 
 
-
-uint32_t RFHAL_SetRxFifoThreshold(int param_1,uint32_t param_2)
-
+//uint32_t RFHAL_SetRxFifoThreshold(int param_1,uint32_t param_2)
+uint16_t RFHAL_SetRxFifoThreshold(RAIL_Handle_t railHandle,uint16_t txThreshold)
 {
-  uint32_t uVar1;
-  
-  uVar1 = (BUFC->BUF1_THRESHOLDCTRL);
-  if (0x1ff < param_2) {
-    param_2 = 0x200;
-  }
-  write_volatile_4(BUFC->BUF1_THRESHOLDCTRL,uVar1 & 0xfffff000 | param_2);
-  *(int16_t *)(param_1 + 0x6e) = (int16_t)param_2;
-  return param_2;
+  if (0x1ff < txThreshold) txThreshold = 0x200;
+  BUFC->BUF1_THRESHOLDCTRL &= 0xfffff000;
+  BUFC->BUF1_THRESHOLDCTRL |= txThreshold;
+  *(uint16_t *)(railHandle + 0x6e) = (uint16_t)txThreshold; //????
+  return txThreshold;
 }
 
 
 
-undefined2 RFHAL_GetTxFifoThreshold(int param_1)
-
+//undefined2 RFHAL_GetTxFifoThreshold(int param_1)
+uint16_t RFHAL_GetTxFifoThreshold(RAIL_Handle_t railHandle)
 {
-  return *(undefined2 *)(param_1 + 0x6c);
+  return *(uint16_t *)(railHandle + 0x6c);
 }
 
 
 
-undefined2 RFHAL_GetRxFifoThreshold(int param_1)
-
+//undefined2 RFHAL_GetRxFifoThreshold(int param_1)
+uint16_t RFHAL_GetRxFifoThreshold(RAIL_Handle_t railHandle)
 {
-  return *(undefined2 *)(param_1 + 0x6e);
+  return *(uint16_t *)(railHandle + 0x6e);
 }
 
 
 
-void RFHAL_GetTxFifoSpaceAvailable(void)
-
+//void RFHAL_GetTxFifoSpaceAvailable(void)
+uint16_t RFHAL_GetTxFifoSpaceAvailable(RAIL_Handle_t railHandle)
 {
-  BUFC_GetSpaceAvailable(0);
-  return;
+  return BUFC_GetSpaceAvailable(0);
 }
 
 
 
-void RFHAL_GetRxFifoBytesAvailable(void)
-
+//void RFHAL_GetRxFifoBytesAvailable(void)
+uint16_t RFHAL_GetRxFifoBytesAvailable(RAIL_Handle_t railHandle)
 {
-  BUFC_GetBytesAvailable(1);
-  return;
+  return BUFC_GetBytesAvailable(1);
 }
 
 
-
-uint32_t RFHAL_SetTxBuffer(undefined4 param_1,undefined4 param_2,uint32_t param_3,undefined4 param_4)
-
+uint16_t RFHAL_SetTxBuffer(RAIL_Handle_t railHandle,uint8_t *addr,uint16_t initLength,uint16_t size)
 {
   int iVar1;
   uint32_t uVar2;
-  uint32_t uVar3;
+  uint16_t len;
   
-  iVar1 = count_leading_zeroes(param_4);
+  iVar1 = count_leading_zeroes(size);
   uVar2 = 0x19 - iVar1;
-  if ((iVar1 == 0x19) || (0 < (int)uVar2)) {
-    if (5 < (int)uVar2) {
-      uVar2 = 6;
-    }
+  if ((iVar1 == 0x19) || (0 < (int32_t)uVar2)) 
+  {
+    if (5 < (int32_t)uVar2) uVar2 = 6;
     uVar2 = uVar2 & 0xff;
   }
-  else {
-    uVar2 = 0;
-  }
-  uVar3 = 1 << (uVar2 + 6 & 0xff) & 0xffff;
-  if (uVar3 <= param_3) {
-    param_3 = uVar3;
-  }
-  BUFC_SetTxBuffer(param_2,param_3,uVar2);
-  return uVar3;
+  else uVar2 = 0;
+  len = 1 << (uVar2 + 6 & 0xff) & 0xffff;
+  if (len <= initLength) initLength = len;
+  BUFC_SetTxBuffer(addr,initLength,uVar2);
+  return len;
 }
 
 
@@ -1853,33 +1855,21 @@ uint32_t RFHAL_SetTxBuffer(undefined4 param_1,undefined4 param_2,uint32_t param_
 void RFHAL_ResetTxFifo(void)
 
 {
-  uint32_t uVar1;
-  
-  uVar1 = (BUFC->IEN);
-  write_volatile_4(BUFC->BUF0_CMD,1);
-  BUS_RegMaskedClear(&BUFC->BUF0_THRESHOLDCTRL,0x2000);
-  if ((int)(uVar1 << 0x1d) < 0) {
-    BUS_RegMaskedSet(&BUFC->IEN,4);
-  }
-  return;
+  BUFC->BUF0_CMD = BUFC_BUF0_CMD_CLEAR_Msk;
+  BUS_RegMaskedClear(&BUFC->BUF0_THRESHOLDCTRL,BUFC_BUF0_THRESHOLDCTRL_THRESHOLDMODE_Msk);
+  if (BUFC->IEN & BUFC_IEN_BUF0THR_Msk) BUS_RegMaskedSet(&BUFC->IEN,BUFC_IEN_BUF0THR_Msk);
 }
 
 
-
-uint32_t RFHAL_WriteTxFifo(undefined4 param_1,undefined4 param_2,uint32_t param_3,int param_4)
-
+uint16_t RFHAL_WriteTxFifo(RAIL_Handle_t railHandle,const uint8_t *dataPtr,uint16_t writeLength,bool reset)
 {
-  uint32_t uVar1;
+  uint32_t len;
   
-  if (param_4 != 0) {
-    RFHAL_ResetTxFifo();
-  }
-  uVar1 = BUFC_GetSpaceAvailable(0);
-  if (param_3 <= uVar1) {
-    uVar1 = param_3;
-  }
-  BUFC_WriteBuffer(0,param_2,uVar1 & 0xffff);
-  return uVar1 & 0xffff;
+  if (reset == true) RFHAL_ResetTxFifo();
+  len = BUFC_GetSpaceAvailable(0);
+  if (writeLength <= len) len = writeLength;
+  BUFC_WriteBuffer(0,dataPtr,len & 0xffff);
+  return len & 0xffff;
 }
 
 
@@ -1887,49 +1877,38 @@ uint32_t RFHAL_WriteTxFifo(undefined4 param_1,undefined4 param_2,uint32_t param_
 void RFHAL_ResetRxFifo(void)
 
 {
-  uint32_t uVar1;
+  uint32_t tmp;
   
-  uVar1 = (BUFC->IEN);
-  BUS_RegMaskedClear(&BUFC->IEN,0x400);
+  tmp = BUFC->IEN;
+  BUS_RegMaskedClear(&BUFC->IEN,BUFC_IEN_BUF1THR_Msk);
   cachedPacketHandle = 0;
   GENERIC_PHY_ResetRxFifo();
-  BUS_RegMaskedClear(&BUFC->BUF1_THRESHOLDCTRL,0x2000);
-  if ((int)(uVar1 << 0x15) < 0) {
-    BUS_RegMaskedSet(&BUFC->IEN,0x400);
-  }
-  return;
+  BUS_RegMaskedClear(&BUFC->BUF1_THRESHOLDCTRL,BUFC_BUF1_THRESHOLDCTRL_THRESHOLDMODE_Msk);
+  if (tmp & BUFC_IEN_BUF1THR_Msk) BUS_RegMaskedSet(&BUFC->IEN,BUFC_IEN_BUF1THR_Msk);
 }
 
 
-
-undefined4 RFHAL_ConfigData(undefined4 param_1,int param_2)
-
+RAIL_Status_t RFHAL_ConfigData(RAIL_Handle_t railHandle,const RAIL_DataConfig_t *dataConfig)
 {
-  if (*(char *)(param_2 + 2) != *(char *)(param_2 + 3)) {
-    return 1;
-  }
-  if (*(char *)(param_2 + 1) == '\0') {
-    RFHAL_DisableRxRawCapture();
-  }
-  else {
-    RFHAL_EnableRxRawCapture();
-  }
-  if (*(char *)(param_2 + 2) == '\0') {
-    write_volatile_4(BUFC->BUF0_THRESHOLDCTRL,0xfff);
-  }
-  else {
-    RFHAL_ResetTxFifo(param_1);
-  }
-  if (*(char *)(param_2 + 3) == '\0') {
-    write_volatile_4(BUFC->BUF1_THRESHOLDCTRL,0xfff);
+  if (dataConfig->txMethod != dataConfig->rxMethod) return RAIL_STATUS_INVALID_PARAMETER;
+  if (dataConfig->rxSource == RX_PACKET_DATA) RFHAL_DisableRxRawCapture();
+  else RFHAL_EnableRxRawCapture();
+  if (dataConfig->txMethod == PACKET_MODE) BUFC->BUF0_THRESHOLDCTRL = 0xfff;
+  else RFHAL_ResetTxFifo(railHandle);
+  if (dataConfig->rxMethod == PACKET_MODE) 
+  {
+    BUFC->BUF1_THRESHOLDCTRL = 0xfff;
     BUS_RegMaskedSet(&FRC->RXCTRL,0x60);
     BUS_RegMaskedClear(&RAC->SR0,0x40);
-    return 0;
+    return RAIL_STATUS_NO_ERROR;
   }
-  BUS_RegMaskedClear(&FRC->RXCTRL,0x60);
-  RFHAL_ResetRxFifo(param_1);
-  BUS_RegMaskedSet(&RAC->SR0,0x40);
-  return 0;
+  else
+  {
+	BUS_RegMaskedClear(&FRC->RXCTRL,0x60);
+	RFHAL_ResetRxFifo(railHandle);
+	BUS_RegMaskedSet(&RAC->SR0,0x40);
+	return RAIL_STATUS_NO_ERROR;
+  }
 }
 
 
@@ -1979,64 +1958,53 @@ undefined4 RFHAL_Init(int param_1,code *param_2,undefined4 param_3)
 
 
 
-uint32_t RFHAL_SetFixedLength(int param_1,uint32_t param_2)
-
+//uint32_t RFHAL_SetFixedLength(int param_1,uint32_t param_2)
+uint16_t RAIL_SetFixedLength(RAIL_Handle_t railHandle, uint16_t length)
 {
   uint32_t uVar1;
   uint16_t uVar2;
   bool bVar3;
   
-  uVar1 = (FRC->DFLCTRL);
-  if (((uVar1 & 7) == 0) || ((uVar1 & 7) == 5)) {
-    uVar2 = *(uint16_t *)(param_1 + 0x70);
-    if (param_2 == 0) {
+  if (((FRC->DFLCTRL & 7) == 0) || ((FRC->DFLCTRL & 7) == 5)) 
+  {
+    uVar2 = *(uint16_t *)(railHandle + 0x70);
+    if (length == 0) 
+	{
       bVar3 = uVar2 == 0xffff;
-      if (bVar3) {
-        uVar1 = (FRC->WCNTCMP0);
-        uVar2 = (uint16_t)uVar1 & 0xfff;
-      }
-      if (bVar3) {
-        *(uint16_t *)(param_1 + 0x72) = uVar2;
-      }
-      *(undefined2 *)(param_1 + 0x70) = 0;
-      uVar1 = (FRC->DFLCTRL);
-      write_volatile_4(FRC->DFLCTRL,uVar1 & 0xfffffff8 | 5);
+      if (bVar3) uVar2 = (uint16_t)FRC->WCNTCMP0 & 0xfff;
+      if (bVar3) *(uint16_t *)(railHandle + 0x72) = uVar2;
+      *(undefined2 *)(railHandle + 0x70) = 0;
+	  FRC->DFLCTRL &= 0xfffffff8;
+	  FRC->DFLCTRL |= 5;
     }
-    else {
-      if (param_2 == 0xffff) {
-        if (uVar2 != 0xffff) {
+    else 
+	{
+      if (length == 0xffff) 
+	  {
+        if (uVar2 != 0xffff) 
+		{
           BUS_RegMaskedClear(&FRC->DFLCTRL,7);
-          uVar1 = (FRC->WCNTCMP0);
-          param_2 = (uint32_t)*(uint16_t *)(param_1 + 0x72);
-          write_volatile_4(FRC->WCNTCMP0,uVar1 & 0xfffff000 | param_2);
-          *(undefined2 *)(param_1 + 0x70) = 0xffff;
+          length = (uint32_t)*(uint16_t *)(railHandle + 0x72);
+		  FRC->WCNTCMP0 &= 0xfffff000;
+		  FRC->WCNTCMP0 |= length;
+          *(undefined2 *)(railHandle + 0x70) = 0xffff;
         }
       }
-      else {
+      else 
+	  {
         bVar3 = uVar2 == 0xffff;
-        if (bVar3) {
-          uVar1 = (FRC->WCNTCMP0);
-          uVar2 = (uint16_t)uVar1;
-        }
-        *(int16_t *)(param_1 + 0x70) = (int16_t)param_2;
-        if (bVar3) {
-          uVar2 = uVar2 & 0xfff;
-        }
-        if (bVar3) {
-          *(uint16_t *)(param_1 + 0x72) = uVar2;
-        }
+        if (bVar3) uVar2 = (uint16_t)FRC->WCNTCMP0;
+        *(int16_t *)(railHandle + 0x70) = (int16_t)length;
+        if (bVar3) uVar2 = uVar2 & 0xfff;
+        if (bVar3) *(uint16_t *)(railHandle + 0x72) = uVar2;
         BUS_RegMaskedClear(&FRC->DFLCTRL,7);
-        if (0xfff < param_2) {
-          param_2 = 0x1000;
-        }
-        write_volatile_4(FRC->WCNTCMP0,param_2 - 1);
+        if (0xfff < length) length = 0x1000;
+        FRC->WCNTCMP0 = length - 1;
       }
     }
   }
-  else {
-    param_2 = 0xffff;
-  }
-  return param_2;
+  else length = 0xffff;
+  return length;
 }
 
 
@@ -2044,22 +2012,14 @@ uint32_t RFHAL_SetFixedLength(int param_1,uint32_t param_2)
 void RFHAL_SetAbortScheduledTxDuringRx(int param_1)
 
 {
-  RAC_SET *pRVar1;
-  
-  if (param_1 == 0) {
-    pRVar1 = (RAC_SET *)&Peripherals::RAC_CLR;
-  }
-  else {
-    pRVar1 = &Peripherals::RAC_SET;
-  }
-  ((RAC_CLR *)pRVar1)->SR0 = 8;
-  return;
+  if (param_1 == 0) BUS_RegMaskedClear(&RAC->SR0,8);
+  else BUS_RegMaskedSet(&RAC->SR0,8);
 }
 
 
 
-int RFHAL_GetRxFreqOffset(void)
-
+//int RFHAL_GetRxFreqOffset(void)
+RAIL_FrequencyOffset_t RFHAL_GetRxFreqOffset(void)
 {
   longlong lVar1;
   int16_t sVar2;
@@ -2070,32 +2030,30 @@ int RFHAL_GetRxFreqOffset(void)
   uint32_t uVar7;
   bool bVar8;
   
-  uVar4 = (SYNTH->CALOFFSET);
+  uVar4 = SYNTH->CALOFFSET;
   uVar3 = uVar4 & 0x7fff;
   bVar8 = (int)(uVar4 << 0x11) < 0;
-  uVar6 = (MODEM->AFC);
-  if (bVar8) {
-    uVar3 = ~(uVar4 << 0x11);
-  }
-  if (bVar8) {
-    uVar3 = ~(uVar3 >> 0x11);
-  }
-  if ((uVar6 & 0x1c00) == 0) {
-    uVar4 = (SEQ->PHYINFO);
-    if (uVar4 == 0) {
+  uVar6 = MODEM->AFC;
+  if (bVar8) uVar3 = ~(uVar4 << 0x11);
+  if (bVar8) uVar3 = ~(uVar3 >> 0x11);
+  if ((uVar6 & 0x1c00) == 0) 
+  {
+    uVar4 = SEQ->PHYINFO;
+    if (uVar4 == 0) 
+	{
       uVar4 = 0;
       iVar5 = 0;
     }
-    else {
-      uVar6 = (MODEM->FREQOFFEST);
+    else 
+	{
+      uVar6 = MODEM->FREQOFFEST;
       uVar7 = uVar6 & 0xff;
-      if ((int)(uVar6 << 0x18) < 0) {
-        uVar7 = uVar7 | 0xffffff00;
-      }
+      if ((int)(uVar6 << 0x18) < 0) uVar7 = uVar7 | 0xffffff00;
       lVar1 = (longlong)*(int *)(uVar4 + 4) * (longlong)(int)uVar7 + 0x8000;
       uVar4 = (uint32_t)lVar1;
       iVar5 = (int)((ulonglong)lVar1 >> 0x20);
-      if (lVar1 < 0) {
+      if (lVar1 < 0) 
+	  {
         bVar8 = 0xffff0000 < uVar4;
         uVar4 = uVar4 + 0xffff;
         iVar5 = iVar5 + (uint32_t)bVar8;
@@ -2104,55 +2062,44 @@ int RFHAL_GetRxFreqOffset(void)
       iVar5 = iVar5 >> 0x10;
     }
   }
-  else {
-    uVar6 = (MODEM->AFCADJRX);
+  else 
+  {
+    uVar6 = MODEM->AFCADJRX;
     uVar4 = uVar6 & 0x7ffff;
     bVar8 = (int)(uVar6 << 0xd) < 0;
-    if (bVar8) {
-      uVar4 = ~(uVar6 << 0xd);
-    }
-    if (bVar8) {
-      uVar4 = ~(uVar4 >> 0xd);
-    }
+    if (bVar8) uVar4 = ~(uVar6 << 0xd);
+    if (bVar8) uVar4 = ~(uVar4 >> 0xd);
     iVar5 = (int)uVar4 >> 0x1f;
   }
   uVar6 = uVar4 + uVar3;
   uVar7 = iVar5 + ((int)uVar3 >> 0x1f) + (uint32_t)CARRY4(uVar4,uVar3);
-  if ((int)((uVar7 + 1) - (uint32_t)(0xffffbfff >= uVar6)) < 0 ==
-      ((int)uVar7 >= 0 && (int)(uVar7 + (0xffffbfff < uVar6)) < 0 != (int)uVar7 < 0)) {
-    if ((int)(-(uint32_t)(uVar6 >= 0x3fff) - uVar7) < 0 ==
-        ((int)uVar7 < 0 && (int)(~uVar7 + (uint32_t)(uVar6 < 0x3fff)) < 0)) {
-      sVar2 = (int16_t)uVar3 + (int16_t)uVar4;
-    }
-    else {
-      sVar2 = 0x3fff;
-    }
+  if ((int)((uVar7 + 1) - (uint32_t)(0xffffbfff >= uVar6)) < 0 == ((int)uVar7 >= 0 && (int)(uVar7 + (0xffffbfff < uVar6)) < 0 != (int)uVar7 < 0)) 
+  {
+    if ((int)(-(uint32_t)(uVar6 >= 0x3fff) - uVar7) < 0 == ((int)uVar7 < 0 && (int)(~uVar7 + (uint32_t)(uVar6 < 0x3fff)) < 0)) sVar2 = (int16_t)uVar3 + (int16_t)uVar4;
+    else sVar2 = 0x3fff;
   }
-  else {
-    sVar2 = -0x4000;
-  }
+  else sVar2 = -0x4000;
   return (int)sVar2;
 }
 
 
 
-undefined4 RFHAL_SetFreqOffset(undefined4 param_1,undefined4 param_2)
-
+//undefined4 RFHAL_SetFreqOffset(undefined4 param_1,undefined4 param_2)
+RAIL_Status_t RFHAL_SetFreqOffset(RAIL_Handle_t railHandle,
+                                 RAIL_FrequencyOffset_t freqOffset)
 {
   uint32_t uVar1;
   
-  uVar1 = SignedSaturate(param_2,0xe);
-  SignedDoesSaturate(param_2,0xe);
-  if (false) {
-    write_volatile_4(SYNTH->CALOFFSET,uVar1 & 0x7fff);
-  }
-  return 1;
+  uVar1 = SignedSaturate(freqOffset,0xe);
+  SignedDoesSaturate(freqOffset,0xe);
+  if (false) SYNTH->CALOFFSET = uVar1 & 0x7fff;
+  return RAIL_STATUS_INVALID_PARAMETER;
 }
 
 
 
-int RFHAL_ConfigRadio(uint8_t *param_1)
-
+//int RFHAL_ConfigRadio(uint8_t *param_1)
+RAIL_Status_t RFHAL_ConfigRadio(RAIL_RadioConfig_t config)
 {
   uint16_t *puVar1;
   uint32_t uVar2;
@@ -2343,30 +2290,31 @@ undefined4 RFHAL_SetTime(void)
 }
 
 
-
-void RFHAL_ConfigAddressFilter(undefined4 param_1,undefined4 param_2)
-
+/* typedef struct RAIL_AddrConfig {
+  uint8_t offsets[ADDRCONFIG_MAX_ADDRESS_FIELDS];
+  uint8_t sizes[ADDRCONFIG_MAX_ADDRESS_FIELDS];
+  uint32_t matchTable;
+} RAIL_AddrConfig_t; */
+//void RFHAL_ConfigAddressFilter(undefined4 param_1,undefined4 param_2)
+RAIL_Status_t RAIL_ConfigAddressFilter(RAIL_Handle_t railHandle,const RAIL_AddrConfig_t *addrConfig) //???
 {
-  GENERIC_PHY_ConfigureAddressFiltering(param_1,param_2,1);
-  return;
+  return GENERIC_PHY_ConfigureAddressFiltering(param_1,param_2,1);
 }
 
 
 
-void RFHAL_EnableAddressFilter(void)
-
+//void RFHAL_EnableAddressFilter(void)
+bool RAIL_EnableAddressFilter(bool enable)
 {
-  GENERIC_PHY_EnableAddressFiltering();
-  return;
+  return GENERIC_PHY_EnableAddressFiltering();
 }
 
 
 
-void RFHAL_AddressFilterIsEnabled(void)
-
+//void RFHAL_AddressFilterIsEnabled(void)
+bool RFHAL_AddressFilterIsEnabled(void)
 {
-  GENERIC_PHY_IsEnabledAddressFiltering();
-  return;
+  return GENERIC_PHY_IsEnabledAddressFiltering();
 }
 
 
@@ -2375,26 +2323,26 @@ void RFHAL_ResetAddressFilter(void)
 
 {
   GENERIC_PHY_ResetAddressFiltering();
-  return;
 }
 
 
 
-void RFHAL_SetAddressFilterAddress(void)
-
+//void RFHAL_SetAddressFilterAddress(void)
+RAIL_Status_t RFHAL_SetAddressFilterAddress(bool enable,uint8_t field,uint8_t index)
 {
-  GENERIC_PHY_SetAddress();
-  return;
+  return GENERIC_PHY_SetAddress();
 }
 
 
 
 void RFHAL_EnableAddressFilterAddress
                (undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
-
+RAIL_Status_t RAIL_EnableAddressFilterAddress(RAIL_Handle_t railHandle,
+                                              bool enable,
+                                              uint8_t field,
+                                              uint8_t index)
 {
-  GENERIC_PHY_EnableAddress(param_1,param_3,param_4,param_2);
-  return;
+  return GENERIC_PHY_EnableAddress(param_1,param_3,param_4,param_2);
 }
 
 
@@ -2447,29 +2395,26 @@ RFHAL_SetStateTiming(int param_1,undefined2 *param_2,undefined4 param_3,undefine
 
 
 
-void RFHAL_ConfigPti(void)
-
+//void RFHAL_ConfigPti(void)
+RAIL_Status_t RFHAL_ConfigPti(RAIL_PtiConfig_t *ptiConfig)
 {
-  PTI_Config();
-  return;
+  return PTI_Config(&ptiConfig);
 }
 
 
 
-void RFHAL_GetPtiConfig(void)
-
+//void RFHAL_GetPtiConfig(void)
+RAIL_Status_t RFHAL_GetPtiConfig(RAIL_PtiConfig_t *ptiConfig)
 {
-  PTI_GetConfig();
-  return;
+  return PTI_GetConfig(&ptiConfig);
 }
 
 
 
-void RFHAL_EnablePti(void)
-
+//void RFHAL_EnablePti(void)
+RAIL_Status_t RAIL_EnablePti(bool enable)
 {
-  PTI_Enable();
-  return;
+  return PTI_Enable(enable);
 }
 
 

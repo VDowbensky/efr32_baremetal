@@ -1,25 +1,25 @@
 #include "rf_test.h"
 
-
+static uint32_t reg_save[16];
 
 void RFTEST_SaveRadioConfiguration(void)
 
 {
-  if (testModeRegisterState == '\0') {
-    DAT_000101e0 = (MODEM->CTRL0);
-    DAT_000101e4 = (MODEM->MODINDEX);
-    DAT_000101e8 = (MODEM->PRE);
-    DAT_000101ec = (FRC->DFLCTRL);
-    DAT_000101f0 = (FRC->FECCTRL);
-    DAT_000101f4 = (FRC->FCD0);
-    DAT_000101f8 = (FRC->FCD1);
-    DAT_000101fc = (FRC->WHITECTRL);
-    DAT_00010200 = (FRC->WHITEPOLY);
-    DAT_00010204 = (FRC->WHITEINIT);
-    DAT_00010208 = (SEQ->SYNTHLPFCTRLTX);
-    testModeRegisterState = '\x01';
+  if (testModeRegisterState == false) 
+  {
+    reg_save[0] = MODEM->CTRL0;
+    reg_save[1] = MODEM->MODINDEX;
+    reg_save[2] = MODEM->PRE;
+    reg_save[3] = FRC->DFLCTRL;
+    reg_save[4] = FRC->FECCTRL;
+    reg_save[5] = FRC->FCD0;
+    reg_save[6] = FRC->FCD1;
+    reg_save[7] = FRC->WHITECTRL;
+    reg_save[8] = FRC->WHITEPOLY;
+    reg_save[9] = FRC->WHITEINIT;
+    reg_save[10] = SEQ->SYNTHLPFCTRLTX;
+    testModeRegisterState = true;
   }
-  return;
 }
 
 

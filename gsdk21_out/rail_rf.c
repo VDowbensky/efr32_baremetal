@@ -5,9 +5,7 @@
 bool isTransitionState(int param_1)
 
 {
-  if (1 < param_1 - 1U) {
-    return param_1 == 4;
-  }
+  if (1 < param_1 - 1U) return param_1 == 4;
   return true;
 }
 
@@ -16,45 +14,31 @@ bool isTransitionState(int param_1)
 undefined4 RAILCore_Init(undefined4 param_1)
 
 {
-  int iVar1;
-  
-  iVar1 = RFHAL_Init();
-  if (iVar1 != 0) {
-    param_1 = 0;
-  }
+  if (RFHAL_Init() != 0) param_1 = 0;
   return param_1;
 }
 
 
-
-//undefined4 RAIL_ConfigRadio(int param_1,int param_2)
 RAIL_Status_t RAIL_ConfigRadio(RAIL_Handle_t railHandle,
                                RAIL_RadioConfig_t config)
 {
-  undefined4 uVar1;
-  
-  if (param_2 != 0) {
-    uVar1 = RFHAL_ConfigRadio(param_1 + 0xc);
-    return uVar1;
-  }
+  if (config != NULL) return  RFHAL_ConfigRadio(railHandle + 0xc, config);
   return 0;
 }
 
 
-
+RAIL_ENUM(RAIL_PtiProtocol_t) {
+  RAIL_PTI_PROTOCOL_CUSTOM = 0, /**< PTI output for a custom protocol */
+  RAIL_PTI_PROTOCOL_THREAD = 2, /**< PTI output for the Thread protocol */
+  RAIL_PTI_PROTOCOL_BLE = 3, /**< PTI output for the Bluetooth Smart protocol */
+  RAIL_PTI_PROTOCOL_CONNECT = 4, /**< PTI output for the Connect protocol */
+  RAIL_PTI_PROTOCOL_ZIGBEE = 5, /**< PTI output for the zigbee protocol */
+};
 //undefined4 RAIL_SetPtiProtocol(int param_1,undefined4 param_2)
-RAIL_Status_t RAIL_SetPtiProtocol(RAIL_Handle_t railHandle,
-                                  RAIL_PtiProtocol_t protocol)
+RAIL_Status_t RAIL_SetPtiProtocol(RAIL_Handle_t railHandle,RAIL_PtiProtocol_t protocol)
 {
-  int iVar1;
-  undefined4 uVar2;
-  
-  iVar1 = RFHAL_GetRadioState();
-  if (iVar1 == 1) {
-    uVar2 = RFHAL_SetPtiProtocol(param_1 + 0xc,param_2);
-    return uVar2;
-  }
-  return 2;
+  if (RFHAL_GetRadioState() == 1) return RFHAL_SetPtiProtocol(railHandle + 0xc,protocol);
+  else return 2;
 }
 
 
@@ -81,10 +65,9 @@ void RAILCore_Idle(undefined4 param_1,int param_2)
   int iVar1;
   
   RFHAL_Idle();
-  if (param_2 != 0) {
-    do {
-      iVar1 = RFHAL_GetRadioState();
-    } while (iVar1 != 1);
+  if (param_2 != 0) 
+  {
+	while (RFHAL_GetRadioState() != 1);
   }
   return;
 }
@@ -94,8 +77,7 @@ void RAILCore_Idle(undefined4 param_1,int param_2)
 void RAILCore_GetRadioState(void)
 
 {
-  RFHAL_GetRadioState();
-  return;
+  return RFHAL_GetRadioState();
 }
 
 
@@ -112,8 +94,7 @@ void RAILCore_EnableDirectMode(void)
 //void RAIL_GetSymbolRate(int param_1)
 uint32_t RAIL_GetSymbolRate(RAIL_Handle_t railHandle)
 {
-  RFHAL_GetSymbolRate(param_1 + 0xc);
-  return;
+  return RFHAL_GetSymbolRate(param_1 + 0xc);
 }
 
 
@@ -121,8 +102,7 @@ uint32_t RAIL_GetSymbolRate(RAIL_Handle_t railHandle)
 //void RAIL_GetBitRate(int param_1)
 uint32_t RAIL_GetBitRate(RAIL_Handle_t railHandle)
 {
-  RFHAL_GetBitRate(param_1 + 0xc);
-  return;
+  return RFHAL_GetBitRate(param_1 + 0xc);
 }
 
 
@@ -131,8 +111,7 @@ uint32_t RAIL_GetBitRate(RAIL_Handle_t railHandle)
 RAIL_Status_t RAIL_SetStateTiming(RAIL_Handle_t railHandle,
                                   RAIL_StateTiming_t *timings)
 {
-  RFHAL_SetStateTiming(param_1 + 0xc);
-  return;
+  return RFHAL_SetStateTiming(param_1 + 0xc);
 }
 
 
@@ -172,10 +151,9 @@ RAIL_Status_t RAIL_IsValidChannel(RAIL_Handle_t railHandle,
   int iVar2;
   
   iVar2 = 0;
-  while( true ) {
-    if (iVar2 == *(int *)(*(int *)(param_1 + 0x2c) + 0xc)) {
-      return 1;
-    }
+  while( true ) 
+  {
+    if (iVar2 == *(int *)(*(int *)(param_1 + 0x2c) + 0xc)) return 1;
     iVar1 = iVar2 * 0x18 + *(int *)(*(int *)(param_1 + 0x2c) + 8);
     if ((*(uint16_t *)(iVar1 + 0xe) <= param_2) && (param_2 <= *(uint16_t *)(iVar1 + 0x10))) break;
     iVar2 = iVar2 + 1;
@@ -326,8 +304,8 @@ uint16_t RAIL_ConfigChannels(RAIL_Handle_t railHandle,
 {
   undefined4 uVar1;
   
-  uVar1 = RAILCore_ConfigChannels(param_1 + 0xc);
-  RFHAL_SetRadioConfigChangedCallback(param_1 + 0xc,param_3);
+  uVar1 = RAILCore_ConfigChannels(railHandle + 0xc, &config);
+  RFHAL_SetRadioConfigChangedCallback(railHandle + 0xc,cb);
   return uVar1;
 }
 
@@ -340,23 +318,32 @@ undefined2 RAILInt_GetChannel(int param_1)
 }
 
 
-
+/* typedef struct RAIL_Version {
+  uint32_t hash;  
+  uint8_t  major;   
+  uint8_t  minor;   
+  uint8_t  rev;      
+  uint8_t  build;    
+  uint8_t  flags;     
+  bool     multiprotocol;
+} RAIL_Version_t; */
 //void RAIL_GetVersion(undefined4 *param_1,int param_2)
 void RAIL_GetVersion(RAIL_Version_t *version, bool verbose)
 {
-  *(undefined *)(param_1 + 1) = 2;
-  *(undefined *)((int)param_1 + 5) = 1;
-  *(undefined *)((int)param_1 + 6) = 3;
-  *(undefined *)((int)param_1 + 9) = 0;
-  if (param_2 != 0) {
-    *(undefined *)((int)param_1 + 7) = 0;
-    *param_1 = 0x6be0298c;
-    *(undefined *)(param_1 + 2) = 0;
+  *(undefined *)(version + 1) = 2;
+  *(undefined *)((int)version + 5) = 1;
+  *(undefined *)((int)version + 6) = 3;
+  *(undefined *)((int)version + 9) = 0;
+  if (verbose == true) 
+  {
+    *(undefined *)((int)version + 7) = 0;
+    *version = 0x6be0298c;
+    *(undefined *)(version + 2) = 0;
     return;
   }
-  *(undefined *)((int)param_1 + 7) = 0;
-  *param_1 = 0;
-  *(undefined *)(param_1 + 2) = 0;
+  *(undefined *)((int)version + 7) = 0;
+  *version = 0;
+  *(undefined *)(version + 2) = 0;
   return;
 }
 
@@ -368,16 +355,12 @@ RAIL_Status_t RAIL_SetDebugMode(RAIL_Handle_t railHandle, uint32_t debugMode)
   int iVar1;
   bool bVar2;
   
-  iVar1 = *(int *)(param_1 + 0x1c);
-  *(undefined4 *)(param_1 + 0x1c) = param_2;
+  iVar1 = *(int *)(railHandle + 0x1c);
+  *(undefined4 *)(railHandle + 0x1c) = debugMode;
   bVar2 = iVar1 == 1;
-  if (bVar2) {
-    iVar1 = 0;
-  }
-  if (bVar2) {
-    *(int *)(param_1 + 0x30) = iVar1;
-  }
-  return 0;
+  if (bVar2) iVar1 = 0;
+  if (bVar2) *(int *)(railHandle + 0x30) = iVar1;
+  return RAIL_STATUS_NO_ERROR;
 }
 
 
@@ -385,12 +368,12 @@ RAIL_Status_t RAIL_SetDebugMode(RAIL_Handle_t railHandle, uint32_t debugMode)
 //undefined4 RAIL_GetDebugMode(int param_1)
 uint32_t RAIL_GetDebugMode(RAIL_Handle_t railHandle)
 {
-  return *(undefined4 *)(param_1 + 0x1c);
+  return *(uint32_t *)(railHandle + 0x1c);
 }
 
 
 
-undefined4 RAILCore_SetTxTransitions(undefined4 param_1,uint8_t *param_2)
+RAIL_Status_t RAILCore_SetTxTransitions(undefined4 param_1,uint8_t *param_2)
 
 {
   uint8_t bVar1;
@@ -399,20 +382,16 @@ undefined4 RAILCore_SetTxTransitions(undefined4 param_1,uint8_t *param_2)
   undefined4 uVar4;
   
   bVar1 = *param_2;
-  iVar3 = isTransitionState(bVar1);
-  if (iVar3 != 0) {
+  if (isTransitionState(bVar1) != 0) 
+  {
     bVar2 = param_2[1];
-    iVar3 = isTransitionState(bVar2);
-    if ((iVar3 != 0) && (-1 < (int)((uint32_t)(bVar1 | bVar2) << 0x1d))) {
-      iVar3 = RFHAL_GetRadioState();
-      if (-1 < iVar3 << 0x1d) {
-        uVar4 = RFHAL_SetTxTransitions(param_1,param_2);
-        return uVar4;
-      }
-      return 2;
+    if ((isTransitionState(bVar2) != 0) && (-1 < (int)((uint32_t)(bVar1 | bVar2) << 0x1d))) 
+	{
+      if (-1 < RFHAL_GetRadioState() << 0x1d) return RFHAL_SetTxTransitions(param_1,param_2);
+      return RAIL_STATUS_INVALID_STATE;
     }
   }
-  return 1;
+  return RAIL_STATUS_INVALID_PARAMETER;
 }
 
 
@@ -421,13 +400,12 @@ undefined4 RAILCore_SetTxTransitions(undefined4 param_1,uint8_t *param_2)
 RAIL_Status_t RAIL_SetTxTransitions(RAIL_Handle_t railHandle,
                                     const RAIL_StateTransitions_t *transitions)
 {
-  RAILCore_SetTxTransitions(param_1 + 0xc);
-  return;
+  return RAILCore_SetTxTransitions(railHandle + 0xc);
 }
 
 
 
-undefined4 RAILCore_SetRxTransitions(undefined4 param_1,undefined *param_2)
+RAIL_Status_t RAILCore_SetRxTransitions(undefined4 param_1,undefined *param_2)
 
 {
   char cVar1;
@@ -435,29 +413,24 @@ undefined4 RAILCore_SetRxTransitions(undefined4 param_1,undefined *param_2)
   undefined4 uVar3;
   
   iVar2 = isTransitionState(*param_2);
-  if (iVar2 != 0) {
+  if (iVar2 != 0) 
+  {
     cVar1 = param_2[1];
-    iVar2 = isTransitionState(cVar1);
-    if ((iVar2 != 0) && (cVar1 != '\x04')) {
-      iVar2 = RFHAL_GetRadioState();
-      if (-1 < iVar2 << 0x1e) {
-        uVar3 = RFHAL_SetRxTransitions(param_1,param_2);
-        return uVar3;
-      }
-      return 2;
+    if ((isTransitionState(cVar1) != 0) && (cVar1 != '\x04')) 
+	{
+      if (-1 < RFHAL_GetRadioState() << 0x1e) return RFHAL_SetRxTransitions(param_1,param_2);
+      return RAIL_STATUS_INVALID_STATE;
     }
   }
-  return 1;
+  return RAIL_STATUS_INVALID_PARAMETER;
 }
 
 
 
 //void RAIL_SetRxTransitions(int param_1)
-RAIL_Status_t RAIL_SetTxTransitions(RAIL_Handle_t railHandle,
-                                    const RAIL_StateTransitions_t *transitions)
+RAIL_Status_t RAIL_SetTxTransitions(RAIL_Handle_t railHandle,const RAIL_StateTransitions_t *transitions)
 {
-  RAILCore_SetRxTransitions(param_1 + 0xc);
-  return;
+  return RAILCore_SetRxTransitions(param_1 + 0xc);
 }
 
 
@@ -465,8 +438,7 @@ RAIL_Status_t RAIL_SetTxTransitions(RAIL_Handle_t railHandle,
 //void RAIL_SetFixedLength(int param_1)
 uint16_t RAIL_SetFixedLength(RAIL_Handle_t railHandle, uint16_t length)
 {
-  RFHAL_SetFixedLength(param_1 + 0xc);
-  return;
+  return RFHAL_SetFixedLength(railHandle + 0xc,length);
 }
 
 
@@ -476,8 +448,7 @@ RAIL_Status_t RAIL_ConfigEvents(RAIL_Handle_t railHandle,
                                 RAIL_Events_t mask,
                                 RAIL_Events_t events)
 {
-  RFHAL_IntEnable(param_1 + 0xc);
-  return;
+  return RFHAL_IntEnable(railHandle + 0xc);
 }
 
 
@@ -485,8 +456,7 @@ RAIL_Status_t RAIL_ConfigEvents(RAIL_Handle_t railHandle,
 //void RAIL_GetRxFreqOffset(int param_1)
 RAIL_FrequencyOffset_t RAIL_GetRxFreqOffset(RAIL_Handle_t railHandle)
 {
-  RFHAL_GetRxFreqOffset(param_1 + 0xc);
-  return;
+  return RFHAL_GetRxFreqOffset(railHandle + 0xc);
 }
 
 
@@ -495,8 +465,7 @@ RAIL_FrequencyOffset_t RAIL_GetRxFreqOffset(RAIL_Handle_t railHandle)
 RAIL_Status_t RAIL_SetFreqOffset(RAIL_Handle_t railHandle,
                                  RAIL_FrequencyOffset_t freqOffset)
 {
-  RFHAL_SetFreqOffset(param_1 + 0xc);
-  return;
+  return RFHAL_SetFreqOffset(param_1 + 0xc,freqOffset);
 }
 
 
