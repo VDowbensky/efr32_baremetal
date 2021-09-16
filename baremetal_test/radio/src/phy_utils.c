@@ -28,19 +28,21 @@ uint32_t PHY_UTILS_CheckParity(uint32_t value)
 void PHY_UTILS_DelayUs(uint32_t us)
 
 {
-  if (PROTIMER_IsRunning() == 0) 
+  bool tmp; 
+	
+	tmp = PROTIMER_IsRunning();
+	if (tmp == false) 
   {
     PROTIMER_Init();
     PROTIMER_Start();
   }
   PROTIMER_DelayUs(us);
-  if (PROTIMER_IsRunning() == 0)
+  if (tmp == false)
   {
     PROTIMER_Stop();
     PROTIMER_Reset();
     return;
   }
 }
-
 
 

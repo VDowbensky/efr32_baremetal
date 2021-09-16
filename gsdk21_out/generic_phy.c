@@ -154,7 +154,7 @@ void GENERIC_PHY_ConfigureEvents(uint32_t param_1,uint32_t param_2,uint32_t para
 	{
       if (param_2 == 0 && param_1 == 0) return;
       if (param_2 != 0 || param_1 != 4) goto LAB_0001025a;
-      CORE_EnterCritical();
+      irqState = CORE_EnterCritical();
       enabledRailEvents = enabledRailEvents & 0xfffffffb | param_3;
       DAT_000112fc = DAT_000112fc | param_4;
       if ((param_3 | param_4) == 0) pBVar1 = (BUFC_SET *)&Peripherals::BUFC_CLR;
@@ -245,12 +245,12 @@ LAB_0001025a:
       uVar4 = uVar4 & uVar3;
       BUFC->IFC = uVar4;
       BUS_RegMaskedSet(&BUFC->IEN,uVar4);
-      CORE_EnterCritical();
+      irqState = CORE_EnterCritical();
       _DAT_e000e100 = 0x20;
       CORE_ExitCritical(irqState);
 	  return;
     }
-    CORE_EnterCritical();
+    irqState = CORE_EnterCritical();
     enabledPhyEvents = enabledPhyEvents & 0xfffffffb | param_6;
     uVar4 = 0x400;
     if (param_6 == 0) 
@@ -363,11 +363,9 @@ undefined4 GENERIC_PHY_SchedulePacketRx
 undefined4 GENERIC_PHY_SchedulePacketTx(undefined4 *param_1)
 
 {
-  undefined4 uVar1;
   char cVar4;
   CORE_irqState_t irqState;
   
-  uVar1 = PROTIMER_UsToPrecntOverflow(*param_1);
   irqState = CORE_EnterCritical();
   if ((PROTIMER_CCTimerIsEnabled(3) != false) || (PROTIMER_LBTIsActive() != false)) 
   {
@@ -380,7 +378,7 @@ undefined4 GENERIC_PHY_SchedulePacketTx(undefined4 *param_1)
   RFHAL_SetAbortScheduledTxDuringRx(*(char *)((int)param_1 + 5) == '\x01');
   cVar4 = *(char *)(param_1 + 1);
   if (cVar4 != '\0') cVar4 = '\x01';
-  if (PROTIMER_ScheduleTxEnable(3,uVar1,cVar4) == 0) 
+  if (PROTIMER_ScheduleTxEnable(3,PROTIMER_UsToPrecntOverflow(*param_1),cVar4) == 0) 
   {
     BUS_RegMaskedClear(&RAC->SR0,0x80);
     CORE_ExitCritical(irqState);
@@ -831,9 +829,7 @@ bool GENERIC_PHY_EnableAddress(undefined4 param_1,uint32_t param_2,uint32_t para
 
 
 bool
-GENERIC_PHY_SetAddressData
-          (undefined4 param_1,uint32_t param_2,uint32_t param_3,uint32_t param_4,uint8_t param_5,uint8_t param_6,
-          uint8_t *param_7)
+GENERIC_PHY_SetAddressData(undefined4 param_1,uint32_t param_2,uint32_t param_3,uint32_t param_4,uint8_t param_5,uint8_t param_6,uint8_t *param_7)
 
 {
   uint32_t *puVar1;

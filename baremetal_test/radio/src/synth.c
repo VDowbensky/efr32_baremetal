@@ -189,8 +189,8 @@ void SYNTH_ChannelSet(uint16_t ch,int rxcal)
 
 {
   do {
-				while ((RAC->STATUS & 0x0f) == 4);
-  	 } 	while (RAC->STATUS == 10);
+				while ((RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos == 4);
+  	 } 	while ((RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos == 10);
 
   SYNTH->CHCTRL = ch;
   if (rxcal != 0) RAC->CMD = RAC_CMD_RXCAL_Msk;

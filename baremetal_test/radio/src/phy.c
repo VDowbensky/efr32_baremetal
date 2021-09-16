@@ -73,8 +73,8 @@ uint8_t RAIL_ChannelConfig(const RAIL_ChannelConfig_t * config)
 
 {
     
-	//RAILInt_TrackChannelConfig();
-  //SYNTH_Config(*(undefined4 *)(*config + 8),*(undefined4 *)(*config + 4));
+	//RAILInt_TrackChannelConfig(&config);
+  SYNTH_Config(config->configs->baseFrequency,config->configs->channelSpacing);
 	
 	if (SYNTH_Is2p4GHz() == 0) SYNTH_DCDCRetimeClkSet(3500000);
   else SYNTH_DCDCRetimeClkSet(7000000);
@@ -83,8 +83,8 @@ uint8_t RAIL_ChannelConfig(const RAIL_ChannelConfig_t * config)
     forceIrCal = 0;
     RAIL_RfHalCalibrationPend(0x10000);
   }
-//  return *(uint8_t *)*config;
-  return 0; //!!!!!!!!!!!!!!!!
+  return *(uint8_t *)config;
+//  return 0; //!!!!!!!!!!!!!!!!
 }
 
 
@@ -301,7 +301,6 @@ void RAIL_SetTune(uint32_t tune)
 {
   CMU_ClockSelectSet(0x11,5);
   CMU_OscillatorEnable(2,0,0);
-  //CMU->HFXOSTEADYSTATECTRL &= 0xfff007ff;
 	BUS_RegMaskedClear(&CMU->HFXOSTEADYSTATECTRL, _CMU_HFXOSTEADYSTATECTRL_CTUNE_MASK);
 	CMU->HFXOSTEADYSTATECTRL |= (tune & 0x1ff) << _CMU_HFXOSTEADYSTATECTRL_CTUNE_SHIFT;
   CMU_OscillatorEnable(2,1,1);
@@ -336,9 +335,9 @@ uint32_t RAIL_GetTune(void)
 uint32_t RAIL_GetTime(void)
 
 {
-  uint32_t cnt;
-  cnt = PROTIMER_GetTime();
-  return PROTIMER_PrecntOverflowToUs(cnt);
+  //uint32_t cnt;
+  //cnt = PROTIMER_GetTime();
+  return PROTIMER_PrecntOverflowToUs(PROTIMER_GetTime());
 }
 
 
@@ -400,6 +399,36 @@ RAIL_Status_t RAIL_SetStateTiming(RAIL_StateTiming_t *timings)
  * multiple times, but all previous information is wiped out each time you call
  * it so any configured addresses must be reset.
  */
+
+/*
+bool RAIL_AddressFilterConfig(RAIL_AddrConfig_t *addrConfig)
+{
+  byte bVar1;
+  undefined uVar2;
+  undefined4 in_r3;
+  int iVar3;
+  uint8_t local_1c [4];
+  uint32_t local_18;
+  undefined4 local_14;
+  
+  bVar1 = config->numFields;
+  if (bVar1 < 3) {
+    local_14 = in_r3;
+    memset(local_1c,0,0xc);
+    for (iVar3 = 0; iVar3 < (int)(uint)bVar1; iVar3 = iVar3 + 1) {
+      local_1c[iVar3] = config->offsets[iVar3];
+      local_1c[iVar3 + 2] = config->sizes[iVar3];
+    }
+    local_18 = config->matchTable;
+    local_14 = CONCAT31(local_14._1_3_,0xff);
+    uVar2 = GENERIC_PHY_ConfigureAddressFiltering(local_1c);
+  }
+  else {
+    uVar2 = 0;
+  }
+  return (bool)uVar2;
+}
+*/
 bool RAIL_AddressFilterConfig(RAIL_AddrConfig_t *addrConfig)
 
 {

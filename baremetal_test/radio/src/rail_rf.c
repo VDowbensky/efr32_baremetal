@@ -6,7 +6,7 @@
 #include "rail_rf_hal.h"
 #include "rail_calibration.h"
 
-RAIL_ChannelConfig_t channelConfig;
+uint32_t channelConfig;
 uint32_t RAIL_DebugMode;
 
 /**
@@ -69,6 +69,26 @@ RAIL_RadioState_t RAIL_RfStateGet(void)
  * Will return 1 if the given channel does not exist in the channel config
  * currently being used, and 0 if the channel is valid.
  */
+/*
+bool RAIL_ChannelExists(uint16_t channel)
+
+{
+  uint uVar1;
+  byte bVar2;
+  
+  bVar2 = 0;
+  while( true ) {
+    uVar1 = (uint)bVar2;
+    if (channelConfig->length <= uVar1) {
+      return true;
+    }
+    if ((channelConfig->configs[uVar1].channelNumberStart <= channel) &&
+       (channel <= channelConfig->configs[uVar1].channelNumberEnd)) break;
+    bVar2 = bVar2 + 1;
+  }
+  return false;
+}
+*/
 RAIL_Status_t RAIL_ChannelExists(uint8_t channel)
 
 {
@@ -133,21 +153,37 @@ uint16_t ** RAILInt_SetChannelConfig(uint16_t cfg)
 
 
 
-void RAILInt_TrackChannelConfig(RAIL_ChannelConfig_t *config)
+void RAILInt_TrackChannelConfig(uint32_t config)
 
 {
-  //channelConfig = config;
+  channelConfig = config;
 }
 
 void RAIL_VersionGet(RAIL_Version_t * version, bool verbose)
 
 {
-	version->hash = 0x0000FFFF; //dummy
-	version->major = 5;
-	version->minor = 0;
-	version->rev = 0;
-	version->build = 0;
-	version->flags = 0;
+	version->major = 1;
+  version->minor = 4;
+  version->rev = 1;
+  if (verbose == true) 
+	{
+    version->build = 1;
+    version->hash = 0x8cb9ff28;
+    version->flags = 0;
+  }
+	else
+	{
+		version->build = 0;
+		version->hash = 0;
+		version->flags = 0;
+	}
+	
+//	version->hash = 0x0000FFFF; //dummy
+//	version->major = 5;
+//	version->minor = 0;
+//	version->rev = 0;
+//	version->build = 0;
+//	version->flags = 0;
 }
 
 
@@ -160,12 +196,12 @@ void RAIL_VersionGet(RAIL_Version_t * version, bool verbose)
 RAIL_Status_t RAIL_DebugModeSet(uint32_t debugMode)
 
 {
-  if (RAIL_DebugMode == 1)
-  {
+	if (RAIL_DebugMode == 1) 
+	{
     //currentConfig = 0;
   }
   RAIL_DebugMode = debugMode;
-  return 0;
+  return RAIL_STATUS_NO_ERROR;
 }
 
 
@@ -198,7 +234,7 @@ RAIL_Status_t RAIL_SetTxTransitions(RAIL_RadioState_t success, RAIL_RadioState_t
 	{
     if (RAIL_RfHalStateGet() != RAIL_RF_STATE_TX) return RAIL_RfHalSetTxTransitions(success,error);
   }
-	return 0; //???
+	return RAIL_STATUS_NO_ERROR; //???
 }
 
 
@@ -223,17 +259,12 @@ RAIL_Status_t RAIL_SetRxTransitions(RAIL_RadioState_t success,  RAIL_RadioState_
 {
   RAIL_Status_t status;
   
-  if (error == 2) return 1;
-  //iVar1 = RAIL_RfHalStateGet();
-  if (RAIL_RfHalStateGet() == 1) status = 2;
+  if (error == RAIL_RF_STATE_TX) return RAIL_STATUS_INVALID_PARAMETER;
+  if (RAIL_RfHalStateGet() == RAIL_RF_STATE_RX) status = RAIL_STATUS_INVALID_STATE;
   else
   {
     status = RAIL_RfHalSetRxTransitions(success,error);
-    if (status == 0) 
-		{
-      status = RAIL_RfHalErrorConfig(ignoreErrors);
-      return status;
-    }
+    if (status == RAIL_STATUS_NO_ERROR) return RAIL_RfHalErrorConfig(ignoreErrors);
   }
   return status;
 }

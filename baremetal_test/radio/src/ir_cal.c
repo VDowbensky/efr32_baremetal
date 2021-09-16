@@ -201,24 +201,12 @@ void IRCAL_Teardown(void)
 int32_t IRCAL_SetRxFrequency(uint32_t rxfreq)
 
 {
-  //uint uVar1;
-  //int iVar2;
   int32_t iffreq;
   
-  //iVar2 = SYNTH_IfFreqGet();
-  //uVar1 = SYNTH->IFFREQ;
-  //iVar3 = iVar2 * 2;
   iffreq = SYNTH_IfFreqGet() * 2;
-  if (SYNTH->IFFREQ & 0x100000) //LOSIDE
-  {
-    //iVar3 = iVar2 * -2;
-	  iffreq = SYNTH_IfFreqGet() * -2;
-  }
-  //iVar2 = SYNTH_VcoRangeIsValid(rxfreq + iffreq);
-  //if (iVar2 == 0)
+  if (SYNTH->IFFREQ & 0x100000) iffreq = SYNTH_IfFreqGet() * -2; //LOSIDE
   if (SYNTH_VcoRangeIsValid(rxfreq + iffreq) == false)
   {
-    //IRCAL_Set();]
 	  IRCAL_Set(0);
     return -1;
   }
@@ -232,14 +220,11 @@ int32_t IRCAL_SetRxFrequency(uint32_t rxfreq)
 void IRCAL_StartRx(void)
 
 {
-  MODEM->CTRL0 |= 0x200000; //
-  while (RAC->STATUS & 0xf000000); //keep RXENS, TXENS, DEMODENS, 28
+  MODEM->CTRL0 |= 0x200000; 
+  while (RAC->STATUS & RAC_STATUS_STATE_Msk); 
   RADIO_RxBufferReset();
-  //while ((RAC->STATUS << 4) >> 0x1c != 2);
-  while(RAC->STATUS & 0x0f); //RXMASK
-  //_DAT_4308000c = 1; //RXENSRCEN bit 3 - SWRXEN
+  while ((RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos != 2);
   RAC->RXENSRCEN |= 0x08;
-  return;
 }
 
 
@@ -248,8 +233,8 @@ void IRCAL_StopRx(void)
 
 {
   RAC->RXENSRCEN &= 0xffffff00;
-  FRC->CMD = 1;
-  while (RAC->STATUS & 0xf000000);
+  FRC->CMD = FRC_CMD_RXABORT_Msk; //1;
+  while (RAC->STATUS & RAC_STATUS_STATE_Msk);
 }
 
 
@@ -259,10 +244,8 @@ void IRCAL_SetSubGhzPllLoopback(void)
 {
   AGC->MANGAIN &= 0x801001ff;
   AGC->MANGAIN |= 0x40009800;
-  AGC->CTRL0 |= 0x400000;
-  //RAC->SGRFENCTRL0 |= 0x80000;
+  AGC->CTRL0 |= AGC_CTRL0_DISRESETCHPWR_Msk; //0x400000;
 	RAC->SGRFENCTRL0 |= RAC_SGRFENCTRL0_TRSW_Msk;
-//RAC->RFENCTRL0 |= 0x80000;
 	RAC->RFENCTRL0 |= RAC_RFENCTRL0_TRSW_Msk;
 }
 
@@ -331,8 +314,6 @@ int32_t IRCAL_Setup(int32_t param_1,uint32_t param_2,uint32_t param_3,uint32_t p
 //  if (((param_1 == 2) || (uVar1 = rcIrCalData[4], param_1 == 3)) && (iVar2 = AUXPLL_Start(param_1,uVar1,rcIrCalData[0],rcIrCalData[1],param_4), iVar2 != -1)) //!!!!!!!!!!!!!!!!!!!!
   {
     IRCAL_StopRx();
-    //iVar2 = IRCAL_SetRxFrequency(iVar2);
-    //if (iVar2 != -1)
     if(IRCAL_SetRxFrequency(iVar2) != -1)
     {
       IRCAL_StartRx();
@@ -373,8 +354,6 @@ int16_t IRCAL_ReadRssi(uint32_t param_1,uint32_t param_2,uint32_t param_3,uint32
   if ((param_2 & 0x80) != 0) param_2 = 0x7f;
   if (param_3 < 0x10)
   {
-    //uVar4 = read_volatile_4(RAC->IFPGACAL);
-    //write_volatile_4(RAC->IFPGACAL,(uVar4 & 0xffff8080_ | param_1 << 8 | param_2);
     RAC->IFPGACAL &= 0xffff8080;
     RAC->IFPGACAL |= (param_1 << 8 | param_2);
     PHY_UTILS_DelayUs(param_4);
@@ -391,7 +370,7 @@ int16_t IRCAL_ReadRssi(uint32_t param_1,uint32_t param_2,uint32_t param_3,uint32
         //do {
         //  uVar1 = read_volatile_4(AGC->IF);
         //} while (-1 < (int)(uVar1 << 0x1a));
-        while(AGC->IF & 0x00200000);
+        while(!(AGC->IF & AGC_IF_RSSIDONE_Msk)); //0x20));
         if (rcIrCalData[11] <= uVar6)
         {
           iVar3 = RADIO_GetRSSI();
@@ -552,16 +531,8 @@ uint16_t IRCAL_GetDiValue(void)
     if (uVar1 < 1000000000) puVar2 = DEVINFO->RESERVED0[3]; //puVar2 = *(uint32_t *)0x0fe081c8; //DEVINFO reg 018
     else
     {
-      //uVar1 = read_volatile_4(MODEM->CTRL0);
-      //if ((MODEM->CTRL0 << 0x17) >> 0x1d == 4)
-      if((MODEM->CTRL0 & 0x7) == 4)
-      {
-       // puVar2 = (uint *)0xfe081c4; //!!!!!!!!!!!!!!!!!!
-      }
-      else
-      {
-       // puVar2 = (uint *)0xfe081c0; //!!!!!!!!!!!!!!!!!!
-      }
+      if ((MODEM->CTRL0 & MODEM_CTRL0_MODFORMAT_Msk) >> MODEM_CTRL0_MODFORMAT_Pos == 4) puVar2 = *(uint32_t *)0xfe081c4; //!!!!!!!!!!!!!!!!!!
+      else puVar2 = *(uint32_t *)0xfe081c0; //!!!!!!!!!!!!!!!!!!
     }
     uVar1 = puVar2;
     if (uVar1 != 0xffffffff) return uVar1 & 0xffff;
@@ -594,8 +565,7 @@ uint32_t IRCAL_PerformSubfunction(uint32_t param_1,uint32_t param_2,uint32_t par
     if ((param_1 == 0) || (3 < param_1)) uVar2 = 0xffffffff;
     else
     {
-     // uVar2 = IRCAL_Setup(param_1); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      if (uVar2 != 0xffffffff) uVar2 = IRCAL_Search(param_2,param_3,param_4,param_5);
+    //  if (IRCAL_Setup(param_1) != 0xffffffff) uVar2 = IRCAL_Search(param_2,param_3,param_4,param_5);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       IRCAL_Teardown();
     }
   }

@@ -260,7 +260,7 @@ RAIL_Status_t RAIL_ScheduleRx(RAIL_Handle_t railHandle,
 //void RAIL_GetRssi(int param_1)
 int16_t RAIL_GetRssi(RAIL_Handle_t railHandle, bool wait)
 {
-  return RAILCore_GetRssi(railHandle + 0xc,wait);
+  return RAILCore_GetRssi(wait);
 }
 
 
@@ -271,7 +271,7 @@ RAIL_Status_t RAIL_StartAverageRssi(RAIL_Handle_t railHandle,
                                     uint32_t averagingTimeUs,
                                     const RAIL_SchedulerInfo_t *schedulerInfo)
 {
-  return RAILCore_StartAverageRssi(railHandle + 0xc,channel,averagingTimeUs,&schedulerInfo);
+  return RAILCore_StartAverageRssi(railHandle,channel,averagingTimeUs,&schedulerInfo);
 }
 
 
@@ -280,7 +280,7 @@ RAIL_Status_t RAIL_StartAverageRssi(RAIL_Handle_t railHandle,
 RAIL_Status_t RAIL_EnableDirectMode(RAIL_Handle_t railHandle,
                                     bool enable)
 {
-  RAILCore_EnableDirectMode(param_2);
+  RAILCore_EnableDirectMode(enable);
   return RAIL_STATUS_NO_ERROR;
 }
 

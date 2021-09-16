@@ -296,6 +296,25 @@ void RFTEST_ResetBerStats(uint32_t bytes)
 //  uint32_t bitErrors; /**< Number of bits errors detected */
 //  int8_t   rssi; /**< Latched RSSI value at pattern detect */
 //} RAIL_BerStatus_t;
+/*
+void RFTEST_ReportBerStats(RAIL_BerStatus_t *berstats)
+
+{
+  uint32_t uVar1;
+  uint32_t uVar2;
+  undefined4 uVar3;
+  
+  uVar3 = DAT_20002efc;
+  uVar2 = DAT_20002ef8;
+  uVar1 = DAT_20002ef4;
+  berstats->bitsTotal = berStats;
+  berstats->bitsTested = uVar1;
+  berstats->bitErrors = uVar2;
+  *(undefined4 *)&berstats->rssi = uVar3;
+  return;
+}
+*/
+
 void RFTEST_ReportBerStats(RAIL_BerStatus_t *berstatus)
 
 {

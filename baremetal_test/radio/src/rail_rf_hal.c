@@ -664,7 +664,7 @@ RAIL_Status_t RAIL_RfHalErrorConfig(RAIL_RadioState_t errors)
 {
   //_DAT_43000884 = errors & 1; //FRC044 bit 1
 	if (errors) BUS_RegMaskedSet(&FRC->RXCTRL, FRC_RXCTRL_ACCEPTCRCERRORS_Msk);
-  return 0;
+  return RAIL_STATUS_NO_ERROR;
 }
 
 
@@ -947,7 +947,13 @@ RAIL_Status_t RAIL_RfHalSetTxTransitions(RAIL_RadioState_t success,RAIL_RadioSta
 
 {
   SEQ->REG000 = 1 << (success + 0x10U & 0xff) | (uint32_t)SEQ->REG000 | 1 << (error + 0x18U & 0xff);
-  return 0;
+  return RAIL_STATUS_NO_ERROR;
+	
+//	  ushort uVar1;
+  
+//  uVar1 = read_volatile_2(Peripherals::SEQ.REG00C._0_2_);
+//  write_volatile_4(Peripherals::SEQ.REG00C,1 << (success + 0x10 & 0xff) | (uint)uVar1 | 1 << (error + 0x18 & 0xff));
+//  return RAIL_STATUS_NO_ERROR;
 }
 
 
@@ -958,12 +964,12 @@ RAIL_Status_t RAIL_RfHalSetRxTransitions(RAIL_RadioState_t success,RAIL_RadioSta
 
 {
 	SEQ->REG000 = 1 << (error + 8U & 0xff) | 1 << (success & 0xff) | SEQ->REG000 & 0xffff0000;
-  return 0;
+  return RAIL_STATUS_NO_ERROR;
 }
 
 void RFHAL_SetBerConfig(RAIL_BerConfig_t *config)
 {
-	
+	RFTEST_ResetBerStats(config->bytesToTest);
 }
 
 void RFHAL_ResetBerStats(uint32_t bytes)
@@ -995,9 +1001,30 @@ void RFHAL_StopBerRx(void)
 }
 
 
+/*
+void RFHAL_GetBerStatus(RAIL_BerStatus_t *berstatus)
 
-// WARNING: Could not reconcile some variable overlaps
-
+{
+  uint32_t in_r1;
+  uint32_t in_r2;
+  int8_t in_r3;
+  RAIL_BerStatus_t *local_18;
+  uint32_t local_14;
+  uint32_t local_10;
+  int8_t local_c;
+  
+  local_18 = berstatus;
+  local_14 = in_r1;
+  local_10 = in_r2;
+  local_c = in_r3;
+  RFTEST_ReportBerStats(&local_18);
+  berstatus->bitsTotal = (uint32_t)local_18;
+  berstatus->bitsTested = local_14;
+  berstatus->bitErrors = local_10;
+  berstatus->rssi = local_c;
+  return;
+}
+*/
 //void RFHAL_GetBerStatus(int *param_1,int param_2,int param_3,undefined4 param_4)
 void RFHAL_GetBerStatus (RAIL_BerStatus_t *status)
 {

@@ -440,22 +440,69 @@ int32_t PA_RampTimeCalc(void)
 
 {
 
-//  return (int)((MODEM_RAMPLEV_RAMPLEV2) - MODEM_RAMPLEV_RAMPLEV1 << (MODEM_RAMPCTRL_RAMPRATE2) >> 5) 
-//	       +
-//         (int)(MODEM_RAMPLEV_RAMPLEV1 - (MODEM_RAMPLEV_RAMPLEV0) << (MODEM_RAMPCTRL_RAMPRATE1) >> 5) 
-//         +
-//         (int)((MODEM_RAMPLEV_RAMPLEV0 << MODEM_RAMPCTRL_RAMPRATE0) >> 5);
-				 
-				 return ((MODEM_RAMPLEV_RAMPLEV2 - MODEM_RAMPLEV_RAMPLEV1) << MODEM_RAMPCTRL_RAMPRATE2) / 32 
+  return ((((int)(MODEM_RAMPLEV_RAMPLEV2) - MODEM_RAMPLEV_RAMPLEV1) << (MODEM_RAMPCTRL_RAMPRATE2)) >> 5) 
 	       +
-         ((MODEM_RAMPLEV_RAMPLEV1 - MODEM_RAMPLEV_RAMPLEV0) << MODEM_RAMPCTRL_RAMPRATE1) / 32
+         ((((int)(MODEM_RAMPLEV_RAMPLEV1) - MODEM_RAMPLEV_RAMPLEV0) << (MODEM_RAMPCTRL_RAMPRATE1)) >> 5) 
          +
-         (MODEM_RAMPLEV_RAMPLEV0 << MODEM_RAMPCTRL_RAMPRATE0) / 32;
+         (((int)(MODEM_RAMPLEV_RAMPLEV0) << (MODEM_RAMPCTRL_RAMPRATE0)) >> 5);
+				 
+//				 return ((MODEM_RAMPLEV_RAMPLEV2 - MODEM_RAMPLEV_RAMPLEV1) << MODEM_RAMPCTRL_RAMPRATE2) / 32 
+//	       +
+//         ((MODEM_RAMPLEV_RAMPLEV1 - MODEM_RAMPLEV_RAMPLEV0) << MODEM_RAMPCTRL_RAMPRATE1) / 32
+//         +
+//         (MODEM_RAMPLEV_RAMPLEV0 << MODEM_RAMPCTRL_RAMPRATE0) / 32;
 }
 				 
+/*				 
+uint16_t PA_RampTimeSet(uint16_t ramptime)
+
+{
+  uint32_t uVar1;
+  uint uVar2;
+  char cVar3;
+  int iVar4;
+  uint uVar5;
+  uint local_18;
+  int local_14;
+  
+  uVar2 = (uint)ramptime;
+  if (gPaConfig.paSel == PA_SEL_SUBGIG) {
+    uVar5 = 0x96;
+  }
+  else {
+    if (gPaConfig.paSel == PA_SEL_2P4_LP) {
+      uVar5 = 0x32;
+    }
+    else {
+      uVar5 = 0xb4;
+    }
+  }
+  if (uVar2 != 0) {
+    local_18 = uVar2;
+    uVar1 = SystemHFXOClockGet();
+    cVar3 = -1;
+    for (uVar2 = (((uVar1 / 1000) * uVar2) / uVar5 << 5) / 1000; uVar2 != 0; uVar2 = uVar2 >> 1) {
+      cVar3 = cVar3 + '\x01';
+    }
+    iVar4 = (int)cVar3;
+    if (0xf < iVar4) {
+      iVar4 = 0xf;
+      goto LAB_00007540;
+    }
+    if (-1 < iVar4) goto LAB_00007540;
+  }
+  iVar4 = 1;
+LAB_00007540:
+  local_18 = iVar4 << 8;
+  local_14 = uVar5 << 0x10;
+  PA_RampConfigSet(&local_18);
+  iVar4 = PA_RampTimeCalc();
+  uVar1 = SystemHFXOClockGet();
+  gPaConfig.rampTime = (uint16_t)((ulonglong)(uint)(iVar4 * 10000) / ((ulonglong)uVar1 / 100));
+  return (uint16_t)gPaConfig.rampTime;
+}
 				 
-				 
-				 
+*/				 
 
 uint16_t PA_RampTimeSet(uint16_t ramptime)
 {
@@ -559,7 +606,7 @@ void PA_BandSelect(void) //in fact it's PA_Ctune setting. Not needed in case of 
 }
 
 
-bool     RADIO_PA_Init(RADIO_PAInit_t * paInit) //power config structure
+bool RADIO_PA_Init(RADIO_PAInit_t * paInit) //power config structure
 
 {
   uint32_t uVar1;
@@ -572,22 +619,20 @@ bool     RADIO_PA_Init(RADIO_PAInit_t * paInit) //power config structure
 //check PA presence (skipped)
     if (paInit->paSel == PA_SEL_SUBGIG) 
 		{
-      //uVar1 = read_volatile_4(DAT_400e4188);
-      //bVar2 = (DAT_400e4188 & 0x200000) == 0;
       papresent = (*(uint32_t*)0x400e4188 & 0x200000) == 0;
+			//papresent = (CMU->RFLOCK0 & 0x200000) == 0;
     }
     else 
 		{
       if (paInit->paSel == PA_SEL_2P4_LP) 
 			{
-        //uVar1 = read_volatile_4(DAT_400e4188);
-				//uVar1 = *(uint32_t*)(0x400e4188);
         papresent = (*(uint32_t*)0x400e4188 & 0xc00000) == 0;
+				//papresent = (CMU->RFLOCK0 & 0xc00000) == 0;
       }
       else 
 			{
-        //uVar1 = read_volatile_4(DAT_400e4188);
         papresent = (*(uint32_t*)0x0fe081d4 & 1 ^ 1 | *(uint32_t*)0x400e4188 & 0x400000) == 0; //check 2G4 HP PA presence
+				//papresent = (*(uint32_t*)0x0fe081d4 & 1 ^ 1 | (CMU->RFLOCK0 & 0x400000) == 0; //check 2G4 HP PA presence
       }
     }
     if (papresent) //PA exist

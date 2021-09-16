@@ -15,7 +15,7 @@ RAIL_Status_t RAIL_DebugModeSet(uint32_t debugMode);
 uint32_t RAIL_DebugModeGet(void);
 RAIL_Status_t RAIL_SetTxTransitions(RAIL_RadioState_t success, RAIL_RadioState_t error);
 RAIL_Status_t RAIL_SetRxTransitions(RAIL_RadioState_t success,  RAIL_RadioState_t error,  uint8_t ignoreErrors);
-void RAILInt_TrackChannelConfig(RAIL_ChannelConfig_t *config);
+void RAILInt_TrackChannelConfig(uint32_t config);
 
 uint16_t ** RAILInt_SetChannelConfig(uint16_t cfg);
 

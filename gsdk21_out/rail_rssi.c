@@ -2,18 +2,18 @@
 
 
 
-void RAILCore_GetRssi(void)
-
+//void RAILCore_GetRssi(void)
+int16_t RAILCore_GetRssi(bool wait)
 {
   return RFHAL_GetRssi();
 }
 
 
 
-void RAILCore_StartAverageRssi(void)
-
+//void RAILCore_StartAverageRssi(void)
+RAIL_Status_t RAILCore_StartAverageRssi(RAIL_Handle_t railHandle,uint16_t channel,uint32_t averagingTimeUs,const RAIL_SchedulerInfo_t *schedulerInfo)
 {
-  return RFHAL_StartAverageRssi();
+  return RFHAL_StartAverageRssi(railHandle,channel,averagingTimeUs,&schedulerInfo);
 }
 
 

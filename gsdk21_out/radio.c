@@ -354,8 +354,8 @@ int RADIO_ComputeTxBitRate(void)
 
 
 
-int RADIO_GetRssi(int param_1)
-
+//int RADIO_GetRssi(int param_1)
+int16_t RADIO_GetRssi(bool wait)
 {
   int iVar2;
   uint32_t uVar3;
@@ -375,7 +375,7 @@ int RADIO_GetRssi(int param_1)
     if (RADIO_IsRxOnForRssi() == 0) iVar2 = 0;
     CORE_ExitCritical(irqState);
     if ((uVar4 & 0xffff) != 0xfe00) break;
-    if ((iVar2 == 0) || (param_1 == 0)) return (int)sVar6; //goto LAB_00010514;
+    if ((iVar2 == 0) || (wait == false)) return (int)sVar6; //goto LAB_00010514;
   }
   if (iVar2 == 0) sVar6 = -0x200;
   return (int)sVar6;

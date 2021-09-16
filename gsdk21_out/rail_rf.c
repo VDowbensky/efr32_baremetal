@@ -23,7 +23,7 @@ RAIL_Status_t RAIL_ConfigRadio(RAIL_Handle_t railHandle,
                                RAIL_RadioConfig_t config)
 {
   if (config != NULL) return  RFHAL_ConfigRadio(railHandle + 0xc, config);
-  return 0;
+  return RAIL_STATUS_NO_ERROR;
 }
 
 
@@ -38,7 +38,7 @@ RAIL_ENUM(RAIL_PtiProtocol_t) {
 RAIL_Status_t RAIL_SetPtiProtocol(RAIL_Handle_t railHandle,RAIL_PtiProtocol_t protocol)
 {
   if (RFHAL_GetRadioState() == 1) return RFHAL_SetPtiProtocol(railHandle + 0xc,protocol);
-  else return 2;
+  else return RAIL_STATUS_INVALID_STATE;
 }
 
 
@@ -62,14 +62,11 @@ undefined4 RAILInt_GetActiveChannelConfig(void)
 void RAILCore_Idle(undefined4 param_1,int param_2)
 
 {
-  int iVar1;
-  
   RFHAL_Idle();
   if (param_2 != 0) 
   {
 	while (RFHAL_GetRadioState() != 1);
   }
-  return;
 }
 
 
@@ -82,11 +79,9 @@ void RAILCore_GetRadioState(void)
 
 
 
-void RAILCore_EnableDirectMode(void)
-
+void RAILCore_EnableDirectMode(bool enable)
 {
-  RFHAL_EnableDirectMode();
-  return;
+  RFHAL_EnableDirectMode(enable);
 }
 
 
@@ -94,7 +89,7 @@ void RAILCore_EnableDirectMode(void)
 //void RAIL_GetSymbolRate(int param_1)
 uint32_t RAIL_GetSymbolRate(RAIL_Handle_t railHandle)
 {
-  return RFHAL_GetSymbolRate(param_1 + 0xc);
+  return RFHAL_GetSymbolRate(railHandle + 0xc);
 }
 
 
@@ -102,7 +97,7 @@ uint32_t RAIL_GetSymbolRate(RAIL_Handle_t railHandle)
 //void RAIL_GetBitRate(int param_1)
 uint32_t RAIL_GetBitRate(RAIL_Handle_t railHandle)
 {
-  return RFHAL_GetBitRate(param_1 + 0xc);
+  return RFHAL_GetBitRate(railHandle + 0xc);
 }
 
 
@@ -111,7 +106,7 @@ uint32_t RAIL_GetBitRate(RAIL_Handle_t railHandle)
 RAIL_Status_t RAIL_SetStateTiming(RAIL_Handle_t railHandle,
                                   RAIL_StateTiming_t *timings)
 {
-  return RFHAL_SetStateTiming(param_1 + 0xc);
+  return RFHAL_SetStateTiming(railHandle + 0xc);
 }
 
 
