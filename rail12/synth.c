@@ -32,22 +32,21 @@ uint32_t SYNTH_IfFreqCompute(uint32_t freqval)
   uint uVar2;
   uint uVar3;
   
-  uVar2 = (MODEM->CF);
-  uVar2 = (uVar2 << 6) >> 0x1d;
+  uVar2 = MODEM->CF;
+  uVar2 = (MODEM->CF << 6) >> 0x1d;
   uVar3 = uVar2 - 1;
-  if (uVar3 < 4) {
-    freqval = (uint32_t)(byte)(&CSWTCH_14)[uVar2];
-  }
-  uVar2 = (MODEM->CF);
-  if (3 < uVar3) {
-    freqval = 7;
-  }
-  if (false) {
+  if (uVar3 < 4) freqval = (uint32_t)(byte)(&CSWTCH_14)[uVar2];
+  uVar2 = MODEM->CF;
+  if (3 < uVar3) freqval = 7;
+  if (false) 
+  {
 switchD_00007366_caseD_1:
     uVar2 = freqval << 2;
   }
-  else {
-    switch(uVar2 & 7) {
+  else 
+  {
+    switch(uVar2 & 7) 
+	{
     case 0:
       uVar2 = freqval * 3;
       break;
@@ -74,11 +73,13 @@ uint32_t SYNTH_LoDivGet(void)
   uVar3 = (SYNTH->DIVCTRL);
   uVar1 = uVar3 & 7;
   uVar2 = (uVar3 << 0x17) >> 0x1a & 7;
-  if (uVar2 != 0) {
+  if (uVar2 != 0) 
+  {
     uVar1 = uVar2 * uVar1;
   }
   uVar3 = (uVar3 << 0x17) >> 0x1d;
-  if (uVar3 != 0) {
+  if (uVar3 != 0) 
+  {
     uVar1 = uVar3 * uVar1;
   }
   return uVar1;
@@ -118,11 +119,13 @@ bool SYNTH_VcoRangeIsValid(uint32_t freq)
     uVar3 = (uint)lVar7;
     bVar6 = lVar7 < 0 && (int)(iVar4 + -1 + (uint)(freq <= uVar3)) < 0 != lVar7 < 0;
     bVar5 = (int)(iVar4 - (uint)(freq > uVar3)) < 0;
-    if (bVar5 == bVar6) {
+    if (bVar5 == bVar6) 
+	{
       uVar3 = 1;
     }
     uVar1 = (undefined)uVar3;
-    if (bVar5 != bVar6) {
+    if (bVar5 != bVar6) 
+	{
       uVar1 = 0;
     }
     return (bool)uVar1;
@@ -146,14 +149,15 @@ void SYNTH_RetimeLimitsConfig(uint32_t val)
   uVar1 = (RAC->HFXORETIMECTRL);
   uVar3 = val / (uVar2 << 1);
   uVar4 = uVar3 - 1;
-  if (6 < uVar3) {
+  if (6 < uVar3) 
+  {
     uVar3 = 7;
   }
-  if (6 < uVar4) {
+  if (6 < uVar4) 
+  {
     uVar4 = 7;
   }
   write_volatile_4(RAC->HFXORETIMECTRL,uVar1 | uVar3 << 8 | uVar4 << 4);
-  return;
 }
 
 
@@ -183,7 +187,6 @@ void SYNTH_RetimeClkConfig(void)
                    (uVar2 + (dcdcRetimeClkTarget >> 1)) / dcdcRetimeClkTarget - 1 |
                    (uint)*(byte *)((int)&local_1c + uVar2 / 325000000 + 1) << 10);
   SYNTH_RetimeLimitsConfig(uVar2);
-  return;
 }
 
 
@@ -202,10 +205,12 @@ void SYNTH_Config(uint32_t freq,uint32_t spacing)
   uVar2 = SYNTH_LoDivGet();
   SYNTH_VcoRangeIsValid(freq);
   uVar5 = (RAC->IFPGACTRL);
-  if (uVar2 == 1) {
+  if (uVar2 == 1) 
+  {
     uVar5 = uVar5 & 0xffffffef;
   }
-  else {
+  else 
+  {
     uVar5 = uVar5 | 0x10;
   }
   write_volatile_4(RAC->IFPGACTRL,uVar5);
@@ -226,19 +231,20 @@ void SYNTH_Config(uint32_t freq,uint32_t spacing)
   uVar5 = __aeabi_uldivmod((int)lVar1,uVar2 * (spacing >> 0xd) + (int)((ulonglong)lVar1 >> 0x20),
                            uVar3,0);
   write_volatile_4(SYNTH->CHSP,uVar5);
-  if (vcoGainPte == 0) {
+  if (vcoGainPte == 0) 
+  {
     uVar5 = (SYNTH->VCOGAIN);
     vcoGainPte = (byte)uVar5 & 0x3f;
   }
   uVar5 = (RAC->SR3);
-  if ((int)(uVar5 << 0x1b) < 0) {
+  if ((int)(uVar5 << 0x1b) < 0) 
+  {
     uVar6 = uVar6 / 24000000;
     write_volatile_4(SYNTH->VCOGAIN,
                      ((uint)vcoGainPte * 10000000) /
                      (uVar6 * uVar6 * 0x553 + uVar6 * -0xc60c + 0x192d50));
   }
   SYNTH_RetimeClkConfig();
-  return;
 }
 
 
@@ -248,17 +254,18 @@ void SYNTH_ChannelSet(uint8_t channel,bool rxcal)
   uint uVar1;
   
   do {
-    do {
+    do 
+	{
       uVar1 = (RAC->STATUS);
       uVar1 = (uVar1 << 4) >> 0x1c;
     } while (uVar1 == 4);
   } while (uVar1 == 10);
   write_volatile_4(SYNTH->CHCTRL,(uint)channel);
-  if (rxcal != false) {
+  if (rxcal != false) 
+  {
     write_volatile_4(RAC->CMD,0x80);
   }
   SYNTH_RetimeClkConfig();
-  return;
 }
 
 
@@ -269,7 +276,6 @@ void SYNTH_DigRouteRetimeEnable(void)
   
   uVar1 = (RAC->SR3);
   write_volatile_4(RAC->SR3,uVar1 | 2);
-  return;
 }
 
 
@@ -281,7 +287,6 @@ void SYNTH_DigRouteRetimeDisable(void)
   
   uVar1 = (RAC->SR3);
   write_volatile_4(RAC->SR3,uVar1 & 0xfffffffd);
-  return;
 }
 
 
@@ -293,7 +298,6 @@ void SYNTH_DCDCRetimeEnable(void)
   
   uVar1 = (RAC->SR3);
   write_volatile_4(RAC->SR3,uVar1 | 4);
-  return;
 }
 
 
@@ -303,7 +307,6 @@ void SYNTH_DCDCRetimeClkSet(int32_t target)
 {
   dcdcRetimeClkTarget = target;
   EMU_DCDCLnRcoBandSet((char)((target + 500000U) / 1000000) + ~EMU_DcdcLnRcoBand_5MHz);
-  return;
 }
 
 
@@ -315,7 +318,6 @@ void SYNTH_DCDCRetimeDisable(void)
   
   uVar1 = (RAC->SR3);
   write_volatile_4(RAC->SR3,uVar1 & 0xfffffffb);
-  return;
 }
 
 
@@ -327,7 +329,6 @@ void SYNTH_KvnFreqCompensationEnable(void)
   
   uVar1 = (RAC->SR3);
   write_volatile_4(RAC->SR3,uVar1 | 0x10);
-  return;
 }
 
 
@@ -339,10 +340,10 @@ void SYNTH_KvnFreqCompensationDisable(void)
   
   uVar1 = (RAC->SR3);
   write_volatile_4(RAC->SR3,uVar1 & 0xffffffef);
-  if (vcoGainPte != 0) {
+  if (vcoGainPte != 0) 
+  {
     write_volatile_4(SYNTH->VCOGAIN,(uint)vcoGainPte);
   }
-  return;
 }
 
 

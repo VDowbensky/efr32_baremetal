@@ -8758,7 +8758,7 @@ uint PA_StripesAndSlicesSet(uint param_1)
   uint uVar5;
   
   uVar5 = read_volatile_4(Peripherals::CMU.RFLOCK0);
-  uVar1 = read_volatile_4(Peripherals::SEQ.REG0C0);
+  uVar1 = read_volatile_4(SEQ->REG0C0);
   uVar3 = (param_1 << 0x17) >> 0x1c;
   iVar4 = count_leading_zeroes(~uVar5 & 0x1fc000);
   uVar5 = 0x13 - iVar4;
@@ -8781,7 +8781,7 @@ uint PA_StripesAndSlicesSet(uint param_1)
   uVar2 = 1;
   uVar3 = uVar2;
 LAB_000061c0:
-  write_volatile_4(Peripherals::SEQ.REG0C0,
+  write_volatile_4(SEQ->REG0C0,
                    uVar1 & 0xe0c03fff | 0x3fc8 | uVar2 << 0x18 |
                    ((1 << (uVar3 & 0xff)) - 1U & 0xff) << 0xe);
   uVar2 = uVar2 | uVar3 << 5;
@@ -8848,9 +8848,9 @@ void PA_PowerLevelOptimize(int param_1)
 {
   uint uVar1;
   
-  uVar1 = read_volatile_4(Peripherals::SEQ.REG0C0);
+  uVar1 = read_volatile_4(SEQ->REG0C0);
   if (param_1 < 0x83) {
-    write_volatile_4(Peripherals::SEQ.REG0C0,uVar1 & 0xffffc037 | ((uVar1 << 10) >> 0x18) << 6);
+    write_volatile_4(SEQ->REG0C0,uVar1 & 0xffffc037 | ((uVar1 << 10) >> 0x18) << 6);
     if (param_1 < 0x1f) {
       uVar1 = read_volatile_4(Peripherals::RAC.PABIASCTRL0);
       write_volatile_4(Peripherals::RAC.PABIASCTRL0,uVar1 & 0xfffffffe);
@@ -8860,7 +8860,7 @@ void PA_PowerLevelOptimize(int param_1)
     }
   }
   else {
-    write_volatile_4(Peripherals::SEQ.REG0C0,uVar1 & 0xffffc037 | 0x3fc8);
+    write_volatile_4(SEQ->REG0C0,uVar1 & 0xffffc037 | 0x3fc8);
   }
   uVar1 = read_volatile_4(Peripherals::RAC.PABIASCTRL0);
   write_volatile_4(Peripherals::RAC.PABIASCTRL0,uVar1 | 1);
@@ -8882,14 +8882,14 @@ void PA_StripesAndSlicesCalc(int32_t level)
   uint uVar3;
   
   if (gPaConfig.paSel == PA_SEL_2P4_LP) {
-    uVar3 = read_volatile_4(Peripherals::SEQ.REG0C0);
+    uVar3 = read_volatile_4(SEQ->REG0C0);
     iVar1 = 6;
     do {
       if ((int)*(short *)(&power0dBmParams + iVar1 * 2) <= level + gPaConfig.offset) break;
       iVar1 = iVar1 + -1;
     } while (iVar1 != 0);
     iVar2 = (int)*(short *)(&power0dBmParams + iVar1 * 2);
-    write_volatile_4(Peripherals::SEQ.REG0C0,uVar3 & 0xe0c0003f | (iVar1 + 1) * 0x1000000);
+    write_volatile_4(SEQ->REG0C0,uVar3 & 0xe0c0003f | (iVar1 + 1) * 0x1000000);
   }
   else {
     uVar3 = (uint)gPaConfig.voltMode;
@@ -8907,7 +8907,7 @@ void PA_StripesAndSlicesCalc(int32_t level)
     }
   }
   PA_PowerLevelOptimize(iVar2);
-  peakDetectorOldSlices = read_volatile_4(Peripherals::SEQ.REG0C0);
+  peakDetectorOldSlices = read_volatile_4(SEQ->REG0C0);
   gPaConfig.power = (short)iVar2 - gPaConfig.offset;
   return;
 }
@@ -8930,9 +8930,9 @@ void PA_PeakDetectorHighRun(void)
   bool bVar2;
   uint uVar3;
   
-  uVar1 = read_volatile_4(Peripherals::SEQ.REG0C0);
+  uVar1 = read_volatile_4(SEQ->REG0C0);
   uVar3 = uVar1 >> 1 & 0x1fc000;
-  write_volatile_4(Peripherals::SEQ.REG0C0,uVar1 & 0xffc03fff | uVar3);
+  write_volatile_4(SEQ->REG0C0,uVar1 & 0xffc03fff | uVar3);
   bVar2 = SYNTH_Is2p4GHz();
   if (bVar2 == false) {
     uVar1 = read_volatile_4(Peripherals::RAC.SGPACTRL0);
@@ -8953,7 +8953,7 @@ void PA_PeakDetectorLowRun(void)
 {
   uint uVar1;
   
-  write_volatile_4(Peripherals::SEQ.REG0C0,peakDetectorOldSlices);
+  write_volatile_4(SEQ->REG0C0,peakDetectorOldSlices);
   uVar1 = read_volatile_4(Peripherals::RAC.IEN);
   write_volatile_4(Peripherals::RAC.IEN,uVar1 & 0xfbffffff);
   return;
@@ -9083,8 +9083,8 @@ LAB_0000650c:
 void PA_CTuneSet(uint8_t txPaCtuneValue,uint8_t rxPaCtuneValue)
 
 {
-  write_volatile_4(Peripherals::SEQ.REG0C8,txPaCtuneValue & 7 | (txPaCtuneValue & 0x1f) << 4);
-  write_volatile_4(Peripherals::SEQ.REG0C4,rxPaCtuneValue & 7 | (rxPaCtuneValue & 0x1f) << 4);
+  write_volatile_4(SEQ->REG0C8,txPaCtuneValue & 7 | (txPaCtuneValue & 0x1f) << 4);
+  write_volatile_4(SEQ->REG0C4,rxPaCtuneValue & 7 | (rxPaCtuneValue & 0x1f) << 4);
   return;
 }
 
@@ -9099,7 +9099,7 @@ void PA_BandSelect(void)
   uVar1 = SYNTH_LoDivGet();
   if (false) {
 switchD_00006576_caseD_2:
-    write_volatile_4(Peripherals::SEQ.REG0C8,0xf7);
+    write_volatile_4(SEQ->REG0C8,0xf7);
     uVar2 = 0xa2;
   }
   else {
@@ -9107,7 +9107,7 @@ switchD_00006576_caseD_2:
     case 1:
       uVar2 = 0x44;
       if (gPaConfig.paSel != PA_SEL_2P4_LP) {
-        write_volatile_4(Peripherals::SEQ.REG0C8,0);
+        write_volatile_4(SEQ->REG0C8,0);
         goto LAB_000065a2;
       }
       break;
@@ -9120,10 +9120,10 @@ switchD_00006576_caseD_2:
     case 6:
       uVar2 = 0x33;
     }
-    write_volatile_4(Peripherals::SEQ.REG0C8,uVar2);
+    write_volatile_4(SEQ->REG0C8,uVar2);
   }
 LAB_000065a2:
-  write_volatile_4(Peripherals::SEQ.REG0C4,uVar2);
+  write_volatile_4(SEQ->REG0C4,uVar2);
   return;
 }
 
@@ -9139,7 +9139,7 @@ bool RADIO_PA_Init(RADIO_PAInit_t *paInit)
   
   if (paInit != (RADIO_PAInit_t *)0x0) {
     RADIO_CLKEnable((uint32_t)paInit,in_r1);
-    memset(&Peripherals::SEQ.REG0C0,0,0xc);
+    memset(&SEQ->REG0C0,0,0xc);
     if (paInit->paSel == PA_SEL_SUBGIG) {
       uVar1 = read_volatile_4(Peripherals::CMU.RFLOCK0);
       bVar3 = (uVar1 & 0x200000) == 0;
@@ -9457,15 +9457,15 @@ void RADIO_SeqInit(void *seqprogstart,int seqprogsize)
   memcpy((void *)0x21000000,seqprogstart,seqprogsize << 2);
   INT_Enable();
   write_volatile_4(Peripherals::RAC.R6,0x21000fcc);
-  uVar1 = read_volatile_4(Peripherals::SEQ.REG0C0);
-  uVar2 = read_volatile_4(Peripherals::SEQ.REG0C4);
-  uVar3 = read_volatile_4(Peripherals::SEQ.REG0C8);
-  memset(&Peripherals::SEQ.REG06C,0,0x94);
-  write_volatile_4(Peripherals::SEQ.REG0C0,uVar1);
-  write_volatile_4(Peripherals::SEQ.REG0C4,uVar2);
-  write_volatile_4(Peripherals::SEQ.REG0C8,uVar3);
+  uVar1 = read_volatile_4(SEQ->REG0C0);
+  uVar2 = read_volatile_4(SEQ->REG0C4);
+  uVar3 = read_volatile_4(SEQ->REG0C8);
+  memset(&SEQ->REG06C,0,0x94);
+  write_volatile_4(SEQ->REG0C0,uVar1);
+  write_volatile_4(SEQ->REG0C4,uVar2);
+  write_volatile_4(SEQ->REG0C8,uVar3);
   iVar4 = RADIO_UsToStimerTickCalc(0x3c);
-  write_volatile_4(Peripherals::SEQ.REG0BC,-iVar4);
+  write_volatile_4(SEQ->REG0BC,-iVar4);
   return;
 }
 
@@ -9980,9 +9980,9 @@ void RADIO_TxWarmTimeSet(uint32_t time)
   
   uVar2 = PA_RampTimeGet();
   uVar1 = RADIO_UsToStimerTickCalc(time - uVar2);
-  write_volatile_2(Peripherals::SEQ.REG0AC._0_2_,uVar1);
+  write_volatile_2(SEQ->REG0AC._0_2_,uVar1);
   uVar1 = RADIO_UsToStimerTickCalc((time - uVar2) + -0x14);
-  write_volatile_2(Peripherals::SEQ.REG0AC._2_2_,uVar1);
+  write_volatile_2(SEQ->REG0AC._2_2_,uVar1);
   return;
 }
 
@@ -9996,9 +9996,9 @@ void RADIO_RxToTxTimeSet(uint32_t time)
   
   uVar2 = PA_RampTimeGet();
   uVar1 = RADIO_UsToStimerTickCalc(time - uVar2);
-  write_volatile_2(Peripherals::SEQ.REG0A4._0_2_,uVar1);
+  write_volatile_2(SEQ->REG0A4._0_2_,uVar1);
   uVar1 = RADIO_UsToStimerTickCalc((time - uVar2) + -0x14);
-  write_volatile_2(Peripherals::SEQ.REG0A4._2_2_,uVar1);
+  write_volatile_2(SEQ->REG0A4._2_2_,uVar1);
   return;
 }
 
@@ -10012,9 +10012,9 @@ void RADIO_RxFrameToTxTimeSet(int32_t time)
   
   uVar2 = PA_RampTimeGet();
   uVar1 = RADIO_UsToStimerTickCalc(time - uVar2);
-  write_volatile_2(Peripherals::SEQ.REG0A8._0_2_,uVar1);
+  write_volatile_2(SEQ->REG0A8._0_2_,uVar1);
   uVar1 = RADIO_UsToStimerTickCalc((time - uVar2) + -0x14);
-  write_volatile_2(Peripherals::SEQ.REG0A8._2_2_,uVar1);
+  write_volatile_2(SEQ->REG0A8._2_2_,uVar1);
   return;
 }
 
@@ -10028,9 +10028,9 @@ void RADIO_TxToTxTimeSet(uint32_t time)
   
   uVar2 = PA_RampTimeGet();
   uVar1 = RADIO_UsToStimerTickCalc(time - uVar2);
-  write_volatile_2(Peripherals::SEQ.REG0B8._0_2_,uVar1);
+  write_volatile_2(SEQ->REG0B8._0_2_,uVar1);
   uVar1 = RADIO_UsToStimerTickCalc((time - uVar2) + -0x14);
-  write_volatile_2(Peripherals::SEQ.REG0B8._2_2_,uVar1);
+  write_volatile_2(SEQ->REG0B8._2_2_,uVar1);
   return;
 }
 
@@ -10042,7 +10042,7 @@ void RADIO_TxToRxTimeSet(uint32_t time)
   uint uVar1;
   
   uVar1 = RADIO_UsToStimerTickCalc(time - 4);
-  write_volatile_4(Peripherals::SEQ.REG0B0,uVar1);
+  write_volatile_4(SEQ->REG0B0,uVar1);
   return;
 }
 
@@ -10055,7 +10055,7 @@ void RADIO_RxWarmTimeSet(uint32_t time)
   
   rxWarmTimeUs = (undefined2)time;
   uVar1 = RADIO_UsToStimerTickCalc(time - 4);
-  write_volatile_4(Peripherals::SEQ.REG09C,uVar1);
+  write_volatile_4(SEQ->REG09C,uVar1);
   return;
 }
 
@@ -10073,7 +10073,7 @@ void RADIO_RxSearchTimeSet(uint32_t time)
 
 {
   RADIO_UsToStimerTickCalc(time);
-  write_volatile_4(Peripherals::SEQ.REG0A0,time);
+  write_volatile_4(SEQ->REG0A0,time);
   return;
 }
 
@@ -10083,7 +10083,7 @@ void RADIO_TxToRxSearchTimeSet(uint32_t time)
 
 {
   RADIO_UsToStimerTickCalc(time);
-  write_volatile_4(Peripherals::SEQ.REG0B4,time);
+  write_volatile_4(SEQ->REG0B4,time);
   return;
 }
 
@@ -10264,7 +10264,7 @@ void RFTEST_SaveRadioConfiguration(void)
     DAT_20002c10 = read_volatile_4(Peripherals::FRC.WHITECTRL);
     DAT_20002c14 = read_volatile_4(Peripherals::FRC.WHITEPOLY);
     DAT_20002c18 = read_volatile_4(Peripherals::FRC.WHITEINIT);
-    DAT_20002c1c = read_volatile_4(Peripherals::SEQ.SYNTHLPFCTRLTX);
+    DAT_20002c1c = read_volatile_4(SEQ->SYNTHLPFCTRLTX);
     DAT_20002c20 = read_volatile_4(Peripherals::FRC.SNIFFCTRL);
     DAT_20002c24 = read_volatile_4(Peripherals::FRC.IEN);
     write_volatile_4(Peripherals::FRC.IEN,0);
@@ -10294,7 +10294,7 @@ void RFTEST_RestoreRadioConfiguration(void)
     write_volatile_4(Peripherals::FRC.WHITECTRL,DAT_20002c10);
     write_volatile_4(Peripherals::FRC.WHITEPOLY,DAT_20002c14);
     write_volatile_4(Peripherals::FRC.WHITEINIT,DAT_20002c18);
-    write_volatile_4(Peripherals::SEQ.SYNTHLPFCTRLTX,DAT_20002c1c);
+    write_volatile_4(SEQ->SYNTHLPFCTRLTX,DAT_20002c1c);
     write_volatile_4(Peripherals::FRC.SNIFFCTRL,DAT_20002c20);
     write_volatile_4(Peripherals::FRC.IFC,0x7ffff);
     write_volatile_4(Peripherals::FRC.IEN,DAT_20002c24);
@@ -10312,8 +10312,8 @@ void RFTEST_StartCwTx(void)
 {
   uint uVar1;
   
-  uVar1 = read_volatile_4(Peripherals::SEQ.SYNTHLPFCTRLTX);
-  write_volatile_4(Peripherals::SEQ.SYNTHLPFCTRLTX,uVar1 & 0xfffffff0);
+  uVar1 = read_volatile_4(SEQ->SYNTHLPFCTRLTX);
+  write_volatile_4(SEQ->SYNTHLPFCTRLTX,uVar1 & 0xfffffff0);
   write_volatile_4(Peripherals::MODEM.MODINDEX,0);
   uVar1 = read_volatile_4(Peripherals::MODEM.CTRL0);
   write_volatile_4(Peripherals::MODEM.CTRL0,uVar1 & 0xfffffe3f | 0x100);
@@ -11002,20 +11002,20 @@ void RAIL_PacketLengthConfigFrameType(RAIL_FrameType_t *frameType)
   
   GENERIC_PHY_ResetPacketConfig();
   if (frameType == (RAIL_FrameType_t *)0x0) {
-    memset(&Peripherals::SEQ.REG054,0,0x18);
+    memset(&SEQ->REG054,0,0x18);
     return;
   }
-  write_volatile_4(Peripherals::SEQ.REG058,(uint)frameType->offset);
-  write_volatile_4(Peripherals::SEQ.REG05C,(uint)frameType->mask);
-  write_volatile_4(Peripherals::SEQ.REG060,0);
-  write_volatile_4(Peripherals::SEQ.REG064,(uint)frameType->frameLen);
-  write_volatile_4(Peripherals::SEQ.REG068,(uint)frameType->isValid);
+  write_volatile_4(SEQ->REG058,(uint)frameType->offset);
+  write_volatile_4(SEQ->REG05C,(uint)frameType->mask);
+  write_volatile_4(SEQ->REG060,0);
+  write_volatile_4(SEQ->REG064,(uint)frameType->frameLen);
+  write_volatile_4(SEQ->REG068,(uint)frameType->isValid);
   uVar2 = (uint)frameType->mask;
   if (uVar2 != 0) {
     while (-1 < (int)(uVar2 << 0x1f)) {
-      uVar1 = read_volatile_4(Peripherals::SEQ.REG060);
+      uVar1 = read_volatile_4(SEQ->REG060);
       uVar2 = uVar2 >> 1;
-      write_volatile_4(Peripherals::SEQ.REG060,uVar1 + 1);
+      write_volatile_4(SEQ->REG060,uVar1 + 1);
     }
   }
   write_volatile_4(Peripherals::FRC.WCNTCMP0,frameType->offset + 1);
@@ -11171,7 +11171,7 @@ bool RAIL_AddressFilterConfig(RAIL_AddrConfig_t *addrConfig)
 bool RAIL_AddressFilterByFrameType(uint8_t validFrames)
 
 {
-  write_volatile_1(Peripherals::SEQ.REG050._2_1_,validFrames);
+  write_volatile_1(SEQ->REG050._2_1_,validFrames);
   return true;
 }
 
@@ -11228,8 +11228,8 @@ bool RAIL_AddressFilterSetAddress(uint8_t field,uint8_t index,uint8_t *value,boo
   if ((uVar5 < 2) && (index < 4)) {
     GENERIC_PHY_DisableAddress(field,index);
     uVar3 = (uint)index << 3;
-    bVar1 = *(byte *)((int)&Peripherals::SEQ.REG04C + uVar5 + 2);
-    puVar2 = &Peripherals::SEQ.REG00C + uVar5 * 8;
+    bVar1 = *(byte *)((int)&SEQ->REG04C + uVar5 + 2);
+    puVar2 = &SEQ->REG00C + uVar5 * 8;
     for (iVar4 = 0; iVar4 < (int)(uint)bVar1; iVar4 = iVar4 + 1) {
       uVar5 = *puVar2 & ~(0xff << (uVar3 & 0xff));
       if (value != (uint8_t *)0x0) {
@@ -11255,8 +11255,8 @@ bool RAIL_AddressFilterEnableAddress(uint8_t field,uint8_t index)
   
   uVar1 = (uint)field;
   if ((uVar1 < 2) && (index < 4)) {
-    *(byte *)((int)&Peripherals::SEQ.REG050 + uVar1) =
-         (byte)(1 << (uint)index) | *(byte *)((int)&Peripherals::SEQ.REG050 + uVar1);
+    *(byte *)((int)&SEQ->REG050 + uVar1) =
+         (byte)(1 << (uint)index) | *(byte *)((int)&SEQ->REG050 + uVar1);
     GENERIC_PHY_SetAddressFilteringMatchTable();
     return true;
   }
@@ -11272,8 +11272,8 @@ bool RAIL_AddressFilterDisableAddress(uint8_t field,uint8_t index)
   
   uVar1 = (uint)field;
   if ((uVar1 < 2) && (index < 4)) {
-    *(byte *)((int)&Peripherals::SEQ.REG050 + uVar1) =
-         *(byte *)((int)&Peripherals::SEQ.REG050 + uVar1) & ~(byte)(1 << (uint)index);
+    *(byte *)((int)&SEQ->REG050 + uVar1) =
+         *(byte *)((int)&SEQ->REG050 + uVar1) & ~(byte)(1 << (uint)index);
     GENERIC_PHY_SetAddressFilteringMatchTable();
     return true;
   }
@@ -11488,7 +11488,7 @@ void protmrLbtEvt(int param_1)
   if (param_1 << 9 < 0) {
     RADIO_PTI_AuxdataOutput(0x27);
     GENERIC_PHY_FlushTxPacketBuffer();
-    uVar1 = read_volatile_4(Peripherals::SEQ.REG000);
+    uVar1 = read_volatile_4(SEQ->REG000);
     if ((uVar1 & 0xff000000) == 0x2000000) {
       _DAT_43080004 = 1;
     }
@@ -12261,8 +12261,8 @@ RAIL_Status_t RAIL_RfHalSetTxTransitions(RAIL_RadioState_t success,RAIL_RadioSta
 {
   ushort uVar1;
   
-  uVar1 = read_volatile_2(Peripherals::SEQ.REG000._0_2_);
-  write_volatile_4(Peripherals::SEQ.REG000,
+  uVar1 = read_volatile_2(SEQ->REG000._0_2_);
+  write_volatile_4(SEQ->REG000,
                    1 << (success + 0x10 & 0xff) | (uint)uVar1 | 1 << (error + 0x18 & 0xff));
   return RAIL_STATUS_NO_ERROR;
 }
@@ -12274,8 +12274,8 @@ RAIL_Status_t RAIL_RfHalSetRxTransitions(RAIL_RadioState_t success,RAIL_RadioSta
 {
   ushort uVar1;
   
-  uVar1 = read_volatile_2(Peripherals::SEQ.REG000._2_2_);
-  write_volatile_4(Peripherals::SEQ.REG000,
+  uVar1 = read_volatile_2(SEQ->REG000._2_2_);
+  write_volatile_4(SEQ->REG000,
                    1 << (error + 8 & 0xff) | 1 << success | (uint)uVar1 << 0x10);
   return RAIL_STATUS_NO_ERROR;
 }
@@ -14155,9 +14155,9 @@ void TEMPCAL_Init(void)
       cVar4 = '\x19';
     }
   }
-  write_volatile_1(Peripherals::SEQ.REG080._3_1_,(char)((uint)(int)cVar4 / 2) + cVar3);
-  write_volatile_1(Peripherals::SEQ.REG080._2_1_,2);
-  write_volatile_1(Peripherals::SEQ.REG080._1_1_,0x23);
+  write_volatile_1(SEQ->REG080._3_1_,(char)((uint)(int)cVar4 / 2) + cVar3);
+  write_volatile_1(SEQ->REG080._2_1_,2);
+  write_volatile_1(SEQ->REG080._1_1_,0x23);
   return;
 }
 
@@ -14414,7 +14414,7 @@ void GENERIC_PHY_FRC_IRQCallback(void)
   uVar1 = read_volatile_4(Peripherals::FRC.IF);
   uVar3 = read_volatile_4(Peripherals::FRC.IEN);
   uVar3 = uVar3 & uVar1;
-  write_volatile_4(Peripherals::SEQ.REG004,uVar3);
+  write_volatile_4(SEQ->REG004,uVar3);
   write_volatile_4(Peripherals::FRC.IFC,uVar3);
   if ((int)(uVar3 << 0x1b) < 0) {
     (*currentCallbacks[2])();
@@ -14445,7 +14445,7 @@ void GENERIC_PHY_FRC_IRQCallback(void)
     else {
       RADIO_FRCErrorHandle();
       _DAT_4308010c = 1;
-      _DAT_43080004 = read_volatile_4(Peripherals::SEQ.REG000);
+      _DAT_43080004 = read_volatile_4(SEQ->REG000);
       _DAT_43080004 = _DAT_43080004 & 0x200;
       if (_DAT_43080004 != 0) {
         _DAT_43080004 = 1;
@@ -14503,11 +14503,11 @@ void GENERIC_PHY_SetAddressFilteringMatchTable(void)
     uVar9 = uVar6 * 8;
     local_38 = uVar1;
     for (uVar8 = uVar6; local_38 = local_38 + 5, uVar8 != 4; uVar8 = uVar8 + 1) {
-      puVar11 = &Peripherals::SEQ.REG008;
-      bVar2 = read_volatile_1(Peripherals::SEQ.REG050._0_1_);
+      puVar11 = &SEQ->REG008;
+      bVar2 = read_volatile_1(SEQ->REG050._0_1_);
       uVar4 = 1 << (uVar8 & 0xff) | 1 << (uVar3 & 0xff);
       if ((uVar4 & bVar2) == uVar4) {
-        bVar2 = read_volatile_1(Peripherals::SEQ.REG04C._2_1_);
+        bVar2 = read_volatile_1(SEQ->REG04C._2_1_);
         for (iVar10 = 0; iVar10 < (int)(uint)bVar2; iVar10 = iVar10 + 1) {
           puVar11 = puVar11 + 1;
           if (((*puVar11 >> (uVar9 & 0xff) ^ *puVar11 >> (uVar5 & 0xff)) & 0xff) != 0)
@@ -14516,10 +14516,10 @@ void GENERIC_PHY_SetAddressFilteringMatchTable(void)
         uVar12 = uVar12 | addressFilterMatchTable >> (local_38 & 0xff) & 0x1f;
       }
 LAB_00009826:
-      bVar2 = read_volatile_1(Peripherals::SEQ.REG050._1_1_);
+      bVar2 = read_volatile_1(SEQ->REG050._1_1_);
       if ((uVar4 & bVar2) == uVar4) {
-        bVar2 = read_volatile_1(Peripherals::SEQ.REG04C._3_1_);
-        puVar11 = &Peripherals::SEQ.REG028;
+        bVar2 = read_volatile_1(SEQ->REG04C._3_1_);
+        puVar11 = &SEQ->REG028;
         for (iVar10 = 0; iVar10 < (int)(uint)bVar2; iVar10 = iVar10 + 1) {
           puVar11 = puVar11 + 1;
           if (((*puVar11 >> (uVar9 & 0xff) ^ *puVar11 >> (uVar5 & 0xff)) & 0xff) != 0)
@@ -14534,7 +14534,7 @@ LAB_0000986e:
     uVar5 = uVar5 + 8;
     uVar3 = uVar6;
     if (uVar6 == 4) {
-      write_volatile_4(Peripherals::SEQ.REG008,local_34);
+      write_volatile_4(SEQ->REG008,local_34);
       return;
     }
   } while( true );
@@ -15073,20 +15073,20 @@ void GENERIC_PHY_ConfigureFrameType(RAIL_FrameType_t *frameType)
   
   GENERIC_PHY_ResetPacketConfig();
   if (frameType == (RAIL_FrameType_t *)0x0) {
-    memset(&Peripherals::SEQ.REG054,0,0x18);
+    memset(&SEQ->REG054,0,0x18);
     return;
   }
-  write_volatile_4(Peripherals::SEQ.REG058,(uint)frameType->offset);
-  write_volatile_4(Peripherals::SEQ.REG05C,(uint)frameType->mask);
-  write_volatile_4(Peripherals::SEQ.REG060,0);
-  write_volatile_4(Peripherals::SEQ.REG064,(uint)frameType->frameLen);
-  write_volatile_4(Peripherals::SEQ.REG068,(uint)frameType->isValid);
+  write_volatile_4(SEQ->REG058,(uint)frameType->offset);
+  write_volatile_4(SEQ->REG05C,(uint)frameType->mask);
+  write_volatile_4(SEQ->REG060,0);
+  write_volatile_4(SEQ->REG064,(uint)frameType->frameLen);
+  write_volatile_4(SEQ->REG068,(uint)frameType->isValid);
   uVar2 = (uint)frameType->mask;
   if (uVar2 != 0) {
     while (-1 < (int)(uVar2 << 0x1f)) {
-      uVar1 = read_volatile_4(Peripherals::SEQ.REG060);
+      uVar1 = read_volatile_4(SEQ->REG060);
       uVar2 = uVar2 >> 1;
-      write_volatile_4(Peripherals::SEQ.REG060,uVar1 + 1);
+      write_volatile_4(SEQ->REG060,uVar1 + 1);
     }
   }
   write_volatile_4(Peripherals::FRC.WCNTCMP0,frameType->offset + 1);
@@ -15137,7 +15137,7 @@ bool GENERIC_PHY_IsEnabledAddressFiltering(void)
 void GENERIC_PHY_ResetAddressFiltering(void)
 
 {
-  memset(&Peripherals::SEQ.REG008,0,0x4c);
+  memset(&SEQ->REG008,0,0x4c);
   addressFilterMatchTable = 0;
   return;
 }
@@ -15178,7 +15178,7 @@ void GENERIC_PHY_Init(void)
   uVar4 = PROTIMER_CCTimerCapture(1,0x200000);
   bVar2 = RFRAND_SeedProtimerRandom((int)uVar4,(uint)((ulonglong)uVar4 >> 0x20),puVar3);
   SYNTH_DCDCRetimeEnable(bVar2);
-  write_volatile_4(Peripherals::SEQ.REG070,0);
+  write_volatile_4(SEQ->REG070,0);
   return;
 }
 
@@ -15191,13 +15191,13 @@ bool GENERIC_PHY_ConfigureAddressFiltering(RAIL_AddrConfig_t *addrconfig)
   if (addrconfig == (RAIL_AddrConfig_t *)0x0) {
     return true;
   }
-  write_volatile_1(Peripherals::SEQ.REG04C._0_1_,addrconfig->numFields);
+  write_volatile_1(SEQ->REG04C._0_1_,addrconfig->numFields);
   if (*(byte *)&addrconfig->field_0x2 < 9) {
-    write_volatile_1(Peripherals::SEQ.REG04C._2_1_,*(byte *)&addrconfig->field_0x2);
-    write_volatile_1(Peripherals::SEQ.REG04C._1_1_,*(undefined *)&addrconfig->field_0x1);
+    write_volatile_1(SEQ->REG04C._2_1_,*(byte *)&addrconfig->field_0x2);
+    write_volatile_1(SEQ->REG04C._1_1_,*(undefined *)&addrconfig->field_0x1);
     if (*(byte *)&addrconfig->field_0x3 < 9) {
-      write_volatile_1(Peripherals::SEQ.REG04C._3_1_,*(byte *)&addrconfig->field_0x3);
-      write_volatile_1(Peripherals::SEQ.REG050._2_1_,*(undefined *)&addrconfig->sizes);
+      write_volatile_1(SEQ->REG04C._3_1_,*(byte *)&addrconfig->field_0x3);
+      write_volatile_1(SEQ->REG050._2_1_,*(undefined *)&addrconfig->sizes);
       addressFilterMatchTable = addrconfig->offsets;
       GENERIC_PHY_SetAddressFilteringMatchTable();
       return true;
@@ -15215,8 +15215,8 @@ bool GENERIC_PHY_EnableAddress(uint8_t field,uint8_t index)
   
   uVar1 = (uint)field;
   if ((uVar1 < 2) && (index < 4)) {
-    *(byte *)((int)&Peripherals::SEQ.REG050 + uVar1) =
-         (byte)(1 << (uint)index) | *(byte *)((int)&Peripherals::SEQ.REG050 + uVar1);
+    *(byte *)((int)&SEQ->REG050 + uVar1) =
+         (byte)(1 << (uint)index) | *(byte *)((int)&SEQ->REG050 + uVar1);
     GENERIC_PHY_SetAddressFilteringMatchTable();
     return true;
   }
@@ -15232,8 +15232,8 @@ bool GENERIC_PHY_DisableAddress(uint8_t field,uint8_t index)
   
   uVar1 = (uint)field;
   if ((uVar1 < 2) && (index < 4)) {
-    *(byte *)((int)&Peripherals::SEQ.REG050 + uVar1) =
-         *(byte *)((int)&Peripherals::SEQ.REG050 + uVar1) & ~(byte)(1 << (uint)index);
+    *(byte *)((int)&SEQ->REG050 + uVar1) =
+         *(byte *)((int)&SEQ->REG050 + uVar1) & ~(byte)(1 << (uint)index);
     GENERIC_PHY_SetAddressFilteringMatchTable();
     return true;
   }
@@ -15255,8 +15255,8 @@ bool GENERIC_PHY_SetAddress(uint8_t field,uint8_t index,uint8_t *value,bool enab
   if ((uVar5 < 2) && (index < 4)) {
     GENERIC_PHY_DisableAddress(field,index);
     uVar3 = (uint)index << 3;
-    bVar1 = *(byte *)((int)&Peripherals::SEQ.REG04C + uVar5 + 2);
-    puVar2 = &Peripherals::SEQ.REG00C + uVar5 * 8;
+    bVar1 = *(byte *)((int)&SEQ->REG04C + uVar5 + 2);
+    puVar2 = &SEQ->REG00C + uVar5 * 8;
     for (iVar4 = 0; iVar4 < (int)(uint)bVar1; iVar4 = iVar4 + 1) {
       uVar5 = *puVar2 & ~(0xff << (uVar3 & 0xff));
       if (value != (uint8_t *)0x0) {

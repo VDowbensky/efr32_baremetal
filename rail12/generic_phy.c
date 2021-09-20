@@ -4,46 +4,36 @@
 void GENERIC_PHY_RAC_IRQCallback(void)
 
 {
-  uint uVar1;
-  uint uVar2;
-  
-  uVar1 = (RAC->IF);
-  uVar2 = (RAC->IEN);
-  uVar2 = uVar2 & uVar1;
-  write_volatile_4(RAC->IFC,uVar2);
-  if ((int)(uVar2 << 0x1f) < 0) {
-    (**(code **)(currentCallbacks + 0x30))();
-  }
-  if ((int)(uVar2 << 0x1d) < 0) {
-    (**(code **)(currentCallbacks + 0x2c))();
-  }
-  if ((int)(uVar2 << 6) < 0) {
-    if ((int)((uint)DAT_00010db1 << 0x1a) < 0) {
-      (**(code **)(currentCallbacks + 0x34))();
-    }
+  uint32_t flags;
+
+  flags = flags & uVar1;
+  RAC->IFC = flags;
+  if ((int)(flags << 0x1f) < 0) (**(code **)(currentCallbacks + 0x30))();
+  if ((int)(flags << 0x1d) < 0) (**(code **)(currentCallbacks + 0x2c))();
+  if ((int)(flags << 6) < 0) 
+  {
+    if ((int)((uint)DAT_00010db1 << 0x1a) < 0) (**(code **)(currentCallbacks + 0x34))();
     PA_PeakDetectorHighRun();
   }
-  if ((int)(uVar2 << 5) < 0) {
-    if ((int)((uint)DAT_00010db1 << 0x19) < 0) {
-      (**(code **)(currentCallbacks + 0x38))();
-    }
+  if ((int)(flags << 5) < 0) 
+  {
+    if ((int)((uint)DAT_00010db1 << 0x19) < 0) (**(code **)(currentCallbacks + 0x38))();
     PA_PeakDetectorLowRun();
   }
-  if ((int)(uVar2 << 4) < 0) {
-    if ((char)DAT_00010db1 < '\0') {
-      (**(code **)(currentCallbacks + 0x3c))();
-    }
+  if ((int)(flags << 4) < 0) 
+  {
+    if ((char)DAT_00010db1 < '\0') (**(code **)(currentCallbacks + 0x3c))();
     PA_BatHighRun();
   }
-  uVar1 = uVar2 & 0xff0000;
-  if (uVar1 != 0) {
-    if ((uVar2 & 0x800000) != 0) {
-      if ((int)((uint)DAT_00010db2 << 0x1f) < 0) {
-        (**(code **)(currentCallbacks + 0x40))();
-      }
-      uVar1 = uVar2 & 0x7f0000;
+  if (flags & 0xff0000 != 0) 
+  {
+    if ((flags & 0x800000) != 0) 
+	{
+      if ((int)((uint)DAT_00010db2 << 0x1f) < 0) (**(code **)(currentCallbacks + 0x40))();
+      //uVar1 = flags & 0x7f0000;
     }
-    if ((*(code **)(currentCallbacks + 0x44) != (code *)0x0) && (uVar1 != 0)) {
+    if ((*(code **)(currentCallbacks + 0x44) != (code *)0x0) && (flags & 0x7f0000 != 0)) 
+	{
                     // WARNING: Could not recover jumptable at 0x000100c4. Too many branches
                     // WARNING: Treating indirect jump as call
       (**(code **)(currentCallbacks + 0x44))();
@@ -59,16 +49,15 @@ void GENERIC_PHY_PROTIMER_IRQCallback(void)
 
 {
   uint uVar1;
-  uint uVar2;
-  
-  uVar1 = (PROTIMER->IF);
-  uVar2 = (PROTIMER->IEN);
-  uVar2 = uVar2 & uVar1;
-  write_volatile_4(PROTIMER->IFC,uVar2);
-  if ((uVar2 & 0x501000) != 0) {
+  uint32_t flags;
+
+  flags = PROTIMER->IEN & PROTIMER->IF;
+  write_volatile_4(PROTIMER->IFC = flags);
+  if ((flags & 0x501000) != 0) {
     (**(code **)(currentCallbacks + 0x4c))(uVar2);
   }
-  if ((int)(uVar2 << 0x15) < 0) {
+  if ((int)(flags << 0x15) < 0) 
+  {
                     // WARNING: Could not recover jumptable at 0x000100fe. Too many branches
                     // WARNING: Treating indirect jump as call
     (**(code **)(currentCallbacks + 0x50))();
@@ -82,23 +71,15 @@ void GENERIC_PHY_PROTIMER_IRQCallback(void)
 void GENERIC_PHY_MODEM_IRQCallback(void)
 
 {
-  uint uVar1;
-  uint uVar2;
-  
-  uVar1 = (MODEM->IF);
-  uVar2 = (MODEM->IEN);
-  uVar2 = uVar2 & uVar1;
-  write_volatile_4(MODEM->IFC,uVar2);
-  if ((int)(uVar2 << 0x12) < 0) {
-    (**(code **)(currentCallbacks + 0x1c))();
-  }
-  if ((int)(uVar2 << 0x16) < 0) {
-    (**(code **)(currentCallbacks + 0x20))();
-  }
-  if ((int)(uVar2 << 0x15) < 0) {
-    (**(code **)(currentCallbacks + 0x24))();
-  }
-  if ((int)(uVar2 << 0x14) < 0) {
+  uint32_t flags;
+
+  flags = MODEM->IEN & MODEM->IF;
+  MODEM->IFC = flags;
+  if ((int)(flags << 0x12) < 0) (**(code **)(currentCallbacks + 0x1c))();
+  if ((int)(flags << 0x16) < 0) (**(code **)(currentCallbacks + 0x20))();
+  if ((int)(flags << 0x15) < 0) (**(code **)(currentCallbacks + 0x24))();
+  if ((int)(flags << 0x14) < 0) 
+  {
                     // WARNING: Could not recover jumptable at 0x00010154. Too many branches
                     // WARNING: Treating indirect jump as call
     (**(code **)(currentCallbacks + 0x28))();
@@ -116,60 +97,43 @@ void GENERIC_PHY_FRC_IRQCallback(void)
 {
   uint uVar1;
   int iVar2;
-  uint uVar3;
+  uint32_t flags;
   
-  uVar1 = (FRC->IF);
-  uVar3 = (FRC->IEN);
-  uVar3 = uVar3 & uVar1;
-  write_volatile_4(SEQ->REG004,uVar3);
-  write_volatile_4(FRC->IFC,uVar3);
-  if ((int)(uVar3 << 0x1b) < 0) {
+  flags = FRC->IEN & FRC->IEN;
+  SEQ->REG004 = uVar3;
+  FRC->IFC = uVar3;
+  if ((int)(uVar3 << 0x1b) < 0) 
+  {
     (*currentCallbacks[2])();
-    iVar2 = RADIO_RxBufferPacketAvailable();
-    if (iVar2 != 0) {
-      write_volatile_4(FRC->IFS,0x10);
-    }
+    if (RADIO_RxBufferPacketAvailable() != 0) FRC->IFS = 0x10;
   }
-  else {
-    if ((int)(uVar3 << 0x19) < 0) {
-      (*currentCallbacks[3])();
-    }
+  else 
+  {
+    if ((int)(flags << 0x19) < 0) (*currentCallbacks[3])();
   }
-  if (((uVar3 & 3) != 0) && (PROTIMER_CCTimerStop(3), (int)((uint)enabledCallbacks << 0x1f) < 0)) {
-    (**currentCallbacks)();
-  }
-  if (((int)(uVar3 << 0x17) < 0) &&
-     (uVar1 = (RAC->STATUS), (uVar1 & 0xf000000) == 0x6000000)) {
-    if ((int)((uint)enabledCallbacks << 0x1b) < 0) {
-      (*currentCallbacks[4])();
-    }
-    uVar1 = (FRC->IF);
-    if ((int)(uVar1 << 0x1b) < 0) {
-      uVar1 = (FRC->IFS);
-      write_volatile_4(FRC->IFS,uVar1 | 0x100);
-    }
-    else {
+  if (((flags & 3) != 0) && (PROTIMER_CCTimerStop(3), (int)((uint)enabledCallbacks << 0x1f) < 0)) (**currentCallbacks)();
+  if (((int)(flags << 0x17) < 0) && (uVar1 = (RAC->STATUS), (uVar1 & 0xf000000) == 0x6000000)) 
+  {
+    if ((int)((uint)enabledCallbacks << 0x1b) < 0) (*currentCallbacks[4])();
+    if ((int)(FRC->IF << 0x1b) < 0) FRC->IFS |= 0x100;
+    else 
+	{
       RADIO_FRCErrorHandle();
       _DAT_4308010c = 1;
-      _DAT_43080004 = (SEQ->REG000);
+      _DAT_43080004 = SEQ->REG000;
       _DAT_43080004 = _DAT_43080004 & 0x200;
-      if (_DAT_43080004 != 0) {
+      if (_DAT_43080004 != 0) 
+	  {
         _DAT_43080004 = 1;
       }
       _DAT_43080118 = 1;
     }
   }
-  if (((int)(uVar3 << 0x1d) < 0) &&
-     (uVar1 = (FRC->CTRL), -1 < (int)(uVar1 << 0x1f))) {
-    (*currentCallbacks[1])();
-  }
-  if ((int)(uVar3 << 0x1c) < 0) {
-    (*currentCallbacks[1])();
-  }
-  if ((int)(uVar3 << 0x11) < 0) {
-    (*currentCallbacks[5])();
-  }
-  if ((int)(uVar3 << 0x12) < 0) {
+  if (((int)(flags << 0x1d) < 0) && (uVar1 = (FRC->CTRL), -1 < (int)(uVar1 << 0x1f))) (*currentCallbacks[1])();
+  if ((int)(flags << 0x1c) < 0) (*currentCallbacks[1])();
+  if ((int)(flags << 0x11) < 0) (*currentCallbacks[5])();
+  if ((int)(flags << 0x12) < 0) 
+  {
                     // WARNING: Could not recover jumptable at 0x0001023c. Too many branches
                     // WARNING: Treating indirect jump as call
     (*currentCallbacks[6])();
@@ -208,13 +172,15 @@ void GENERIC_PHY_SetAddressFilteringMatchTable(void)
     uVar7 = addressFilterMatchTable >> (uVar6 & 0xff) & 0x108421;
     uVar9 = uVar6 * 8;
     local_38 = uVar1;
-    for (uVar8 = uVar6; local_38 = local_38 + 5, uVar8 != 4; uVar8 = uVar8 + 1) {
+    for (uVar8 = uVar6; local_38 = local_38 + 5, uVar8 != 4; uVar8 = uVar8 + 1) 
+	{
       puVar11 = &SEQ->REG008;
       bVar2 = read_volatile_1(SEQ->REG050._0_1_);
       uVar4 = 1 << (uVar8 & 0xff) | 1 << (uVar3 & 0xff);
       if ((uVar4 & bVar2) == uVar4) {
         bVar2 = read_volatile_1(SEQ->REG04C._2_1_);
-        for (iVar10 = 0; iVar10 < (int)(uint)bVar2; iVar10 = iVar10 + 1) {
+        for (iVar10 = 0; iVar10 < (int)(uint)bVar2; iVar10 = iVar10 + 1) 
+		{
           puVar11 = puVar11 + 1;
           if (((*puVar11 >> (uVar9 & 0xff) ^ *puVar11 >> (uVar5 & 0xff)) & 0xff) != 0)
           goto LAB_00009826;
@@ -223,10 +189,12 @@ void GENERIC_PHY_SetAddressFilteringMatchTable(void)
       }
 LAB_00009826:
       bVar2 = read_volatile_1(SEQ->REG050._1_1_);
-      if ((uVar4 & bVar2) == uVar4) {
+      if ((uVar4 & bVar2) == uVar4) 
+	  {
         bVar2 = read_volatile_1(SEQ->REG04C._3_1_);
         puVar11 = &SEQ->REG028;
-        for (iVar10 = 0; iVar10 < (int)(uint)bVar2; iVar10 = iVar10 + 1) {
+        for (iVar10 = 0; iVar10 < (int)(uint)bVar2; iVar10 = iVar10 + 1) 
+		{
           puVar11 = puVar11 + 1;
           if (((*puVar11 >> (uVar9 & 0xff) ^ *puVar11 >> (uVar5 & 0xff)) & 0xff) != 0)
           goto LAB_0000986e;
@@ -239,8 +207,9 @@ LAB_0000986e:
     local_34 = local_34 | uVar7 << (uVar6 & 0xff) | uVar12 << (uVar1 & 0xff);
     uVar5 = uVar5 + 8;
     uVar3 = uVar6;
-    if (uVar6 == 4) {
-      write_volatile_4(SEQ->REG008,local_34);
+    if (uVar6 == 4) 
+	{
+      SEQ->REG008 = local_34;
       return;
     }
   } while( true );
@@ -262,28 +231,14 @@ void GENERIC_PHY_ConfigureCallbacks(RAIL_CalMask_t callbacks)
   enabledCallbacks = callbacks & availableCallbacks;
   uVar2 = enabledCallbacks & 0xff;
   uVar4 = 0x101;
-  if ((enabledCallbacks & 1) != 0) {
-    uVar4 = 0x103;
-  }
-  if ((int)(uVar2 << 0x1e) < 0) {
-    uVar4 = uVar4 | 0xc;
-  }
-  if ((int)(uVar2 << 0x1d) < 0) {
-    uVar4 = uVar4 | 0x10;
-  }
-  if ((int)(uVar2 << 0x1c) < 0) {
-    uVar4 = uVar4 | 0x40;
-  }
-  if ((int)(uVar2 << 0x1b) < 0) {
-    uVar4 = uVar4 | 0x120;
-  }
-  if ((int)(uVar2 << 0x1a) < 0) {
-    uVar4 = uVar4 | 0x4000;
-  }
+  if ((enabledCallbacks & 1) != 0) uVar4 = 0x103;
+  if ((int)(uVar2 << 0x1e) < 0) uVar4 = uVar4 | 0xc;
+  if ((int)(uVar2 << 0x1d) < 0) uVar4 = uVar4 | 0x10;
+  if ((int)(uVar2 << 0x1c) < 0) uVar4 = uVar4 | 0x40;
+  if ((int)(uVar2 << 0x1b) < 0) uVar4 = uVar4 | 0x120;
+  if ((int)(uVar2 << 0x1a) < 0) uVar4 = uVar4 | 0x4000;
   uVar1 = (FRC->IEN);
-  if ((int)(uVar2 << 0x19) < 0) {
-    uVar4 = uVar4 | 0x2000;
-  }
+  if ((int)(uVar2 << 0x19) < 0) uVar4 = uVar4 | 0x2000;
   uVar3 = uVar1 & (uVar4 ^ uVar1);
   write_volatile_4(FRC->IFC,uVar3);
   uVar2 = (FRC->IEN);

@@ -13,7 +13,8 @@ void RFSENSE_Disable(void)
   write_volatile_4(RFSENSE->EM4WUEN,0);
   write_volatile_4(RFSENSE->CTRL,0);
   write_volatile_4(RFSENSE->PERIODSEL,0xf);
-  if (em4Flag != 0) {
+  if (em4Flag != 0) 
+  {
     em4Flag = 0;
     INT_Disable();
     uVar1 = (EMU->EM4CTRL);
@@ -35,7 +36,8 @@ int RFSENSE_CalcPeriod(uint param_1,uint param_2,char *param_3,undefined4 param_
   char cVar3;
   uint uVar4;
   
-  switch(param_1 & 0xc) {
+  switch(param_1 & 0xc) 
+  {
   case 0:
     uVar1 = RFSENSE_RfOscFreqHz;
     break;
@@ -51,7 +53,8 @@ int RFSENSE_CalcPeriod(uint param_1,uint param_2,char *param_3,undefined4 param_
   default:
     return 0;
   }
-  if (uVar1 == 0) {
+  if (uVar1 == 0) 
+  {
     return 0;
   }
   uVar4 = uVar1 >> 1;
@@ -60,7 +63,8 @@ int RFSENSE_CalcPeriod(uint param_1,uint param_2,char *param_3,undefined4 param_
   if (uVar1 < param_2) {
     param_2 = param_2 - uVar1;
   }
-  else {
+  else 
+  {
     param_2 = 0;
   }
   for (cVar3 = '\x0f'; (param_2 < uVar2 - (uVar2 >> 2) && (cVar3 != '\0')); cVar3 = cVar3 + -1) {
@@ -79,7 +83,6 @@ void RFSENSE_ReInit(void)
   write_volatile_4(RFSENSE->IFC,1);
   _DAT_e000e184 = 1;
   _DAT_e000e284 = 1;
-  return;
 }
 
 
@@ -93,20 +96,24 @@ bool RFSENSE_Sensed(void)
   iVar2 = _DAT_43c81904;
   _DAT_43c81904 = 1;
   uVar3 = (RFSENSE->IF);
-  if (uVar3 != 0) {
+  if (uVar3 != 0) 
+  {
     uVar3 = 1;
   }
-  if (uVar3 != 0) {
+  if (uVar3 != 0) 
+  {
     INT_Disable();
     pcVar1 = RFSENSE_Cb;
     RFSENSE_Cb = FUN_00000000;
     INT_Enable();
     RFSENSE_Disable();
-    if (pcVar1 != FUN_00000000) {
+    if (pcVar1 != FUN_00000000) 
+	{
       (*pcVar1)();
     }
   }
-  if (iVar2 == 0) {
+  if (iVar2 == 0) 
+  {
     _DAT_43c81904 = iVar2;
   }
   return SUB41(uVar3,0);
@@ -125,20 +132,24 @@ bool RFSENSE_IRQHandler(void)
   iVar2 = _DAT_43c81904;
   _DAT_43c81904 = 1;
   uVar3 = (RFSENSE->IF);
-  if (uVar3 != 0) {
+  if (uVar3 != 0) 
+  {
     uVar3 = 1;
   }
-  if (uVar3 != 0) {
+  if (uVar3 != 0) 
+  {
     INT_Disable();
     pcVar1 = RFSENSE_Cb;
     RFSENSE_Cb = FUN_00000000;
     INT_Enable();
     RFSENSE_Disable();
-    if (pcVar1 != FUN_00000000) {
+    if (pcVar1 != FUN_00000000) 
+	{
       (*pcVar1)();
     }
   }
-  if (iVar2 == 0) {
+  if (iVar2 == 0) 
+  {
     _DAT_43c81904 = iVar2;
   }
   return SUB41(uVar3,0);
@@ -151,7 +162,6 @@ void RFSENSE_DeInit(void)
 {
   RFSENSE_ReInit();
   _DAT_43c81904 = 0;
-  return;
 }
 
 
@@ -170,7 +180,8 @@ uint32_t RFSENSE_Init(undefined4 *param_1,uint32_t sensetime)
   _DAT_43c81904 = 1;
   puVar7 = param_1;
   RFSENSE_ReInit();
-  if (param_1 == NULL) {
+  if (param_1 == NULL) 
+  {
 LAB_000092b6:
     RFSENSE_DeInit();
     return 0;
@@ -179,24 +190,29 @@ LAB_000092b6:
   uVar5 = (uint)bVar1;
   if ((((bVar1 & 3) == 0) || (param_1[1] == 0)) ||
      (uVar2 = RFSENSE_CalcPeriod(uVar5,param_1[1],&stack0xffffffe6), uVar2 == 0)) goto LAB_000092b6;
-  if (((bVar1 & 0xc) == 0) && (uVar3 = param_1[1], 100000 < uVar3)) {
-    if (uVar3 < uVar2) {
+  if (((bVar1 & 0xc) == 0) && (uVar3 = param_1[1], 100000 < uVar3)) 
+  {
+    if (uVar3 < uVar2) 
+	{
       uVar6 = uVar2 - uVar3;
     }
-    else {
+    else 
+	{
       uVar6 = uVar3 - uVar2;
     }
     if ((uVar6 != 0) &&
        (uVar3 = RFSENSE_CalcPeriod(0xc,uVar3,&stack0xffffffe7,100000,puVar7,sensetime), uVar3 != 0))
     {
       uVar4 = param_1[1];
-      if (uVar4 < uVar3) {
+      if (uVar4 < uVar3) 
+	  {
         uVar4 = uVar3 - uVar4;
       }
       else {
         uVar4 = uVar4 - uVar3;
       }
-      if (uVar4 < uVar6) {
+      if (uVar4 < uVar6) 
+	  {
         sensetime = (sensetime >> 0x18) << 0x10;
         uVar5 = uVar5 | 0xc;
         uVar2 = uVar3;
@@ -207,24 +223,30 @@ LAB_000092b6:
   if (*(char *)((int)param_1 + 9) == '\0') goto LAB_00009350;
   write_volatile_4(RFSENSE->EM4WUEN,1);
   uVar3 = uVar5 & 0xc;
-  if (uVar3 == 8) {
+  if (uVar3 == 8) 
+  {
     uVar3 = (EMU->EM4CTRL);
-    if (-1 < (int)(uVar3 << 0x1d)) {
+    if (-1 < (int)(uVar3 << 0x1d)) 
+	{
       uVar3 = 4;
       goto LAB_00009374;
     }
   }
-  else {
-    if (uVar3 == 0xc) {
+  else 
+  {
+    if (uVar3 == 0xc) 
+	{
       uVar3 = (EMU->EM4CTRL);
-      if (-1 < (int)(uVar3 << 0x1c)) {
+      if (-1 < (int)(uVar3 << 0x1c)) 
+	  {
         uVar3 = 8;
         goto LAB_00009374;
       }
     }
-    else {
-      if ((uVar3 == 4) &&
-         (uVar3 = (EMU->EM4CTRL), -1 < (int)(uVar3 << 0x1e))) {
+    else 
+	{
+      if ((uVar3 == 4) && (uVar3 = (EMU->EM4CTRL), -1 < (int)(uVar3 << 0x1e))) 
+	  {
         uVar3 = 2;
 LAB_00009374:
         INT_Disable();
@@ -257,7 +279,8 @@ int RFSENSE_CalRfOscFreq(int param_1)
   int iVar2;
   undefined4 *puVar3;
   
-  if (param_1 - 8U < 4) {
+  if (param_1 - 8U < 4) 
+  {
     _DAT_43c81904 = 1;
     RFSENSE_ReInit();
     write_volatile_4(RFSENSE->PERIODSEL,0xf);
@@ -271,7 +294,8 @@ int RFSENSE_CalRfOscFreq(int param_1)
     write_volatile_4(CMU->CALCNT,iVar2 - 1);
     _DAT_43c81594 = 0;
     write_volatile_4(CMU->CMD,1);
-    do {
+    do 
+	{
     } while (_DAT_43c81414 == 0);
     uVar1 = (CMU->CALCNT);
     write_volatile_4(CMU->CMD,2);
@@ -282,7 +306,8 @@ int RFSENSE_CalRfOscFreq(int param_1)
     iVar2 = uVar1 + 1;
     RFSENSE_DeInit();
   }
-  else {
+  else 
+  {
     iVar2 = 0;
   }
   return iVar2;

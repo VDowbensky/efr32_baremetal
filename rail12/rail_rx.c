@@ -5,15 +5,8 @@
 uint8_t RAIL_RxConfig(uint8_t cbToEnable,bool appendedInfoEnable)
 
 {
-  RAIL_RadioState_t RVar1;
-  uint8_t uVar2;
-  
-  RVar1 = RAIL_RfStateGet();
-  if (RVar1 != RAIL_RF_STATE_RX) {
-    uVar2 = RAIL_RfHalRxIntEnable(cbToEnable);
-    return uVar2;
-  }
-  return '\x02';
+  if (RAIL_RfStateGet() != RAIL_RF_STATE_RX) return RAIL_RfHalRxIntEnable(cbToEnable);
+  return 2;
 }
 
 
@@ -25,16 +18,10 @@ uint8_t RAIL_RxStart(uint8_t channel)
   RAIL_Status_t RVar2;
   char *pcVar3;
   
-  bVar1 = RFHAL_HeadedToIdle();
-  if (bVar1 == false) {
-    return '\x02';
-  }
+  if (RFHAL_HeadedToIdle() == false) return 2;
   pcVar3 = (char *)RAILInt_SetChannelConfig(channel);
-  if (pcVar3 != (char *)0x0) {
-    RVar2 = RAIL_RfHalRxStart(channel - *pcVar3);
-    return (uint8_t)RVar2;
-  }
-  return '\x01';
+  if (pcVar3 != NULL) return (uint8_t) RAIL_RfHalRxStart(channel - *pcVar3);
+  return 1;
 }
 
 

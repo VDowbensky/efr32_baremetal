@@ -7,10 +7,12 @@ ushort validateSetTiming(ushort *param_1)
 {
   ushort uVar1;
   
-  if (*param_1 < 0x3c) {
+  if (*param_1 < 0x3c) 
+  {
     uVar1 = 0x3c;
   }
-  else {
+  else 
+  {
     uVar1 = 13000;
     if (*param_1 < 0x32c9) goto LAB_00010014;
   }
@@ -40,14 +42,17 @@ uint8_t RAIL_ChannelConfig(RAIL_ChannelConfig_t *config)
   RAILInt_TrackChannelConfig((uint32_t)config);
   SYNTH_Config(config->configs->baseFrequency,config->configs->channelSpacing);
   bVar1 = SYNTH_Is2p4GHz();
-  if (bVar1 == false) {
+  if (bVar1 == false) 
+  {
     target = 3500000;
   }
-  else {
+  else 
+  {
     target = 7000000;
   }
   SYNTH_DCDCRetimeClkSet(target);
-  if (forceIrCal != '\0') {
+  if (forceIrCal != '\0') 
+  {
     forceIrCal = '\0';
     RAIL_RfHalCalibrationPend(0x10000);
   }
@@ -61,10 +66,12 @@ void RAIL_DirectModeConfig(bool enable)
 {
   uint8_t *config;
   
-  if (enable == false) {
+  if (enable == false) 
+  {
     config = &directModeDisableConfig;
   }
-  else {
+  else 
+  {
     config = &directModeEnableConfig;
   }
   GENERIC_PHY_DirectModeConfig(config);
@@ -80,9 +87,11 @@ uint8_t RAIL_TxToneStart(uint8_t channel)
   uint32_t uVar2;
   
   pcVar1 = (char *)RAILInt_SetChannelConfig();
-  if (pcVar1 != (char *)0x0) {
+  if (pcVar1 != (char *)0x0) 
+  {
     uVar2 = RAIL_DebugModeGet();
-    if (uVar2 != 1) {
+    if (uVar2 != 1) 
+	{
       GENERIC_PHY_ChannelSet(channel - *pcVar1);
     }
     RFTEST_SaveRadioConfiguration();
@@ -109,11 +118,13 @@ uint8_t RAIL_TxStreamStart(uint8_t channel,int mode)
   char *pcVar1;
   uint32_t uVar2;
   
-  if ((mode == 1) && (pcVar1 = (char *)RAILInt_SetChannelConfig(), pcVar1 != (char *)0x0)) {
+  if ((mode == 1) && (pcVar1 = (char *)RAILInt_SetChannelConfig(), pcVar1 != (char *)0x0)) 
+  {
     RFTEST_SaveRadioConfiguration();
     RFTEST_StartStreamTx();
     uVar2 = RAIL_DebugModeGet();
-    if (uVar2 != 1) {
+    if (uVar2 != 1) 
+	{
       GENERIC_PHY_ChannelSet(channel - *pcVar1);
     }
     return '\0';
@@ -166,7 +177,8 @@ void RAIL_PacketLengthConfigFrameType(RAIL_FrameType_t *frameType)
   uint uVar2;
   
   GENERIC_PHY_ResetPacketConfig();
-  if (frameType == (RAIL_FrameType_t *)0x0) {
+  if (frameType == (RAIL_FrameType_t *)0x0) 
+  {
     memset(&SEQ->REG054,0,0x18);
     return;
   }
@@ -176,8 +188,10 @@ void RAIL_PacketLengthConfigFrameType(RAIL_FrameType_t *frameType)
   write_volatile_4(SEQ->REG064,(uint)frameType->frameLen);
   write_volatile_4(SEQ->REG068,(uint)frameType->isValid);
   uVar2 = (uint)frameType->mask;
-  if (uVar2 != 0) {
-    while (-1 < (int)(uVar2 << 0x1f)) {
+  if (uVar2 != 0) 
+  {
+    while (-1 < (int)(uVar2 << 0x1f)) 
+	{
       uVar1 = (SEQ->REG060);
       uVar2 = uVar2 >> 1;
       write_volatile_4(SEQ->REG060,uVar1 + 1);
@@ -210,8 +224,10 @@ int16_t RAIL_RxGetRSSI(void)
     uVar5 = (int)(uVar3 << 0x10) >> 0x16 & 0xffff;
     iVar4 = (int16_t)uVar5;
     INT_Enable();
-    if (uVar5 != 0xfe00) {
-      if (bVar6 && bVar1) {
+    if (uVar5 != 0xfe00) 
+	{
+      if (bVar6 && bVar1) 
+	  {
         return iVar4;
       }
       return -0x200;
@@ -272,11 +288,13 @@ RAIL_Status_t RAIL_SetTime(uint32_t time)
   
   iVar2 = PROTIMER_SetTime();
   bVar3 = iVar2 == 0;
-  if (bVar3) {
+  if (bVar3) 
+  {
     iVar2 = 2;
   }
   RVar1 = (RAIL_Status_t)iVar2;
-  if (!bVar3) {
+  if (!bVar3) 
+  {
     RVar1 = RAIL_STATUS_NO_ERROR;
   }
   return RVar1;
@@ -312,10 +330,12 @@ bool RAIL_AddressFilterConfig(RAIL_AddrConfig_t *addrConfig)
   undefined4 local_14;
   
   bVar1 = addrConfig->numFields;
-  if (bVar1 < 3) {
+  if (bVar1 < 3) 
+  {
     local_14 = in_r3;
     memset((RAIL_AddrConfig_t *)local_1c,0,0xc);
-    for (iVar3 = 0; iVar3 < (int)(uint)bVar1; iVar3 = iVar3 + 1) {
+    for (iVar3 = 0; iVar3 < (int)(uint)bVar1; iVar3 = iVar3 + 1) 
+	{
       (&((RAIL_AddrConfig_t *)local_1c)->numFields)[iVar3] = addrConfig->offsets[iVar3];
       local_1c[iVar3 + 2] = addrConfig->sizes[iVar3];
     }
@@ -323,7 +343,8 @@ bool RAIL_AddressFilterConfig(RAIL_AddrConfig_t *addrConfig)
     local_14 = (uint8_t *)CONCAT31(local_14._1_3_,0xff);
     uVar2 = GENERIC_PHY_ConfigureAddressFiltering((RAIL_AddrConfig_t *)local_1c);
   }
-  else {
+  else 
+  {
     uVar2 = 0;
   }
   return (bool)uVar2;
@@ -391,20 +412,24 @@ bool RAIL_AddressFilterSetAddress(uint8_t field,uint8_t index,uint8_t *value,boo
   uint uVar5;
   
   uVar5 = (uint)field;
-  if ((uVar5 < 2) && (index < 4)) {
+  if ((uVar5 < 2) && (index < 4)) 
+  {
     GENERIC_PHY_DisableAddress(field,index);
     uVar3 = (uint)index << 3;
     bVar1 = *(byte *)((int)&SEQ->REG04C + uVar5 + 2);
     puVar2 = &SEQ->REG00C + uVar5 * 8;
-    for (iVar4 = 0; iVar4 < (int)(uint)bVar1; iVar4 = iVar4 + 1) {
+    for (iVar4 = 0; iVar4 < (int)(uint)bVar1; iVar4 = iVar4 + 1) 
+	{
       uVar5 = *puVar2 & ~(0xff << (uVar3 & 0xff));
-      if (value != (uint8_t *)0x0) {
+      if (value != (uint8_t *)0x0) 
+	  {
         uVar5 = uVar5 | (uint)value[iVar4] << (uVar3 & 0xff);
       }
       *puVar2 = uVar5;
       puVar2 = puVar2 + 1;
     }
-    if (enable != false) {
+    if (enable != false) 
+	{
       GENERIC_PHY_EnableAddress(field,index);
     }
     return true;
@@ -420,7 +445,8 @@ bool RAIL_AddressFilterEnableAddress(uint8_t field,uint8_t index)
   uint uVar1;
   
   uVar1 = (uint)field;
-  if ((uVar1 < 2) && (index < 4)) {
+  if ((uVar1 < 2) && (index < 4)) 
+  {
     *(byte *)((int)&SEQ->REG050 + uVar1) =
          (byte)(1 << (uint)index) | *(byte *)((int)&SEQ->REG050 + uVar1);
     GENERIC_PHY_SetAddressFilteringMatchTable();
@@ -437,7 +463,8 @@ bool RAIL_AddressFilterDisableAddress(uint8_t field,uint8_t index)
   uint uVar1;
   
   uVar1 = (uint)field;
-  if ((uVar1 < 2) && (index < 4)) {
+  if ((uVar1 < 2) && (index < 4)) 
+  {
     *(byte *)((int)&SEQ->REG050 + uVar1) =
          *(byte *)((int)&SEQ->REG050 + uVar1) & ~(byte)(1 << (uint)index);
     GENERIC_PHY_SetAddressFilteringMatchTable();

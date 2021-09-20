@@ -7,44 +7,56 @@ undefined4 IRCAL_Configure(undefined4 param_1)
 {
   char cVar1;
   
-  switch(param_1) {
+  switch(param_1) 
+  {
   case 0:
     cVar1 = rcIrCalData[8];
-    if (rcIrCalData[8] == '\x01') {
-      if (rcIrCalData[5] == '\0') {
+    if (rcIrCalData[8] == '\x01') 
+	{
+      if (rcIrCalData[5] == '\0') 
+	  {
         return 0;
       }
     }
-    else {
-      if (rcIrCalData[8] == '\x02') {
-        if (rcIrCalData[6] == '\0') {
+    else 
+	{
+      if (rcIrCalData[8] == '\x02') 
+	  {
+        if (rcIrCalData[6] == '\0') 
+		{
           return 0;
         }
       }
-      else {
-        if (rcIrCalData[8] != '\x03') {
+      else 
+	  {
+        if (rcIrCalData[8] != '\x03') 
+		{
           return 0;
         }
-        if (rcIrCalData[7] == '\0') {
+        if (rcIrCalData[7] == '\0') 
+		{
           return 0;
         }
       }
     }
     break;
   case 1:
-    if (rcIrCalData[5] == '\0') {
+    if (rcIrCalData[5] == '\0') 
+	{
       return 0;
     }
     cVar1 = '\x01';
     break;
   case 2:
-    if (rcIrCalData[6] == '\0') {
+    if (rcIrCalData[6] == '\0') 
+	{
       return 0;
     }
     cVar1 = '\x02';
     break;
   case 3:
-    if (rcIrCalData[7] == '\0') {
+    if (rcIrCalData[7] == '\0') 
+	{
       return 0;
     }
     cVar1 = '\x03';
@@ -62,7 +74,6 @@ void IRCAL_SetGlobalCalType(undefined param_1)
 
 {
   globalCalType = param_1;
-  return;
 }
 
 
@@ -81,11 +92,11 @@ void IRCAL_Set(uint param_1)
 {
   uint uVar1;
   
-  if (param_1 != 0xffffffff) {
+  if (param_1 != 0xffffffff) 
+  {
     uVar1 = read_volatile_4(Peripherals::RAC.IFPGACAL);
     write_volatile_4(Peripherals::RAC.IFPGACAL,uVar1 & 0xffff0000 | param_1 & 0xffff);
   }
-  return;
 }
 
 
@@ -93,21 +104,26 @@ void IRCAL_Set(uint param_1)
 uint8_t IRCAL_Init(uint8_t *ircalsettings)
 
 {
-  if ((ircalsettings != (uint8_t *)0x0) && (0xf < *ircalsettings)) {
+  if ((ircalsettings != (uint8_t *)0x0) && (0xf < *ircalsettings)) 
+  {
     rcIrCalData[5] = ircalsettings[6];
-    if (rcIrCalData[5] != '\0') {
+    if (rcIrCalData[5] != '\0') 
+	{
       rcIrCalData[5] = '\x01';
     }
     rcIrCalData[6] = ircalsettings[7];
-    if (rcIrCalData[6] != '\0') {
+    if (rcIrCalData[6] != '\0') 
+	{
       rcIrCalData[6] = '\x01';
     }
     rcIrCalData[7] = ircalsettings[8];
-    if (rcIrCalData[7] != '\0') {
+    if (rcIrCalData[7] != '\0') 
+	{
       rcIrCalData[7] = '\x01';
     }
     rcIrCalData[9] = ircalsettings[10];
-    if (rcIrCalData[9] != '\0') {
+    if (rcIrCalData[9] != '\0') 
+	{
       rcIrCalData[9] = '\x01';
     }
     rcIrCalData[0] = ircalsettings[1];
@@ -158,7 +174,6 @@ void IRCAL_SaveRegStates(void)
   write_volatile_4(Peripherals::FRC.CTRL,uVar1 | 1);
   uVar1 = read_volatile_4(Peripherals::RAC.CTRL);
   write_volatile_4(Peripherals::RAC.CTRL,uVar1 | 0x40);
-  return;
 }
 
 
@@ -173,11 +188,10 @@ undefined4 IRCAL_SetRxFrequency(int param_1)
   iVar2 = SYNTH_IfFreqGet();
   uVar1 = read_volatile_4(Peripherals::SYNTH.IFFREQ);
   iVar3 = iVar2 * 2;
-  if ((uVar1 & 0x100000) != 0) {
-    iVar3 = iVar2 * -2;
-  }
+  if ((uVar1 & 0x100000) != 0) iVar3 = iVar2 * -2;
   iVar2 = SYNTH_VcoRangeIsValid(param_1 + iVar3);
-  if (iVar2 == 0) {
+  if (iVar2 == 0) 
+  {
     IRCAL_Set();
     return 0xffffffff;
   }
@@ -194,11 +208,13 @@ void IRCAL_StartRx(void)
   
   uVar1 = read_volatile_4(Peripherals::MODEM.CTRL0);
   write_volatile_4(Peripherals::MODEM.CTRL0,uVar1 | 0x200000);
-  do {
+  do 
+  {
     uVar1 = read_volatile_4(Peripherals::RAC.STATUS);
   } while ((uVar1 & 0xf000000) != 0);
   RADIO_RxBufferReset();
-  do {
+  do 
+  {
     uVar1 = read_volatile_4(Peripherals::RAC.STATUS);
   } while ((uVar1 << 4) >> 0x1c != 2);
   _DAT_4308000c = 1;
@@ -215,7 +231,8 @@ void IRCAL_StopRx(void)
   uVar1 = read_volatile_4(Peripherals::RAC.RXENSRCEN);
   write_volatile_4(Peripherals::RAC.RXENSRCEN,uVar1 & 0xffffff00);
   write_volatile_4(Peripherals::FRC.CMD,1);
-  do {
+  do 
+  {
     uVar1 = read_volatile_4(Peripherals::RAC.STATUS);
   } while ((uVar1 & 0xf000000) != 0);
   return;
@@ -316,17 +333,21 @@ undefined4 IRCAL_Setup(int param_1,undefined4 param_2,undefined4 param_3,undefin
   
   IRCAL_SaveRegStates();
   uVar1 = rcIrCalData[3];
-  if (((param_1 == 2) || (uVar1 = rcIrCalData[4], param_1 == 3)) &&
-     (iVar2 = AUXPLL_Start(param_1,uVar1,rcIrCalData[0],rcIrCalData[1],param_4), iVar2 != -1)) {
+  if (((param_1 == 2) || (uVar1 = rcIrCalData[4], param_1 == 3)) && (iVar2 = AUXPLL_Start(param_1,uVar1,rcIrCalData[0],rcIrCalData[1],param_4), iVar2 != -1)) 
+  {
     IRCAL_StopRx();
     iVar2 = IRCAL_SetRxFrequency(iVar2);
-    if (iVar2 != -1) {
+    if (iVar2 != -1) 
+	{
       IRCAL_StartRx();
-      if (param_1 == 2) {
+      if (param_1 == 2) 
+	  {
         IRCAL_SetSubGhzPllLoopback();
       }
-      else {
-        if (param_1 != 3) {
+      else 
+	  {
+        if (param_1 != 3) 
+		{
           return 0xffffffff;
         }
         IRCAL_SetSubGhzPaLoopback();
@@ -342,7 +363,8 @@ undefined4 IRCAL_Setup(int param_1,undefined4 param_2,undefined4 param_3,undefin
 uint IRCAL_TranslateToRssiIndex(uint param_1)
 
 {
-  if (param_1 < 0x40) {
+  if (param_1 < 0x40) 
+  {
     param_1 = 0x40 - param_1 & 0xff;
   }
   return param_1;
@@ -362,10 +384,12 @@ int IRCAL_ReadRssi(uint param_1,uint param_2,uint param_3,undefined4 param_4,und
   uint uVar5;
   uint uVar6;
   
-  if ((param_1 & 0x80) != 0) {
+  if ((param_1 & 0x80) != 0) 
+  {
     param_1 = 0x7f;
   }
-  if ((param_2 & 0x80) != 0) {
+  if ((param_2 & 0x80) != 0) 
+  {
     param_2 = 0x7f;
   }
   if (param_3 < 0x10) {
@@ -375,37 +399,46 @@ int IRCAL_ReadRssi(uint param_1,uint param_2,uint param_3,undefined4 param_4,und
     uVar5 = (uint)rcIrCalData[9];
     uVar4 = uVar5;
     uVar6 = uVar5;
-    if (uVar5 == 0) {
-      for (; _DAT_430e0714 = 1, uVar6 >> (param_3 & 0xff) == 0; uVar6 = uVar6 + 1) {
+    if (uVar5 == 0) 
+	{
+      for (; _DAT_430e0714 = 1, uVar6 >> (param_3 & 0xff) == 0; uVar6 = uVar6 + 1) 
+	  {
         write_volatile_4(Peripherals::AGC.CMD,1);
-        do {
+        do 
+		{
           uVar1 = read_volatile_4(Peripherals::AGC.IF);
         } while (-1 < (int)(uVar1 << 0x1a));
-        if (rcIrCalData[11] <= uVar6) {
+        if (rcIrCalData[11] <= uVar6) 
+		{
           iVar3 = RADIO_GetRSSI();
           uVar4 = uVar4 + 1;
           uVar5 = uVar5 + iVar3;
         }
       }
     }
-    else {
+    else 
+	{
       uVar4 = 0;
       uVar5 = 0;
-      for (uVar6 = 0; uVar6 >> (param_3 & 0xff) == 0; uVar6 = uVar6 + 1) {
+      for (uVar6 = 0; uVar6 >> (param_3 & 0xff) == 0; uVar6 = uVar6 + 1) 
+	  {
         PHY_UTILS_DelayUs(param_5);
-        if (rcIrCalData[11] <= uVar6) {
+        if (rcIrCalData[11] <= uVar6) 
+		{
           iVar3 = RADIO_GetRSSI();
           uVar4 = uVar4 + 1;
           uVar5 = uVar5 + iVar3;
         }
       }
     }
-    if (uVar4 == 0) {
+    if (uVar4 == 0) 
+	{
       uVar4 = 1;
     }
     sVar2 = (short)(uVar5 / uVar4);
   }
-  else {
+  else 
+  {
     sVar2 = -1;
   }
   return (int)sVar2;
@@ -413,8 +446,7 @@ int IRCAL_ReadRssi(uint param_1,uint param_2,uint param_3,undefined4 param_4,und
 
 
 
-uint IRCAL_SearchLinear2Stage
-               (uint param_1,int param_2,undefined4 param_3,undefined4 param_4,undefined2 param_5)
+uint IRCAL_SearchLinear2Stage(uint param_1,int param_2,undefined4 param_3,undefined4 param_4,undefined2 param_5)
 
 {
   short sVar1;
@@ -429,40 +461,50 @@ uint IRCAL_SearchLinear2Stage
   uVar8 = 0;
   sVar5 = 0x7fff;
   uVar6 = 5;
-  do {
+  do 
+  {
     uVar3 = 0x40 - uVar6 & 0xff;
-    do {
+    do 
+	{
       uVar7 = param_1;
-      if (param_2 != 0) {
+      if (param_2 != 0) 
+	  {
         uVar7 = uVar3;
         uVar3 = param_1;
       }
       sVar1 = IRCAL_ReadRssi(uVar7,uVar3,param_3,param_4,param_5);
       uVar3 = uVar6 + 10 & 0xff;
-      if (sVar1 < sVar5) {
+      if (sVar1 < sVar5) 
+	  {
         uVar8 = uVar6;
         sVar5 = sVar1;
       }
-      if (uVar3 == 0x87) {
+      if (uVar3 == 0x87) 
+	  {
         uVar3 = uVar8 - 5;
         uVar7 = 0x45 - uVar8;
         uVar6 = 0;
         sVar5 = 0x7fff;
-        while( true ) {
+        while( true ) 
+		{
           uVar3 = uVar3 & 0xff;
           if ((uVar8 + 5 < uVar3) || ((int)(uVar3 << 0x18) < 0)) break;
-          if (uVar3 != 0) {
+          if (uVar3 != 0) 
+		  {
             uVar4 = uVar3;
-            if (uVar3 < 0x40) {
+            if (uVar3 < 0x40) 
+			{
               uVar4 = uVar7 & 0xff;
             }
             uVar2 = param_1;
-            if (param_2 != 0) {
+            if (param_2 != 0) 
+			{
               uVar2 = uVar4;
               uVar4 = param_1;
             }
             sVar1 = IRCAL_ReadRssi(uVar2,uVar4,param_3,param_4,param_5);
-            if (sVar1 < sVar5) {
+            if (sVar1 < sVar5) 
+			{
               uVar6 = uVar3;
               sVar5 = sVar1;
             }
@@ -470,7 +512,8 @@ uint IRCAL_SearchLinear2Stage
           uVar3 = uVar3 + 1;
           uVar7 = (uVar7 & 0xff) - 1;
         }
-        if (uVar6 < 0x40) {
+        if (uVar6 < 0x40) 
+		{
           uVar6 = 0x40 - uVar6 & 0xff;
         }
         return uVar6;
@@ -489,13 +532,15 @@ uint IRCAL_Search(int param_1,undefined4 param_2,undefined4 param_3,undefined4 p
   uint uVar2;
   int iVar3;
   
-  if (param_1 == 2) {
+  if (param_1 == 2) 
+  {
     uVar1 = IRCAL_SearchLinear2Stage(0,1,param_2,param_3,param_4,param_2,param_3);
     uVar2 = IRCAL_SearchLinear2Stage(uVar1,0,param_2,param_3,param_4);
     iVar3 = IRCAL_SearchLinear2Stage(uVar2,1,param_2,param_3,param_4);
     uVar2 = uVar2 | iVar3 << 8;
   }
-  else {
+  else 
+  {
     uVar2 = 0xffffffff;
   }
   return uVar2;
@@ -536,7 +581,6 @@ void IRCAL_Teardown(void)
   write_volatile_4(Peripherals::FRC.CTRL,uVar1 & 0xfffffffe);
   uVar1 = read_volatile_4(Peripherals::RAC.CTRL);
   write_volatile_4(Peripherals::RAC.CTRL,uVar1 & 0xffffffbf);
-  return;
 }
 
 
@@ -560,24 +604,30 @@ uint32_t IRCAL_GetDiValue(void)
   uint *puVar3;
   
   uVar1 = SYNTH_RfFreqGet();
-  if (uVar1 == 0) {
+  if (uVar1 == 0) 
+  {
     uVar2 = 0xffffffff;
   }
   else {
-    if (uVar1 < 1000000000) {
+    if (uVar1 < 1000000000) 
+	{
       puVar3 = &DAT_0fe081c8;
     }
-    else {
+    else 
+	{
       uVar2 = read_volatile_4(Peripherals::MODEM.CTRL0);
-      if ((uVar2 << 0x17) >> 0x1d == 4) {
+      if ((uVar2 << 0x17) >> 0x1d == 4) 
+	  {
         puVar3 = (uint *)&DAT_0fe081c4;
       }
-      else {
+      else 
+	  {
         puVar3 = (uint *)&DAT_0fe081c0;
       }
     }
     uVar2 = *puVar3;
-    if (uVar2 != 0xffffffff) {
+    if (uVar2 != 0xffffffff) 
+	{
       return uVar2 & 0xffff;
     }
   }
@@ -586,9 +636,7 @@ uint32_t IRCAL_GetDiValue(void)
 
 
 
-uint IRCAL_PerformSubfunction
-               (uint param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,
-               undefined2 param_5)
+uint IRCAL_PerformSubfunction(uint param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined2 param_5)
 
 {
   int iVar1;
@@ -601,17 +649,22 @@ uint IRCAL_PerformSubfunction
   
   uVar2 = read_volatile_4(Peripherals::PROTIMER.WRAPCNT);
   lVar5 = PROTIMER_PrecntOverflowToUs(uVar2);
-  if (param_1 == 1) {
+  if (param_1 == 1) 
+  {
     uVar2 = IRCAL_GetDiValue();
     RADIO_RxBufferReset();
   }
-  else {
-    if ((param_1 == 0) || (3 < param_1)) {
+  else 
+  {
+    if ((param_1 == 0) || (3 < param_1)) 
+	{
       uVar2 = 0xffffffff;
     }
-    else {
+    else 
+	{
       uVar2 = IRCAL_Setup(param_1);
-      if (uVar2 != 0xffffffff) {
+      if (uVar2 != 0xffffffff) 
+	  {
         uVar2 = IRCAL_Search(param_2,param_3,param_4,param_5);
       }
       IRCAL_Teardown();
@@ -622,16 +675,20 @@ uint IRCAL_PerformSubfunction
   uVar7 = __aeabi_uldivmod((int)(lVar6 - lVar5),(int)((ulonglong)(lVar6 - lVar5) >> 0x20),1000,0);
   iVar1 = (int)((ulonglong)uVar7 >> 0x20);
   bVar4 = iVar1 == 0;
-  if (iVar1 == 0) {
+  if (iVar1 == 0) 
+  {
     bVar4 = (uint)uVar7 < 0xffff;
   }
-  if (bVar4) {
+  if (bVar4) 
+  {
     uVar3 = (uint)uVar7 & 0xfffe;
   }
-  else {
+  else 
+  {
     uVar3 = 0;
   }
-  if (uVar2 != 0xffffffff) {
+  if (uVar2 != 0xffffffff) 
+  {
     IRCAL_Set(uVar2);
     uVar2 = uVar2 | uVar3 << 0x10;
   }
@@ -647,12 +704,13 @@ undefined4 IRCAL_Perform(undefined4 param_1,undefined4 param_2,undefined4 param_
   undefined4 uVar2;
   
   iVar1 = IRCAL_GetGlobalCalType();
-  if (iVar1 == 0xff) {
+  if (iVar1 == 0xff) 
+  {
     uVar2 = 0xffffffff;
   }
-  else {
-    uVar2 = IRCAL_PerformSubfunction
-                      (iVar1,2,rcIrCalData[10],rcIrCalData._12_2_,rcIrCalData._14_2_,param_2,param_3
+  else 
+  {
+    uVar2 = IRCAL_PerformSubfunction(iVar1,2,rcIrCalData[10],rcIrCalData._12_2_,rcIrCalData._14_2_,param_2,param_3
                       );
   }
   return uVar2;

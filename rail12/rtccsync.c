@@ -12,12 +12,14 @@ uint RTCCSYNC_RTCCClockFreqGet(void)
   uVar1 = 0;
   uVar2 = (Peripherals::RTCC.CTRL);
   bVar3 = (uVar2 & 0x1000) == 0;
-  if (bVar3) {
+  if (bVar3) 
+  {
     uVar2 = (Peripherals::RTCC.CTRL);
     uVar1 = (uVar2 << 0x14) >> 0x1c;
   }
   uVar2 = 1;
-  if (bVar3) {
+  if (bVar3) 
+  {
     uVar2 = 1 << uVar1;
   }
   uVar1 = CMU_ClockFreqGet(0x100980);
@@ -30,7 +32,6 @@ void RTCCSYNC_Init(void)
 
 {
   write_volatile_4(Peripherals::PRS.CH7_CTRL,0x2901);
-  return;
 }
 
 
@@ -65,42 +66,52 @@ undefined4 RTCCSYNC_PreSleep(int param_1,undefined4 param_2,undefined4 param_3)
   iVar10 = 0;
   do {
     uVar11 = (&PROTIMER->CC0_CTRL)[iVar10 * 4] & 3;
-    if (uVar11 == 1) {
+    if (uVar11 == 1) 
+	{
       uVar5 = PROTIMER_ElapsedTime
                         (uVar9,(&PROTIMER->CC0_WRAP)[iVar10 * 4],uVar8,0x40085080,iVar7,
                          param_2,param_3);
       uVar3 = (PROTIMER->IF);
       uVar8 = uVar11;
-      if ((1 << (iVar10 + 8U & 0xff) & uVar3) == 0) {
-        if (uVar5 <= uVar12) {
+      if ((1 << (iVar10 + 8U & 0xff) & uVar3) == 0) 
+	  {
+        if (uVar5 <= uVar12) 
+		{
           uVar12 = uVar5;
         }
       }
-      else {
+      else 
+	  {
         uVar12 = 0;
       }
     }
     iVar10 = iVar10 + 1;
   } while (iVar10 != 5);
-  if ((uVar15 & 0x30000) == 0x20000) {
+  if ((uVar15 & 0x30000) == 0x20000) 
+  {
     uVar9 = (PROTIMER->BASECNTTOP);
     uVar9 = uVar9 + 1;
-    if ((uVar15 & 0x3000) == 0x1000) {
+    if ((uVar15 & 0x3000) == 0x1000) 
+	{
       uVar15 = (PROTIMER->PRECNTTOP);
       uVar9 = (uVar15 >> 8) * uVar9 + uVar9;
     }
   }
-  else {
+  else 
+  {
     uVar15 = (PROTIMER->PRECNTTOP);
     uVar9 = (uVar15 >> 8) + 1;
   }
   uVar15 = (Peripherals::RTCC.CNT);
   uVar11 = (RAC->STATUS);
-  if ((uVar11 & 0xf000000) == 0) {
+  if ((uVar11 & 0xf000000) == 0) 
+  {
     uVar11 = (PROTIMER->STATUS);
     uVar11 = uVar11 & 6;
-    if (uVar11 == 0) {
-      if (uVar8 == 0) {
+    if (uVar11 == 0) 
+	{
+      if (uVar8 == 0) 
+	  {
         return 1;
       }
       uVar1 = (ulonglong)uVar9 * (ulonglong)uVar12;
@@ -112,15 +123,16 @@ undefined4 RTCCSYNC_PreSleep(int param_1,undefined4 param_2,undefined4 param_3)
       uVar14 = __aeabi_uldivmod((int)lVar2,(int)((ulonglong)lVar2 >> 0x20),uVar6,0,iVar7,uVar15);
       uVar9 = (uint)((ulonglong)uVar14 >> 0x20);
       bVar13 = uVar12 <= uVar9;
-      if (uVar9 == uVar12) {
+      if (uVar9 == uVar12) 
+	  {
         bVar13 = (uint)uVar1 <= (uint)uVar14;
       }
-      if (!bVar13) {
+      if (!bVar13) 
+	  {
         uVar9 = RTCCSYNC_RTCCClockFreqGet();
         lVar2 = (ulonglong)uVar9 * (uVar1 & 0xffffffff);
         uVar6 = CMU_ClockFreqGet(0x11);
-        iVar7 = __aeabi_uldivmod((int)lVar2,uVar9 * uVar12 + (int)((ulonglong)lVar2 >> 0x20),uVar6,0
-                                );
+        iVar7 = __aeabi_uldivmod((int)lVar2,uVar9 * uVar12 + (int)((ulonglong)lVar2 >> 0x20),uVar6,0);
         write_volatile_4(Peripherals::RTCC.CC0_CTRL,0);
         ccCtrlBackup = (PROTIMER->CC0_CTRL);
         write_volatile_4(PROTIMER->CC0_CTRL,0x70003);
@@ -132,11 +144,14 @@ undefined4 RTCCSYNC_PreSleep(int param_1,undefined4 param_2,undefined4 param_3)
         write_volatile_4(Peripherals::RTCC.CC0_CCV,uVar9 + 1);
         write_volatile_4(Peripherals::RTCC.CC0_CTRL,2);
         refRtcCnt = (Peripherals::RTCC.CC0_CCV);
-        while( true ) {
-          do {
+        while( true ) 
+		{
+          do 
+		  {
             uVar9 = (Peripherals::RTCC.CNT);
             uVar3 = (PROTIMER->IF);
-            if ((uVar3 & 0x100) != 0) {
+            if ((uVar3 & 0x100) != 0) 
+			{
               write_volatile_4(PROTIMER->IFC,0x100);
               write_volatile_4(PROTIMER->IEN,uVar12);
               iVar4 = uVar8 + 2;
@@ -146,7 +161,8 @@ undefined4 RTCCSYNC_PreSleep(int param_1,undefined4 param_2,undefined4 param_3)
               write_volatile_4(Peripherals::RTCC.IEN,uVar15 | 2);
               uVar15 = (Peripherals::RTCC.CNT);
               uVar9 = (Peripherals::RTCC.CC0_CCV);
-              if (uVar15 - uVar9 < (uint)(iVar4 - iVar7)) {
+              if (uVar15 - uVar9 < (uint)(iVar4 - iVar7)) 
+			  {
                 return 0;
               }
               rtccSyncFlag = 1;
@@ -180,7 +196,8 @@ void RTCCSYNC_PostWakeUp(void)
   undefined8 uVar8;
   
   iVar5 = refRtcCnt;
-  if (rtccSyncFlag == '\0') {
+  if (rtccSyncFlag == '\0') 
+  {
     return;
   }
   uVar2 = (PROTIMER->CC0_WRAP);
@@ -194,7 +211,8 @@ void RTCCSYNC_PostWakeUp(void)
   uVar3 = CMU_ClockFreqGet(0x11);
   uVar4 = RTCCSYNC_RTCCClockFreqGet();
   uVar6 = (PROTIMER->CTRL);
-  if ((uVar6 & 0x11000) != 0) {
+  if ((uVar6 & 0x11000) != 0) 
+  {
     lVar1 = (ulonglong)uVar3 * (ulonglong)(uVar7 - iVar5);
     uVar8 = __aeabi_uldivmod((int)lVar1,(int)((ulonglong)lVar1 >> 0x20),uVar4,0);
     uVar7 = (PROTIMER->PRECNTTOP);
@@ -204,7 +222,8 @@ void RTCCSYNC_PostWakeUp(void)
     __aeabi_uldivmod();
     uVar6 = uVar6 + iVar5;
     iVar5 = __aeabi_uldivmod((int)uVar8,(int)((ulonglong)uVar8 >> 0x20),uVar7 + 1,0);
-    if (uVar7 < uVar6) {
+    if (uVar7 < uVar6) 
+	{
       iVar5 = iVar5 + 1;
       uVar6 = (uVar6 - uVar7) - 1;
     }
@@ -218,7 +237,8 @@ void RTCCSYNC_PostWakeUp(void)
     write_volatile_4(PROTIMER->WRAPCNT,
                      (iVar5 + uVar6) - (uVar7 + 1) * ((iVar5 + uVar6) / (uVar7 + 1)));
   }
-  do {
+  do 
+  {
     uVar7 = (PROTIMER->IF);
     if ((int)(uVar7 << 7) < 0) break;
     uVar7 = (Peripherals::RTCC.CNT);
@@ -231,19 +251,24 @@ void RTCCSYNC_PostWakeUp(void)
   write_volatile_4(PROTIMER->PRSCTRL,uVar7 & 0xff8dffff);
   iVar5 = 0;
   uVar7 = (PROTIMER->WRAPCNT);
-  do {
-    if ((int)((&PROTIMER->CC0_CTRL)[iVar5 * 4] << 0x1f) < 0) {
+  do 
+  {
+    if ((int)((&PROTIMER->CC0_CTRL)[iVar5 * 4] << 0x1f) < 0) 
+	{
       uVar6 = (PROTIMER->IF);
       uVar3 = 1 << (iVar5 + 8U & 0xff);
       if ((uVar3 & uVar6) == 0) {
         uVar6 = (&PROTIMER->CC0_WRAP)[iVar5 * 4];
-        if (uVar7 < uVar2) {
+        if (uVar7 < uVar2) 
+		{
           if (uVar6 <= uVar2) goto LAB_00010334;
 LAB_00010342:
           write_volatile_4(PROTIMER->IFS,uVar3);
         }
-        else {
-          if (uVar2 < uVar6) {
+        else 
+		{
+          if (uVar2 < uVar6) 
+		  {
 LAB_00010334:
             if (uVar6 <= uVar7) goto LAB_00010342;
           }
@@ -251,7 +276,8 @@ LAB_00010334:
       }
     }
     iVar5 = iVar5 + 1;
-    if (iVar5 == 5) {
+    if (iVar5 == 5) 
+	{
       rtccSyncFlag = 0;
       return;
     }

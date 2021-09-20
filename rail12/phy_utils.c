@@ -7,10 +7,12 @@ int PHY_UTILS_ConvertHexToAscii(uint param_1)
 {
   int iVar1;
   
-  if ((param_1 & 0xf) < 10) {
+  if ((param_1 & 0xf) < 10) 
+  {
     iVar1 = 0x30;
   }
-  else {
+  else 
+  {
     iVar1 = 0x37;
   }
   return (param_1 & 0xf) + iVar1;
@@ -42,7 +44,8 @@ void PHY_UTILS_BitsetClearAll(undefined4 *param_1,int param_2)
   undefined4 *puVar1;
   
   puVar1 = param_1 + param_2;
-  while (puVar1 != param_1) {
+  while (puVar1 != param_1) 
+  {
     puVar1 = puVar1 + -1;
     *puVar1 = 0;
   }
@@ -101,8 +104,10 @@ int PHY_UTILS_BitsetHighestSetBit(int param_1,int param_2)
   int iVar2;
   
   iVar1 = 0;
-  while( true ) {
-    if (iVar1 == param_2) {
+  while( true ) 
+  {
+    if (iVar1 == param_2) 
+	{
       return -1;
     }
     iVar2 = count_leading_zeroes(*(undefined4 *)(param_1 + iVar1 * 4));
@@ -120,12 +125,14 @@ void PHY_UTILS_DelayUs(uint32_t us)
   bool bVar1;
   
   bVar1 = PROTIMER_IsRunning();
-  if (bVar1 == false) {
+  if (bVar1 == false) 
+  {
     PROTIMER_Init();
     PROTIMER_Start();
   }
   PROTIMER_DelayUs(us);
-  if (bVar1 == false) {
+  if (bVar1 == false) 
+  {
     PROTIMER_Stop();
     PROTIMER_Reset();
     return;
@@ -143,10 +150,12 @@ uint PHY_UTILS_genPRBS9Data(undefined *param_1,uint param_2,int param_3)
   int iVar3;
   
   puVar1 = param_1 + param_3;
-  for (; param_1 != puVar1; param_1 = param_1 + 1) {
+  for (; param_1 != puVar1; param_1 = param_1 + 1) 
+  {
     iVar3 = 8;
     uVar2 = 0;
-    do {
+    do 
+	{
       iVar3 = iVar3 + -1;
       uVar2 = param_2 & 1 | (uVar2 & 0x7f) << 1;
       param_2 = param_2 >> 1 | (param_2 & 1 ^ (param_2 << 0x1b) >> 0x1f) << 8;
