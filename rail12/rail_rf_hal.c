@@ -286,10 +286,7 @@ RAIL_RadioState_t RAIL_RfHalStateGet(void)
         if (state == 0x4000000) return RAIL_RF_STATE_RX;
         bVar1 = state == 0x5000000;
       }
-      if (!bVar1) 
-	  {
-        return RAIL_RF_STATE_IDLE;
-      }
+      if (!bVar1) return RAIL_RF_STATE_IDLE;
     }
   }
   return RAIL_RF_STATE_RX;
@@ -553,20 +550,18 @@ RAIL_Status_t RAIL_RfHalRxStart(uint8_t channel)
 
 
 
-undefined4 RAIL_RfHalRxIntEnable(int param_1)
+RAIL_Status_t RAIL_RfHalRxIntEnable(int param_1)
 
 {
-  _enabledCallbacks =
-       CONCAT12((byte)(_enabledCallbacks >> 0x10) & 0xfd |
-                (byte)(((uint)(param_1 << 0x19) >> 0x1f) << 1),
-                CONCAT11(DAT_20002c31 & 0xf8 | (byte)((uint)(param_1 << 0x1e) >> 0x1f) |
+  _enabledCallbacks = CONCAT12((byte)(_enabledCallbacks >> 0x10) & 0xfd | (byte)(((uint)(param_1 << 0x19) >> 0x1f) << 1),
+							CONCAT11(DAT_20002c31 & 0xf8 | (byte)((uint)(param_1 << 0x1e) >> 0x1f) |
                          (byte)(((uint)(param_1 << 0x1d) >> 0x1f) << 1) |
                          (byte)(((uint)(param_1 << 0x1c) >> 0x1f) << 2),
                          enabledCallbacks & 0xe7 | (byte)(((uint)(param_1 << 0x1b) >> 0x1f) << 3) |
                          (byte)(((uint)(param_1 << 0x1a) >> 0x1f) << 4)));
   _enabledCallbacks = _enabledCallbacks & 0xff000000 | (uint)_enabledCallbacks;
   GENERIC_PHY_ConfigureCallbacks(_enabledCallbacks);
-  return 0;
+  return RAIL_STATUS_NO_ERROR;
 }
 
 
@@ -600,20 +595,16 @@ RAIL_Status_t RAIL_PaCtuneSet(uint8_t txPaCtuneValue,uint8_t rxPaCtuneValue)
 RAIL_Status_t RAIL_TimerSet(uint32_t time,RAIL_TimeMode_t mode)
 
 {
-  RAIL_Status_t RVar1;
-  uint32_t time_00;
-  uint32_t mode_00;
-  
-  mode_00 = (uint32_t)mode;
+  RAIL_Status_t RVal;
+
   INT_Disable();
   _enabledCallbacks = _enabledCallbacks | 0x100000;
   GENERIC_PHY_ConfigureCallbacks(_enabledCallbacks);
   timerExpired = 0;
-  time_00 = PROTIMER_UsToPrecntOverflow(time);
-  if (mode_00 != 0) mode_00 = 1;
-  RVar1 = GENERIC_PHY_TimerStart(time_00,mode_00);
+  if (mode != 0) mode = 1;
+  RVal = GENERIC_PHY_TimerStart(PROTIMER_UsToPrecntOverflow(time),mode);
   INT_Enable();
-  return RVar1 ^ RAIL_STATUS_INVALID_PARAMETER;
+  return RVal ^ RAIL_STATUS_INVALID_PARAMETER;
 }
 
 
@@ -646,7 +637,8 @@ bool RAIL_TimerExpired(void)
 bool RAIL_TimerIsRunning(void)
 
 {
-  return PROTIMER_CCTimerIsEnabled(2);
+  //return PROTIMER_CCTimerIsEnabled(2);
+  return GENERIC_PHY_TimerIsRunning();
 }
 
 
@@ -654,11 +646,7 @@ bool RAIL_TimerIsRunning(void)
 uint32_t RAIL_SymbolRateGet(void)
 
 {
-  uint32_t rate;
-  
-  rate = RADIO_ComputeTxBaudrate();
-  if ((MODEM->CTRL0 & 0x30) == 0x20) rate = rate / (((MODEM->CTRL0 << 0x10) >> 0x1b) + 1);
-  return rate;
+  return RADIO_ComputeTxSymbolRate();
 }
 
 
@@ -666,21 +654,7 @@ uint32_t RAIL_SymbolRateGet(void)
 uint32_t RAIL_BitRateGet(void)
 
 {
-  uint32_t k;
-  
-  if ((MODEM->CTRL0 & 0x30) == 0x20) 
-  {
-    k = ((MODEM->CTRL0 << 0x10) >> 0x1b) / ((MODEM->CTRL0 << 0xd) >> 0x1d);
-    if ((MODEM->CTRL0 & 0x180000) != 0) k = k << 1;
-    k = k >> 1;
-    if (2 < k) k = 4;
-  }
-  else 
-  {
-    if (((MODEM->CTRL0 & 0x1c0) == 0x40) || ((MODEM->CTRL0 & 0x1c0) == 0x100)) k = 2;
-    else k = 1;
-  }
-  return k * RADIO_ComputeTxSymbolRate();
+	return RADIO_ComputeTxBitRate();
 }
 
 
@@ -695,8 +669,8 @@ uint32_t RAIL_RfSense(RAIL_RfSenseBand_t band,uint32_t senseTime,bool enableCb)
   uint32_t local_10;
   uint local_c;
   
-  local_14 = 0x79e7;
-  if (enableCb == false) local_14 = 0;
+  local_14 = RAIL_RFSENSE_Callback;
+  if (enableCb == false) local_14 = NULL;
   local_c._0_2_ = CONCAT11(1,band);
   local_c = in_r3 & 0xffff0000 | (uint)(ushort)local_c;
   local_10 = senseTime;
@@ -715,8 +689,8 @@ bool RAIL_RfSensed(void)
   
   iVar2 = _DAT_43c81904;
   _DAT_43c81904 = 1;
-  uVar3 = (RFSENSE->IF);
-  if (uVar3 != 0) uVar3 = 1;
+  uVar3 = RFSENSE->IF;
+  if (RFSENSE->IF != 0) uVar3 = 1;
   if (uVar3 != 0) 
   {
     INT_Disable();
@@ -731,8 +705,6 @@ bool RAIL_RfSensed(void)
 }
 
 
-
-// WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
 void RAIL_DebugCbConfig(int param_1)
 
@@ -778,8 +750,7 @@ RAIL_Status_t RAIL_RfHalSetTxTransitions(RAIL_RadioState_t success,RAIL_RadioSta
   ushort uVar1;
   
   uVar1 = (SEQ->REG000._0_2_);
-  write_volatile_4(SEQ->REG000,
-                   1 << (success + 0x10 & 0xff) | (uint)uVar1 | 1 << (error + 0x18 & 0xff));
+  SEQ->REG000 = 1 << (success + 0x10 & 0xff) | (uint)uVar1 | 1 << (error + 0x18 & 0xff);
   return RAIL_STATUS_NO_ERROR;
 }
 
@@ -791,8 +762,7 @@ RAIL_Status_t RAIL_RfHalSetRxTransitions(RAIL_RadioState_t success,RAIL_RadioSta
   ushort uVar1;
   
   uVar1 = (SEQ->REG000._2_2_);
-  write_volatile_4(SEQ->REG000,
-                   1 << (error + 8 & 0xff) | 1 << success | (uint)uVar1 << 0x10);
+  SEQ->REG000 = 1 << (error + 8 & 0xff) | 1 << success | (uint)uVar1 << 0x10;
   return RAIL_STATUS_NO_ERROR;
 }
 

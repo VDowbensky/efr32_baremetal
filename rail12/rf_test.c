@@ -1,6 +1,6 @@
 #include "rf_test.h"
 
-
+static uint32_t reg_save[20];
 
 void setupPnForTest(void)
 
@@ -45,31 +45,30 @@ void RFTEST_StopRx(void)
 void RFTEST_SaveRadioConfiguration(void)
 
 {
-  if (testModeRegisterState == 0) 
+  if (testModeRegisterState == false) 
   {
-    DAT_20002bdc = (MODEM->AFC);
-    DAT_20002be0 = (MODEM->CTRL0);
-    DAT_20002be4 = (MODEM->CTRL1);
-    DAT_20002be8 = (MODEM->MODINDEX);
-    DAT_20002bec = (MODEM->PRE);
-    DAT_20002bf0 = (MODEM->TIMING);
-    DAT_20002bf4 = (FRC->DFLCTRL);
-    DAT_20002bf8 = (FRC->CTRL);
-    DAT_20002bfc = (FRC->FECCTRL);
-    DAT_20002c00 = (FRC->FCD0);
-    DAT_20002c04 = (FRC->FCD1);
-    DAT_20002c08 = (FRC->FCD2);
-    DAT_20002c0c = (FRC->FCD3);
-    DAT_20002c10 = (FRC->WHITECTRL);
-    DAT_20002c14 = (FRC->WHITEPOLY);
-    DAT_20002c18 = (FRC->WHITEINIT);
-    DAT_20002c1c = (SEQ->SYNTHLPFCTRLTX);
-    DAT_20002c20 = (FRC->SNIFFCTRL);
-    DAT_20002c24 = (FRC->IEN);
+    reg_save[0] = MODEM->AFC;
+    reg_save[1] = MODEM->CTRL0;
+    reg_save[2] = MODEM->CTRL1;
+    reg_save[3] = MODEM->MODINDEX;
+    reg_save[4] = MODEM->PRE;
+    reg_save[5] = MODEM->TIMING;
+    reg_save[6] = FRC->DFLCTRL;
+    reg_save[7] = FRC->CTRL;
+    reg_save[8] = FRC->FECCTRL;
+    reg_save[9] = FRC->FCD0;
+    reg_save[10] = FRC->FCD1;
+    reg_save[11] = FRC->FCD2;
+    reg_save[12] = FRC->FCD3;
+    reg_save[13] = FRC->WHITECTRL;
+    reg_save[14] = FRC->WHITEPOLY;
+    reg_save[15] = FRC->WHITEINIT;
+    reg_save[16] = SEQ->SYNTHLPFCTRLTX;
+    reg_save[17] = FRC->SNIFFCTRL;
+    reg_save[18] = FRC->IEN;
     FRC->IEN = 0;
-    testModeRegisterState = 1;
+    testModeRegisterState = true;
   }
-  return;
 }
 
 
@@ -77,28 +76,29 @@ void RFTEST_SaveRadioConfiguration(void)
 void RFTEST_RestoreRadioConfiguration(void)
 
 {
-  if (testModeRegisterState != 0) 
+  if (testModeRegisterState == true) 
   {
-    MODEM->AFC = DAT_00010404;
-    MODEM->CTRL0 = DAT_00010408;
-    MODEM->CTRL1 = DAT_0001040c;
-    MODEM->MODINDEX = DAT_00010410;
-    MODEM->PRE = DAT_00010414;
-    FRC->DFLCTRL = DAT_0001041c;
-    FRC->CTRL = DAT_00010420;
-    FRC->FECCTRL = DAT_00010424;
-    FRC->FCD0 = DAT_00010428;
-    FRC->FCD1 = DAT_0001042c;
-    FRC->FCD2 = DAT_00010430;
-    FRC->FCD3 = DAT_00010434;
-    FRC->WHITECTRL = DAT_00010438;
-    FRC->WHITEPOLY = DAT_0001043c;
-    FRC->WHITEINIT = DAT_00010440;
-    SEQ->SYNTHLPFCTRLTX = DAT_00010444;
-    FRC->SNIFFCTRL = DAT_00010448;
+    MODEM->AFC = reg_save[0];
+    MODEM->CTRL0 = reg_save[1];
+    MODEM->CTRL1 = reg_save[2];
+    MODEM->MODINDEX = reg_save[3];
+    MODEM->PRE = reg_save[4];
+	//MODEM->TIMING = reg_save[5];
+    FRC->DFLCTRL = reg_save[6];
+    FRC->CTRL = reg_save[7];
+    FRC->FECCTRL = reg_save[8];
+    FRC->FCD0 = reg_save[9];
+    FRC->FCD1 = reg_save[10];
+    FRC->FCD2 = reg_save[11];
+    FRC->FCD3 = reg_save[12];
+    FRC->WHITECTRL = reg_save[13];
+    FRC->WHITEPOLY = reg_save[14];
+    FRC->WHITEINIT = reg_save[15];
+    SEQ->SYNTHLPFCTRLTX = reg_save[16];
+    FRC->SNIFFCTRL = reg_save[17];
     FRC->IFC = 0x7ffff;
-    FRC->IEN = DAT_0001044c;
-    testModeRegisterState = 0;
+    FRC->IEN = reg_save[18];
+    testModeRegisterState = false;
   }
 }
 
@@ -132,8 +132,6 @@ void RFTEST_StartStreamTx(void)
 
 
 
-// WARNING: Globals starting with '_' overlap smaller symbols at the same address
-
 void RFTEST_StartTx(void)
 
 {
@@ -145,8 +143,6 @@ void RFTEST_StartTx(void)
 void RFTEST_StopTx(void)
 
 {
-  uint uVar1;
-  
   do 
   {
     if ((FRC->DFLCTRL & 7) != 5) 
@@ -181,7 +177,8 @@ void RFTEST_BerEmptyBufcAndUpdateStats(void)
   for (uVar4 = (uint)uVar2; uVar4 != 0; uVar4 = uVar4 - 1) 
   {
     bVar1 = RADIO_RxBufferReadByte();
-    if (berSkipBytesLeft == 0) {
+    if (berSkipBytesLeft == 0) 
+	{
       if ((berTotalBytesLeft != 0) || (berInfiniteMode != '\0')) 
 	  {
         berTotalBytesLeft = berTotalBytesLeft + -1;
@@ -211,7 +208,6 @@ void RFTEST_ConfigBerRx(void)
   MODEM->TIMING &= 0xfffff0ff;
   MODEM->CTRL1 |= 0x1f;
   MODEM->AFC &= 0xffffe3ff;
-  uVar1 = (MODEM->CTRL1);
   if ((MODEM->CTRL1 & 0xc000) == 0) MODEM->CTRL1 |= 0xc000;
   FRC->TRAILRXDATA = 0;
   FRC->RXCTRL |= 0x12;

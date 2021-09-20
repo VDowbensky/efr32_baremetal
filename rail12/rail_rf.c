@@ -5,11 +5,8 @@
 uint8_t RAIL_RfInit(RAIL_Init_t *railInit)
 
 {
-  RAIL_Status_t RVar1;
-  
   RAIL_RfHalCalibrationInit(railInit->calEnable & 0x10001);
-  RVar1 = RAIL_RfHalInit((uint32_t *)railInit);
-  return (uint8_t)RVar1;
+  return (uint8_t)RAIL_RfHalInit((uint32_t *)railInit);
 }
 
 
@@ -17,8 +14,7 @@ uint8_t RAIL_RfInit(RAIL_Init_t *railInit)
 void RAIL_RfIdle(void)
 
 {
-  GENERIC_PHY_RadioEnable(false);
-  return;
+  RAIL_RfHalIdleStart();
 }
 
 
@@ -26,47 +22,7 @@ void RAIL_RfIdle(void)
 RAIL_RadioState_t RAIL_RfStateGet(void)
 
 {
-  uint32_t state;
-  bool bVar2;
-  
-   state = RAC->STATUS & 0xf000000;
-  if (state != 0x6000000) 
-  {
-    if (0x6000000 < state) 
-	{
-      if (state != 0x9000000) 
-	  {
-        if (state < 0x9000001) 
-		{
-          if (state == 0x7000000) return RAIL_RF_STATE_RX;
-          bVar2 = state == 0x8000000;
-        }
-        else 
-		{
-          if (state == 0xb000000) return RAIL_RF_STATE_TX;
-          if (state == 0xc000000) return RAIL_RF_STATE_TX;
-          bVar2 = state == 0xa000000;
-        }
-        if (!bVar2) return RAIL_RF_STATE_IDLE;
-      }
-      return RAIL_RF_STATE_TX;
-    }
-    if (state != 0x3000000) 
-	{
-      if (state < 0x3000001) 
-	  {
-        if (state == 0x1000000) return RAIL_RF_STATE_RX;
-        bVar2 = state == 0x2000000;
-      }
-      else 
-	  {
-        if (state == 0x4000000) return RAIL_RF_STATE_RX;
-        bVar2 = state == 0x5000000;
-      }
-      if (!bVar2) return RAIL_RF_STATE_IDLE;
-    }
-  }
-  return RAIL_RF_STATE_RX;
+  return RAIL_RfHalStateGet;
 }
 
 
@@ -175,16 +131,12 @@ uint32_t RAIL_DebugModeGet(void)
 RAIL_Status_t RAIL_SetTxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t error)
 
 {
-  RAIL_RadioState_t RVar1;
-  RAIL_Status_t RVar2;
-  
-  if ((success == RAIL_RF_STATE_TX) || (error == RAIL_RF_STATE_TX)) RVar1 = RAIL_RF_STATE_RX;
+  if ((success == RAIL_RF_STATE_TX) || (error == RAIL_RF_STATE_TX)) return RAIL_STATUS_INVALID_PARAMETER;
   else 
   {
-    RVar1 = RAIL_RfHalStateGet();
     if (RAIL_RfHalStateGet() != RAIL_RF_STATE_TX) return RAIL_RfHalSetTxTransitions(success,error);
+	else return RAIL_STATUS_INVALID_STATE;
   }
-  return (RAIL_Status_t)RVar1;
 }
 
 
@@ -193,17 +145,16 @@ RAIL_Status_t RAIL_SetRxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t 
 
 {
   RAIL_RadioState_t RVar1;
-  RAIL_Status_t RVar2;
+  RAIL_Status_t RVal;
   
   if (error == RAIL_RF_STATE_TX) return RAIL_STATUS_INVALID_PARAMETER;
-  RVar1 = RAIL_RfHalStateGet();
-  if (RVar1 == RAIL_RF_STATE_RX) RVar2 = RAIL_STATUS_INVALID_STATE;
+  if (RAIL_RfHalStateGet() == RAIL_RF_STATE_RX) RVar2 = RAIL_STATUS_INVALID_STATE;
   else 
   {
-    RVar2 = RAIL_RfHalSetRxTransitions(success,error);
-    if (RVar2 == RAIL_STATUS_NO_ERROR) return RAIL_RfHalErrorConfig(ignoreErrors);
+    RVal = RAIL_RfHalSetRxTransitions(success,error);
+    if (RVal == RAIL_STATUS_NO_ERROR) return RAIL_RfHalErrorConfig(ignoreErrors);
   }
-  return RVar2;
+  return RVal;
 }
 
 

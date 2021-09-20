@@ -9,23 +9,13 @@ void TEMPCAL_Init(void)
   char cVar4;
   
   cVar3 = (char)(DAT_0fe08204 & 0xff);
-  if ((DAT_0fe08204 & 0xff) == 0xff) 
-  {
-    cVar3 = -0x70;
-    cVar4 = 0x19;
-  }
+  if ((DAT_0fe08204 & 0xff) == 0xff) SEQ->REG080 |= (0x23 << 8) | (2 << 16) | (0x9c << 24);//SEQ->REG080._3_1_ = 0x9c;
   else 
   {
-    cVar4 = (char)((uint)(DAT_0fe081b0 << 8) >> 0x18);
-    if (cVar4 == -1) 
-	{
-      cVar3 = -0x70;
-      cVar4 = 0x19;
-    }
+    cVar4 = (DAT_0fe081b0 << 8) >> 24;
+    if (cVar4 == 0xff) SEQ->REG080 |= SEQ->REG080 |= (0x23 << 8) | (2 << 16) | (0x9c << 24);//SEQ->REG080._3_1_ = 0x9c;
+	else SEQ->REG080 |= (0x23 << 8) | (2 << 16) | (cVar4 / 2 + cVar3) << 24; //SEQ->REG080._3_1_ = cVar4 / 2 + cVar3;
   }
-  SEQ->REG080._3_1_ = (char)((uint)(int)cVar4 / 2) + cVar3;
-  SEQ->REG080._2_1_ = 2;
-  SEQ->REG080._1_1_ = 0x23;
 }
 
 

@@ -35,7 +35,7 @@ void TEMPCAL_Init(void)
 //  SEQ->REG082 = 0x23;//!!!!!!!!!!!!!!!!!!!!
   //DAT_21000f83 = (char)((uint)(int)cVar2 / 2) + cVar1;//!!!!!!!!!!!!!!!!!!!!
 //  SEQ->REG083 = ((char)((uint)(int)cVar2) / 2 + cVar1;//!!!!!!!!!!!!!!!!!!!!
-	SEQ->REG080 = (0x23 << 8) | (2 << 16) | (((uint8_t)cVar2/2 + cVar1) << 24);
+	SEQ->REG080 |= (0x23 << 8) | (2 << 16) | (((uint8_t)cVar2/2 + cVar1) << 24);
 }
 
 
@@ -43,7 +43,7 @@ void TEMPCAL_Init(void)
 void TEMPCAL_Perform(void)
 
 {
-  if ((RAC->STATUS << 4) >> 0x1c == 2) RAC->CMD = 0x80;
+  if ((RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos == 2) RAC->CMD = 0x80;
 }
 
 
