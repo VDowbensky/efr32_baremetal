@@ -55,14 +55,14 @@ void RADIO_IRQHandler(void)
 	{
       tmp = RAC->SR0;
       BUS_RegMaskedClear(&RAC->SR0,tmp & 0xe000);
-      if ((tmp & 0xe000) == 0) railEvents = railEvents | 0x80000;
+      if ((tmp & 0xe000) == 0) railEvents |= 0x80000;
       else 
 	  {
-        if ((int)(tmp << 0x10) < 0) railEvents = railEvents | 0x2000000;
+        if (tmp & 0x8000) railEvents |= 0x2000000;
         else 
 		{
-          if ((int)(tmp << 0x12) < 0) railEvents = railEvents | 0x200000;
-          else railEvents = railEvents | 0x800000;
+          if (tmp & 0x2000) railEvents |= 0x200000;
+          else railEvents |= 0x800000;
         }
       }
     }
@@ -100,34 +100,35 @@ void RADIO_IRQHandler(void)
   }
   if (bufc_flags & BUFC_IF_BUF0THR_Msk) 
   {
-    if (_DAT_430204b4 == 0) BUS_RegMaskedSet(&BUFC->BUF0_THRESHOLDCTRL,BUFC_BUF0_THRESHOLDCTRL_THRESHOLDMODE_Msk);
+    //if (_DAT_430204b4 == 0) BUS_RegMaskedSet(&BUFC->BUF0_THRESHOLDCTRL,BUFC_BUF0_THRESHOLDCTRL_THRESHOLDMODE_Msk);
+	if (!(BUF0_THRESHOLDCTRL & THRESHOLDMODE)) BUS_RegMaskedSet(&BUFC->BUF0_THRESHOLDCTRL,BUFC_BUF0_THRESHOLDCTRL_THRESHOLDMODE_Msk);
     else 
 	{
-      railEvents = railEvents | 0x20000;
+      railEvents |= 0x20000;
       BUS_RegMaskedClear(&BUFC->BUF0_THRESHOLDCTRL,BUFC_BUF0_THRESHOLDCTRL_THRESHOLDMODE_Msk);
     }
   }
-  if (bufc_flags & BUFC_IF_BUF1THR_Msk) railEvents = railEvents | 4;
+  if (bufc_flags & BUFC_IF_BUF1THR_Msk) railEvents |= 4;
   if (bufc_flags & BUFC_IF_BUF2THR_Msk) 
   {
     switch(BUFC_StartRxLenThrEvent()) 
 	{
     case 1:
     case 3:
-      railEvents = railEvents | 0x1000;
+      railEvents |= 0x1000;
       break;
     case 2:
-      railEvents = railEvents | 0x200;
+      railEvents |= 0x200;
       break;
     case 4:
-      railEvents = railEvents | 0x100;
+      railEvents |= 0x100;
       break;
     case 5:
-      railEvents = railEvents | 0x80;
+      railEvents |= 0x80;
       break;
     case 6:
     case 7:
-      railEvents = railEvents | 8;
+      railEvents |= 8;
       break;
     default:
       RAILInt_Assert(0,3);
@@ -135,35 +136,36 @@ void RADIO_IRQHandler(void)
   }
   if (modem_flags != 0) 
   {
-    if (modem_flags & MODEM_IF_RXTIMLOST_Msk) railEvents = railEvents | 0x4000;
-    if (modem_flags & MODEM_IF_RXTIMDET_Msk) railEvents = railEvents | 0x8000;
-    if (modem_flags & MODEM_IF_RXPRELOST_Msk) phyEvents = phyEvents | 1;
-    if (modem_flags & MODEM_IF_RXPREDET_Msk) railEvents = railEvents | 0x10;
-    if (modem_flags & MODEM_IF_RXFRAMEDET0_Msk) railEvents = railEvents | 0x20;
-    if (modem_flags & MODEM_IF_RXFRAMEDET1_Msk) railEvents = railEvents | 0x40;
+    if (modem_flags & MODEM_IF_RXTIMLOST_Msk) railEvents |= 0x4000;
+    if (modem_flags & MODEM_IF_RXTIMDET_Msk) railEvents |= 0x8000;
+    if (modem_flags & MODEM_IF_RXPRELOST_Msk) phyEvents |= 1;
+    if (modem_flags & MODEM_IF_RXPREDET_Msk) railEvents |= 0x10;
+    if (modem_flags & MODEM_IF_RXFRAMEDET0_Msk) railEvents |= 0x20;
+    if (modem_flags & MODEM_IF_RXFRAMEDET1_Msk) railEvents |= 0x40;
   }
   if (rac_flags != 0) 
   {
-    if (rac_flags & RAC_IF_PAVHIGH_Msk) phyEvents = phyEvents | 0x20;
-    if (rac_flags & RAC_IF_PAVLOW_Msk) phyEvents = phyEvents | 0x40;
-    if (rac_flags & RAC_IF_PABATHIGH_Msk) phyEvents = phyEvents | 0x80;
+    if (rac_flags & RAC_IF_PAVHIGH_Msk) phyEvents |= 0x20;
+    if (rac_flags & RAC_IF_PAVLOW_Msk) phyEvents |= 0x40;
+    if (rac_flags & RAC_IF_PABATHIGH_Msk) phyEvents |= 0x80;
     if (rac_flags & 0x40000) uVar5 = 2;
-    if (rac_flags & 0x10000) railEvents = railEvents | 0x400;
-    if (rac_flags & 0x100000) railEvents = railEvents | 0x2000;
-    if (rac_flags & 0x200000) railEvents = railEvents | 2;
-    if ((rac_flags & 0x80000) && (GENERIC_PHY_CanModifyAck() == true)) railEvents = railEvents | 0x10000;
+    if (rac_flags & 0x10000) railEvents |= 0x400;
+    if (rac_flags & 0x100000) railEvents |= 0x2000;
+    if (rac_flags & 0x200000) railEvents |= 2;
+    if ((rac_flags & 0x80000) && (GENERIC_PHY_CanModifyAck() == true)) railEvents |= 0x10000;
   }
   if (protimer_flags == 0) goto LAB_0000f236;
-  if ((protimer_flags & 0x800) != 0) {
+  if ((protimer_flags & 0x800) != 0) 
+  {
     PROTIMER_CCTimerStop(3);
     BUS_RegMaskedClear(&PROTIMER->RXCTRL,0x1f1f);
-    write_volatile_4(PROTIMER->IFC,0x800);
+    PROTIMER->IFC = 0x800;
     PROTIMER_ClearTxEnable();
   }
   if ((protimer_flags & 0x2000000) != 0) 
   {
     PTI_AuxdataOutput(0x2b);
-    railEvents = railEvents | 0x20000000;
+    railEvents |= 0x20000000;
   }
   if ((protimer_flags & 0x700000) == 0) 
   {
@@ -189,7 +191,7 @@ void RADIO_IRQHandler(void)
         tmp = 0x800;
       }
       else tmp = 0;
-      railEvents = railEvents | tmp;
+      railEvents |= tmp;
     }
   }
   else 
@@ -199,7 +201,7 @@ LAB_0000f120:
     if ((protimer_flags & 0x200000) != 0) 
 	{
       PTI_AuxdataOutput(0x29);
-      railEvents = railEvents | 0x10000000;
+      railEvents |= 0x10000000;
     }
     if ((protimer_flags & 0x400000) == 0) 
 	{
@@ -221,7 +223,7 @@ LAB_0000f120:
 	  {
         PROTIMER_CCTimerStop(4);
         PTI_AuxdataOutput(0x28);
-        railEvents = railEvents | 0x4000000;
+        railEvents |= 0x4000000;
       }
     }
     else 
@@ -231,13 +233,13 @@ LAB_0000f120:
       BUS_RegMaskedClear(&RAC->SR0,0x80);
       BUS_RegMaskedClear(&RAC->RXENSRCEN,0x10);
 LAB_0000f1ba:
-      railEvents = railEvents | 0x8000000;
+      railEvents |= 0x8000000;
     }
   }
   if (protimer_flags & PROTIMER_IF_CC2_Msk) 
   {
     PROTIMER_CCTimerStop(2);
-    phyEvents = phyEvents | 4;
+    phyEvents |= 4;
   }
 LAB_0000f236:
   GENERIC_PHY_IssueCallback(enabledRailEvents & railEvents,DAT_200044f4 & uVar5,enabledPhyEvents & phyEvents);
