@@ -7,7 +7,6 @@ void RAIL_BerRxStop(void)
 {
   RFHAL_StopBerRx();
   RAIL_RfIdle();
-  return;
 }
 
 
@@ -18,7 +17,6 @@ void RAIL_BerConfigSet(RAIL_BerConfig_t *berConfig)
   RAIL_BerRxStop();
   RFHAL_SetBerConfig(berConfig);
   berConfigGlobal = berConfig->bytesToTest;
-  return;
 }
 
 
@@ -28,7 +26,6 @@ void RAIL_BerRxStart(void)
   RAIL_BerRxStop();
   RFHAL_SetBerConfig((RAIL_BerConfig_t *)&berConfigGlobal);
   RFHAL_StartBerRx();
-  return;
 }
 
 
@@ -50,7 +47,6 @@ void RAIL_BerStatusGet(RAIL_BerStatus_t *status)
   status->bitsTested = RStack24.bitsTested;
   status->bitErrors = RStack24.bitErrors;
   status->rssi = RStack24.rssi;
-  return;
 }
 
 
