@@ -544,21 +544,23 @@ void PA_CTuneSet(uint8_t txPaCtuneValue,uint8_t rxPaCtuneValue)
 void PA_BandSelect(void)
 
 {
-  uint32_t uVar1;
   uint uVar2;
   
-  uVar1 = SYNTH_LoDivGet();
-  if (false) {
+  if (false) 
+  {
 switchD_00006576_caseD_2:
-    write_volatile_4(SEQ->REG0C8,0xf7);
+    SEQ->REG0C8 = 0xf7;
     uVar2 = 0xa2;
   }
-  else {
-    switch(uVar1) {
+  else 
+  {
+    switch(SYNTH_LoDivGet()) 
+	{
     case 1:
       uVar2 = 0x44;
-      if (gPaConfig.paSel != PA_SEL_2P4_LP) {
-        write_volatile_4(SEQ->REG0C8,0);
+      if (gPaConfig.paSel != PA_SEL_2P4_LP) 
+	  {
+        SEQ->REG0C8 = 0;
         goto LAB_000065a2;
       }
       break;
@@ -571,11 +573,10 @@ switchD_00006576_caseD_2:
     case 6:
       uVar2 = 0x33;
     }
-    write_volatile_4(SEQ->REG0C8,uVar2);
+    SEQ->REG0C8 = uVar2;
   }
 LAB_000065a2:
-  write_volatile_4(SEQ->REG0C4,uVar2);
-  return;
+  SEQ->REG0C4 = uVar2;
 }
 
 
@@ -583,37 +584,26 @@ LAB_000065a2:
 bool RADIO_PA_Init(RADIO_PAInit_t *paInit)
 
 {
-  uint uVar1;
-  uint uVar2;
-  bool in_r1;
   bool bVar3;
   
-  if (paInit != (RADIO_PAInit_t *)0x0) {
-    RADIO_CLKEnable((uint32_t)paInit,in_r1);
+  if (paInit != NULL) 
+  {
+    RADIO_CLKEnable();
     memset(&SEQ->REG0C0,0,0xc);
-    if (paInit->paSel == PA_SEL_SUBGIG) {
-      uVar1 = (CMU->RFLOCK0);
-      bVar3 = (uVar1 & 0x200000) == 0;
+    if (paInit->paSel == PA_SEL_SUBGIG) bVar3 = (CMU->RFLOCK0 & 0x200000) == 0;
+    else
+	{
+      if (paInit->paSel == PA_SEL_2P4_LP) bVar3 = (CMU->RFLOCK0 & 0xc00000) == 0;
+      else bVar3 = (DAT_0fe081d4 & 1 ^ 1 | CMU->RFLOCK0 & 0x400000) == 0;
     }
-    else {
-      if (paInit->paSel == PA_SEL_2P4_LP) {
-        uVar1 = (CMU->RFLOCK0);
-        bVar3 = (uVar1 & 0xc00000) == 0;
-      }
-      else {
-        uVar1 = (DAT_0fe081d4);
-        uVar2 = (CMU->RFLOCK0);
-        bVar3 = (uVar1 & 1 ^ 1 | uVar2 & 0x400000) == 0;
-      }
-    }
-    if (bVar3) {
+    if (bVar3) 
+	{
       gPaConfig._0_4_ = *(undefined4 *)paInit;
       gPaConfig._4_4_ = *(undefined4 *)&paInit->offset;
-      PA_RampTimeSet((uint)paInit->rampTime);
+      PA_RampTimeSet(paInit->rampTime);
       PA_PowerModeConfigSet();
       PA_OutputPowerSet((int)paInit->power);
-      uVar1 = (RAC->APC);
-      write_volatile_4(RAC->APC,uVar1 & 0xfffffff8);
+	  RAC->APC &= 0xfffffff8;
       PA_BandSelect();
       return true;
     }

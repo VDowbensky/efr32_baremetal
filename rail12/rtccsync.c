@@ -213,7 +213,7 @@ void RTCCSYNC_PostWakeUp(void)
 	{
       uVar6 = PROTIMER->IF;
       uVar3 = 1 << (iVar5 + 8U & 0xff);
-      if ((uVar3 & uVar6) == 0) 
+      if ((uVar3 & PROTIMER->IF) == 0) 
 	  {
         uVar6 = (&PROTIMER->CC0_WRAP)[iVar5 * 4];
         if (uVar7 < uVar2) 

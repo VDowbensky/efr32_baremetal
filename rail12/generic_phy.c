@@ -1,7 +1,7 @@
 #include "generic_phy.h"
 
 
-void GENERIC_PHY_RAC_IRQCallback(void)
+/* void GENERIC_PHY_RAC_IRQCallback(void)
 
 {
   uint32_t flags;
@@ -42,10 +42,10 @@ void GENERIC_PHY_RAC_IRQCallback(void)
   }
   return;
 }
+ */
 
 
-
-void GENERIC_PHY_PROTIMER_IRQCallback(void)
+/* void GENERIC_PHY_PROTIMER_IRQCallback(void)
 
 {
   uint uVar1;
@@ -62,10 +62,10 @@ void GENERIC_PHY_PROTIMER_IRQCallback(void)
     return;
   }
 }
+ */
 
 
-
-void GENERIC_PHY_MODEM_IRQCallback(void)
+/* void GENERIC_PHY_MODEM_IRQCallback(void)
 
 {
   uint32_t flags;
@@ -82,13 +82,13 @@ void GENERIC_PHY_MODEM_IRQCallback(void)
     (**(code **)(currentCallbacks + 0x28))();
     return;
   }
-}
+} */
 
 
 
 // WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
-void GENERIC_PHY_FRC_IRQCallback(void)
+/* void GENERIC_PHY_FRC_IRQCallback(void)
 
 {
   uint uVar1;
@@ -133,7 +133,7 @@ void GENERIC_PHY_FRC_IRQCallback(void)
     return;
   }
 }
-
+ */
 
 
 void GENERIC_PHY_SetAddressFilteringMatchTable(void)
@@ -157,7 +157,8 @@ void GENERIC_PHY_SetAddressFilteringMatchTable(void)
   uVar5 = 0;
   local_34 = 0;
   uVar3 = 0;
-  do {
+  do 
+  {
     uVar6 = uVar3 + 1;
     uVar1 = uVar6 * 5;
     uVar12 = addressFilterMatchTable >> (uVar1 & 0xff) & 0x1f;
@@ -167,11 +168,11 @@ void GENERIC_PHY_SetAddressFilteringMatchTable(void)
     for (uVar8 = uVar6; local_38 = local_38 + 5, uVar8 != 4; uVar8 = uVar8 + 1) 
 	{
       puVar11 = &SEQ->REG008;
-      bVar2 = read_volatile_1(SEQ->REG050._0_1_);
+      bVar2 = SEQ->REG050._0_1_;
       uVar4 = 1 << (uVar8 & 0xff) | 1 << (uVar3 & 0xff);
       if ((uVar4 & bVar2) == uVar4) 
 	  {
-        bVar2 = read_volatile_1(SEQ->REG04C._2_1_);
+        bVar2 = SEQ->REG04C._2_1_;
         for (iVar10 = 0; iVar10 < (int)(uint)bVar2; iVar10 = iVar10 + 1) 
 		{
           puVar11 = puVar11 + 1;
@@ -181,10 +182,10 @@ void GENERIC_PHY_SetAddressFilteringMatchTable(void)
         uVar12 = uVar12 | addressFilterMatchTable >> (local_38 & 0xff) & 0x1f;
       }
 LAB_00009826:
-      bVar2 = read_volatile_1(SEQ->REG050._1_1_);
+      bVar2 = SEQ->REG050._1_1_;
       if ((uVar4 & bVar2) == uVar4) 
 	  {
-        bVar2 = read_volatile_1(SEQ->REG04C._3_1_);
+        bVar2 = SEQ->REG04C._3_1_;
         puVar11 = &SEQ->REG028;
         for (iVar10 = 0; iVar10 < (int)(uint)bVar2; iVar10 = iVar10 + 1) 
 		{
@@ -225,13 +226,13 @@ void GENERIC_PHY_ConfigureCallbacks(RAIL_CalMask_t callbacks)
   cbs = enabledCallbacks & 0xff;
   uVar4 = 0x101;
   if ((enabledCallbacks & 1) != 0) uVar4 = 0x103;
-  if ((int)(cbs << 0x1e) < 0) uVar4 = uVar4 | 0xc;
-  if ((int)(cbs << 0x1d) < 0) uVar4 = uVar4 | 0x10;
-  if ((int)(cbs << 0x1c) < 0) uVar4 = uVar4 | 0x40;
-  if ((int)(cbs << 0x1b) < 0) uVar4 = uVar4 | 0x120;
-  if ((int)(cbs << 0x1a) < 0) uVar4 = uVar4 | 0x4000;
+  if (cbs & 0x02) uVar4 = uVar4 | 0xc;
+  if (cbs & 0x04) uVar4 = uVar4 | 0x10;
+  if (cbs & 0x08) uVar4 = uVar4 | 0x40;
+  if (cbs & 0x10) uVar4 = uVar4 | 0x120;
+  if (cbs & 0x20) uVar4 = uVar4 | 0x4000;
   uVar1 = (FRC->IEN);
-  if ((int)(cbs << 0x19) < 0) uVar4 = uVar4 | 0x2000;
+  if (cbs & 0x40) uVar4 = uVar4 | 0x2000;
   uVar3 = uVar1 & (uVar4 ^ uVar1);
   FRC->IFC = uVar3;
   uVar4 = uVar4 & (uVar4 ^ uVar1);
@@ -241,12 +242,12 @@ void GENERIC_PHY_ConfigureCallbacks(RAIL_CalMask_t callbacks)
   local_c = (char)enabledCallbacks;
   bStack11 = (byte)(enabledCallbacks >> 8);
   cbs = (uint)bStack11;
-  if (local_c < '\0') uVar4 = 0x2000;
+  if (local_c < 0) uVar4 = 0x2000;
   else uVar4 = 0;
-  if ((int)(cbs << 0x1f) < 0) uVar4 = uVar4 | 0x200;
-  if ((int)(cbs << 0x1e) < 0) uVar4 = uVar4 | 0x400;
-  uVar1 = (MODEM->IEN);
-  if ((int)(cbs << 0x1d) < 0) uVar4 = uVar4 | 0x800;
+  if (cbs & 0x01) uVar4 = uVar4 | 0x200;
+  if (cbs & 0x02) uVar4 = uVar4 | 0x400;
+  uVar1 = MODEM->IEN;
+  if (cbs & 0x04) uVar4 = uVar4 | 0x800;
   uVar3 = uVar1 & (uVar4 ^ uVar1);
   MODEM->IFC = uVar3;
   uVar4 = uVar4 & (uVar4 ^ uVar1);
@@ -256,10 +257,10 @@ void GENERIC_PHY_ConfigureCallbacks(RAIL_CalMask_t callbacks)
   if ((enabledCallbacks & 0x800) == 0) uVar2 = 0;
   else uVar2 = 4;
   bStack10 = (byte)(enabledCallbacks >> 0x10);
-  if ((int)((uint)bStack11 << 0x1b) < 0) uVar2 = uVar2 | 1;
-  if ((int)((uint)bStack10 << 0x1f) < 0) uVar2 = uVar2 | 0x800000;
-  uVar4 = (RAC->IEN);
-  if ((int)((uint)bStack10 << 0x1e) < 0) uVar2 = uVar2 | 0xff0000;
+  if ((uint)bStack11 & 0x10) uVar2 = uVar2 | 1;
+  if ((uint)bStack10 & 0x01) uVar2 = uVar2 | 0x800000;
+  uVar4 = RAC->IEN;
+  if ((uint)bStack10 & 0x02) uVar2 = uVar2 | 0xff0000;
   uVar3 = uVar4 & (uVar2 ^ uVar4);
   RAC->IFC = uVar3;
   uVar2 = uVar2 & (uVar2 ^ uVar4);
@@ -268,8 +269,8 @@ void GENERIC_PHY_ConfigureCallbacks(RAIL_CalMask_t callbacks)
   RAC->IEN |= uVar2;
   uVar2 = 0x501000;
   if ((enabledCallbacks & 0x80000) == 0) uVar2 = 0;
-  uVar4 = (PROTIMER->IEN);
-  if ((int)((uint)bStack10 << 0x1b) < 0) uVar2 = uVar2 | 0x400;
+  uVar4 = PROTIMER->IEN;
+  if ((uint)bStack10 & 0x10) uVar2 = uVar2 | 0x400;
   uVar3 = uVar4 & (uVar2 ^ uVar4);
   PROTIMER->IFC = uVar3;
   uVar2 = uVar2 & (uVar2 ^ uVar4);
@@ -328,7 +329,6 @@ void GENERIC_PHY_FlushTxPacketBuffer(void)
 
 
 
-// WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
 void GENERIC_PHY_PacketTxCommon(void)
 
@@ -343,7 +343,7 @@ bool GENERIC_PHY_PacketTx(void)
 
 {
   INT_Disable();
-  if (PROTIMER_CCTimerIsEnabled('\x03') == false) 
+  if (PROTIMER_CCTimerIsEnabled(3) == false) 
   {
     if (PROTIMER_LBTIsActive() == false) 
 	{
@@ -359,7 +359,6 @@ bool GENERIC_PHY_PacketTx(void)
 
 
 
-// WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
 bool GENERIC_PHY_SchedulePacketTx(undefined4 param_1,undefined4 param_2)
 
@@ -378,12 +377,13 @@ bool GENERIC_PHY_SchedulePacketTx(undefined4 param_1,undefined4 param_2)
 
 
 
-// WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
 void GENERIC_PHY_StopTx(void)
 
 {
-  _DAT_4308010c = 1;
+  //_DAT_4308010c = 1;
+  BUS_RegMaskedSet(&RAC->CMD, RAC_CMD_CLEARTXEN_Msk);
+  //RAC->CMD = RAC_CMD_CLEARTXEN_Msk;
 }
 
 
@@ -392,9 +392,9 @@ uint16_t GENERIC_PHY_PacketRxDataHelper(uint8_t *addr,uint16_t len)
 
 {
   RADIO_RxBufferBytesAvailable();
-  if (addr == NULL) RADIO_RxBufferDropBytes((uint)len);
+  if (addr == NULL) RADIO_RxBufferDropBytes(len);
   else RADIO_RxBufferReadBytes(addr,len & 0xff);
-  return (uint)len;
+  return len;
 }
 
 
@@ -414,48 +414,48 @@ uint GENERIC_PHY_PacketRxAppendedInfoHelper(uint param_1,void *param_2,undefined
   apvStack28[0] = param_2;
   apvStack28[1] = (void *)param_3;
   apvStack28[2] = (void *)param_4;
-  if (param_2 == (void *)0x0) RADIO_RxBufferDropBytes();
+  if (param_2 == NULL) RADIO_RxBufferDropBytes();
   else 
   {
     RADIO_RxBufferReadBytes(apvStack28,param_1 & 0xff,param_3,&FRC->,param_1);
     uVar3 = 0x14;
     memset(param_2,0,0x14);
-    bVar6 = (int)(FRC->TRAILRXDATA << 0x1a) < 0;
+    //bVar6 = FRC->TRAILRXDATA & 0x20;
     uVar5 = param_1;
-    if (bVar6) 
+    if (FRC->TRAILRXDATA & FRC_TRAILRXDATA_RTCSTAMP_Msk) 
 	{
       uVar5 = param_1 - 4 & 0xffff;
       uVar3 = *(undefined4 *)((int)apvStack28 + uVar5);
     }
-    if (bVar6) *(undefined4 *)((int)param_2 + 0x10) = uVar3;
-    if ((int)(FRC->TRAILRXDATA << 0x1b) < 0) 
+    if (FRC->TRAILRXDATA & FRC_TRAILRXDATA_RTCSTAMP_Msk) *(undefined4 *)((int)param_2 + 0x10) = uVar3;
+    if (FRC->TRAILRXDATA & FRC_TRAILRXDATA_PROTIMERCC0WRAPH_Msk) 
 	{
       uVar5 = uVar5 - 2 & 0xffff;
       *(uint *)((int)param_2 + 0xc) = *(uint *)((int)param_2 + 0xc) | (uint)*(ushort *)((int)apvStack28 + uVar5) << 0x10;
     }
-    uVar4 = FRC->TRAILRXDATA << 0x1c;
-    if ((int)uVar4 < 0) 
+    uVar4 = //FRC->TRAILRXDATA << 0x1c;
+    if (FRC->TRAILRXDATA & FRC_TRAILRXDATA_PROTIMERCC0WRAPH_Msk) 
 	{
       uVar5 = uVar5 - 2 & 0xffff;
       uVar4 = (uint)*(ushort *)((int)apvStack28 + uVar5) | *(uint *)((int)param_2 + 0xc);
       *(uint *)((int)param_2 + 0xc) = uVar4;
     }
     uVar2 = (undefined2)uVar4;
-    bVar6 = (int)(FRC->TRAILRXDATA << 0x1d) < 0;
-    if (bVar6) 
+    //bVar6 = FRC->TRAILRXDATA & 0x04;
+    if (FRC->TRAILRXDATA & FRC_TRAILRXDATA_PROTIMERCC0BASE_Msk) 
 	{
       uVar5 = uVar5 - 2 & 0xffff;
       uVar2 = *(undefined2 *)((int)apvStack28 + uVar5);
     }
-    if (bVar6) *(undefined2 *)((int)param_2 + 8) = uVar2;
-    if ((int)(FRC->TRAILRXDATA << 0x1e) < 0) 
+    if (FRC->TRAILRXDATA & FRC_TRAILRXDATA_PROTIMERCC0BASE_Msk) *(undefined2 *)((int)param_2 + 8) = uVar2;
+    if (FRC->TRAILRXDATA & FRC_TRAILRXDATA_CRCOK_Msk) 
 	{
       uVar5 = uVar5 - 1 & 0xffff;
       *(byte *)((int)param_2 + 6) = *(byte *)((int)apvStack28 + uVar5) >> 7;
     }
-    bVar6 = (int)(FRC->TRAILRXDATA << 0x1f) < 0;
-    if (bVar6) uVar5 = (uint)*(byte *)((int)apvStack28 + (uVar5 - 1 & 0xffff));
-    if (bVar6) *(char *)((int)param_2 + 5) = (char)uVar5;
+    //bVar6 = FRC->TRAILRXDATA & 0x01;
+    if (FRC->TRAILRXDATA & FRC_TRAILRXDATA_RSSI_Msk) uVar5 = (uint)*(byte *)((int)apvStack28 + (uVar5 - 1 & 0xffff));
+    if (FRC->TRAILRXDATA & FRC_TRAILRXDATA_RSSI_Msk) *(char *)((int)param_2 + 5) = (char)uVar5;
   }
   return param_1;
 }
@@ -513,7 +513,6 @@ void GENERIC_PHY_PacketRxGet(undefined2 *param_1)
 
 
 
-// WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
 void GENERIC_PHY_StartRx(int param_1)
 
@@ -538,18 +537,19 @@ void GENERIC_PHY_ChannelSet(uint8_t channel)
 
 
 
-// WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
 void GENERIC_PHY_SeqAtomicLock(void)
 
 {
   //read_volatile(RAC->SR0._0_1_);
-  while ((int)(RAC->SR0 << 0x1f) < 0) 
+  while (RAC->SR0 & 0x01) 
   {
-    _DAT_43081104 = 0;
+    //_DAT_43081104 = 0;
+	BUS_RegMaskedClear(&RAC->SR0,2);
     PROTIMER_DelayUs(2);
   }
-  _DAT_43081104 = 1;
+  //_DAT_43081104 = 1;
+  BUS_RegMaskedSet(&RAC->SR0,2);
 }
 
 
@@ -562,13 +562,13 @@ void GENERIC_PHY_RadioEnable(bool enable)
     GENERIC_PHY_SeqAtomicLock();
     _DAT_21000efc = _DAT_21000efc | 0x20;
 	RAC->RXENSRCEN &= 0xffffff00;
-    write_volatile_4(FRC->CMD = 1);
+    FRC->CMD = 1;
     _DAT_43080114 = 1;
     _DAT_43081104 = (uint)enable;
   }
   else 
   {
-    if ((int)(RAC->CTRL << 0x1f) < 0) 
+    if (RAC->CTRL & 0x01) 
 	{
       _DAT_43080180 = 0;
     }
@@ -640,13 +640,11 @@ void GENERIC_PHY_DirectModeConfig(uint8_t *config)
   {
     RADIOCMU_ClockEnable(0x67400,true);
     CMU_ClockEnable(cmuClock_GPIO,true);
-    write_volatile_4(MODEM->CTRL2,uVar1 & 0xfffff3ff);
 	MODEM->CTRL2 &= 0xfffff3ff;
     if ((uint)*config == 0) MODEM->CTRL2 = MODEM->CTRL2;
     else 
 	{
       uVar2 = (uint)config[4];
-      uVar1 = (MODEM->CTRL2);
       if ((uint)config[4] == 0) MODEM->CTRL2 |= 0x800;
       else 
 	  {
@@ -671,9 +669,9 @@ void GENERIC_PHY_DirectModeConfig(uint8_t *config)
     MODEM->ROUTELOC0 = (uint)config[0xb] | (uint)config[8] << 0x10 | (uint)config[5] << 8;
 	MODEM->ROUTEPEN &= 0xfffffff8;
 	MODEM->ROUTEPEN |= uVar2;
-    if ((int)(uVar2 << 0x1f) < 0) GPIO_PinModeSet(config[0xc],(uint)config[0xd],gpioModeInput,0);
-    if ((int)(uVar2 << 0x1e) < 0) GPIO_PinModeSet(config[6],(uint)config[7],gpioModePushPull,0);
-    if ((int)(uVar2 << 0x1d) < 0) GPIO_PinModeSet(config[9],(uint)config[10],gpioModePushPull,0);
+    if (uVar2 & 0x01) GPIO_PinModeSet(config[0xc],(uint)config[0xd],gpioModeInput,0);
+    if (uVar2 & 0x02) GPIO_PinModeSet(config[6],(uint)config[7],gpioModePushPull,0);
+    if (uVar2 & 0x04) GPIO_PinModeSet(config[9],(uint)config[10],gpioModePushPull,0);
   }
 }
 
@@ -865,12 +863,12 @@ bool GENERIC_PHY_ConfigureAddressFiltering(RAIL_AddrConfig_t *addrconfig)
   SEQ->REG04C._0_1_ = addrconfig->numFields;
   if (*(byte *)&addrconfig->field_0x2 < 9) 
   {
-    write_volatile_1(SEQ->REG04C._2_1_,*(byte *)&addrconfig->field_0x2);
-    write_volatile_1(SEQ->REG04C._1_1_,*(undefined *)&addrconfig->field_0x1);
+    SEQ->REG04C._2_1_ = *(byte *)&addrconfig->field_0x2;
+    SEQ->REG04C._1_1_ = *(undefined *)&addrconfig->field_0x1;
     if (*(byte *)&addrconfig->field_0x3 < 9) 
 	{
-      write_volatile_1(SEQ->REG04C._3_1_,*(byte *)&addrconfig->field_0x3);
-      write_volatile_1(SEQ->REG050._2_1_,*(undefined *)&addrconfig->sizes);
+      SEQ->REG04C._3_1_ = *(byte *)&addrconfig->field_0x3;
+      SEQ->REG050._2_1_ = *(undefined *)&addrconfig->sizes;
       addressFilterMatchTable = addrconfig->offsets;
       GENERIC_PHY_SetAddressFilteringMatchTable();
       return true;
@@ -887,9 +885,9 @@ bool GENERIC_PHY_EnableAddress(uint8_t field,uint8_t index)
   uint uVar1;
   
   uVar1 = (uint)field;
-  if ((uVar1 < 2) && (index < 4)) {
-    *(byte *)((int)&SEQ->REG050 + uVar1) =
-         (byte)(1 << (uint)index) | *(byte *)((int)&SEQ->REG050 + uVar1);
+  if ((uVar1 < 2) && (index < 4)) 
+  {
+    *(byte *)((int)&SEQ->REG050 + uVar1) = (byte)(1 << (uint)index) | *(byte *)((int)&SEQ->REG050 + uVar1);
     GENERIC_PHY_SetAddressFilteringMatchTable();
     return true;
   }
@@ -904,9 +902,9 @@ bool GENERIC_PHY_DisableAddress(uint8_t field,uint8_t index)
   uint uVar1;
   
   uVar1 = (uint)field;
-  if ((uVar1 < 2) && (index < 4)) {
-    *(byte *)((int)&SEQ->REG050 + uVar1) =
-         *(byte *)((int)&SEQ->REG050 + uVar1) & ~(byte)(1 << (uint)index);
+  if ((uVar1 < 2) && (index < 4)) 
+  {
+    *(byte *)((int)&SEQ->REG050 + uVar1) = *(byte *)((int)&SEQ->REG050 + uVar1) & ~(byte)(1 << (uint)index);
     GENERIC_PHY_SetAddressFilteringMatchTable();
     return true;
   }
@@ -925,22 +923,20 @@ bool GENERIC_PHY_SetAddress(uint8_t field,uint8_t index,uint8_t *value,bool enab
   uint uVar5;
   
   uVar5 = (uint)field;
-  if ((uVar5 < 2) && (index < 4)) {
+  if ((uVar5 < 2) && (index < 4)) 
+  {
     GENERIC_PHY_DisableAddress(field,index);
     uVar3 = (uint)index << 3;
     bVar1 = *(byte *)((int)&SEQ->REG04C + uVar5 + 2);
     puVar2 = &SEQ->REG00C + uVar5 * 8;
-    for (iVar4 = 0; iVar4 < (int)(uint)bVar1; iVar4 = iVar4 + 1) {
+    for (iVar4 = 0; iVar4 < (int)(uint)bVar1; iVar4 = iVar4 + 1) 
+	{
       uVar5 = *puVar2 & ~(0xff << (uVar3 & 0xff));
-      if (value != NULL) {
-        uVar5 = uVar5 | (uint)value[iVar4] << (uVar3 & 0xff);
-      }
+      if (value != NULL) uVar5 = uVar5 | (uint)value[iVar4] << (uVar3 & 0xff);
       *puVar2 = uVar5;
       puVar2 = puVar2 + 1;
     }
-    if (enable != false) {
-      GENERIC_PHY_EnableAddress(field,index);
-    }
+    if (enable != false) GENERIC_PHY_EnableAddress(field,index);
     return true;
   }
   return false;
@@ -951,10 +947,7 @@ bool GENERIC_PHY_SetAddress(uint8_t field,uint8_t index,uint8_t *value,bool enab
 RAIL_Status_t GENERIC_PHY_TimerStart(uint32_t time,uint32_t mode)
 
 {
-  RAIL_Status_t RVar1;
-  
-  RVar1 = PROTIMER_CCTimerStart(2,time,mode);
-  return RVar1;
+  return PROTIMER_CCTimerStart(2,time,mode);
 }
 
 
@@ -962,8 +955,7 @@ RAIL_Status_t GENERIC_PHY_TimerStart(uint32_t time,uint32_t mode)
 void GENERIC_PHY_TimerStop(void)
 
 {
-  PROTIMER_CCTimerStop('\x02');
-  return;
+  PROTIMER_CCTimerStop(2);
 }
 
 
@@ -971,10 +963,7 @@ void GENERIC_PHY_TimerStop(void)
 uint32_t GENERIC_PHY_TimerGetTimeout(void)
 
 {
-  uint32_t uVar1;
-  
-  uVar1 = PROTIMER_GetCCTime(2);
-  return uVar1;
+  return PROTIMER_GetCCTime(2);
 }
 
 
@@ -982,10 +971,7 @@ uint32_t GENERIC_PHY_TimerGetTimeout(void)
 bool GENERIC_PHY_TimerExpired(void)
 
 {
-  uint uVar1;
-  
-  uVar1 = (PROTIMER->IF);
-  return SUB41((uVar1 << 0x15) >> 0x1f,0);
+  return SUB41((PROTIMER->IF << 0x15) >> 0x1f,0);
 }
 
 

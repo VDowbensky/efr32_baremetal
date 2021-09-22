@@ -106,10 +106,7 @@ int PHY_UTILS_BitsetHighestSetBit(int param_1,int param_2)
   iVar1 = 0;
   while( true ) 
   {
-    if (iVar1 == param_2) 
-	{
-      return -1;
-    }
+    if (iVar1 == param_2) return -1;
     iVar2 = count_leading_zeroes(*(undefined4 *)(param_1 + iVar1 * 4));
     if (iVar2 != 0x20) break;
     iVar1 = iVar1 + 1;
@@ -135,9 +132,7 @@ void PHY_UTILS_DelayUs(uint32_t us)
   {
     PROTIMER_Stop();
     PROTIMER_Reset();
-    return;
   }
-  return;
 }
 
 

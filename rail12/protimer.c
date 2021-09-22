@@ -340,21 +340,16 @@ bool PROTIMER_SetTime(uint32_t time)
 
 {
   char cVar1;
-  uint32_t uVar2;
   
   cVar1 = PROTIMER_IsRunning();
-  if ((bool)cVar1 != false) 
+  if ((bool)PROTIMER_IsRunning() != false) 
   {
     PROTIMER_Stop();
-    cVar1 = '\x01';
+    cVar1 = 1;
   }
   PROTIMER_Reset();
-  uVar2 = PROTIMER_UsToPrecntOverflow(time);
-  write_volatile_4(PROTIMER->WRAPCNT,uVar2);
-  if (cVar1 != '\0') 
-  {
-    PROTIMER_Start();
-  }
+  PROTIMER->WRAPCNT = PROTIMER_UsToPrecntOverflow(time);
+  if (cVar1 != 0) PROTIMER_Start();
   return true;
 }
 
@@ -363,27 +358,21 @@ bool PROTIMER_SetTime(uint32_t time)
 void PROTIMER_LBTCfgSet(uint param_1,int param_2,uint param_3,int param_4,byte param_5)
 
 {
-  uint uVar1;
-  
-  uVar1 = (PROTIMER->CTRL);
-  write_volatile_4(PROTIMER->CTRL,uVar1 & 0xff0fffff | 0x900000);
+  PROTIMER->CTRL &= 0xff0fffff;
+  PROTIMER->CTRL |= 0x900000;
   if (param_3 == 0) 
   {
-    write_volatile_4(PROTIMER->RXCTRL,0);
+    PROTIMER->RXCTRL = 0;
     param_1 = param_3;
   }
-  write_volatile_4(PROTIMER->LBTCTRL,
-                   (uint)param_5 << 8 | param_4 << 0x18 | param_2 << 4 | param_3 << 0x10 | param_1);
-  uVar1 = (PROTIMER->BASECNTTOP);
-  write_volatile_4(PROTIMER->TOUT0CNTTOP,uVar1);
+  PROTIMER->LBTCTRL = (uint)param_5 << 8 | param_4 << 0x18 | param_2 << 4 | param_3 << 0x10 | param_1;
+  PROTIMER->TOUT0CNTTOP,PROTIMER->BASECNTTOP;
   if (param_3 != 0) 
   {
-    RADIO_RxWarmTimeGet();
-    uVar1 = PROTIMER_UsToPrecntOverflow();
-    write_volatile_4(PROTIMER->TOUT0COMP,uVar1);
-    write_volatile_4(PROTIMER->RXCTRL,0x18011b01);
+    PROTIMER->TOUT0COMP = PROTIMER_UsToPrecntOverflow(RADIO_RxWarmTimeGet());
+    PROTIMER->RXCTRL = 0x18011b01;
   }
-  write_volatile_4(PROTIMER->TXCTRL,0x1401);
+  PROTIMER->TXCTRL = 0x1401;
 }
 
 
@@ -408,10 +397,8 @@ void PROTIMER_DelayUs(uint32_t us)
     while( true ) 
 	{
       uVar7 = uVar4;
-      if (uVar2 >> 1 <= uVar4) 
-	  {
-        uVar7 = uVar2 >> 1;
-      }
+      if (uVar2 >> 1 <= uVar4) uVar7 = uVar2 >> 1;
+
       do 
 	  {
         uVar1 = (PROTIMER->WRAPCNT);
