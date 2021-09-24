@@ -1,0 +1,115 @@
+const CSWTCH.10[]
+availableCallbacks
+currentCallbacks
+enabledCallbacks
+bufcPendRxFrameError
+BUFC_TxAckBuffer
+BUFC_TxBuffer
+BUFC_RxLengthBuffer
+const genericSeqProg[]
+const genericSeqProg_size
+scheduledRxHardEnd
+addressFilterMatchTable
+pendedRxWindowEnd
+scheduledRxLoop
+globalCalType
+const rcIrCalData[]
+const ConvertAuxLoDivToRegVal[]
+bufcRxStreaming
+const power0dBmParams
+const paParams
+apcEnabled
+gCurrentModulation
+gDesiredRampTime
+gPaConfig
+forceIrCal
+usRatioInt
+usRatioFrac
+precntRatioInt
+precntRatioFrac
+sniffBaudHz
+sniffBaudHz
+const modemCfDec0Factors[]
+const EFRDRV_actionFunc
+const regBases
+EFRDRV_irqClbk
+RAIL_CalPend
+RAIL_CalEnable
+berConfigGlobal
+currentEntry
+const rail_ver
+channelConfig
+currentChannel
+RAIL_DebugMode
+currentChannel
+lbtTimeout.8944
+protChChngCB
+timerExpired
+aveRssiPeriodInCca
+reseedRandom.8945
+currentRssiAverage
+isRssiReady
+saveFrameDetDisable
+bufcEnabledCallbacks
+const CSWTCH.104
+txCbufcCallbacks
+saveRssiPeriodPreCca
+const callbacks
+saveRssiPeriod
+PTR_rxFifoAlmostFull_00011398
+RAIL_RFSENSE_Callback
+txConfigEvents
+rxConfigEvents
+saveRssiPeriodInCca
+_enabledCallbacks
+const bufcCallbacks - ???
+seed1
+seed0
+pseudoRandomSeeded
+berSkipBytes
+nibblebits.7220
+testModeRegisterState
+berInfiniteMode
+bufcCallbacks
+berStats
+berSkipBytesLeft
+berTotalBytesLeft
+berTotalErrors
+berTotalBits
+em4Flag
+RFSENSE_Cb
+RFSENSE_RfOscFreqHz
+rtccSyncFlag
+refRtcCnt
+ccCtrlBackup
+vcoGainPte
+dcdcRetimeClkTarget
+currRfFrequency
+currChSpacing
+currIfFrequency
+currIfFrequency
+const DAT_00010328
+timings
+nsToStimerRatio
+
+const ble_config_base_min
+const  ble_config_2416_2418_2422_2454_2456_2460_20dBm_min 
+const ble_config_2458MHz_min
+const ble_config_base
+const ble_config_2458MHz_20dBm_min
+const ble_config_base_20dBm_min
+const ieee802154_config_2415MHz_min
+const ieee802154_config_2420MHz_min
+const ieee802154_config_base_min
+const ieee802154_config_base
+isBleEnabled
+const bleChannelConfig
+prevRadioCfg
+const bleChannels
+lastSetTxPower
+const channels
+const entry
+const DAT_00010160
+prevRadioCfg
+const DAT_000101ba
+
