@@ -28,7 +28,6 @@ usRatioFrac
 precntRatioInt
 precntRatioFrac
 sniffBaudHz
-sniffBaudHz
 const modemCfDec0Factors[]
 const EFRDRV_actionFunc
 const regBases
@@ -41,7 +40,6 @@ const rail_ver
 channelConfig
 currentChannel
 RAIL_DebugMode
-currentChannel
 lbtTimeout.8944
 protChChngCB
 timerExpired
