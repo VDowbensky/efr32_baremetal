@@ -11,6 +11,7 @@
 #include "pa.h"
 #include "phy.h"
 #include "rail_rf.h"
+#include "rail_rx.h"
 
 #include "em_device.h"
 #include "em_cmu.h"

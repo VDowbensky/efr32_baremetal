@@ -298,7 +298,15 @@ void cli_storepactune(int argc, char **argv)
 
 void cli_sendburst(int argc, char **argv)
 {
-	printf("SEND_PACKET: Not implemented\r\n");
+	uint32_t t;
+	printf("SEND_PACKET: Under development\r\n");
+	t = ciGetUnsigned(argv[1]);
+	if(t > 0) 
+	{
+		GENERIC_PHY_PacketTx();
+		//RAC->CMD = 1;
+		printf("SEND_PACKET: Done\r\n");
+	}
 }
 
 void cli_txstream(int argc, char **argv)

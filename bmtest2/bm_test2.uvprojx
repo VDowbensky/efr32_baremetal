@@ -314,7 +314,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>3</Optim>
+            <Optim>6</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -673,6 +673,31 @@
               <FileName>ctune.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\radio\src\ctune.c</FilePath>
+            </File>
+            <File>
+              <FileName>rail_rf_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\radio\src\rail_rf_hal.c</FilePath>
+            </File>
+            <File>
+              <FileName>radio_callbacks.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\radio\src\radio_callbacks.c</FilePath>
+            </File>
+            <File>
+              <FileName>rail_rf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\radio\src\rail_rf.c</FilePath>
+            </File>
+            <File>
+              <FileName>rail_calibration.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\radio\src\rail_calibration.c</FilePath>
+            </File>
+            <File>
+              <FileName>rail_rx.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\radio\src\rail_rx.c</FilePath>
             </File>
           </Files>
         </Group>

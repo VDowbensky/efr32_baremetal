@@ -174,13 +174,13 @@ void pktRxDoneEvt(void)
   if (iVar2 != 0xffff)
   {
     uVar9 = iVar2 - iVar1 & 0xffff;
-    uVar3 = RAILCb_AllocateMemory(uVar9 + 0xc);
+//    uVar3 = RAILCb_AllocateMemory(uVar9 + 0xc);
     uVar8 = 0;
     while (uVar8 < uVar9)
     {
       iVar2 = uVar8 + 10;
       local_38 = uVar9 - uVar8;
-      RAILCb_BeginWriteMemory((void*)uVar3,iVar2,&local_38);
+//      RAILCb_BeginWriteMemory((void*)uVar3,iVar2,&local_38);
 			//void *RAILCb_BeginWriteMemory(void *handle,uint32_t offset,uint32_t *available);
       if (local_38 == 0)
       {
@@ -194,11 +194,11 @@ void pktRxDoneEvt(void)
         iVar5 = 0;
       }
       uVar8 = uVar8 & 0xffff;
-      RAILCb_EndWriteMemory((void*)uVar3,iVar2,iVar5);
+//      RAILCb_EndWriteMemory((void*)uVar3,iVar2,iVar5);
     }
     GENERIC_PHY_PacketRxAppendedInfoHelper(iVar1,auStack52);
     local_38 = 0xc;
-    puVar6 = (uint32_t *)RAILCb_BeginWriteMemory((void*)uVar3,0,&local_38);
+//    puVar6 = (uint32_t *)RAILCb_BeginWriteMemory((void*)uVar3,0,&local_38);
     if ((puVar6 == NULL) || (local_38 < 0xc))
     {
       uVar7 = 0;
@@ -223,9 +223,9 @@ void pktRxDoneEvt(void)
       *puVar6 = uVar7;
       uVar7 = 0xc;
     }
-    RAILCb_EndWriteMemory((void*)uVar3,0,uVar7);
-    RAILCb_RxPacketReceived((void*)uVar3);
-    RAILCb_FreeMemory((void*)uVar3);
+//    RAILCb_EndWriteMemory((void*)uVar3,0,uVar7);
+//    RAILCb_RxPacketReceived((void*)uVar3);
+//    RAILCb_FreeMemory((void*)uVar3);
   }
 }
 

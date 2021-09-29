@@ -27,7 +27,18 @@ void init_radio(void)
 	init_synth();
 	init_pa();
 	init_protimer();
-	//RADIO_Idle();
+	RAIL_RfIdle();
+	//RAIL_SetTxTransitions(RAIL_RF_STATE_RX, RAIL_RF_STATE_RX);
+	//RAIL_SetRxTransitions(RAIL_RF_STATE_RX, RAIL_RF_STATE_RX, true);
+	
+	//start receiving
+	//RAIL_RxConfig(0x74,0);
+	RAIL_RxStart(0);
+	//RFTEST_StartRx();
+	//RAIL_RfHalRxStart(0);
+	//GENERIC_PHY_RadioEnable(1);
+	//GENERIC_PHY_ChannelSet(0);
+	//GENERIC_PHY_StartRx(0);
 }
 
 void RADIO_CLKEnable(void)
@@ -70,7 +81,7 @@ void init_buffers(void)
   BUFC->BUF1_ADDR = (uint32_t)&RADIO_rxBuffer;
   BUFC->BUF1_THRESHOLDCTRL = 0xaf;
   BUFC->BUF0_CTRL = 2; //size
-  BUFC->BUF0_ADDR = (uint32_t)&RADIO_txBuffer;
+	BUFC->BUF0_ADDR = (uint32_t)&RADIO_txBuffer;
   BUFC->BUF0_THRESHOLDCTRL = 0x2020; //BUFC_BUF0_THRESHOLDCTRL_THRESHOLDMODE_Msk | THRESHOLD
   RADIO_FrameControlDescrBufferIdSet(0,0);
   RADIO_FrameControlDescrBufferIdSet(1,0);

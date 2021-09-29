@@ -628,15 +628,15 @@ void GENERIC_PHY_StartRx(int param_1)
 {
 //  int iVar1;
   
-//  if (param_1 != 0) FRC->WCNTCMP0 = param_1 - 1;
+  if (param_1 != 0) FRC->WCNTCMP0 = param_1 - 1;
 
-//  if ((RADIO_RxBufferGet() == 0) && (*(code **)(currentCallbacks + 0x48) != NULL) //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//  if ((RADIO_RxBufferGet() == 0) && (*(void **)(currentCallbacks + 0x48) != NULL)) //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //		  {
-//	  	  	  (**(code **)(currentCallbacks + 0x48))();
+//	  	  	  (**(void **)(currentCallbacks + 0x48))();
 //	  	  	  	 RADIO_RxBufferSet(RADIO_rxBuffer);
 //		  }
   *(uint32_t*)0x21000efc = *(uint32_t*)0x21000efc  & 0xffffffdf;
-//	BUS_RegMaskedSet(&RAC->RXENSRCEN, 2);
+	BUS_RegMaskedSet(&RAC->RXENSRCEN, 2); //restarts here!!!
 }
 
 
@@ -828,7 +828,6 @@ void GENERIC_PHY_SYNTH_IRQHandler(void)
 void GENERIC_PHY_ResetPacketConfig(void)
 
 {
-	FRC_CLR->DFLCTRL = FRC_DFLCTRL_DFLMODE_Msk;
 	BUS_RegMaskedClear(&FRC->DFLCTRL, FRC_DFLCTRL_DFLMODE_Msk);
   FRC->DFLCTRL = FRC->DFLCTRL;
   *(uint32_t*)0x21000efc &= 0xfffffff8;

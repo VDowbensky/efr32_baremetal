@@ -358,7 +358,7 @@ typedef enum IRQn{
 #define RFSENSE_BASE      (0x40088000UL)
 #define BUFC_BASE         (0x40081000UL)
 #define SEQ_BASE          (0x21000F00UL)
-/*
+
 #define AGC_CLR_BASE                0x44087000UL
 #define AGC_SET_BASE                0x46087000UL
 #define FRC_CLR_BASE                0x44080000UL
@@ -419,7 +419,7 @@ typedef enum IRQn{
 #define RTCC_SET_BASE               0x46042000UL
 #define WDOG0_CLR_BASE              0x44052000UL
 #define WDOG0_SET_BASE              0x46052000UL
-*/
+
 #define DEVINFO_BASE      (0x0FE081B0UL) /**< DEVINFO base address */
 #define ROMTABLE_BASE     (0xE00FFFD0UL) /**< ROMTABLE base address */
 #define LOCKBITS_BASE     (0x0FE04000UL) /**< Lock-bits page base address */
@@ -468,7 +468,7 @@ typedef enum IRQn{
 #define RFSENSE      ((RFSENSE_Typedef*) RFSENSE_BASE)
 #define BUFC         ((BUFC_Typedef*) BUFC_BASE)
 #define SEQ          ((SEQ_Typedef*) SEQ_BASE)
-/*
+
 #define AGC_CLR                     ((AGC_Typedef*)           AGC_CLR_BASE)
 #define AGC_SET                     ((AGC_Typedef*)           AGC_SET_BASE)
 #define FRC_CLR                     ((FRC_Typedef*)           FRC_CLR_BASE)
@@ -529,7 +529,7 @@ typedef enum IRQn{
 #define RTCC_SET                    ((RTCC_Typedef*)          RTCC_SET_BASE)
 #define WDOG0_CLR                   ((WDOG0_Typedef*)         WDOG0_CLR_BASE)
 #define WDOG0_SET                   ((WDOG0_Typedef*)         WDOG0_SET_BASE)
-*/
+
 
 #define DEVINFO      ((DEVINFO_TypeDef *) DEVINFO_BASE)     /**< DEVINFO base pointer */
 #define ROMTABLE     ((ROMTABLE_TypeDef *) ROMTABLE_BASE)   /**< ROMTABLE base pointer */

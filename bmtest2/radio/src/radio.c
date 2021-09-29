@@ -17,7 +17,24 @@ uint32_t rxWarmTimeUs;
 void RADIO_BUFCClear(int buf)
 
 {
-  *(uint32_t*)((buf * 0x30 + 0x42181028) * 0x20) = 1; //using bit-banding C081
+  //*(uint32_t*)((buf * 0x30 + 0x42181028) * 0x20) = 1; //using bit-banding C081
+	switch(buf)
+	{
+		case 0:
+			BUFC->BUF0_CMD = BUFC_BUF0_CMD_CLEAR_Msk;
+			break;
+		case 1:
+			BUFC->BUF1_CMD = BUFC_BUF1_CMD_CLEAR_Msk;
+			break;
+		case 2:
+			BUFC->BUF2_CMD = BUFC_BUF2_CMD_CLEAR_Msk;
+			break;
+		case 3:
+			BUFC->BUF3_CMD = BUFC_BUF3_CMD_CLEAR_Msk;
+			break;
+		default:
+			break;
+	}
 }
 
 

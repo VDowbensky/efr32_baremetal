@@ -48,9 +48,6 @@ int main(void)
 	init_peripherals();
 	init_radio();
 	printf("Starting. Idle mode\r\n");
-	//start receiving
-	//RAIL_RxStart(0);
-	//GENERIC_PHY_StartRx(1);
 	printf("Receiver on\r\n");
 	cli_init();
 
