@@ -11,6 +11,7 @@ typedef unsigned long long    ulonglong;
 typedef unsigned char    undefined1;
 typedef unsigned short    undefined2;
 typedef unsigned int    undefined4;
+typedef unsigned long long    undefined8;
 typedef unsigned short    ushort;
 typedef unsigned short    word;
 #define unkbyte9   unsigned long long
@@ -9230,19 +9231,108 @@ struct _IO_marker {
     int _pos;
 };
 
+#define __WORDSIZE 32
+
+typedef struct _IO_FILE FILE;
+
+typedef uint __mode_t;
+
+typedef __mode_t mode_t;
+
+typedef short int16_t;
+
+typedef struct evp_pkey_ctx_st evp_pkey_ctx_st, *Pevp_pkey_ctx_st;
+
+typedef struct evp_pkey_ctx_st EVP_PKEY_CTX;
+
+struct evp_pkey_ctx_st {
+};
+
+typedef struct astruct astruct, *Pastruct;
+
+struct astruct {
+    undefined * field_0x0;
+};
+
+typedef struct astruct_4 astruct_4, *Pastruct_4;
+
+struct astruct_4 {
+    undefined4 field_0x0;
+};
+
+typedef struct astruct_3 astruct_3, *Pastruct_3;
+
+struct astruct_3 {
+    undefined4 field_0x0;
+    undefined field_0x4;
+    undefined field_0x5;
+    undefined field_0x6;
+    undefined field_0x7;
+    undefined field_0x8;
+};
+
+typedef struct astruct_6 astruct_6, *Pastruct_6;
+
+struct astruct_6 {
+    undefined4 field_0x0;
+    undefined4 field_0x4;
+    undefined4 field_0x8;
+    undefined4 field_0xc;
+};
+
+typedef struct astruct_5 astruct_5, *Pastruct_5;
+
+struct astruct_5 {
+    int field_0x0;
+    int field_0x4;
+    int field_0x8;
+    undefined field_0xc;
+};
+
+typedef struct astruct_2 astruct_2, *Pastruct_2;
+
+struct astruct_2 {
+    int field_0x0;
+    uint field_0x4;
+};
+
+typedef struct astruct_1 astruct_1, *Pastruct_1;
+
+struct astruct_1 {
+    byte field_0x0;
+    undefined field_0x1;
+    undefined field_0x2;
+    undefined field_0x3;
+    int field_0x4;
+    int field_0x8;
+    undefined4 field_0xc;
+};
+
+typedef struct astruct_7 astruct_7, *Pastruct_7;
+
+typedef ushort uint16_t;
+
+struct astruct_7 {
+    char field_0x0;
+    undefined field_0x1;
+    short field_0x2;
+    undefined field_0x4;
+    undefined field_0x5;
+    uint16_t field_0x6;
+};
+
 typedef bool _Bool;
 
 typedef struct debugSignal debugSignal, *PdebugSignal;
 
 typedef struct debugSignal debugSignal_t;
 
-typedef union anon_union.conflict7d12_for_loc anon_union.conflict7d12_for_loc, *Panon_union.conflict7d12_for_loc;
+typedef union anon_union.conflict6565_for_loc anon_union.conflict6565_for_loc, *Panon_union.conflict6565_for_loc;
 
 typedef struct prs_t prs_t, *Pprs_t;
 
-typedef ushort __uint16_t;
 
-typedef __uint16_t uint16_t;
+// WARNING! conflicting data type names: /DWARF/_stdint.h/uint16_t - /stdint.h/uint16_t
 
 typedef uchar __uint8_t;
 
@@ -9253,7 +9343,7 @@ struct prs_t {
     uint8_t source;
 };
 
-union anon_union.conflict7d12_for_loc {
+union anon_union.conflict6565_for_loc {
     struct prs_t prs;
     uint16_t debugEventNum;
 };
@@ -9262,7 +9352,7 @@ struct debugSignal {
     char * name;
     _Bool isPrs;
     undefined field_0x5;
-    union anon_union.conflict7d12_for_loc loc;
+    union anon_union.conflict6565_for_loc loc;
 };
 
 typedef struct debugPin debugPin, *PdebugPin;
@@ -9285,9 +9375,9 @@ struct debugPin {
     uint8_t gpioPin;
 };
 
-typedef union anon_union.conflict7d12 anon_union.conflict7d12, *Panon_union.conflict7d12;
+typedef union anon_union.conflict6565 anon_union.conflict6565, *Panon_union.conflict6565;
 
-union anon_union.conflict7d12 {
+union anon_union.conflict6565 {
     struct prs_t prs;
     uint16_t debugEventNum;
 };
@@ -9304,127 +9394,19 @@ struct __va_list {
     void * __ap;
 };
 
-typedef struct anon_struct.conflict24c34 anon_struct.conflict24c34, *Panon_struct.conflict24c34;
+typedef struct BCP_Packet BCP_Packet, *PBCP_Packet;
+
+struct BCP_Packet {
+    uint8_t magic;
+    uint8_t type;
+    uint8_t payloadLength;
+    uint8_t reserved;
+    uint8_t data[132];
+};
 
 typedef ulong __uint32_t;
 
 typedef __uint32_t uint32_t;
-
-typedef long __int32_t;
-
-typedef __int32_t int32_t;
-
-struct anon_struct.conflict24c34 {
-    uint32_t structType:2;
-    uint32_t reserved0:1;
-    uint32_t structReq:1;
-    uint32_t xferCnt:11;
-    uint32_t byteSwap:1;
-    uint32_t blockSize:4;
-    uint32_t doneIfs:1;
-    uint32_t reqMode:1;
-    uint32_t decLoopCnt:1;
-    uint32_t ignoreSrec:1;
-    uint32_t srcInc:2;
-    uint32_t size:2;
-    uint32_t dstInc:2;
-    uint32_t srcAddrMode:1;
-    uint32_t dstAddrMode:1;
-    uint32_t syncSet:8;
-    uint32_t syncClr:8;
-    uint32_t reserved3:16;
-    uint32_t matchVal:8;
-    uint32_t matchEn:8;
-    uint32_t reserved4:16;
-    uint32_t linkMode:1;
-    uint32_t link:1;
-    int32_t linkAddr:30;
-};
-
-typedef struct anon_struct.conflict24dee anon_struct.conflict24dee, *Panon_struct.conflict24dee;
-
-struct anon_struct.conflict24dee {
-    uint32_t structType:2;
-    uint32_t reserved0:1;
-    uint32_t structReq:1;
-    uint32_t xferCnt:11;
-    uint32_t byteSwap:1;
-    uint32_t blockSize:4;
-    uint32_t doneIfs:1;
-    uint32_t reqMode:1;
-    uint32_t decLoopCnt:1;
-    uint32_t ignoreSrec:1;
-    uint32_t srcInc:2;
-    uint32_t size:2;
-    uint32_t dstInc:2;
-    uint32_t srcAddrMode:1;
-    uint32_t dstAddrMode:1;
-    uint32_t immVal;
-    uint32_t dstAddr;
-    uint32_t linkMode:1;
-    uint32_t link:1;
-    int32_t linkAddr:30;
-};
-
-typedef union LDMA_Descriptor_t LDMA_Descriptor_t, *PLDMA_Descriptor_t;
-
-typedef struct anon_struct.conflict24ac8 anon_struct.conflict24ac8, *Panon_struct.conflict24ac8;
-
-struct anon_struct.conflict24ac8 {
-    uint32_t structType:2;
-    uint32_t reserved0:1;
-    uint32_t structReq:1;
-    uint32_t xferCnt:11;
-    uint32_t byteSwap:1;
-    uint32_t blockSize:4;
-    uint32_t doneIfs:1;
-    uint32_t reqMode:1;
-    uint32_t decLoopCnt:1;
-    uint32_t ignoreSrec:1;
-    uint32_t srcInc:2;
-    uint32_t size:2;
-    uint32_t dstInc:2;
-    uint32_t srcAddrMode:1;
-    uint32_t dstAddrMode:1;
-    uint32_t srcAddr;
-    uint32_t dstAddr;
-    uint32_t linkMode:1;
-    uint32_t link:1;
-    int32_t linkAddr:30;
-};
-
-union LDMA_Descriptor_t {
-    struct anon_struct.conflict24ac8 xfer;
-    struct anon_struct.conflict24c34 sync;
-    struct anon_struct.conflict24dee wri;
-};
-
-typedef struct LDMA_TransferCfg_t LDMA_TransferCfg_t, *PLDMA_TransferCfg_t;
-
-struct LDMA_TransferCfg_t {
-    uint32_t ldmaReqSel;
-    uint8_t ldmaCtrlSyncPrsClrOff;
-    uint8_t ldmaCtrlSyncPrsClrOn;
-    uint8_t ldmaCtrlSyncPrsSetOff;
-    uint8_t ldmaCtrlSyncPrsSetOn;
-    _Bool ldmaReqDis;
-    _Bool ldmaDbgHalt;
-    uint8_t ldmaCfgArbSlots;
-    uint8_t ldmaCfgSrcIncSign;
-    uint8_t ldmaCfgDstIncSign;
-    uint8_t ldmaLoopCnt;
-    undefined field_0xe;
-    undefined field_0xf;
-};
-
-typedef struct LDMA_Init_t LDMA_Init_t, *PLDMA_Init_t;
-
-struct LDMA_Init_t {
-    uint8_t ldmaInitCtrlNumFixed;
-    uint8_t ldmaInitCtrlSyncPrsClrEn;
-    uint8_t ldmaInitCtrlSyncPrsSetEn;
-    uint8_t ldmaInitIrqPriority;
-};
 
 typedef uint32_t EMSTATUS;
 
@@ -9440,79 +9422,6 @@ typedef enum RTCDRV_TimerType_t {
     rtcdrvTimerTypeOneshot=0,
     rtcdrvTimerTypePeriodic=1
 } RTCDRV_TimerType_t;
-
-typedef struct BerStatus BerStatus, *PBerStatus;
-
-typedef char __int8_t;
-
-typedef __int8_t int8_t;
-
-struct BerStatus {
-    uint32_t bytesTotal;
-    uint32_t bytesTested;
-    uint32_t bitErrors;
-    int8_t rssi;
-    undefined field_0xd;
-    undefined field_0xe;
-    undefined field_0xf;
-};
-
-typedef struct BerStatus BerStatus_t;
-
-typedef struct RAIL_PtiConfig RAIL_PtiConfig, *PRAIL_PtiConfig;
-
-typedef uint8_t RAIL_PtiMode_t;
-
-struct RAIL_PtiConfig {
-    RAIL_PtiMode_t mode;
-    undefined field_0x1;
-    undefined field_0x2;
-    undefined field_0x3;
-    uint32_t baud;
-    uint8_t doutLoc;
-    enum GPIO_Port_TypeDef doutPort;
-    uint8_t doutPin;
-    uint8_t dclkLoc;
-    enum GPIO_Port_TypeDef dclkPort;
-    uint8_t dclkPin;
-    uint8_t dframeLoc;
-    enum GPIO_Port_TypeDef dframePort;
-    uint8_t dframePin;
-    undefined field_0x11;
-    undefined field_0x12;
-    undefined field_0x13;
-};
-
-typedef enum RAIL_PtiMode_t_enum {
-    RAIL_PTI_MODE_DISABLED=0,
-    RAIL_PTI_MODE_SPI=1,
-    RAIL_PTI_MODE_UART=2,
-    RAIL_PTI_MODE_UART_ONEWIRE=3
-} RAIL_PtiMode_t_enum;
-
-typedef struct RAIL_TxPowerConfig RAIL_TxPowerConfig, *PRAIL_TxPowerConfig;
-
-typedef struct RAIL_TxPowerConfig RAIL_TxPowerConfig_t;
-
-typedef uint8_t RAIL_TxPowerMode_t;
-
-struct RAIL_TxPowerConfig {
-    RAIL_TxPowerMode_t mode;
-    undefined field_0x1;
-    uint16_t voltage;
-    uint16_t rampTime;
-};
-
-typedef enum RAIL_TxPowerMode_t_enum {
-    RAIL_TX_POWER_MODE_2P4_HP=0,
-    RAIL_TX_POWER_MODE_2P4_LP=1,
-    RAIL_TX_POWER_MODE_NONE=3,
-    RAIL_TX_POWER_MODE_SUBGIG=2
-} RAIL_TxPowerMode_t_enum;
-
-typedef struct RAIL_PtiConfig RAIL_PtiConfig_t;
-
-typedef uint8_t RAIL_TxPowerLevel_t;
 
 typedef struct USART_InitI2s_TypeDef USART_InitI2s_TypeDef, *PUSART_InitI2s_TypeDef;
 
@@ -9637,13 +9546,6 @@ typedef enum USART_Parity_TypeDef {
     usartOddParity=768
 } USART_Parity_TypeDef;
 
-typedef enum USART_HwFlowControl_TypeDef {
-    usartHwFlowControlCts=16,
-    usartHwFlowControlCtsAndRts=48,
-    usartHwFlowControlNone=0,
-    usartHwFlowControlRts=32
-} USART_HwFlowControl_TypeDef;
-
 typedef struct USART_InitAsync_TypeDef USART_InitAsync_TypeDef, *PUSART_InitAsync_TypeDef;
 
 typedef enum USART_OVS_TypeDef {
@@ -9677,10 +9579,6 @@ struct USART_InitAsync_TypeDef {
     _Bool autoCsEnable;
     uint8_t autoCsHold;
     uint8_t autoCsSetup;
-    enum USART_HwFlowControl_TypeDef hwFlowControl;
-    undefined field_0x19;
-    undefined field_0x1a;
-    undefined field_0x1b;
 };
 
 typedef enum USART_IrDAPrsSel_Typedef {
@@ -9710,8 +9608,8 @@ struct USART_InitIrDA_TypeDef {
     enum USART_IrDAPw_Typedef irPw;
     _Bool irPrsEn;
     enum USART_IrDAPrsSel_Typedef irPrsSel;
-    undefined field_0x22;
-    undefined field_0x23;
+    undefined field_0x1e;
+    undefined field_0x1f;
 };
 
 typedef struct DEVINFO_TypeDef DEVINFO_TypeDef, *PDEVINFO_TypeDef;
@@ -9830,7 +9728,7 @@ typedef enum EMU_DcdcMode_TypeDef {
 } EMU_DcdcMode_TypeDef;
 
 typedef enum EMU_PowerConfig_TypeDef {
-    emuPowerConfig_DcdcToDvdd=0
+    emuPowerConfig_DcdcToDvdd=2
 } EMU_PowerConfig_TypeDef;
 
 typedef struct EMU_EM23Init_TypeDef EMU_EM23Init_TypeDef, *PEMU_EM23Init_TypeDef;
@@ -9839,14 +9737,8 @@ struct EMU_EM23Init_TypeDef {
     _Bool em23VregFullEn;
 };
 
-typedef enum EMU_DcdcConductionMode_TypeDef {
-    emuDcdcConductionMode_ContinuousLN=0,
-    emuDcdcConductionMode_DiscontinuousLN=1
-} EMU_DcdcConductionMode_TypeDef;
 
-typedef short __int16_t;
-
-typedef __int16_t int16_t;
+// WARNING! conflicting data type names: /DWARF/_stdint.h/int16_t - /types.h/int16_t
 
 typedef int16_t EMU_DcdcLnReverseCurrentControl_TypeDef;
 
@@ -9966,6 +9858,39 @@ struct SYSTEM_CalAddrVal_TypeDef {
     uint32_t calValue;
 };
 
+typedef enum SYSTEM_PartFamily_TypeDef {
+    systemPartFamilyBlue1B=20,
+    systemPartFamilyBlue1P=19,
+    systemPartFamilyBlue1V=21,
+    systemPartFamilyEfm32Gecko=71,
+    systemPartFamilyEfm32Giant=72,
+    systemPartFamilyEfm32Happy=77,
+    systemPartFamilyEfm32Jade1B=83,
+    systemPartFamilyEfm32Leopard=74,
+    systemPartFamilyEfm32Pearl1B=81,
+    systemPartFamilyEfm32Tiny=73,
+    systemPartFamilyEfm32Wonder=75,
+    systemPartFamilyEfm32Zero=76,
+    systemPartFamilyEzr32Happy=122,
+    systemPartFamilyEzr32Leopard=120,
+    systemPartFamilyEzr32Wonder=121,
+    systemPartFamilyFlex1B=26,
+    systemPartFamilyFlex1P=25,
+    systemPartFamilyFlex1V=27,
+    systemPartFamilyGecko=71,
+    systemPartFamilyGiant=72,
+    systemPartFamilyHappy=77,
+    systemPartFamilyLeopard=74,
+    systemPartFamilyMighty1B=17,
+    systemPartFamilyMighty1P=16,
+    systemPartFamilyMighty1V=18,
+    systemPartFamilyMighty2P=28,
+    systemPartFamilyTiny=73,
+    systemPartFamilyUnknown=-1,
+    systemPartFamilyWonder=75,
+    systemPartFamilyZero=76
+} SYSTEM_PartFamily_TypeDef;
+
 typedef struct Timer Timer, *PTimer;
 
 typedef struct Timer Timer_t;
@@ -9991,92 +9916,12 @@ struct Timer {
     undefined field_0x27;
 };
 
-typedef enum DMADRV_DataSize_t {
-    dmadrvDataSize1=0,
-    dmadrvDataSize2=1,
-    dmadrvDataSize4=2
-} DMADRV_DataSize_t;
-
-typedef enum DMADRV_PeripheralSignal_t {
-    dmadrvPeripheralSignal_ADC0_SCAN=524289,
-    dmadrvPeripheralSignal_ADC0_SINGLE=524288,
-    dmadrvPeripheralSignal_CRYPTO_DATA0RD=3211266,
-    dmadrvPeripheralSignal_CRYPTO_DATA0WR=3211264,
-    dmadrvPeripheralSignal_CRYPTO_DATA0XWR=3211265,
-    dmadrvPeripheralSignal_CRYPTO_DATA1RD=3211268,
-    dmadrvPeripheralSignal_CRYPTO_DATA1WR=3211267,
-    dmadrvPeripheralSignal_I2C0_RXDATAV=1310720,
-    dmadrvPeripheralSignal_I2C0_TXBL=1310721,
-    dmadrvPeripheralSignal_LEUART0_RXDATAV=1048576,
-    dmadrvPeripheralSignal_LEUART0_TXBL=1048577,
-    dmadrvPeripheralSignal_LEUART0_TXEMPTY=1048578,
-    dmadrvPeripheralSignal_MSC_WDATA=3145728,
-    dmadrvPeripheralSignal_NONE=0,
-    dmadrvPeripheralSignal_PRS_REQ0=65536,
-    dmadrvPeripheralSignal_PRS_REQ1=65537,
-    dmadrvPeripheralSignal_TIMER0_CC0=1572865,
-    dmadrvPeripheralSignal_TIMER0_CC1=1572866,
-    dmadrvPeripheralSignal_TIMER0_CC2=1572867,
-    dmadrvPeripheralSignal_TIMER0_UFOF=1572864,
-    dmadrvPeripheralSignal_TIMER1_CC0=1638401,
-    dmadrvPeripheralSignal_TIMER1_CC1=1638402,
-    dmadrvPeripheralSignal_TIMER1_CC2=1638403,
-    dmadrvPeripheralSignal_TIMER1_CC3=1638404,
-    dmadrvPeripheralSignal_TIMER1_UFOF=1638400,
-    dmadrvPeripheralSignal_USART0_RXDATAV=786432,
-    dmadrvPeripheralSignal_USART0_TXBL=786433,
-    dmadrvPeripheralSignal_USART0_TXEMPTY=786434,
-    dmadrvPeripheralSignal_USART1_RXDATAV=851968,
-    dmadrvPeripheralSignal_USART1_RXDATAVRIGHT=851971,
-    dmadrvPeripheralSignal_USART1_TXBL=851969,
-    dmadrvPeripheralSignal_USART1_TXBLRIGHT=851972,
-    dmadrvPeripheralSignal_USART1_TXEMPTY=851970
-} DMADRV_PeripheralSignal_t;
-
-typedef enum emState_TypeDef {
-    emState_Restore=1,
-    emState_Save=0
-} emState_TypeDef;
-
 typedef enum errataFixDcdcHs_TypeDef {
     errataFixDcdcHsBypassLn=2,
     errataFixDcdcHsInit=0,
     errataFixDcdcHsLnWaitDone=3,
     errataFixDcdcHsTrimSet=1
 } errataFixDcdcHs_TypeDef;
-
-typedef enum dcdcTrimMode_TypeDef {
-    dcdcTrimMode_EM234H_LP=0,
-    dcdcTrimMode_LN=1
-} dcdcTrimMode_TypeDef;
-
-typedef struct DmaXfer_t DmaXfer_t, *PDmaXfer_t;
-
-struct DmaXfer_t {
-    union LDMA_Descriptor_t desc[2];
-};
-
-typedef struct ChTable_t ChTable_t, *PChTable_t;
-
-typedef enum DmaMode_t {
-    dmaModeBasic=0,
-    dmaModePingPong=1
-} DmaMode_t;
-
-struct ChTable_t {
-    _Bool (* callback)(uint, uint, void *);
-    void * userParam;
-    uint callbackCount;
-    _Bool allocated;
-    enum DmaMode_t mode;
-    undefined field_0xe;
-    undefined field_0xf;
-};
-
-typedef enum DmaDirection_t {
-    dmaDirectionMemToPeripheral=0,
-    dmaDirectionPeripheralToMem=1
-} DmaDirection_t;
 
 typedef uint wint_t;
 
@@ -10126,8 +9971,7 @@ struct CMU_TypeDef {
     uint32_t HFXOSTEADYSTATECTRL;
     uint32_t HFXOTIMEOUTCTRL;
     uint32_t LFXOCTRL;
-    uint32_t ULFRCOCTRL;
-    uint32_t RESERVED3[4];
+    uint32_t RESERVED3[5];
     uint32_t CALCTRL;
     uint32_t CALCNT;
     uint32_t RESERVED4[2];
@@ -10188,6 +10032,10 @@ struct CMU_TypeDef {
 typedef struct __GLIB_Rectangle_t __GLIB_Rectangle_t, *P__GLIB_Rectangle_t;
 
 typedef struct __GLIB_Rectangle_t GLIB_Rectangle_t;
+
+typedef long __int32_t;
+
+typedef __int32_t int32_t;
 
 struct __GLIB_Rectangle_t {
     int32_t xMin;
@@ -10251,9 +10099,58 @@ struct __GLIB_Context_t {
 typedef struct BufferPoolObj_t BufferPoolObj_t, *PBufferPoolObj_t;
 
 struct BufferPoolObj_t {
-    uint32_t refCount;
-    uint8_t data[512];
+    uint8_t refCount;
+    uint8_t data[256];
 };
+
+typedef enum anon_enum_8.conflict60d2 {
+    RAIL_IDLE=0,
+    RAIL_IDLE_ABORT=1,
+    RAIL_IDLE_FORCE_SHUTDOWN=2,
+    RAIL_RFSENSE_2_4GHZ=1,
+    RAIL_RFSENSE_ANY=3,
+    RAIL_RFSENSE_MAX=4,
+    RAIL_RFSENSE_OFF=0,
+    RAIL_RFSENSE_SUBGHZ=2,
+    cmuOsc_AUXHFRCO=4,
+    cmuOsc_HFRCO=3,
+    cmuOsc_HFXO=2,
+    cmuOsc_LFRCO=1,
+    cmuOsc_LFXO=0,
+    cmuOsc_ULFRCO=5,
+    cmuSelect_AUXHFRCO=7,
+    cmuSelect_Disabled=1,
+    cmuSelect_Error=0,
+    cmuSelect_HFCLK=8,
+    cmuSelect_HFCLKLE=6,
+    cmuSelect_HFRCO=5,
+    cmuSelect_HFXO=4,
+    cmuSelect_LFRCO=3,
+    cmuSelect_LFXO=2,
+    cmuSelect_ULFRCO=9,
+    gpioModeDisabled=0,
+    gpioModeInput=1,
+    gpioModeInputPull=2,
+    gpioModeInputPullFilter=3,
+    gpioModePushPull=4,
+    gpioModePushPullAlternate=5,
+    gpioModeWiredAnd=8,
+    gpioModeWiredAndAlternate=12,
+    gpioModeWiredAndAlternateFilter=13,
+    gpioModeWiredAndAlternatePullUp=14,
+    gpioModeWiredAndAlternatePullUpFilter=15,
+    gpioModeWiredAndFilter=9,
+    gpioModeWiredAndPullUp=10,
+    gpioModeWiredAndPullUpFilter=11,
+    gpioModeWiredOr=6,
+    gpioModeWiredOrPullDown=7,
+    gpioPortA=0,
+    gpioPortB=1,
+    gpioPortC=2,
+    gpioPortD=3,
+    gpioPortF=5,
+    palGpioModePushPull=0
+} anon_enum_8.conflict60d2;
 
 typedef enum GPIO_Mode_TypeDef {
     gpioModeDisabled=0,
@@ -10281,95 +10178,6 @@ typedef enum GPIO_DriveStrength_TypeDef {
     gpioDriveStrengthWeakAlternateWeak=65537
 } GPIO_DriveStrength_TypeDef;
 
-typedef enum anon_enum_8.conflict71bd {
-    cmuOsc_AUXHFRCO=4,
-    cmuOsc_HFRCO=3,
-    cmuOsc_HFXO=2,
-    cmuOsc_LFRCO=1,
-    cmuOsc_LFXO=0,
-    cmuOsc_ULFRCO=5,
-    cmuSelect_AUXHFRCO=7,
-    cmuSelect_Disabled=1,
-    cmuSelect_Error=0,
-    cmuSelect_HFCLK=9,
-    cmuSelect_HFCLKLE=6,
-    cmuSelect_HFRCO=5,
-    cmuSelect_HFSRCCLK=8,
-    cmuSelect_HFXO=4,
-    cmuSelect_LFRCO=3,
-    cmuSelect_LFXO=2,
-    cmuSelect_ULFRCO=10,
-    emuBiasMode_1KHz=0,
-    emuBiasMode_4KHz=1,
-    emuBiasMode_Continuous=2,
-    gpioModeDisabled=0,
-    gpioModeInput=1,
-    gpioModeInputPull=2,
-    gpioModeInputPullFilter=3,
-    gpioModePushPull=4,
-    gpioModePushPullAlternate=5,
-    gpioModeWiredAnd=8,
-    gpioModeWiredAndAlternate=12,
-    gpioModeWiredAndAlternateFilter=13,
-    gpioModeWiredAndAlternatePullUp=14,
-    gpioModeWiredAndAlternatePullUpFilter=15,
-    gpioModeWiredAndFilter=9,
-    gpioModeWiredAndPullUp=10,
-    gpioModeWiredAndPullUpFilter=11,
-    gpioModeWiredOr=6,
-    gpioModeWiredOrPullDown=7,
-    gpioPortA=0,
-    gpioPortB=1,
-    gpioPortC=2,
-    gpioPortD=3,
-    gpioPortF=5,
-    ldmaCfgArbSlotsAs1=0,
-    ldmaCfgArbSlotsAs2=1,
-    ldmaCfgArbSlotsAs4=2,
-    ldmaCfgArbSlotsAs8=3,
-    ldmaCfgDstIncSignNeg=1,
-    ldmaCfgDstIncSignPos=0,
-    ldmaCfgSrcIncSignNeg=1,
-    ldmaCfgSrcIncSignPos=0,
-    ldmaCtrlBlockSizeAll=15,
-    ldmaCtrlBlockSizeUnit1=0,
-    ldmaCtrlBlockSizeUnit1024=14,
-    ldmaCtrlBlockSizeUnit128=11,
-    ldmaCtrlBlockSizeUnit16=7,
-    ldmaCtrlBlockSizeUnit2=1,
-    ldmaCtrlBlockSizeUnit256=12,
-    ldmaCtrlBlockSizeUnit3=2,
-    ldmaCtrlBlockSizeUnit32=9,
-    ldmaCtrlBlockSizeUnit4=3,
-    ldmaCtrlBlockSizeUnit512=13,
-    ldmaCtrlBlockSizeUnit6=4,
-    ldmaCtrlBlockSizeUnit64=10,
-    ldmaCtrlBlockSizeUnit8=5,
-    ldmaCtrlDstAddrModeAbs=0,
-    ldmaCtrlDstAddrModeRel=1,
-    ldmaCtrlDstIncFour=2,
-    ldmaCtrlDstIncNone=3,
-    ldmaCtrlDstIncOne=0,
-    ldmaCtrlDstIncTwo=1,
-    ldmaCtrlReqModeAll=1,
-    ldmaCtrlReqModeBlock=0,
-    ldmaCtrlSizeByte=0,
-    ldmaCtrlSizeHalf=1,
-    ldmaCtrlSizeWord=2,
-    ldmaCtrlSrcAddrModeAbs=0,
-    ldmaCtrlSrcAddrModeRel=1,
-    ldmaCtrlSrcIncFour=2,
-    ldmaCtrlSrcIncNone=3,
-    ldmaCtrlSrcIncOne=0,
-    ldmaCtrlSrcIncTwo=1,
-    ldmaCtrlStructTypeSync=1,
-    ldmaCtrlStructTypeWrite=2,
-    ldmaCtrlStructTypeXfer=0,
-    ldmaLinkModeAbs=0,
-    ldmaLinkModeRel=1,
-    palGpioModePushPull=0
-} anon_enum_8.conflict71bd;
-
 typedef struct __lock __lock, *P__lock;
 
 typedef struct __lock * _LOCK_T;
@@ -10385,8 +10193,7 @@ typedef struct DISPLAY_Geometry_t DISPLAY_Geometry_t, *PDISPLAY_Geometry_t;
 
 typedef enum DISPLAY_ColourMode_t {
     DISPLAY_COLOUR_MODE_MONOCHROME=0,
-    DISPLAY_COLOUR_MODE_MONOCHROME_INVERSE=1,
-    DISPLAY_COLOUR_MODE_RGB_3BIT=2
+    DISPLAY_COLOUR_MODE_MONOCHROME_INVERSE=1
 } DISPLAY_ColourMode_t;
 
 typedef enum DISPLAY_AddressMode_t {
@@ -10415,347 +10222,97 @@ struct DISPLAY_Device_t {
     EMSTATUS (* pDriverRefresh)(struct DISPLAY_Device_t *);
 };
 
-typedef uint8_t RAIL_RfSenseBand_t;
-
-typedef struct RAIL_AutoAckConfig RAIL_AutoAckConfig, *PRAIL_AutoAckConfig;
-
-typedef struct RAIL_StateTransitions RAIL_StateTransitions, *PRAIL_StateTransitions;
-
-typedef struct RAIL_StateTransitions RAIL_StateTransitions_t;
-
-typedef uint8_t RAIL_RadioState_t;
-
-struct RAIL_StateTransitions {
-    RAIL_RadioState_t success;
-    RAIL_RadioState_t error;
-};
-
-struct RAIL_AutoAckConfig {
-    _Bool enable;
-    undefined field_0x1;
-    uint16_t ackTimeout;
-    RAIL_StateTransitions_t rxTransitions;
-    RAIL_StateTransitions_t txTransitions;
-};
-
-typedef uint64_t RAIL_Events_t;
-
-typedef enum RAIL_Events_t_enum {
-    RAIL_EVENT_CAL_NEEDED_SHIFT=33,
-    RAIL_EVENT_CONFIG_SCHEDULED_SHIFT=31,
-    RAIL_EVENT_CONFIG_UNSCHEDULED_SHIFT=30,
-    RAIL_EVENT_IEEE802154_DATA_REQUEST_COMMAND_SHIFT=16,
-    RAIL_EVENT_RSSI_AVERAGE_DONE_SHIFT=0,
-    RAIL_EVENT_RX_ACK_TIMEOUT_SHIFT=1,
-    RAIL_EVENT_RX_ADDRESS_FILTERED_SHIFT=9,
-    RAIL_EVENT_RX_FIFO_ALMOST_FULL_SHIFT=2,
-    RAIL_EVENT_RX_FIFO_OVERFLOW_SHIFT=8,
-    RAIL_EVENT_RX_FILTER_PASSED_SHIFT=13,
-    RAIL_EVENT_RX_FRAME_ERROR_SHIFT=7,
-    RAIL_EVENT_RX_PACKET_ABORTED_SHIFT=12,
-    RAIL_EVENT_RX_PACKET_RECEIVED_SHIFT=3,
-    RAIL_EVENT_RX_PREAMBLE_DETECT_SHIFT=4,
-    RAIL_EVENT_RX_SCHEDULED_RX_END_SHIFT=11,
-    RAIL_EVENT_RX_SYNC1_DETECT_SHIFT=5,
-    RAIL_EVENT_RX_SYNC2_DETECT_SHIFT=6,
-    RAIL_EVENT_RX_TIMEOUT_SHIFT=10,
-    RAIL_EVENT_RX_TIMING_DETECT_SHIFT=15,
-    RAIL_EVENT_RX_TIMING_LOST_SHIFT=14,
-    RAIL_EVENT_SCHEDULER_STATUS_SHIFT=32,
-    RAIL_EVENT_TXACK_ABORTED_SHIFT=21,
-    RAIL_EVENT_TXACK_BLOCKED_SHIFT=23,
-    RAIL_EVENT_TXACK_PACKET_SENT_SHIFT=19,
-    RAIL_EVENT_TXACK_UNDERFLOW_SHIFT=25,
-    RAIL_EVENT_TX_ABORTED_SHIFT=20,
-    RAIL_EVENT_TX_BLOCKED_SHIFT=22,
-    RAIL_EVENT_TX_CCA_RETRY_SHIFT=28,
-    RAIL_EVENT_TX_CHANNEL_BUSY_SHIFT=27,
-    RAIL_EVENT_TX_CHANNEL_CLEAR_SHIFT=26,
-    RAIL_EVENT_TX_FIFO_ALMOST_EMPTY_SHIFT=17,
-    RAIL_EVENT_TX_PACKET_SENT_SHIFT=18,
-    RAIL_EVENT_TX_START_CCA_SHIFT=29,
-    RAIL_EVENT_TX_UNDERFLOW_SHIFT=24
-} RAIL_Events_t_enum;
-
-typedef struct RAIL_CsmaConfig RAIL_CsmaConfig, *PRAIL_CsmaConfig;
-
-struct RAIL_CsmaConfig {
-    uint8_t csmaMinBoExp;
-    uint8_t csmaMaxBoExp;
-    uint8_t csmaTries;
-    int8_t ccaThreshold;
-    uint16_t ccaBackoff;
-    uint16_t ccaDuration;
-    uint32_t csmaTimeout;
-};
-
-typedef enum RAIL_RxOptions_t_enum {
-    RAIL_RX_OPTION_ENABLE_DUALSYNC_SHIFT=2,
-    RAIL_RX_OPTION_IGNORE_CRC_ERRORS_SHIFT=1,
-    RAIL_RX_OPTION_REMOVE_APPENDED_INFO_SHIFT=4,
-    RAIL_RX_OPTION_STORE_CRC_SHIFT=0,
-    RAIL_RX_OPTION_TRACK_ABORTED_FRAMES_SHIFT=3
-} RAIL_RxOptions_t_enum;
-
-typedef struct RAIL_ChannelConfig RAIL_ChannelConfig, *PRAIL_ChannelConfig;
-
-typedef struct RAIL_ChannelConfig RAIL_ChannelConfig_t;
-
-typedef struct RAIL_ChannelConfigEntry RAIL_ChannelConfigEntry, *PRAIL_ChannelConfigEntry;
-
-typedef struct RAIL_ChannelConfigEntry RAIL_ChannelConfigEntry_t;
-
-typedef int16_t RAIL_TxPower_t;
-
-typedef struct RAIL_ChannelConfigEntryAttr RAIL_ChannelConfigEntryAttr, *PRAIL_ChannelConfigEntryAttr;
-
-typedef struct RAIL_ChannelConfigEntryAttr RAIL_ChannelConfigEntryAttr_t;
-
-struct RAIL_ChannelConfigEntryAttr {
-    uint32_t calValues[1];
-};
-
-struct RAIL_ChannelConfigEntry {
-    uint32_t * phyConfigDeltaAdd;
-    uint32_t baseFrequency;
-    uint32_t channelSpacing;
-    uint16_t physicalChannelOffset;
-    uint16_t channelNumberStart;
-    uint16_t channelNumberEnd;
-    RAIL_TxPower_t maxPower;
-    RAIL_ChannelConfigEntryAttr_t * attr;
-};
-
-struct RAIL_ChannelConfig {
-    uint32_t * phyConfigBase;
-    uint32_t * phyConfigDeltaSubtract;
-    RAIL_ChannelConfigEntry_t * configs;
-    uint32_t length;
-};
-
-typedef uint32_t RAIL_StateBuffer_t[54];
-
-typedef enum RAIL_TimeMode_t_enum {
-    RAIL_TIME_ABSOLUTE=0,
-    RAIL_TIME_DELAY=1,
-    RAIL_TIME_DISABLED=2
-} RAIL_TimeMode_t_enum;
-
-typedef enum RAIL_DataMethod_t_enum {
-    FIFO_MODE=1,
-    PACKET_MODE=0
-} RAIL_DataMethod_t_enum;
-
-typedef void * RAIL_Handle_t;
-
-typedef enum RAIL_TxDataSource_t_enum {
-    TX_PACKET_DATA=0
-} RAIL_TxDataSource_t_enum;
-
-typedef enum RAIL_RxDataSource_t_enum {
-    RX_DEMOD_DATA=1,
-    RX_IQDATA_FILTLSB=2,
-    RX_IQDATA_FILTMSB=3,
-    RX_PACKET_DATA=0
-} RAIL_RxDataSource_t_enum;
-
-typedef struct RAIL_Version RAIL_Version, *PRAIL_Version;
-
-typedef struct RAIL_Version RAIL_Version_t;
-
-struct RAIL_Version {
-    uint32_t hash;
-    uint8_t major;
-    uint8_t minor;
-    uint8_t rev;
-    uint8_t build;
-    uint8_t flags;
-    _Bool multiprotocol;
-    undefined field_0xa;
-    undefined field_0xb;
-};
-
-typedef struct RAIL_RxPacketDetails RAIL_RxPacketDetails, *PRAIL_RxPacketDetails;
-
-typedef struct RAIL_RxPacketDetails RAIL_RxPacketDetails_t;
-
-typedef struct RAIL_PacketTimeStamp RAIL_PacketTimeStamp, *PRAIL_PacketTimeStamp;
-
-typedef struct RAIL_PacketTimeStamp RAIL_PacketTimeStamp_t;
-
-typedef uint8_t RAIL_PacketTimePosition_t;
-
-struct RAIL_PacketTimeStamp {
-    uint32_t packetTime;
-    uint32_t totalPacketBytes;
-    RAIL_PacketTimePosition_t timePosition;
-    undefined field_0x9;
-    undefined field_0xa;
-    undefined field_0xb;
-};
-
-struct RAIL_RxPacketDetails {
-    RAIL_PacketTimeStamp_t timeReceived;
-    _Bool crcPassed;
-    _Bool isAck;
-    int8_t rssi;
-    uint8_t lqi;
-    uint8_t syncWordId;
-    uint8_t subPhyId;
-    undefined field_0x12;
-    undefined field_0x13;
-};
-
-typedef uint8_t RAIL_RxPacketStatus_t;
-
-typedef struct RAIL_AutoAckConfig RAIL_AutoAckConfig_t;
-
-typedef struct RAIL_StateTiming RAIL_StateTiming, *PRAIL_StateTiming;
-
-typedef struct RAIL_StateTiming RAIL_StateTiming_t;
-
-struct RAIL_StateTiming {
-    uint16_t idleToRx;
-    uint16_t txToRx;
-    uint16_t idleToTx;
-    uint16_t rxToTx;
-    uint16_t rxSearchTimeout;
-    uint16_t txToRxSearchTimeout;
-};
-
-typedef struct RAIL_LbtConfig RAIL_LbtConfig, *PRAIL_LbtConfig;
-
-typedef struct RAIL_LbtConfig RAIL_LbtConfig_t;
-
-struct RAIL_LbtConfig {
-    uint8_t lbtMinBoRand;
-    uint8_t lbtMaxBoRand;
-    uint8_t lbtTries;
-    int8_t lbtThreshold;
-    uint16_t lbtBackoff;
-    uint16_t lbtDuration;
-    uint32_t lbtTimeout;
-};
-
-typedef struct RAIL_ScheduleTxConfig RAIL_ScheduleTxConfig, *PRAIL_ScheduleTxConfig;
-
-typedef uint8_t RAIL_TimeMode_t;
-
-typedef uint8_t RAIL_ScheduledTxDuringRx_t;
-
-struct RAIL_ScheduleTxConfig {
-    uint32_t when;
-    RAIL_TimeMode_t mode;
-    RAIL_ScheduledTxDuringRx_t txDuringRx;
-    undefined field_0x6;
-    undefined field_0x7;
-};
-
-typedef struct RAIL_AddrConfig RAIL_AddrConfig, *PRAIL_AddrConfig;
-
-struct RAIL_AddrConfig {
-    uint8_t offsets[2];
-    uint8_t sizes[2];
-    uint32_t matchTable;
-};
-
-typedef uint32_t RAIL_SchedulerStateBuffer_t[25];
-
-typedef struct RAIL_TxPacketDetails RAIL_TxPacketDetails, *PRAIL_TxPacketDetails;
-
-typedef struct RAIL_TxPacketDetails RAIL_TxPacketDetails_t;
-
-struct RAIL_TxPacketDetails {
-    RAIL_PacketTimeStamp_t timeSent;
-    _Bool isAck;
-    undefined field_0xd;
-    undefined field_0xe;
-    undefined field_0xf;
-};
-
-typedef struct RAIL_FrameType RAIL_FrameType, *PRAIL_FrameType;
-
-struct RAIL_FrameType {
-    uint16_t * frameLen;
-    uint8_t offset;
-    uint8_t mask;
-    uint8_t isValid;
-    uint8_t addressFilter;
-};
-
-typedef uint32_t RAIL_RxOptions_t;
-
-typedef enum RAIL_Status_t_enum {
-    RAIL_STATUS_INVALID_CALL=3,
-    RAIL_STATUS_INVALID_PARAMETER=1,
-    RAIL_STATUS_INVALID_STATE=2,
-    RAIL_STATUS_NO_ERROR=0
-} RAIL_Status_t_enum;
-
-typedef uint8_t RAIL_PtiProtocol_t;
-
-typedef enum RAIL_RfSenseBand_t_enum {
+typedef enum RAIL_RfSenseBand_t {
     RAIL_RFSENSE_2_4GHZ=1,
     RAIL_RFSENSE_ANY=3,
     RAIL_RFSENSE_MAX=4,
     RAIL_RFSENSE_OFF=0,
     RAIL_RFSENSE_SUBGHZ=2
-} RAIL_RfSenseBand_t_enum;
+} RAIL_RfSenseBand_t;
 
-typedef uint8_t RAIL_TxDataSource_t;
+typedef struct RAIL_AutoAckConfig RAIL_AutoAckConfig, *PRAIL_AutoAckConfig;
 
-typedef struct RAIL_DataConfig_t RAIL_DataConfig_t, *PRAIL_DataConfig_t;
+typedef enum RAIL_RadioState {
+    RAIL_RF_STATE_IDLE=0,
+    RAIL_RF_STATE_RX=1,
+    RAIL_RF_STATE_TX=2
+} RAIL_RadioState;
 
-typedef uint8_t RAIL_RxDataSource_t;
+typedef enum RAIL_RadioState RAIL_RadioState_t;
 
-typedef uint8_t RAIL_DataMethod_t;
-
-struct RAIL_DataConfig_t {
-    RAIL_TxDataSource_t txSource;
-    RAIL_RxDataSource_t rxSource;
-    RAIL_DataMethod_t txMethod;
-    RAIL_DataMethod_t rxMethod;
+struct RAIL_AutoAckConfig {
+    RAIL_RadioState_t defaultState;
+    undefined field_0x1;
+    uint16_t idleTiming;
+    uint16_t turnaroundTime;
+    uint16_t ackTimeout;
 };
 
-typedef struct RAILSched_Config RAILSched_Config, *PRAILSched_Config;
-
-struct RAILSched_Config {
-    RAIL_SchedulerStateBuffer_t buffer;
-};
-
-typedef struct RAIL_Config RAIL_Config, *PRAIL_Config;
-
-typedef struct RAILSched_Config RAILSched_Config_t;
-
-struct RAIL_Config {
-    void (* eventsCallback)(RAIL_Handle_t, RAIL_Events_t);
-    void * protocol;
-    RAILSched_Config_t * scheduler;
-    RAIL_StateBuffer_t buffer;
-};
-
-typedef enum RAIL_RadioState_t_enum {
-    RAIL_RF_STATE_ACTIVE=1,
-    RAIL_RF_STATE_IDLE=1,
-    RAIL_RF_STATE_INACTIVE=0,
-    RAIL_RF_STATE_RX=2,
-    RAIL_RF_STATE_RX_ACTIVE=3,
-    RAIL_RF_STATE_TX=4,
-    RAIL_RF_STATE_TX_ACTIVE=5
-} RAIL_RadioState_t_enum;
+typedef struct RAIL_ScheduleTxConfig RAIL_ScheduleTxConfig, *PRAIL_ScheduleTxConfig;
 
 typedef struct RAIL_ScheduleTxConfig RAIL_ScheduleTxConfig_t;
 
-typedef void * RAIL_RxPacketHandle_t;
+typedef enum RAIL_TimeMode {
+    RAIL_TIME_ABSOLUTE=0,
+    RAIL_TIME_DELAY=1,
+    RAIL_TIME_DISABLED=2
+} RAIL_TimeMode;
 
-typedef enum RAIL_IdleMode_t_enum {
-    RAIL_IDLE=0,
-    RAIL_IDLE_ABORT=1,
-    RAIL_IDLE_FORCE_SHUTDOWN=2,
-    RAIL_IDLE_FORCE_SHUTDOWN_CLEAR_FLAGS=3
-} RAIL_IdleMode_t_enum;
+typedef enum RAIL_TimeMode RAIL_TimeMode_t;
 
-typedef struct RAIL_Config RAIL_Config_t;
+struct RAIL_ScheduleTxConfig {
+    uint32_t when;
+    RAIL_TimeMode_t mode;
+    undefined field_0x5;
+    undefined field_0x6;
+    undefined field_0x7;
+};
+
+typedef struct RAIL_TxData RAIL_TxData, *PRAIL_TxData;
+
+typedef struct RAIL_TxData RAIL_TxData_t;
+
+struct RAIL_TxData {
+    uint8_t * dataPtr;
+    uint16_t dataLength;
+    undefined field_0x6;
+    undefined field_0x7;
+};
+
+typedef struct RAIL_AppendedInfo RAIL_AppendedInfo, *PRAIL_AppendedInfo;
+
+typedef struct RAIL_AppendedInfo RAIL_AppendedInfo_t;
+
+typedef char __int8_t;
+
+typedef __int8_t int8_t;
+
+struct RAIL_AppendedInfo {
+    uint32_t timeUs;
+    _Bool crcStatus:1;
+    _Bool frameCodingStatus:1;
+    _Bool isAck:1;
+    int8_t rssiLatch;
+    uint8_t lqi;
+    uint8_t syncWordId;
+};
+
+typedef struct RAIL_AutoAckData RAIL_AutoAckData, *PRAIL_AutoAckData;
+
+typedef struct RAIL_AutoAckData RAIL_AutoAckData_t;
+
+struct RAIL_AutoAckData {
+    uint8_t * dataPtr;
+    uint8_t dataLength;
+    undefined field_0x5;
+    undefined field_0x6;
+    undefined field_0x7;
+};
+
+typedef enum RAIL_StreamMode {
+    PN9_STREAM=1,
+    PSEUDO_RANDOM_STREAM=0
+} RAIL_StreamMode;
 
 typedef struct RAIL_ScheduleRxConfig RAIL_ScheduleRxConfig, *PRAIL_ScheduleRxConfig;
 
@@ -10774,60 +10331,190 @@ struct RAIL_ScheduleRxConfig {
     undefined field_0xf;
 };
 
+typedef struct RAIL_ChannelConfig RAIL_ChannelConfig, *PRAIL_ChannelConfig;
+
+typedef struct RAIL_ChannelConfig RAIL_ChannelConfig_t;
+
+typedef struct RAIL_ChannelConfigEntry RAIL_ChannelConfigEntry, *PRAIL_ChannelConfigEntry;
+
+typedef struct RAIL_ChannelConfigEntry RAIL_ChannelConfigEntry_t;
+
+struct RAIL_ChannelConfigEntry {
+    uint16_t channelNumberStart;
+    uint16_t channelNumberEnd;
+    uint32_t channelSpacing;
+    uint32_t baseFrequency;
+};
+
+struct RAIL_ChannelConfig {
+    RAIL_ChannelConfigEntry_t * configs;
+    uint32_t length;
+};
+
+typedef struct RAIL_FrameType RAIL_FrameType, *PRAIL_FrameType;
+
 typedef struct RAIL_FrameType RAIL_FrameType_t;
+
+struct RAIL_FrameType {
+    uint8_t offset;
+    uint8_t mask;
+    undefined field_0x2;
+    undefined field_0x3;
+    uint16_t * frameLen;
+    uint8_t * isValid;
+    _Bool variableAddrLoc;
+    undefined field_0xd;
+    undefined field_0xe;
+    undefined field_0xf;
+};
+
+typedef struct RAIL_AddrConfig RAIL_AddrConfig, *PRAIL_AddrConfig;
 
 typedef struct RAIL_AddrConfig RAIL_AddrConfig_t;
 
-typedef enum RAIL_ScheduledTxDuringRx_t_enum {
-    RAIL_SCHEDULED_TX_DURING_RX_ABORT_TX=1,
-    RAIL_SCHEDULED_TX_DURING_RX_POSTPONE_TX=0
-} RAIL_ScheduledTxDuringRx_t_enum;
+struct RAIL_AddrConfig {
+    uint8_t numFields;
+    undefined field_0x1;
+    undefined field_0x2;
+    undefined field_0x3;
+    uint8_t * offsets;
+    uint8_t * sizes;
+    uint32_t matchTable;
+};
+
+typedef struct RAIL_TxOptions RAIL_TxOptions, *PRAIL_TxOptions;
+
+struct RAIL_TxOptions {
+    _Bool waitForAck;
+};
+
+typedef struct RAIL_BerConfig RAIL_BerConfig, *PRAIL_BerConfig;
+
+typedef struct RAIL_BerConfig RAIL_BerConfig_t;
+
+struct RAIL_BerConfig {
+    uint32_t bytesToTest;
+};
+
+typedef struct RAIL_Version RAIL_Version, *PRAIL_Version;
+
+typedef struct RAIL_Version RAIL_Version_t;
+
+struct RAIL_Version {
+    uint32_t hash;
+    uint8_t major;
+    uint8_t minor;
+    uint8_t rev;
+    uint8_t build;
+    uint8_t flags;
+    undefined field_0x9;
+    undefined field_0xa;
+    undefined field_0xb;
+};
 
 typedef struct RAIL_RxPacketInfo RAIL_RxPacketInfo, *PRAIL_RxPacketInfo;
 
-struct RAIL_RxPacketInfo {
-    RAIL_RxPacketStatus_t packetStatus;
-    undefined field_0x1;
-    uint16_t packetBytes;
-    uint16_t firstPortionBytes;
-    undefined field_0x6;
-    undefined field_0x7;
-    uint8_t * firstPortionData;
-    uint8_t * lastPortionData;
+struct RAIL_RxPacketInfo { // Missing member dataPtr : uint8_t[1] at offset 0xa [Unsupported interior flex array: uint8_t[1]]
+    RAIL_AppendedInfo_t appendedInfo;
+    uint16_t dataLength;
+    undefined field_0xa;
+    undefined field_0xb;
 };
 
-typedef uint8_t RAIL_Status_t;
+typedef enum RAIL_Status {
+    RAIL_STATUS_INVALID_CALL=3,
+    RAIL_STATUS_INVALID_PARAMETER=1,
+    RAIL_STATUS_INVALID_STATE=2,
+    RAIL_STATUS_NO_ERROR=0
+} RAIL_Status;
+
+typedef enum RAIL_Status RAIL_Status_t;
 
 typedef struct RAIL_RxPacketInfo RAIL_RxPacketInfo_t;
 
-typedef enum RAIL_PacketTimePosition_t_enum {
-    RAIL_PACKET_TIME_AT_PACKET_END=6,
-    RAIL_PACKET_TIME_AT_PACKET_END_USED_TOTAL=7,
-    RAIL_PACKET_TIME_AT_PREAMBLE_START=2,
-    RAIL_PACKET_TIME_AT_PREAMBLE_START_USED_TOTAL=3,
-    RAIL_PACKET_TIME_AT_SYNC_END=4,
-    RAIL_PACKET_TIME_AT_SYNC_END_USED_TOTAL=5,
-    RAIL_PACKET_TIME_COUNT=8,
-    RAIL_PACKET_TIME_DEFAULT=1,
-    RAIL_PACKET_TIME_INVALID=0
-} RAIL_PacketTimePosition_t_enum;
+typedef enum RAIL_PtiProtocol {
+    RAIL_PTI_PROTOCOL_BLE=3,
+    RAIL_PTI_PROTOCOL_CONNECT=4,
+    RAIL_PTI_PROTOCOL_CUSTOM=0,
+    RAIL_PTI_PROTOCOL_THREAD=2,
+    RAIL_PTI_PROTOCOL_ZIGBEE=5
+} RAIL_PtiProtocol;
 
-typedef uint32_t RAIL_TxOptions_t;
+typedef struct RAIL_TxOptions RAIL_TxOptions_t;
 
-typedef enum RAIL_TxOptions_t_enum {
-    RAIL_TX_OPTION_REMOVE_CRC_SHIFT=1,
-    RAIL_TX_OPTION_SYNC_WORD_ID_SHIFT=2,
-    RAIL_TX_OPTION_WAIT_FOR_ACK_SHIFT=0
-} RAIL_TxOptions_t_enum;
-
-typedef struct RAIL_CsmaConfig RAIL_CsmaConfig_t;
+typedef struct RAIL_Init RAIL_Init, *PRAIL_Init;
 
 typedef uint32_t RAIL_CalMask_t;
 
-typedef enum RAIL_StreamMode_t_enum {
-    RAIL_STREAM_CARRIER_WAVE=0,
-    RAIL_STREAM_PN9_STREAM=1
-} RAIL_StreamMode_t_enum;
+struct RAIL_Init {
+    uint16_t maxPacketLength;
+    undefined field_0x2;
+    undefined field_0x3;
+    uint32_t rfXtalFreq;
+    RAIL_CalMask_t calEnable;
+};
+
+typedef struct RAIL_AutoAckConfig RAIL_AutoAckConfig_t;
+
+typedef struct RAIL_StateTiming RAIL_StateTiming, *PRAIL_StateTiming;
+
+typedef struct RAIL_StateTiming RAIL_StateTiming_t;
+
+struct RAIL_StateTiming {
+    uint16_t idleToRx;
+    uint16_t txToRx;
+    uint16_t idleToTx;
+    uint16_t rxToTx;
+};
+
+typedef struct RAIL_LbtConfig RAIL_LbtConfig, *PRAIL_LbtConfig;
+
+typedef struct RAIL_LbtConfig RAIL_LbtConfig_t;
+
+struct RAIL_LbtConfig {
+    uint8_t lbtMinBoRand;
+    uint8_t lbtMaxBoRand;
+    uint8_t lbtTries;
+    int8_t lbtThreshold;
+    uint16_t lbtBackoff;
+    uint16_t lbtDuration;
+    uint32_t lbtTimeout;
+};
+
+typedef struct RAIL_BerStatus RAIL_BerStatus, *PRAIL_BerStatus;
+
+struct RAIL_BerStatus {
+    uint32_t bitsTotal;
+    uint32_t bitsTested;
+    uint32_t bitErrors;
+    int8_t rssi;
+    undefined field_0xd;
+    undefined field_0xe;
+    undefined field_0xf;
+};
+
+typedef struct RAIL_TxPacketInfo RAIL_TxPacketInfo, *PRAIL_TxPacketInfo;
+
+typedef struct RAIL_TxPacketInfo RAIL_TxPacketInfo_t;
+
+struct RAIL_TxPacketInfo {
+    uint32_t timeUs;
+};
+
+typedef struct RAIL_BerStatus RAIL_BerStatus_t;
+
+typedef struct RAIL_CalInit RAIL_CalInit, *PRAIL_CalInit;
+
+struct RAIL_CalInit {
+    RAIL_CalMask_t calEnable;
+    uint8_t * irCalSettings;
+};
+
+typedef struct RAIL_CalInit RAIL_CalInit_t;
+
+typedef struct RAIL_Init RAIL_Init_t;
+
+typedef enum RAIL_PtiProtocol RAIL_PtiProtocol_t;
 
 typedef ushort __ino_t;
 
@@ -10854,9 +10541,8 @@ typedef long __blkcnt_t;
 
 typedef __blkcnt_t blkcnt_t;
 
-typedef __uint32_t __mode_t;
 
-typedef __mode_t mode_t;
+// WARNING! conflicting data type names: /DWARF/types.h/mode_t - /types.h/mode_t
 
 typedef char * caddr_t;
 
@@ -11038,6 +10724,23 @@ typedef enum TIMER_CCMode_TypeDef {
     timerCCModePWM=3
 } TIMER_CCMode_TypeDef;
 
+typedef struct TIMER_InitDTI_TypeDef TIMER_InitDTI_TypeDef, *PTIMER_InitDTI_TypeDef;
+
+typedef enum TIMER_PRSSEL_TypeDef {
+    timerPRSSELCh0=0,
+    timerPRSSELCh1=1,
+    timerPRSSELCh10=10,
+    timerPRSSELCh11=11,
+    timerPRSSELCh2=2,
+    timerPRSSELCh3=3,
+    timerPRSSELCh4=4,
+    timerPRSSELCh5=5,
+    timerPRSSELCh6=6,
+    timerPRSSELCh7=7,
+    timerPRSSELCh8=8,
+    timerPRSSELCh9=9
+} TIMER_PRSSEL_TypeDef;
+
 typedef enum TIMER_Prescale_TypeDef {
     timerPrescale1=0,
     timerPrescale1024=10,
@@ -11052,19 +10755,36 @@ typedef enum TIMER_Prescale_TypeDef {
     timerPrescale8=3
 } TIMER_Prescale_TypeDef;
 
-typedef enum TIMER_OutputAction_TypeDef {
-    timerOutputActionClear=2,
-    timerOutputActionNone=0,
-    timerOutputActionSet=3,
-    timerOutputActionToggle=1
-} TIMER_OutputAction_TypeDef;
+typedef enum TIMER_DtiFaultAction_TypeDef {
+    timerDtiFaultActionClear=2,
+    timerDtiFaultActionInactive=1,
+    timerDtiFaultActionNone=0,
+    timerDtiFaultActionTristate=3
+} TIMER_DtiFaultAction_TypeDef;
 
-typedef enum TIMER_Mode_TypeDef {
-    timerModeDown=1,
-    timerModeQDec=3,
-    timerModeUp=0,
-    timerModeUpDown=2
-} TIMER_Mode_TypeDef;
+struct TIMER_InitDTI_TypeDef {
+    _Bool enable;
+    _Bool activeLowOut;
+    _Bool invertComplementaryOut;
+    _Bool autoRestart;
+    _Bool enablePrsSource;
+    enum TIMER_PRSSEL_TypeDef prsSel;
+    enum TIMER_Prescale_TypeDef prescale;
+    undefined field_0x7;
+    uint riseTime;
+    uint fallTime;
+    uint32_t outputsEnableMask;
+    _Bool enableFaultSourceCoreLockup;
+    _Bool enableFaultSourceDebugger;
+    _Bool enableFaultSourcePrsSel0;
+    enum TIMER_PRSSEL_TypeDef faultSourcePrsSel0;
+    _Bool enableFaultSourcePrsSel1;
+    enum TIMER_PRSSEL_TypeDef faultSourcePrsSel1;
+    enum TIMER_DtiFaultAction_TypeDef faultAction;
+    undefined field_0x1b;
+};
+
+typedef struct TIMER_Init_TypeDef TIMER_Init_TypeDef, *PTIMER_Init_TypeDef;
 
 typedef enum TIMER_ClkSel_TypeDef {
     timerClkSelCC1=1,
@@ -11072,14 +10792,12 @@ typedef enum TIMER_ClkSel_TypeDef {
     timerClkSelHFPerClk=0
 } TIMER_ClkSel_TypeDef;
 
-typedef enum TIMER_Edge_TypeDef {
-    timerEdgeBoth=2,
-    timerEdgeFalling=1,
-    timerEdgeNone=3,
-    timerEdgeRising=0
-} TIMER_Edge_TypeDef;
-
-typedef struct TIMER_Init_TypeDef TIMER_Init_TypeDef, *PTIMER_Init_TypeDef;
+typedef enum TIMER_Mode_TypeDef {
+    timerModeDown=1,
+    timerModeQDec=3,
+    timerModeUp=0,
+    timerModeUpDown=2
+} TIMER_Mode_TypeDef;
 
 struct TIMER_Init_TypeDef {
     _Bool enable;
@@ -11099,20 +10817,19 @@ struct TIMER_Init_TypeDef {
 
 typedef struct TIMER_InitCC_TypeDef TIMER_InitCC_TypeDef, *PTIMER_InitCC_TypeDef;
 
-typedef enum TIMER_PRSSEL_TypeDef {
-    timerPRSSELCh0=0,
-    timerPRSSELCh1=1,
-    timerPRSSELCh10=10,
-    timerPRSSELCh11=11,
-    timerPRSSELCh2=2,
-    timerPRSSELCh3=3,
-    timerPRSSELCh4=4,
-    timerPRSSELCh5=5,
-    timerPRSSELCh6=6,
-    timerPRSSELCh7=7,
-    timerPRSSELCh8=8,
-    timerPRSSELCh9=9
-} TIMER_PRSSEL_TypeDef;
+typedef enum TIMER_Edge_TypeDef {
+    timerEdgeBoth=2,
+    timerEdgeFalling=1,
+    timerEdgeNone=3,
+    timerEdgeRising=0
+} TIMER_Edge_TypeDef;
+
+typedef enum TIMER_OutputAction_TypeDef {
+    timerOutputActionClear=2,
+    timerOutputActionNone=0,
+    timerOutputActionSet=3,
+    timerOutputActionToggle=1
+} TIMER_OutputAction_TypeDef;
 
 struct TIMER_InitCC_TypeDef {
     enum TIMER_Event_TypeDef eventCtrl;
@@ -11132,28 +10849,31 @@ typedef long _off_t;
 
 typedef struct _mbstate_t _mbstate_t, *P_mbstate_t;
 
-typedef union anon_union.conflictf0_for___value anon_union.conflictf0_for___value, *Panon_union.conflictf0_for___value;
+typedef union anon_union.conflictda_for___value anon_union.conflictda_for___value, *Panon_union.conflictda_for___value;
 
-union anon_union.conflictf0_for___value {
+union anon_union.conflictda_for___value {
     wint_t __wch;
     uchar __wchb[4];
 };
 
 struct _mbstate_t {
     int __count;
-    union anon_union.conflictf0_for___value __value;
+    union anon_union.conflictda_for___value __value;
 };
 
 typedef long _fpos_t;
 
 typedef _LOCK_T _flock_t;
 
-typedef union anon_union.conflictf0 anon_union.conflictf0, *Panon_union.conflictf0;
+typedef union anon_union.conflictda anon_union.conflictda, *Panon_union.conflictda;
 
-union anon_union.conflictf0 {
+union anon_union.conflictda {
     wint_t __wch;
     uchar __wchb[4];
 };
+
+
+// WARNING! conflicting data type names: /DWARF/_types.h/__mode_t - /types.h/__mode_t
 
 typedef struct Queue_t Queue_t, *PQueue_t;
 
@@ -11239,77 +10959,36 @@ struct MSC_TypeDef {
     uint32_t CMD;
 };
 
-typedef struct RAIL_TxPowerCurvesConfig RAIL_TxPowerCurvesConfig, *PRAIL_TxPowerCurvesConfig;
-
-typedef struct RAIL_TxPowerCurvesConfig RAIL_TxPowerCurvesConfig_t;
-
-typedef struct RAIL_TxPowerCurves RAIL_TxPowerCurves, *PRAIL_TxPowerCurves;
-
-typedef struct RAIL_TxPowerCurves RAIL_TxPowerCurves_t;
-
-typedef struct RAIL_TxPowerCurveSegment RAIL_TxPowerCurveSegment, *PRAIL_TxPowerCurveSegment;
-
-typedef struct RAIL_TxPowerCurveSegment RAIL_TxPowerCurveSegment_t;
-
-struct RAIL_TxPowerCurveSegment {
-    uint16_t maxPowerLevel;
-    int16_t slope;
-    int32_t intercept;
-};
-
-struct RAIL_TxPowerCurves {
-    int16_t maxPower;
-    int16_t minPower;
-    RAIL_TxPowerCurveSegment_t * powerParams;
-};
-
-struct RAIL_TxPowerCurvesConfig {
-    RAIL_TxPowerCurves_t * txPower24HpCurves;
-    RAIL_TxPowerCurves_t * txPowerSgCurves;
-    int16_t * txPower24LpCurves;
-    uint8_t piecewiseSegments;
-    undefined field_0xd;
-    undefined field_0xe;
-    undefined field_0xf;
-};
-
-typedef enum RAIL_IEEE802154_AddressLength_t_enum {
+typedef enum RAIL_IEEE802154_AddressLength {
     RAIL_IEEE802154_LongAddress=3,
     RAIL_IEEE802154_ShortAddress=2
-} RAIL_IEEE802154_AddressLength_t_enum;
+} RAIL_IEEE802154_AddressLength;
 
 typedef struct RAIL_IEEE802154_Address RAIL_IEEE802154_Address, *PRAIL_IEEE802154_Address;
 
 typedef struct RAIL_IEEE802154_Address RAIL_IEEE802154_Address_t;
 
-typedef union anon_union.conflict1a805_for_field_0 anon_union.conflict1a805_for_field_0, *Panon_union.conflict1a805_for_field_0;
+typedef enum RAIL_IEEE802154_AddressLength RAIL_IEEE802154_AddressLength_t;
 
-typedef uint8_t RAIL_IEEE802154_AddressLength_t;
+typedef union anon_union.conflict12fa8_for_field_1 anon_union.conflict12fa8_for_field_1, *Panon_union.conflict12fa8_for_field_1;
 
-union anon_union.conflict1a805_for_field_0 {
+union anon_union.conflict12fa8_for_field_1 {
     uint16_t shortAddress;
     uint8_t longAddress[8];
 };
 
 struct RAIL_IEEE802154_Address {
-    union anon_union.conflict1a805_for_field_0 field_0;
     RAIL_IEEE802154_AddressLength_t length;
-    undefined field_0x9;
-};
-
-typedef union anon_union.conflict1a805 anon_union.conflict1a805, *Panon_union.conflict1a805;
-
-union anon_union.conflict1a805 {
-    uint16_t shortAddress;
-    uint8_t longAddress[8];
+    undefined field_0x1;
+    union anon_union.conflict12fa8_for_field_1 field_1;
 };
 
 typedef struct RAIL_IEEE802154_AddrConfig RAIL_IEEE802154_AddrConfig, *PRAIL_IEEE802154_AddrConfig;
 
 struct RAIL_IEEE802154_AddrConfig {
-    uint16_t panId[3];
-    uint16_t shortAddr[3];
-    uint8_t longAddr[3][8];
+    uint16_t panId;
+    uint16_t shortAddr;
+    uint8_t * longAddr;
 };
 
 typedef struct RAIL_IEEE802154_AddrConfig RAIL_IEEE802154_AddrConfig_t;
@@ -11317,16 +10996,26 @@ typedef struct RAIL_IEEE802154_AddrConfig RAIL_IEEE802154_AddrConfig_t;
 typedef struct RAIL_IEEE802154_Config RAIL_IEEE802154_Config, *PRAIL_IEEE802154_Config;
 
 struct RAIL_IEEE802154_Config {
-    RAIL_IEEE802154_AddrConfig_t * addresses;
-    RAIL_AutoAckConfig_t ackConfig;
-    RAIL_StateTiming_t timings;
-    uint8_t framesMask;
     _Bool promiscuousMode;
     _Bool isPanCoordinator;
-    undefined field_0x1b;
+    uint8_t framesMask;
+    RAIL_RadioState_t defaultState;
+    uint16_t idleTime;
+    uint16_t turnaroundTime;
+    uint16_t ackTimeout;
+    undefined field_0xa;
+    undefined field_0xb;
+    RAIL_IEEE802154_AddrConfig_t * addresses;
 };
 
 typedef struct RAIL_IEEE802154_Config RAIL_IEEE802154_Config_t;
+
+typedef union anon_union.conflict12fa8 anon_union.conflict12fa8, *Panon_union.conflict12fa8;
+
+union anon_union.conflict12fa8 {
+    uint16_t shortAddress;
+    uint8_t longAddress[8];
+};
 
 typedef struct __sFILE __sFILE, *P__sFILE;
 
@@ -11340,7 +11029,7 @@ typedef struct __locale_t __locale_t, *P__locale_t;
 
 typedef struct _Bigint _Bigint, *P_Bigint;
 
-typedef union anon_union.conflict91d_for__new anon_union.conflict91d_for__new, *Panon_union.conflict91d_for__new;
+typedef union anon_union.conflict907_for__new anon_union.conflict907_for__new, *Panon_union.conflict907_for__new;
 
 typedef struct _atexit _atexit, *P_atexit;
 
@@ -11348,15 +11037,73 @@ typedef struct _glue _glue, *P_glue;
 
 typedef ulong __ULong;
 
-typedef struct anon_struct.conflict775 anon_struct.conflict775, *Panon_struct.conflict775;
+typedef struct anon_struct.conflict75f anon_struct.conflict75f, *Panon_struct.conflict75f;
 
-typedef struct anon_struct.conflict8d5 anon_struct.conflict8d5, *Panon_struct.conflict8d5;
+typedef struct anon_struct.conflict8bf anon_struct.conflict8bf, *Panon_struct.conflict8bf;
 
 typedef struct _on_exit_args _on_exit_args, *P_on_exit_args;
 
 typedef struct __tm __tm, *P__tm;
 
 typedef struct _rand48 _rand48, *P_rand48;
+
+struct anon_struct.conflict8bf {
+    uchar * _nextf[30];
+    uint _nmalloc[30];
+};
+
+struct _rand48 {
+    ushort _seed[3];
+    ushort _mult[3];
+    ushort _add;
+};
+
+struct __tm {
+    int __tm_sec;
+    int __tm_min;
+    int __tm_hour;
+    int __tm_mday;
+    int __tm_mon;
+    int __tm_year;
+    int __tm_wday;
+    int __tm_yday;
+    int __tm_isdst;
+};
+
+struct anon_struct.conflict75f {
+    uint _unused_rand;
+    char * _strtok_last;
+    char _asctime_buf[26];
+    undefined field_0x22;
+    undefined field_0x23;
+    struct __tm _localtime_buf;
+    int _gamma_signgam;
+    undefined field_0x4c;
+    undefined field_0x4d;
+    undefined field_0x4e;
+    undefined field_0x4f;
+    ulonglong _rand_next;
+    struct _rand48 _r48;
+    undefined field_0x66;
+    undefined field_0x67;
+    struct _mbstate_t _mblen_state;
+    struct _mbstate_t _mbtowc_state;
+    struct _mbstate_t _wctomb_state;
+    char _l64a_buf[8];
+    char _signal_buf[24];
+    int _getdate_err;
+    struct _mbstate_t _mbrlen_state;
+    struct _mbstate_t _mbrtowc_state;
+    struct _mbstate_t _mbsrtowcs_state;
+    struct _mbstate_t _wcrtomb_state;
+    struct _mbstate_t _wcsrtombs_state;
+    int _h_errno;
+};
+
+union anon_union.conflict907_for__new {
+    struct anon_struct.conflict75f _reent;
+    struct anon_struct.conflict8bf _unused;
+};
 
 struct _Bigint {
     struct _Bigint * _next;
@@ -11367,30 +11114,10 @@ struct _Bigint {
     __ULong _x[1];
 };
 
-struct _rand48 {
-    ushort _seed[3];
-    ushort _mult[3];
-    ushort _add;
-};
-
 struct _glue {
     struct _glue * _next;
     int _niobs;
     __FILE * _iobs;
-};
-
-struct _on_exit_args {
-    void * _fnargs[32];
-    void * _dso_handle[32];
-    __ULong _fntypes;
-    __ULong _is_cxa;
-};
-
-struct _atexit {
-    struct _atexit * _next;
-    int _ind;
-    void (* _fns[32])(void);
-    struct _on_exit_args _on_exit_args;
 };
 
 struct __sbuf {
@@ -11425,56 +11152,18 @@ struct __sFILE {
     int _flags2;
 };
 
-struct anon_struct.conflict8d5 {
-    uchar * _nextf[30];
-    uint _nmalloc[30];
+struct _on_exit_args {
+    void * _fnargs[32];
+    void * _dso_handle[32];
+    __ULong _fntypes;
+    __ULong _is_cxa;
 };
 
-struct __tm {
-    int __tm_sec;
-    int __tm_min;
-    int __tm_hour;
-    int __tm_mday;
-    int __tm_mon;
-    int __tm_year;
-    int __tm_wday;
-    int __tm_yday;
-    int __tm_isdst;
-};
-
-struct anon_struct.conflict775 {
-    uint _unused_rand;
-    char * _strtok_last;
-    char _asctime_buf[26];
-    undefined field_0x22;
-    undefined field_0x23;
-    struct __tm _localtime_buf;
-    int _gamma_signgam;
-    undefined field_0x4c;
-    undefined field_0x4d;
-    undefined field_0x4e;
-    undefined field_0x4f;
-    ulonglong _rand_next;
-    struct _rand48 _r48;
-    undefined field_0x66;
-    undefined field_0x67;
-    struct _mbstate_t _mblen_state;
-    struct _mbstate_t _mbtowc_state;
-    struct _mbstate_t _wctomb_state;
-    char _l64a_buf[8];
-    char _signal_buf[24];
-    int _getdate_err;
-    struct _mbstate_t _mbrlen_state;
-    struct _mbstate_t _mbrtowc_state;
-    struct _mbstate_t _mbsrtowcs_state;
-    struct _mbstate_t _wcrtomb_state;
-    struct _mbstate_t _wcsrtombs_state;
-    int _h_errno;
-};
-
-union anon_union.conflict91d_for__new {
-    struct anon_struct.conflict775 _reent;
-    struct anon_struct.conflict8d5 _unused;
+struct _atexit {
+    struct _atexit * _next;
+    int _ind;
+    void (* _fns[32])(void);
+    struct _on_exit_args _on_exit_args;
 };
 
 struct _reent {
@@ -11497,7 +11186,7 @@ struct _reent {
     struct _Bigint * * _freelist;
     int _cvtlen;
     char * _cvtbuf;
-    union anon_union.conflict91d_for__new _new;
+    union anon_union.conflict907_for__new _new;
     struct _atexit * _atexit;
     struct _atexit _atexit0;
     void (** _sig_func)(int);
@@ -11512,52 +11201,12 @@ struct _reent {
 struct __locale_t {
 };
 
-typedef union anon_union.conflict91d anon_union.conflict91d, *Panon_union.conflict91d;
+typedef union anon_union.conflict907 anon_union.conflict907, *Panon_union.conflict907;
 
-union anon_union.conflict91d {
-    struct anon_struct.conflict775 _reent;
-    struct anon_struct.conflict8d5 _unused;
+union anon_union.conflict907 {
+    struct anon_struct.conflict75f _reent;
+    struct anon_struct.conflict8bf _unused;
 };
-
-typedef struct LDMA_TypeDef LDMA_TypeDef, *PLDMA_TypeDef;
-
-typedef struct LDMA_CH_TypeDef LDMA_CH_TypeDef, *PLDMA_CH_TypeDef;
-
-struct LDMA_CH_TypeDef {
-    uint32_t REQSEL;
-    uint32_t CFG;
-    uint32_t LOOP;
-    uint32_t CTRL;
-    uint32_t SRC;
-    uint32_t DST;
-    uint32_t LINK;
-    uint32_t RESERVED0[5];
-};
-
-struct LDMA_TypeDef {
-    uint32_t CTRL;
-    uint32_t STATUS;
-    uint32_t SYNC;
-    uint32_t RESERVED0[5];
-    uint32_t CHEN;
-    uint32_t CHBUSY;
-    uint32_t CHDONE;
-    uint32_t DBGHALT;
-    uint32_t SWREQ;
-    uint32_t REQDIS;
-    uint32_t REQPEND;
-    uint32_t LINKLOAD;
-    uint32_t REQCLEAR;
-    uint32_t RESERVED1[7];
-    uint32_t IF;
-    uint32_t IFS;
-    uint32_t IFC;
-    uint32_t IEN;
-    uint32_t RESERVED2[4];
-    struct LDMA_CH_TypeDef CH[8];
-};
-
-typedef uint8_t RAIL_BLE_Coding_t;
 
 typedef struct RTCC_CCChConf_TypeDef RTCC_CCChConf_TypeDef, *PRTCC_CCChConf_TypeDef;
 
@@ -11665,17 +11314,6 @@ typedef enum PAL_GpioMode_t {
 
 typedef void DMD_InitConfig;
 
-typedef struct EventData EventData, *PEventData;
-
-struct EventData {
-    RAIL_Events_t events;
-    uint32_t timestamp;
-    undefined field_0xc;
-    undefined field_0xd;
-    undefined field_0xe;
-    undefined field_0xf;
-};
-
 typedef struct Stats Stats, *PStats;
 
 typedef struct Stats Stats_t;
@@ -11687,8 +11325,6 @@ struct Stats {
     float mean;
     float varianceTimesSamples;
 };
-
-typedef struct EventData EventData_t;
 
 typedef enum AppMode {
     BER=13,
@@ -11708,17 +11344,6 @@ typedef enum AppMode {
     TX_UNDERFLOW=9
 } AppMode;
 
-typedef struct RxPacketData RxPacketData, *PRxPacketData;
-
-typedef struct RxPacketData RxPacketData_t;
-
-struct RxPacketData { // Missing member dataPtr : uint8_t[1] at offset 0x16 [Unsupported interior flex array: uint8_t[1]]
-    RAIL_RxPacketDetails_t appendedInfo;
-    uint16_t dataLength;
-    undefined field_0x16;
-    undefined field_0x17;
-};
-
 typedef struct ButtonArray ButtonArray, *PButtonArray;
 
 typedef struct ButtonArray ButtonArray_t;
@@ -11731,31 +11356,17 @@ struct ButtonArray {
     uint pin;
 };
 
-typedef enum RailTxType {
-    TX_TYPE_CSMA=1,
-    TX_TYPE_LBT=2,
-    TX_TYPE_NORMAL=0
-} RailTxType;
-
-typedef enum RailTxType RailTxType_t;
-
 typedef struct Counters Counters, *PCounters;
 
 struct Counters {
-    uint32_t userTx;
-    uint32_t ackTx;
-    uint32_t userTxAborted;
-    uint32_t ackTxAborted;
-    uint32_t userTxBlocked;
-    uint32_t ackTxBlocked;
-    uint32_t userTxUnderflow;
-    uint32_t ackTxUnderflow;
-    uint32_t txChannelBusy;
+    uint32_t transmit;
     uint32_t receive;
     uint32_t syncDetect;
     uint32_t preambleDetect;
     uint32_t frameError;
     uint32_t rxOfEvent;
+    uint32_t txAbort;
+    uint32_t txChannelBusy;
     uint32_t addrFilterEvent;
     uint32_t rxFail;
     uint32_t calibrations;
@@ -11766,11 +11377,6 @@ struct Counters {
     uint32_t lbtSuccess;
     uint32_t lbtRetry;
     uint32_t lbtStartCca;
-    uint32_t txFifoAlmostEmpty;
-    uint32_t rxFifoAlmostFull;
-    uint32_t timingLost;
-    uint32_t timingDetect;
-    uint32_t radioConfigChanged;
     Stats_t rssi;
 };
 
@@ -11778,9 +11384,9 @@ typedef struct Counters Counters_t;
 
 typedef enum AppMode AppMode_t;
 
-typedef struct tLedIo tLedIo, *PtLedIo;
+typedef struct tLedArray tLedArray, *PtLedArray;
 
-struct tLedIo {
+struct tLedArray {
     enum GPIO_Port_TypeDef port;
     undefined field_0x1;
     undefined field_0x2;
@@ -11830,49 +11436,14 @@ typedef enum CMU_Select_TypeDef {
     cmuSelect_AUXHFRCO=7,
     cmuSelect_Disabled=1,
     cmuSelect_Error=0,
-    cmuSelect_HFCLK=9,
+    cmuSelect_HFCLK=8,
     cmuSelect_HFCLKLE=6,
     cmuSelect_HFRCO=5,
-    cmuSelect_HFSRCCLK=8,
     cmuSelect_HFXO=4,
     cmuSelect_LFRCO=3,
     cmuSelect_LFXO=2,
-    cmuSelect_ULFRCO=10
+    cmuSelect_ULFRCO=9
 } CMU_Select_TypeDef;
-
-typedef enum anon_enum_32.conflict7d78 {
-    cmuClock_ACMP0=279040,
-    cmuClock_ACMP1=283136,
-    cmuClock_ADC0=295424,
-    cmuClock_ADC0ASYNC=3014808,
-    cmuClock_AUX=917504,
-    cmuClock_BUS=524288,
-    cmuClock_CORE=131152,
-    cmuClock_CRYOTIMER=287232,
-    cmuClock_CRYPTO=529664,
-    cmuClock_DBG=786438,
-    cmuClock_EXPORT=655392,
-    cmuClock_GPCRC=546048,
-    cmuClock_GPIO=533760,
-    cmuClock_HF=17,
-    cmuClock_HFLE=525568,
-    cmuClock_HFPER=344384,
-    cmuClock_I2C0=291328,
-    cmuClock_IDAC0=299520,
-    cmuClock_LDMA=541952,
-    cmuClock_LETIMER0=1312352,
-    cmuClock_LEUART0=1443696,
-    cmuClock_LFA=1703938,
-    cmuClock_LFB=1835011,
-    cmuClock_LFE=2097157,
-    cmuClock_PCNT0=1706496,
-    cmuClock_PRS=537856,
-    cmuClock_RTCC=1182080,
-    cmuClock_TIMER0=262656,
-    cmuClock_TIMER1=266752,
-    cmuClock_USART0=270848,
-    cmuClock_USART1=274944
-} anon_enum_32.conflict7d78;
 
 typedef struct CMU_HFXOInit_TypeDef CMU_HFXOInit_TypeDef, *PCMU_HFXOInit_TypeDef;
 
@@ -11903,7 +11474,6 @@ struct CMU_HFXOInit_TypeDef {
 
 typedef enum CMU_HFXOTuningMode_TypeDef {
     cmuHFXOTuningMode_Auto=0,
-    cmuHFXOTuningMode_PeakDetectCommand=16,
     cmuHFXOTuningMode_PeakShuntCommand=48,
     cmuHFXOTuningMode_ShuntCommand=32
 } CMU_HFXOTuningMode_TypeDef;
@@ -11912,7 +11482,6 @@ typedef enum CMU_Clock_TypeDef {
     cmuClock_ACMP0=279040,
     cmuClock_ACMP1=283136,
     cmuClock_ADC0=295424,
-    cmuClock_ADC0ASYNC=3014808,
     cmuClock_AUX=917504,
     cmuClock_BUS=524288,
     cmuClock_CORE=131152,
@@ -11992,6 +11561,39 @@ typedef enum CMU_AUXHFRCOFreq_TypeDef {
     cmuAUXHFRCOFreq_UserDefined=0
 } CMU_AUXHFRCOFreq_TypeDef;
 
+typedef enum anon_enum_32.conflict65c6 {
+    cmuClock_ACMP0=279040,
+    cmuClock_ACMP1=283136,
+    cmuClock_ADC0=295424,
+    cmuClock_AUX=917504,
+    cmuClock_BUS=524288,
+    cmuClock_CORE=131152,
+    cmuClock_CRYOTIMER=287232,
+    cmuClock_CRYPTO=529664,
+    cmuClock_DBG=786438,
+    cmuClock_EXPORT=655392,
+    cmuClock_GPCRC=546048,
+    cmuClock_GPIO=533760,
+    cmuClock_HF=17,
+    cmuClock_HFLE=525568,
+    cmuClock_HFPER=344384,
+    cmuClock_I2C0=291328,
+    cmuClock_IDAC0=299520,
+    cmuClock_LDMA=541952,
+    cmuClock_LETIMER0=1312352,
+    cmuClock_LEUART0=1443696,
+    cmuClock_LFA=1703938,
+    cmuClock_LFB=1835011,
+    cmuClock_LFE=2097157,
+    cmuClock_PCNT0=1706496,
+    cmuClock_PRS=537856,
+    cmuClock_RTCC=1182080,
+    cmuClock_TIMER0=262656,
+    cmuClock_TIMER1=266752,
+    cmuClock_USART0=270848,
+    cmuClock_USART1=274944
+} anon_enum_32.conflict65c6;
+
 typedef struct RTCC_TypeDef RTCC_TypeDef, *PRTCC_TypeDef;
 
 typedef struct RTCC_CC_TypeDef RTCC_CC_TypeDef, *PRTCC_CC_TypeDef;
@@ -12025,6 +11627,33 @@ struct RTCC_TypeDef {
     struct RTCC_RET_TypeDef RET[32];
 };
 
+typedef struct RADIO_PAInit RADIO_PAInit, *PRADIO_PAInit;
+
+typedef enum RADIO_PASel {
+    PA_SEL_2P4_HP=0,
+    PA_SEL_2P4_LP=1,
+    PA_SEL_SUBGIG=2
+} RADIO_PASel;
+
+typedef enum RADIO_PASel RADIO_PASel_t;
+
+typedef enum RADIO_PAVoltMode {
+    PA_VOLTMODE_DCDC=1,
+    PA_VOLTMODE_VBAT=0
+} RADIO_PAVoltMode;
+
+typedef enum RADIO_PAVoltMode RADIO_PAVoltMode_t;
+
+struct RADIO_PAInit {
+    RADIO_PASel_t paSel;
+    RADIO_PAVoltMode_t voltMode;
+    int16_t power;
+    int16_t offset;
+    uint16_t rampTime;
+};
+
+typedef struct RADIO_PAInit RADIO_PAInit_t;
+
 typedef struct EMU_TypeDef EMU_TypeDef, *PEMU_TypeDef;
 
 struct EMU_TypeDef {
@@ -12049,26 +11678,20 @@ struct EMU_TypeDef {
     uint32_t DCDCMISCCTRL;
     uint32_t DCDCZDETCTRL;
     uint32_t DCDCCLIMCTRL;
-    uint32_t DCDCLNCOMPCTRL;
+    uint32_t RESERVED2[1];
     uint32_t DCDCLNVCTRL;
     uint32_t DCDCTIMING;
     uint32_t DCDCLPVCTRL;
-    uint32_t RESERVED2[1];
+    uint32_t RESERVED3[1];
     uint32_t DCDCLPCTRL;
     uint32_t DCDCLNFREQCTRL;
-    uint32_t RESERVED3[1];
+    uint32_t RESERVED4[1];
     uint32_t DCDCSYNC;
-    uint32_t RESERVED4[5];
+    uint32_t RESERVED5[5];
     uint32_t VMONAVDDCTRL;
     uint32_t VMONALTAVDDCTRL;
     uint32_t VMONDVDDCTRL;
     uint32_t VMONIO0CTRL;
-    uint32_t RESERVED5[49];
-    uint32_t BIASCONF;
-    uint32_t RESERVED6[10];
-    uint32_t TESTLOCK;
-    uint32_t RESERVED7[2];
-    uint32_t BIASTESTCTRL;
 };
 
 typedef enum IRQn {
@@ -12117,52 +11740,9 @@ struct CORE_nvicMask_t {
 
 typedef uint32_t CORE_irqState_t;
 
-typedef enum RAIL_AssertErrorCodes_t_enum {
-    RAIL_ASSERT_CONVERSION_CURVES_NOT_INITIALIZED=42,
-    RAIL_ASSERT_DEPRECATED_FUNCTION=39,
-    RAIL_ASSERT_DIVISION_BY_ZERO=43,
-    RAIL_ASSERT_FAILED_APPENDED_INFO_MISSING=0,
-    RAIL_ASSERT_FAILED_BAD_PACKET_LENGTH=4,
-    RAIL_ASSERT_FAILED_BASECNTTOP=24,
-    RAIL_ASSERT_FAILED_CLOCK_PRESCALER=12,
-    RAIL_ASSERT_FAILED_CLOCK_SOURCE_NOT_READY=27,
-    RAIL_ASSERT_FAILED_CONFIG_INDEX_INVALID=37,
-    RAIL_ASSERT_FAILED_DEPRECATED_LBTRETRY=25,
-    RAIL_ASSERT_FAILED_DFL_BITS_SIZE=19,
-    RAIL_ASSERT_FAILED_EFR32XG1_REGISTER_SIZE=21,
-    RAIL_ASSERT_FAILED_ILLEGAL_RXLEN_ENTRY_STATUS=3,
-    RAIL_ASSERT_FAILED_INACTIVE_HANDLE_SCHEDTX=36,
-    RAIL_ASSERT_FAILED_INSUFFICIENT_BYTES_IN_RX_PACKET=11,
-    RAIL_ASSERT_FAILED_INVALID_HANDLE_SCHEDTX=35,
-    RAIL_ASSERT_FAILED_INVALID_INTERRUPT_ENABLED=41,
-    RAIL_ASSERT_FAILED_NESTED_SEQUENCER_LOCK=17,
-    RAIL_ASSERT_FAILED_NO_ACTIVE_CONFIG=31,
-    RAIL_ASSERT_FAILED_NO_ACTIVE_HANDLE_SCHEDRX=34,
-    RAIL_ASSERT_FAILED_NO_ACTIVE_HANDLE_SINGLEPROTOCOL=38,
-    RAIL_ASSERT_FAILED_NO_ACTIVE_HANDLE_SWITCH=32,
-    RAIL_ASSERT_FAILED_PBUFFER_NOT_DEFINED=10,
-    RAIL_ASSERT_FAILED_PROTIMER_CHANNEL=22,
-    RAIL_ASSERT_FAILED_PROTIMER_RANDOM_SEED=20,
-    RAIL_ASSERT_FAILED_RAC_STATE=15,
-    RAIL_ASSERT_FAILED_RETIME_LIMIT=16,
-    RAIL_ASSERT_FAILED_RFINIT=33,
-    RAIL_ASSERT_FAILED_RSSI_AVERAGE_DONE=18,
-    RAIL_ASSERT_FAILED_RTCC_POST_WAKEUP=13,
-    RAIL_ASSERT_FAILED_RTCC_SYNC_MISSED=26,
-    RAIL_ASSERT_FAILED_RX_FIFO_BYTES=1,
-    RAIL_ASSERT_FAILED_RX_FIFO_ZERO_BYTES_READ=2,
-    RAIL_ASSERT_FAILED_SYNTH_DIVCTRL_ENUM_CONVERSION_ERROR=5,
-    RAIL_ASSERT_FAILED_SYNTH_VCO_FREQUENCY=14,
-    RAIL_ASSERT_FAILED_TIMER_REQUIRES_WRAP=23,
-    RAIL_ASSERT_FAILED_TIMINGS_INVALID=28,
-    RAIL_ASSERT_FAILED_TMRDRV_SCHED_TIMER_NOT_RUNNING=30,
-    RAIL_ASSERT_FAILED_UNEXPECTED_STATE_RXLEN_FIFO=7,
-    RAIL_ASSERT_FAILED_UNEXPECTED_STATE_RX_FIFO=6,
-    RAIL_ASSERT_FAILED_UNEXPECTED_STATE_TXACK_FIFO=9,
-    RAIL_ASSERT_FAILED_UNEXPECTED_STATE_TX_FIFO=8,
-    RAIL_ASSERT_MULTIPROTOCOL_NO_EVENT=40,
-    RAIL_ASSERT_NULL_HANDLE=29
-} RAIL_AssertErrorCodes_t_enum;
+typedef ushort __uint16_t;
+
+typedef short __int16_t;
 
 typedef enum StripMode {
     STRIP_NONE=0,
@@ -12172,89 +11752,224 @@ typedef enum StripMode {
 
 typedef enum StripMode StripMode_t;
 
-typedef enum TEMPDRV_LimitType {
-    TEMPDRV_LIMIT_HIGH=1,
-    TEMPDRV_LIMIT_LOW=0
-} TEMPDRV_LimitType;
+typedef enum RADIO_PTIMode {
+    RADIO_PTI_MODE_DISABLED=3,
+    RADIO_PTI_MODE_SPI=0,
+    RADIO_PTI_MODE_UART=1,
+    RADIO_PTI_MODE_UART_ONEWIRE=2
+} RADIO_PTIMode;
 
-typedef enum TEMPDRV_LimitType TEMPDRV_LimitType_t;
+typedef struct RADIO_PTIInit RADIO_PTIInit, *PRADIO_PTIInit;
 
-typedef struct TEMPDRV_CallbackSet_t TEMPDRV_CallbackSet_t, *PTEMPDRV_CallbackSet_t;
+typedef enum RADIO_PTIMode RADIO_PTIMode_t;
 
-struct TEMPDRV_CallbackSet_t {
-    void (* callback)(int8_t, TEMPDRV_LimitType_t);
-    uint8_t temp;
-    undefined field_0x5;
-    undefined field_0x6;
-    undefined field_0x7;
+struct RADIO_PTIInit {
+    RADIO_PTIMode_t mode;
+    undefined field_0x1;
+    undefined field_0x2;
+    undefined field_0x3;
+    uint32_t baud;
+    uint8_t doutLoc;
+    enum GPIO_Port_TypeDef doutPort;
+    uint8_t doutPin;
+    uint8_t dclkLoc;
+    enum GPIO_Port_TypeDef dclkPort;
+    uint8_t dclkPin;
+    uint8_t dframeLoc;
+    enum GPIO_Port_TypeDef dframePort;
+    uint8_t dframePin;
+    undefined field_0x11;
+    undefined field_0x12;
+    undefined field_0x13;
 };
 
-typedef enum ErrataState {
-    ERRATA_HIGH=2,
-    ERRATA_LOW=0,
-    ERRATA_MID=1
-} ErrataState;
+typedef struct RADIO_PTIInit RADIO_PTIInit_t;
 
 
+// WARNING! conflicting data type names: /stdarg.h/__gnuc_va_list - /DWARF/stdarg.h/__gnuc_va_list
 
+typedef enum Elf_SectionHeaderType_ARM {
+    SHT_ANDROID_REL=1610612737,
+    SHT_ANDROID_RELA=1610612738,
+    SHT_ARM_ATTRIBUTES=1879048195,
+    SHT_ARM_DEBUGOVERLAY=1879048196,
+    SHT_ARM_EXIDX=1879048193,
+    SHT_ARM_OVERLAYSECTION=1879048197,
+    SHT_ARM_PREEMPTMAP=1879048194,
+    SHT_CHECKSUM=1879048184,
+    SHT_DYNAMIC=6,
+    SHT_DYNSYM=11,
+    SHT_FINI_ARRAY=15,
+    SHT_GNU_ATTRIBUTES=1879048181,
+    SHT_GNU_HASH=1879048182,
+    SHT_GNU_LIBLIST=1879048183,
+    SHT_GNU_verdef=1879048189,
+    SHT_GNU_verneed=1879048190,
+    SHT_GNU_versym=1879048191,
+    SHT_GROUP=17,
+    SHT_HASH=5,
+    SHT_INIT_ARRAY=14,
+    SHT_NOBITS=8,
+    SHT_NOTE=7,
+    SHT_NULL=0,
+    SHT_PREINIT_ARRAY=16,
+    SHT_PROGBITS=1,
+    SHT_REL=9,
+    SHT_RELA=4,
+    SHT_SHLIB=10,
+    SHT_STRTAB=3,
+    SHT_SUNW_COMDAT=1879048187,
+    SHT_SUNW_move=1879048186,
+    SHT_SUNW_syminfo=1879048188,
+    SHT_SYMTAB=2,
+    SHT_SYMTAB_SHNDX=18
+} Elf_SectionHeaderType_ARM;
 
+typedef struct Elf32_Sym Elf32_Sym, *PElf32_Sym;
 
+struct Elf32_Sym {
+    dword st_name;
+    dword st_value;
+    dword st_size;
+    byte st_info;
+    byte st_other;
+    word st_shndx;
+};
 
+typedef struct Elf32_Shdr Elf32_Shdr, *PElf32_Shdr;
 
+struct Elf32_Shdr {
+    dword sh_name;
+    enum Elf_SectionHeaderType_ARM sh_type;
+    dword sh_flags;
+    dword sh_addr;
+    dword sh_offset;
+    dword sh_size;
+    dword sh_link;
+    dword sh_info;
+    dword sh_addralign;
+    dword sh_entsize;
+};
 
-#define ADDRCONFIG_MAX_ADDRESS_FIELDS 2
+typedef struct Elf32_Phdr Elf32_Phdr, *PElf32_Phdr;
 
-#define RAIL_TX_OPTIONS_DEFAULT 0
+typedef enum Elf_ProgramHeaderType_ARM {
+    PT_ARM_EXIDX=1879048192,
+    PT_DYNAMIC=2,
+    PT_GNU_EH_FRAME=1685382480,
+    PT_GNU_RELRO=1685382482,
+    PT_GNU_STACK=1685382481,
+    PT_INTERP=3,
+    PT_LOAD=1,
+    PT_NOTE=4,
+    PT_NULL=0,
+    PT_PHDR=6,
+    PT_SHLIB=5,
+    PT_TLS=7
+} Elf_ProgramHeaderType_ARM;
+
+struct Elf32_Phdr {
+    enum Elf_ProgramHeaderType_ARM p_type;
+    dword p_offset;
+    dword p_vaddr;
+    dword p_paddr;
+    dword p_filesz;
+    dword p_memsz;
+    dword p_flags;
+    dword p_align;
+};
+
+typedef struct Elf32_Ehdr Elf32_Ehdr, *PElf32_Ehdr;
+
+struct Elf32_Ehdr {
+    byte e_ident_magic_num;
+    char e_ident_magic_str[3];
+    byte e_ident_class;
+    byte e_ident_data;
+    byte e_ident_version;
+    byte e_ident_osabi;
+    byte e_ident_abiversion;
+    byte e_ident_pad[7];
+    word e_type;
+    word e_machine;
+    dword e_version;
+    dword e_entry;
+    dword e_phoff;
+    dword e_shoff;
+    dword e_flags;
+    word e_ehsize;
+    word e_phentsize;
+    word e_phnum;
+    word e_shentsize;
+    word e_shnum;
+    word e_shstrndx;
+};
+
+#define RAIL_TX_CONFIG_CHANNEL_BUSY 4
+
+#define RAIL_TX_CONFIG_CCA_RETRY 64
+
+#define RAIL_RX_OPTION_STORE_CRC 1
 
 #define RAIL_MAX_LBT_TRIES 15
 
-#define RAIL_RX_OPTIONS_DEFAULT 0
+#define RAIL_TX_CONFIG_CHANNEL_CLEAR 32
 
-#define RAIL_TX_POWER_DBM_SCALING_FACTOR 10
+#define RAIL_TX_CONFIG_START_CCA 128
 
-#define RAIL_RX_OPTIONS_NONE 0
+#define RAIL_RX_CONFIG_PACKET_ABORTED 1024
 
-#define RAIL_TX_POWER_MIN 32768
+#define RAIL_RX_CONFIG_FILTER_PASSED 2048
 
-#define RAIL_TX_OPTIONS_ALL 4294967295
+#define RAIL_RX_CONFIG_INVALID_CRC 16
+
+#define RAIL_RX_CONFIG_SYNC1_DETECT 4
+
+#define RAIL_TX_CONFIG_TX_BLOCKED 16
+
+#define RAIL_RX_CONFIG_SYNC2_DETECT 8
+
+#define RAIL_TX_CONFIG_TX_ABORTED 8
 
 #define RAIL_DEBUG_MODE_FREQ_OVERRIDE 1
 
-#define RAIL_STATE_UINT32_BUFFER_SIZE 54
+#define RAIL_RX_CONFIG_FRAME_ERROR 16
 
-#define RAIL_RX_OPTIONS_ALL 4294967295
+#define RAIL_DEBUG_CONFIG_STATE_CHANGE 2
 
 #define ADDRCONFIG_MATCH_TABLE_SINGLE_FIELD 33554430
 
 #define RAIL_AUTOACK_MAX_LENGTH 64
 
-#define RAIL_TX_POWER_VOLTAGE_SCALING_FACTOR 1000
+#define RAIL_IGNORE_CRC_ERRORS 1
 
-#define RAIL_TX_POWER_MAX 32767
+#define RAIL_TX_CONFIG_BUFFER_OVERFLOW 1
 
-#define RAIL_TX_OPTIONS_NONE 0
-
-#define RAIL_RX_PACKET_HANDLE_NEWEST 2
-
-#define RAIL_RSSI_INVALID_DBM -128
-
-#define RAIL_RX_PACKET_HANDLE_OLDEST 1
-
-#define RAIL_EVENTS_NONE 0
+#define RAIL_IGNORE_NO_ERRORS 0
 
 #define ADDRCONFIG_MATCH_TABLE_DOUBLE_FIELD 17043520
 
+#define RAIL_RX_CONFIG_RF_SENSED 128
+
+#define RAIL_TX_CONFIG_BUFFER_UNDERFLOW 2
+
+#define RAIL_RX_CONFIG_SCHEDULED_RX_END 512
+
 #define RAIL_RSSI_INVALID -512
 
-#define RAIL_SCHEDULER_STATE_UINT32_BUFFER_SIZE 25
+#define RAIL_RX_CONFIG_BUFFER_UNDERFLOW 1
+
+#define RAIL_RX_CONFIG_ADDRESS_FILTERED 64
+
+#define RAIL_IGNORE_ALL_ERRORS 255
+
+#define RAIL_RX_CONFIG_TIMEOUT 256
 
 #define RAIL_SETFIXEDLENGTH_INVALID 65535
 
+#define RAIL_RX_CONFIG_BUFFER_OVERFLOW 32
 
-// WARNING! conflicting data type names: /stdint.h/uint16_t - /DWARF/_stdint.h/uint16_t
-
-
-// WARNING! conflicting data type names: /stdint.h/uint64_t - /DWARF/_stdint.h/uint64_t
+#define RAIL_RX_CONFIG_PREAMBLE_DETECT 2
 
 
 // WARNING! conflicting data type names: /stdint.h/uint32_t - /DWARF/_stdint.h/uint32_t
@@ -12265,7 +11980,7 @@ typedef enum ErrataState {
 
 
 
-void FUN_00000000(uint param_1);
+void FUN_00000000(void);
 undefined1 * __do_global_dtors_aux(undefined1 *param_1);
 undefined8 frame_dummy(undefined1 *param_1,undefined *param_2);
 void _start(void);
@@ -12277,6 +11992,7 @@ void ieee802154SetPanCoordinator(int argc,char **argv);
 void ieee802154SetPanId(int argc,char **argv);
 void ieee802154SetShortAddress(int argc,char **argv);
 void ieee802154SetLongAddress(int argc,char **argv);
+void addressFilterByFrame(int argc,char **argv);
 void getAddressFilter(int argc,char **argv);
 void setAddressFilter(int argc,char **argv);
 void printAddresses(int argc,char **argv);
@@ -12292,7 +12008,6 @@ void bleStatus(int argc,char **argv);
 void bleEnable(int argc,char **argv);
 void bleSet1MbpsPhy(int argc,char **argv);
 void bleSet2MbpsPhy(int argc,char **argv);
-void bleSetCoding(int argc,char **argv);
 void bleSetChannelParams(int argc,char **argv);
 void bleAdvertisingConfig(int argc,char **argv);
 void setFrequency(int argc,char **argv);
@@ -12311,21 +12026,13 @@ void resetChip(int argc,char **argv);
 void printDataRates(int argc,char **argv);
 void getRandom(int argc,char **argv);
 void setDebugSignal(int argc,char **argv);
-void forceAssert(int argc,char **argv);
-void configPrintEvents(int argc,char **argv);
-void getAppMode(int argc,char **argv);
-void getRadioState(int argc,char **argv);
 void startPerMode(int argc,char **argv);
 void updateStats(int32_t newValue,Stats_t *stats);
 void getPerStats(int argc,char **argv);
-void berResetStats(uint32_t numBytes);
 void berConfigSet(int argc,char **argv);
 void berRx(int argc,char **argv);
 void berStatusGet(int argc,char **argv);
-char * getRfStateName(RAIL_RadioState_t state);
-char * getStatusMessage(RAIL_Status_t status);
 void getStatus(int argc,char **argv);
-void fifoStatus(int argc,char **argv);
 void getVersion(int argc,char **argv);
 void setPtiProtocol(int argc,char **argv);
 void getVersionVerbose(int argc,char **argv);
@@ -12345,103 +12052,85 @@ void setTxLength(int argc,char **argv);
 void printAckPacket(int argc,char **argv);
 void setAckPayload(int argc,char **argv);
 void setAckLength(int argc,char **argv);
-void setFixedLength(int argc,char **argv);
-void dataConfig(int argc,char **argv);
-void fifoModeTestOptions(int argc,char **argv);
-void rxFifoManualRead(int argc,char **argv);
-void fifoReset(int argc,char **argv);
-void txFifoManualLoad(int argc,char **argv);
-void abortRxPacket(int argc,char **argv);
-void peekRx(int argc,char **argv);
 int8_t stringsToStates(char **strings,RAIL_RadioState_t *states);
 void getChannel(int argc,char **argv);
 void setChannel(int argc,char **argv);
 void getPower(int argc,char **argv);
 void setPower(int argc,char **argv);
-void sweepTxPower(int argc,char **argv);
 void getTxDelay(int argc,char **argv);
 void setTxDelay(int argc,char **argv);
 void getCtune(int argc,char **argv);
 void setCtune(int argc,char **argv);
 void setPaCtune(int argc,char **argv);
-void enablePaCal(int argc,char **argv);
+void getConfig(int argc,char **argv);
+void listConfigs(int argc,char **argv);
+void setConfig(int argc,char **argv);
 void setTxTransitions(int argc,char **argv);
 void setRxTransitions(int argc,char **argv);
 void setTimings(int argc,char **argv);
-void setTxFifoThreshold(int argc,char **argv);
-void setRxFifoThreshold(int argc,char **argv);
-void setEventConfig(int argc,char **argv);
 void printTimerStats(int argc,char **argv);
 void setTimer(int argc,char **argv);
 void timerCancel(int argc,char **argv);
-void RAILCb_SensedRf(void);
 void tx(int argc,char **argv);
 void txWithOptions(int argc,char **argv);
 void configTxOptions(int argc,char **argv);
+void txAtTime(int argc,char **argv);
 void txAfterRx(int argc,char **argv);
 void rx(int argc,char **argv);
-void setRxOptions(int argc,char **argv);
 void setTxTone(int argc,char **argv);
 void setTxStream(int argc,char **argv);
 void setDirectMode(int argc,char **argv);
 void setDirectTx(int argc,char **argv);
 void sleep(int argc,char **argv);
 void rfSense(int argc,char **argv);
-void printTxAcks(int argc,char **argv);
 void rfSensedCheck(void);
 _Bool parseTimeModeFromString(char *str,RAIL_TimeMode_t *mode);
-void txAtTime(int argc,char **argv);
 void rxAt(int argc,char **argv);
-void PeripheralEnable(void);
-void usDelay(uint32_t microseconds);
-void serialWaitForTxIdle(void);
-void disableGraphics(void);
-void updateDisplay(void);
-void LedSet(int led);
-void LedToggle(int led);
-void LedsDisable(void);
-void PeripheralDisable(void);
-void initButtons(void);
-void appHalInit(void);
 void gpio0LongPress(void);
 void gpio0ShortPress(void);
 void gpio1ShortPress(void);
 void gpioCallback(uint8_t pin);
-void RAILCb_RadioConfigChanged(RAIL_Handle_t railHandle,RAIL_ChannelConfigEntry_t *entry);
-void RAILCb_RfReady(RAIL_Handle_t railHandle);
-void RAILCb_TimerExpired(RAIL_Handle_t railHandle);
-void RAILCb_AssertFailed(RAIL_Handle_t railHandle,uint32_t errorCode);
+void appHalInit(void);
+void updateDisplay(void);
+void LedSet(int led);
+void LedToggle(int led);
+void PeripheralDisable(void);
+EMSTATUS PeripheralEnable(void);
+void usDelay(uint32_t microseconds);
+void serialWaitForTxIdle(void);
+void RAILCb_RfReady(void);
+void RAILCb_CalNeeded(void);
+void RAILCb_RadioStateChanged(uint8_t state);
+void RAILCb_TxPacketSent(RAIL_TxPacketInfo_t *txPacketInfo);
+void RAILCb_RxPacketReceived(void *rxPacketHandle);
+void RAILCb_RxRadioStatusExt(uint32_t status);
+void RAILCb_TxRadioStatus(uint8_t status);
+void RAILCb_TimerExpired(void);
+void RAILCb_RxAckTimeout(void);
+RAIL_Status_t RAILCb_IEEE802154_DataRequestCommand(void);
+void RAILCb_RssiAverageDone(int16_t avgRssi);
 void processPendingCalibrations(void);
+void processPendingCalibrations::lexical_block_0(void);
 void checkTimerExpiration(void);
 void printNewTxError(void);
 void printAckTimeout(void);
 void changeChannel(uint32_t i);
+void changeChannelConfig(int newConfig);
+void changeRadioConfig(int newConfig);
 void pendPacketTx(void);
-uint8_t chooseTxType(_Bool reuseCcaConfig);
 void sendPacketIfPending(void);
 void pendFinishTxSequence(void);
-void pendFinishTxAckSequence(void);
 void finishTxSequenceIfPending(void);
-void printPacket(char *cmdName,uint8_t *data,uint16_t dataLength,RxPacketData_t *packetData);
+void setNextPacketTime(uint32_t absTime);
+void printPacket(char *cmdName,uint8_t *data,uint16_t dataLength,RAIL_RxPacketInfo_t *packetInfo);
 void printReceivedPacket(void);
 void processInputCharacters(void);
-void enqueueEvents(RAIL_Events_t events);
-void RAILCb_Event(RAIL_Handle_t railHandle,RAIL_Events_t events);
-void printEvents(void);
-void main(void);
+int main(void);
 void ciErrorCallback(char *command,CommandError_t error);
 AppMode_t currentAppMode(void);
 void enableAppMode(AppMode_t next,_Bool enable,char *command);
 char * appModeNames(AppMode_t appMode);
 void changeAppModeIfPending(void);
-void rxFifoPrep(void);
-void loadTxData(uint8_t *data,uint16_t dataLen);
-void configRxLengthSetting(uint16_t rxLength);
-void RAILCb_TxPacketSent(RAIL_Handle_t railHandle,_Bool isAck);
-void RAILCb_TxFifoAlmostEmpty(RAIL_Handle_t railHandle);
-void RAILCb_RxFifoAlmostFull(RAIL_Handle_t railHandle);
-void setNextPacketTime(RAIL_ScheduleTxConfig_t *scheduledTxOptions);
-void RAILCb_RxPacketReceived(RAIL_Handle_t railHandle);
 void setNextAppMode(char *command,AppMode_t next);
 _Bool inAppMode(AppMode_t appMode,char *command);
 _Bool inRadioState(RAIL_RadioState_t state,char *command);
@@ -12453,6 +12142,10 @@ void * memoryAllocate(uint32_t size);
 void * memoryPtrFromHandle(void *handle);
 void memoryFree(void *handle);
 void memoryTakeReference(void *handle);
+void * RAILCb_AllocateMemory(uint32_t size);
+void RAILCb_FreeMemory(void *handle);
+void * RAILCb_BeginWriteMemory(void *handle,uint32_t offset,uint32_t *available);
+void RAILCb_EndWriteMemory(void *handle,uint32_t offset,uint32_t size);
 _Bool queueInit(Queue_t *queue,uint16_t size);
 _Bool queueAdd(Queue_t *queue,void *data);
 void * queueRemove(Queue_t *queue);
@@ -12464,23 +12157,24 @@ int8_t ciProcessInput(CommandState_t *state,char *data,uint32_t length);
 uint32_t ciGetUnsigned(char *arg);
 int32_t ciGetSigned(char *arg);
 _Bool ciValidateInteger(char *arg,char type);
-void LDMA_IRQHandler(void);
-void GPIOINT_IRQDispatcher(uint32_t iflags);
-void GPIOINT_Init(void);
-void GPIOINT_CallbackRegister(uint8_t pin,GPIOINT_IrqCallbackPtr_t *callbackPtr);
-void GPIO_EVEN_IRQHandler(void);
-void GPIO_ODD_IRQHandler(void);
-void checkAllTimers(uint32_t timeElapsed);
-void executeTimerCallbacks(void);
-void rescheduleRtc(uint32_t rtcCnt);
-void RTCC_IRQHandler(void);
-void updateInterrupts(void);
-int8_t TEMPDRV_GetTemp(void);
-void TEMPDRV_IRQHandler(void);
-void EMU_IRQHandler(void);
-void TIMER0_IRQHandler(void);
-void setHfLeConfig(uint32_t hfFreq);
-void flashWaitStateControl(uint32_t coreFreq,int vscale);
+void Reset_Handler(void);
+void IDAC0_IRQHandler(void);
+uint32_t SystemMaxCoreClockGet(void);
+uint32_t SystemHFClockGet(void);
+void SystemCoreClockGet(void);
+uint32_t SystemHFXOClockGet(void);
+void SystemInit(void);
+uint32_t SystemLFRCOClockGet(void);
+uint32_t SystemULFRCOClockGet(void);
+uint32_t SystemLFXOClockGet(void);
+void BSP_BccPinsEnable(_Bool enable);
+int BSP_BccInit(void);
+int BSP_Init(uint32_t flags);
+int BSP_LedsInit(void);
+int BSP_LedClear(int ledNo);
+int BSP_LedSet(int ledNo);
+int BSP_LedToggle(int ledNo);
+void flashWaitStateControl(uint32_t coreFreq);
 void flashWaitStateMax(void);
 void syncReg(uint32_t mask);
 void CMU_OscillatorTuningSet(uint32_t val,CMU_Osc_TypeDef osc);
@@ -12497,31 +12191,33 @@ _Bool CMU_OscillatorTuningOptimize(CMU_Osc_TypeDef osc,CMU_HFXOTuningMode_TypeDe
 void CMU_OscillatorEnable(CMU_Osc_TypeDef osc,_Bool enable,_Bool wait);
 void CMU_ClockSelectSet(CMU_Clock_TypeDef clock,CMU_Select_TypeDef ref);
 void CMU_HFXOInit(CMU_HFXOInit_TypeDef *hfxoInit);
-void CMU_LFXOInit(CMU_LFXOInit_TypeDef *lfxoInit);
 CORE_irqState_t CORE_EnterCritical(void);
 void CORE_ExitCritical(CORE_irqState_t irqState);
 undefined4 CORE_EnterAtomic(void);
 void CORE_ExitAtomic(CORE_irqState_t irqState);
+void emuRestore(void);
 void currentLimitersUpdate(void);
 void dcdcHsFixLnBlock(void);
 void dcdcFetCntSet(_Bool lpModeSet);
-void emState(emState_TypeDef action);
-void emState(emState_TypeDef action);
 void EMU_EnterEM2(_Bool restore);
 void EMU_EnterEM3(_Bool restore);
+void EMU_UpdateOscConfig(void);
 void EMU_DCDCModeSet(EMU_DcdcMode_TypeDef dcdcMode);
 void EMU_EnterEM4(void);
 _Bool EMU_DCDCOutputVoltageSet(uint32_t mV,_Bool setLpVoltage,_Bool setLnVoltage);
-void EMU_DCDCOptimizeSlice(uint32_t em0LoadCurrentmA);
+void EMU_DCDCOptimizeSlice(uint32_t em0LoadCurrent_mA);
 void EMU_DCDCLnRcoBandSet(EMU_DcdcLnRcoBand_TypeDef band);
 _Bool EMU_DCDCInit(EMU_DCDCInit_TypeDef *dcdcInit);
 void GPIO_ExtIntConfig(GPIO_Port_TypeDef port,uint pin,uint intNo,_Bool risingEdge,_Bool fallingEdge,_Bool enable);
 void GPIO_PinModeSet(GPIO_Port_TypeDef port,uint pin,GPIO_Mode_TypeDef mode,uint out);
 void RMU_ResetCauseClear(void);
 uint RMU_ResetCauseGet(void);
+void RTCC_ChannelInit(int ch,RTCC_CCChConf_TypeDef *confPtr);
 void RTCC_Enable(_Bool enable);
 void RTCC_Init(RTCC_Init_TypeDef *init);
 void SYSTEM_ChipRevisionGet(SYSTEM_ChipRevision_TypeDef *rev);
+void TIMER_Init(TIMER_TypeDef *timer,TIMER_Init_TypeDef *init);
+void TIMER_InitCC(TIMER_TypeDef *timer,uint ch,TIMER_InitCC_TypeDef *init);
 void USART_BaudrateAsyncSet(USART_TypeDef *usart,uint32_t refFreq,uint32_t baudrate,USART_OVS_TypeDef ovs);
 void USART_BaudrateSyncSet(USART_TypeDef *usart,uint32_t refFreq,uint32_t baudrate);
 void USART_Enable(USART_TypeDef *usart,USART_Enable_TypeDef enable);
@@ -12531,25 +12227,13 @@ void USART_InitSync(USART_TypeDef *usart,USART_InitSync_TypeDef *init);
 uint8_t USART_Rx(USART_TypeDef *usart);
 void USART_Tx(USART_TypeDef *usart,uint8_t data);
 void USART_TxDouble(USART_TypeDef *usart,uint16_t data);
-uint32_t SystemMaxCoreClockGet(void);
-uint32_t SystemHFClockGet(void);
-void SystemCoreClockGet(void);
-uint32_t SystemHFXOClockGet(void);
-void SystemHFXOClockSet(uint32_t freq);
-void SystemInit(void);
-uint32_t SystemLFRCOClockGet(void);
-uint32_t SystemULFRCOClockGet(void);
-uint32_t SystemLFXOClockGet(void);
-void SystemLFXOClockSet(uint32_t freq);
-void BSP_initDcdc(void);
-void BSP_initClocks(void);
-void BSP_initDevice(undefined4 param_1,undefined4 param_2);
-void BSP_initBoard(void);
-int BSP_LedsInit(void);
-int BSP_LedClear(int ledNo);
-int BSP_LedSet(int ledNo);
-int BSP_LedToggle(int ledNo);
+void GPIOINT_IRQDispatcher(uint32_t iflags);
+void GPIOINT_Init(void);
+void GPIOINT_CallbackRegister(uint8_t pin,GPIOINT_IrqCallbackPtr_t *callbackPtr);
+void GPIO_EVEN_IRQHandler(void);
+void GPIO_ODD_IRQHandler(void);
 void halInit(void);
+uint32_t halCommonGetInt32uMillisecondTick(void);
 void usecDelay(uint32_t usecs);
 uint8_t halInitChipSpecific(void);
 debugSignal_t * halGetDebugSignals(uint32_t *size);
@@ -12562,15 +12246,24 @@ int _fstat(int file,stat *st);
 int _isatty(int file);
 int _lseek(int file,int ptr,int dir);
 int _read(int file,char *ptr,int len);
-caddr_t _sbrk(int incr);
 int _write(int file,char *ptr,int len);
+caddr_t _sbrk(int incr);
 void USART0_RX_IRQHandler(void);
 void RETARGET_SerialCrLf(int on);
 void RETARGET_SerialInit(void);
 int RETARGET_ReadChar(void);
 int RETARGET_WriteChar(char c);
+void checkAllTimers(uint32_t timeElapsed);
+void executeTimerCallbacks(void);
+void rescheduleRtc(uint32_t rtcCnt);
+Ecode_t RTCDRV_Init(void);
+undefined8 RTCDRV_GetWallClockTicks64(void);
+uint32_t RTCDRV_TicksToMsec(uint64_t ticks);
+void RTCC_IRQHandler(void);
 void UDELAY_Calibrate(void);
 void UDELAY_Delay(uint32_t usecs);
+Ecode_t USTIMER_Init(void);
+void TIMER0_IRQHandler(void);
 EMSTATUS DISPLAY_Init(void);
 EMSTATUS DISPLAY_DeviceGet(int displayDeviceNo,DISPLAY_Device_t *device);
 EMSTATUS DISPLAY_DeviceRegister(DISPLAY_Device_t *device);
@@ -12602,11 +12295,10 @@ EMSTATUS DMD_init(DMD_InitConfig *initConfig);
 EMSTATUS DMD_updateDisplay(void);
 EMSTATUS GLIB_displayWakeUp(void);
 EMSTATUS GLIB_displaySleep(void);
-EMSTATUS GLIB_resetDisplayClippingArea(GLIB_Context_t *pContext);
-EMSTATUS GLIB_clear(GLIB_Context_t *pContext);
-EMSTATUS GLIB_applyClippingRegion(GLIB_Context_t *pContext);
 EMSTATUS GLIB_setClippingRegion(GLIB_Context_t *pContext,GLIB_Rectangle_t *pRect);
 EMSTATUS GLIB_contextInit(GLIB_Context_t *pContext);
+EMSTATUS GLIB_resetDisplayClippingArea(GLIB_Context_t *pContext);
+EMSTATUS GLIB_clear(GLIB_Context_t *pContext);
 void GLIB_colorTranslate24bpp(uint32_t color,uint8_t *red,uint8_t *green,uint8_t *blue);
 EMSTATUS GLIB_drawPixel(GLIB_Context_t *pContext,int32_t x,int32_t y);
 EMSTATUS GLIB_drawPixelColor(GLIB_Context_t *pContext,int32_t x,int32_t y,uint32_t color);
@@ -12628,508 +12320,423 @@ void GRAPHICS_Clear(void);
 void GRAPHICS_AppendString(char *str);
 void GRAPHICS_InsertTriangle(uint32_t x,uint32_t y,uint32_t size,_Bool up,int8_t fillPercent);
 int rtcIntCallbackRegister(anon_subr_void_void_ptr *pFunction,void *argument,uint frequency);
-RAIL_TxPowerCurves_t * RAIL_GetTxPowerCurve(RAIL_TxPowerMode_t mode);
-RAIL_Status_t RAIL_InitTxPowerCurves(RAIL_TxPowerCurvesConfig_t *config);
-RAIL_TxPowerLevel_t RAIL_ConvertDbmToRaw(RAIL_Handle_t railHandle,RAIL_TxPowerMode_t mode,RAIL_TxPower_t power);
-RAIL_TxPower_t RAIL_ConvertRawToDbm(RAIL_Handle_t railHandle,RAIL_TxPowerMode_t mode,RAIL_TxPowerLevel_t powerLevel);
-void Reset_Handler(void);
-void IDAC0_IRQHandler(void);
-int responsePrintInternal(StripMode_t stripMode,char *formatString,va_list args,_Bool finalize);
-_Bool responsePrintMulti(char *formatString,...);
-_Bool responsePrintStart(char *command);
+int responsePrintInternal(StripMode_t stripMode,char *command,char *formatString,va_list args);
 _Bool responsePrintHeader(char *command,char *formatString,...);
+_Bool responsePrintMulti(char *formatString,...);
 _Bool responsePrint(char *command,char *formatString,...);
-_Bool responsePrintContinue(char *formatString,...);
-_Bool responsePrintEnd(char *formatString,...);
 _Bool responsePrintError(char *command,uint8_t code,char *formatString,...);
-int sprintfFloat(char *buffer,int8_t len,float f,uint8_t precision);
-int RAILInt_GetActiveConfig(void);
-RAIL_Handle_t RAIL_Init(RAIL_Config_t *railCfg,undefined4 cb);
-RAIL_RadioState_t_enum RAIL_GetRadioState(void);
-void RAIL_Idle(RAIL_Handle_t railHandle,RAIL_IdleMode_t_enum mode,bool wait);
-uint32_t RAIL_StartRfSense(RAIL_Handle_t railHandle,RAIL_RfSenseBand_t band,uint32_t senseTime,undefined4 *cb);
-bool RAIL_IsRfSensed(RAIL_Handle_t railHandle);
-uint16_t RAIL_GetRadioEntropy(RAIL_Handle_t railHandle,uint8_t *buffer,uint16_t bytes);
-RAIL_Status_t_enum RAIL_SetTimer(RAIL_Handle_t railHandle,uint32_t time,RAIL_TimeMode_t mode,undefined4 cb);
-uint32_t RAIL_GetTimer(RAIL_Handle_t railHandle);
-void RAIL_CancelTimer(RAIL_Handle_t railHandle);
-bool RAIL_IsTimerExpired(RAIL_Handle_t railHandle);
-bool RAIL_IsTimerRunning(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RAIL_StartTx(RAIL_Handle_t railHandle,uint16_t channel,RAIL_TxOptions_t options,undefined *schedulerInfo);
-RAIL_Status_t_enum RAIL_StartScheduledTx(RAIL_Handle_t railHandle,uint16_t channel,RAIL_TxOptions_t options,RAIL_ScheduleTxConfig_t *config,undefined *schedulerInfo);
-RAIL_Status_t_enum RAIL_StartCcaCsmaTx(RAIL_Handle_t railHandle,uint16_t channel,RAIL_CsmaConfig_t *csmaConfig,undefined *schedulerInfo);
-RAIL_Status_t RAIL_StartCcaLbtTx(RAIL_Handle_t railHandle,uint16_t channel,RAIL_TxOptions_t options,RAIL_LbtConfig_t *lbtConfig,undefined *schedulerInfo);
-RAIL_Status_t RAIL_StartTxStream(RAIL_Handle_t railHandle,uint16_t channel,RAIL_StreamMode_t_enum mode);
-RAIL_Status_t_enum RAIL_StopTxStream(RAIL_Handle_t railHandle);
-RAIL_Status_t RAIL_StartRx(RAIL_Handle_t railHandle,uint16_t channel,undefined *schedulerInfo);
-RAIL_Status_t_enum RAIL_ScheduleRx(RAIL_Handle_t railHandle,uint16_t channel,RAIL_ScheduleRxConfig_t *cfg,undefined *schedulerInfo);
-int16_t RAIL_GetRssi(RAIL_Handle_t railHandle,bool wait);
-RAIL_Status_t_enum RAIL_StartAverageRssi(RAIL_Handle_t railHandle,uint16_t channel,uint32_t averagingTimeUs,undefined *schedulerInfo);
-RAIL_Status_t_enum RAIL_EnableDirectMode(RAIL_Handle_t railHandle,bool enable);
-RAIL_Status_t_enum RAIL_OverrideDebugFrequency(RAIL_Handle_t railHandle,uint32_t freq);
-bool isTransitionState(int state);
-undefined4 RAILCore_Init(undefined4 param_1);
-RAIL_Status_t_enum RAIL_SetPtiProtocol(RAIL_Handle_t railHandle,RAIL_PtiProtocol_t protocol);
-void RAILCore_Idle(RAIL_IdleMode_t_enum mode,bool wait);
-RAIL_RadioState_t_enum RAILCore_GetRadioState(void);
-void RAILCore_EnableDirectMode(bool enable);
-uint32_t RAIL_GetSymbolRate(RAIL_Handle_t railHandle);
-uint32_t RAIL_GetBitRate(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RAIL_SetStateTiming(RAIL_Handle_t railHandle,RAIL_StateTiming_t *timings);
-RAIL_Status_t_enum RAIL_IsValidChannel(RAIL_Handle_t railHandle,uint16_t channel);
-uint16_t RAILInt_SetChannel(RAIL_Handle_t railHandle,uint16_t channel);
-uint16_t RAILCore_ConfigChannels(RAIL_Handle_t railHandle,RAIL_ChannelConfig_t *config);
-uint16_t RAIL_ConfigChannels(RAIL_Handle_t railHandle,RAIL_ChannelConfig_t *config,int cb);
-uint16_t RAILInt_GetChannel(RAIL_Handle_t railHandle);
-void RAIL_GetVersion(RAIL_Version_t *version,bool verbose);
-RAIL_Status_t_enum RAIL_SetDebugMode(RAIL_Handle_t railHandle,uint32_t debugMode);
-uint32_t RAIL_GetDebugMode(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RAILCore_SetTxTransitions(RAIL_Handle_t railHandle,RAIL_StateTransitions_t *transitions);
-RAIL_Status_t_enum RAIL_SetTxTransitions(RAIL_Handle_t railHandle,RAIL_StateTransitions_t *transitions);
-RAIL_Status_t_enum RAILCore_SetRxTransitions(RAIL_Handle_t railHandle,RAIL_StateTransitions_t *transitions);
-RAIL_Status_t_enum RAIL_SetRxTransitions(RAIL_Handle_t railHandle,RAIL_StateTransitions_t *transitions);
-uint16_t RAIL_SetFixedLength(RAIL_Handle_t railHandle,uint16_t length);
-RAIL_Status_t RAIL_ConfigEvents(RAIL_Handle_t railHandle,RAIL_Events_t mask,RAIL_Events_t events);
-RAIL_Status_t_enum RAIL_ConfigRxOptions(RAIL_Handle_t railHandle,RAIL_RxOptions_t mask,RAIL_RxOptions_t options);
-RAIL_Status_t_enum RAILCore_StartRx(RAIL_Handle_t railHandle,uint16_t channel,undefined4 *schedulerInfo);
-RAIL_Status_t_enum RAILCore_ScheduleRx(RAIL_Handle_t railHandle,uint16_t channel,RAIL_ScheduleRxConfig_t *cfg,undefined *schedulerInfo);
-uint16_t RAILInt_PreTxOps(RAIL_Handle_t param_1,uint16_t param_2);
-RAIL_Status_t_enum RAILCore_StartTx(undefined4 param_1,undefined4 param_2,undefined4 param_3);
-RAIL_Status_t_enum RAILCore_StartScheduledTx(RAIL_Handle_t railHandle,uint16_t channel,RAIL_TxOptions_t options,RAIL_ScheduleTxConfig_t *config,undefined *schedulerInfo);
-RAIL_Status_t_enum RAILCore_StartCcaCsmaTx(RAIL_Handle_t railHandle,uint16_t channel,RAIL_TxOptions_t options,RAIL_CsmaConfig_t *csmaConfig,undefined *schedulerInfo);
-void RAILCore_StartCcaLbtTx(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4);
-RAIL_Status_t_enum RAILCore_StartTxStream(RAIL_Handle_t railHandle,uint16_t channel,RAIL_StreamMode_t_enum mode);
-RAIL_Status_t_enum RAIL_SetTxPower(RAIL_Handle_t railHandle,RAIL_TxPower_t power);
-RAIL_TxPowerLevel_t RAIL_GetTxPower(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RAIL_ConfigTxPower(RAIL_Handle_t railHandle,RAIL_TxPowerConfig_t *config);
-RAIL_Status_t RAIL_GetTxPowerConfig(RAIL_Handle_t railHandle,RAIL_TxPowerConfig_t *config);
-RAIL_Status_t_enum RAIL_SetTxPowerDbm(RAIL_Handle_t railHandle,RAIL_TxPower_t power);
-RAIL_TxPower_t RAIL_GetTxPowerDbm(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RAILCore_OverrideDebugFrequency(uint32_t freq);
-RAIL_Status_t_enum RAIL_GetTxPacketDetails(RAIL_Handle_t railHandle,RAIL_TxPacketDetails_t *pPacketDetails);
-void RAIL_EnablePaCal(bool enable);
-void RAILInt_EnableCal(RAIL_Handle_t railHandle,RAIL_CalMask_t calEnable);
-undefined8 RAILInt_PendCal(int param_1,uint param_2);
-uint RAILInt_ClearCal(int param_1,uint param_2);
-RAIL_CalMask_t RAIL_GetPendingCal(RAIL_Handle_t railHandle);
-void RAILCore_Calibrate(RAIL_Handle_t railHandle,undefined4 *calValues,RAIL_CalMask_t calForce);
-RAIL_Status_t_enum RAIL_Calibrate(RAIL_Handle_t railHandle,undefined *calValues,RAIL_CalMask_t calForce);
-RAIL_Status_t_enum RAIL_ConfigCal(RAIL_Handle_t railHandle,RAIL_CalMask_t calEnable);
-RAIL_Status_t_enum RAIL_SetTune(RAIL_Handle_t railHandle,uint32_t tune);
-uint32_t RAIL_GetTune(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RAIL_SetPaCTune(RAIL_Handle_t railHandle,uint8_t txPaCtuneValue,uint8_t rxPaCtuneValue);
-RAIL_Status_t_enum RAILCore_ConfigAutoAck(RAIL_Handle_t railHandle,RAIL_AutoAckConfig_t *config);
-RAIL_Status_t_enum RAIL_ConfigAutoAck(RAIL_Handle_t railHandle,RAIL_AutoAckConfig_t *config);
-bool RAIL_IsAutoAckEnabled(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RAIL_WriteAutoAckFifo(RAIL_Handle_t railHandle,uint8_t *ackData,uint8_t ackDataLen);
-RAIL_Status_t_enum RAIL_UseTxFifoForAutoAck(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RAIL_CancelAutoAck(RAIL_Handle_t railHandle);
-void RAIL_PauseRxAutoAck(RAIL_Handle_t railHandle,bool pause);
-bool RAIL_IsRxAutoAckPaused(RAIL_Handle_t railHandle);
-void RAIL_PauseTxAutoAck(RAIL_Handle_t railHandle,bool pause);
-bool RAIL_IsTxAutoAckPaused(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RAIL_ConfigData(RAIL_Handle_t railHandle,RAIL_DataConfig_t *dataConfig);
-uint16_t RAIL_WriteTxFifo(RAIL_Handle_t railHandle,uint8_t *dataPtr,uint16_t writeLength,bool reset);
-uint16_t RAIL_SetTxFifo(RAIL_Handle_t railHandle,uint8_t *addr,uint16_t initLength,uint16_t size);
-uint16_t RAIL_ReadRxFifo(RAIL_Handle_t railHandle,uint8_t *dataPtr,uint16_t readLength);
-RAIL_RxPacketHandle_t RAIL_GetRxPacketInfo(RAIL_Handle_t railHandle,RAIL_RxPacketHandle_t packetHandle,RAIL_RxPacketInfo_t *pPacketInfo);
-RAIL_Status_t_enum RAIL_GetRxPacketDetails(RAIL_Handle_t railHandle,RAIL_RxPacketHandle_t packetHandle,RAIL_RxPacketDetails_t *pPacketDetails);
-uint RAIL_HoldRxPacket(void);
-RAIL_Status_t_enum RAIL_ReleaseRxPacket(RAIL_Handle_t railHandle,RAIL_RxPacketHandle_t packetHandle);
-uint16_t RAIL_SetTxFifoThreshold(RAIL_Handle_t railHandle,uint16_t txThreshold);
-uint16_t RAIL_SetRxFifoThreshold(RAIL_Handle_t railHandle,uint16_t rxThreshold);
-uint16_t RAIL_GetTxFifoThreshold(RAIL_Handle_t railHandle);
-uint16_t RAIL_GetRxFifoThreshold(RAIL_Handle_t railHandle);
-uint16_t RAIL_GetTxFifoSpaceAvailable(RAIL_Handle_t railHandle);
-uint16_t RAIL_GetRxFifoBytesAvailable(RAIL_Handle_t railHandle);
-void RAIL_ResetFifo(RAIL_Handle_t railHandle,bool txFifo,bool rxFifo);
-uint16_t RAIL_PeekRxPacket(RAIL_Handle_t railHandle,RAIL_RxPacketHandle_t packetHandle,uint8_t *pDst,uint16_t len,uint16_t offset);
-void RAILInt_Assert(int param_1,uint32_t param_2);
-RAIL_Status_t_enum RAIL_SetAddressFilterAddress(RAIL_Handle_t railHandle,uint8_t field,uint8_t index,uint8_t *value,bool enable);
-RAIL_Status_t RAIL_EnableAddressFilterAddress(RAIL_Handle_t railHandle,bool enable,uint8_t field,uint8_t index);
-bool RAIL_EnableAddressFilter(RAIL_Handle_t railHandle,bool enable);
-RAIL_Status_t_enum RAIL_ConfigAddressFilter(RAIL_Handle_t railHandle,RAIL_AddrConfig_t *addrConfig);
-bool RAIL_IsAddressFilterEnabled(RAIL_Handle_t railHandle);
-RAIL_Status_t RAIL_ConfigPti(RAIL_Handle_t railHandle,RAIL_PtiConfig_t *ptiConfig);
-RAIL_Status_t_enum RAIL_EnablePti(RAIL_Handle_t railHandle,bool enable);
-int16_t RAILCore_GetRssi(RAIL_Handle_t railHandle,bool wait);
-RAIL_Status_t_enum RAILCore_StartAverageRssi(RAIL_Handle_t railHandle,uint16_t channel,uint32_t averagingTimeUs,undefined *schedulerInfo);
-int16_t RAIL_GetAverageRssi(RAIL_Handle_t railHandle);
-uint16_t RAILCore_GetRadioEntropy(uint8_t *buffer,uint16_t bytes);
-uint32_t RAILCore_StartRfSense(undefined param_1,undefined4 param_2,undefined4 param_3,uint param_4);
-bool RAILCore_IsRfSensed(RAIL_Handle_t railHandle);
+void apcConfigure(int param_1);
+int PA_OutputPowerGet(void);
+void PA_20dbmConfigSet(void);
+void PA_0dbmConfigSet(void);
+void PA_SubGhz20dbmConfigSet(void);
+void PA_PowerModeConfigSet(void);
+uint PA_StripesAndSlicesSet(uint param_1);
+uint PA_StripesAndSlicesCommonCalc(int param_1,short *param_2);
+uint PA_PowerFromStripesAndSlicesCommonCalc(uint param_1,int param_2);
+void PA_PowerLevelOptimize(int param_1);
+void PA_StripesAndSlicesCalc(int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4);
+int PA_OutputPowerSet(void);
+void PA_PeakDetectorHighRun(void);
+void PA_PeakDetectorLowRun(void);
+void PA_BatHighRun(void);
+uint16_t PA_RampTimeGet(void);
+void PA_RampConfigSet(uint *param_1);
+int PA_RampTimeCalc(void);
+uint16_t PA_RampTimeSet(uint16_t ramptime);
+void PA_CTuneSet(uint param_1,uint param_2);
+void PA_BandSelect(void);
+bool RADIO_PA_Init(RADIO_PAInit_t *paInit);
+void RADIO_PTI_Init(byte *param_1);
+void RADIO_PTI_Enable(void);
+void RADIO_PTI_AuxdataOutput(uint param_1);
+void RADIO_BUFCClear(int param_1);
+void RADIO_WriteSync(undefined4 *param_1,undefined4 param_2);
+void RADIO_OrSync(uint *param_1,uint param_2);
+void RADIO_XorSync(uint *param_1,uint param_2);
+void RADIO_AndSync(uint *param_1,uint param_2);
+void RADIO_BUFCWriteContSync(int param_1,byte *param_2,int param_3);
+void RADIO_WaitForSetSync(uint *param_1,uint param_2);
+void RADIO_Delay(undefined4 param_1,undefined4 param_2);
+void RADIO_ClrBitSync(int param_1,int param_2);
+void RADIO_SetBitSync(int param_1,int param_2);
+void RADIO_SetAndForgetWrite(undefined4 param_1,uint param_2,undefined4 param_3);
+void RADIO_CLKEnable(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4);
+void RADIO_Config(int param_1);
+void RADIO_RegisterIrqCallback(int param_1,undefined4 param_2);
+void FRC_PRI_IRQHandler(void);
+void FRC_IRQHandler(void);
+void RAC_RSM_IRQHandler(void);
+void RAC_SEQ_IRQHandler(void);
+void AGC_IRQHandler(void);
+void PROTIMER_IRQHandler(void);
+void BUFC_IRQHandler(void);
+void MODEM_IRQHandler(void);
+void RADIO_TxBufferSet(undefined4 param_1,int param_2,undefined4 param_3,uint param_4);
+void RADIO_TxBufferReset(void);
+void RADIO_TxAckBufferSet(undefined4 param_1,undefined4 param_2);
+void RADIO_TxAckBufferReset(void);
+void RADIO_RXBufferEnableThrInt(void);
+void RADIO_RXBufferDisableThrInt(void);
+void RADIO_RxBufferSet(int param_1);
+undefined4 RADIO_RxBufferGet(void);
+void RADIO_RxBufferReset(void);
+void RADIO_BUFCIrqHandler(void);
+int RADIO_RxTrailDataLength(void);
+bool RADIO_RxBufferPacketAvailable(void);
+uint RADIO_RxBufferBytesAvailable(void);
+uint RADIO_TxBufferBytesAvailable(void);
+uint RADIO_RxBufferReadByte(void);
+void RADIO_FrameControlDescrBufferIdSet(int param_1,int param_2);
+void RADIO_Init(void);
+void RADIO_FrameControlDescrConfigSet(int param_1,uint param_2,int param_3,int param_4,byte param_5,byte param_6);
+void RADIO_FrameDescsConfig(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4);
+void RADIO_BUFCReadContASync(int param_1,undefined *param_2,int param_3);
+void RADIO_RxBufferReadBytes(undefined4 param_1,undefined4 param_2);
+void RADIO_RxBufferDropBytes(uint param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4);
+void RADIO_RxLengthReadNext(ushort *param_1);
+void RADIO_FRCErrorHandle(void);
+uint RADIO_UsToStimerTickCalc(uint param_1);
+void RADIO_SeqInit(void *param_1,int param_2);
+uint RADIO_TxWarmTimeSet(uint param_1);
+undefined2 RADIO_TxWarmTimeGet(void);
+uint RADIO_RxToTxTimeSet(uint param_1);
+uint RADIO_RxFrameToTxTimeSet(uint param_1);
+uint RADIO_TxToTxTimeSet(uint param_1);
+uint RADIO_TxToRxTimeSet(uint param_1);
+short RADIO_RxWarmTimeSet(uint param_1);
+undefined2 RADIO_RxWarmTimeGet(void);
+uint RADIO_RxSearchTimeSet(uint param_1);
+uint RADIO_TxToRxSearchTimeSet(uint param_1);
+uint RADIO_ComputeTxBaudrate(void);
+uint RADIO_ComputeRxBaudrate(void);
+uint32_t RADIO_ComputeTxSymbolRate(void);
+uint32_t RADIO_ComputeTxBitRate(void);
+int RADIO_GetRSSI(void);
+undefined4 RADIO_AGCCCAThresholdSet(byte param_1);
+undefined4 RADIO_SetAgcCcaParams(int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4);
+undefined4 RADIO_CalcRssiPeriod(uint param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4);
+void RADIO_SetCRCInitVal(uint param_1);
+void setupPnForTest(void);
+void RFTEST_StartRx(void);
+void RFTEST_StopRx(undefined4 param_1,undefined4 param_2,int param_3);
+void RFTEST_SaveRadioConfiguration(void);
+void RFTEST_RestoreRadioConfiguration(void);
+void RFTEST_StartCwTx(void);
+void RFTEST_StartStreamTx(void);
+void RFTEST_StopTx(void);
+void RFTEST_BerStop(void);
+void RFTEST_BerEmptyBufcAndUpdateStats(void);
+void RFTEST_ResetBerStats(int param_1);
+void RFTEST_ReportBerStats(RAIL_BerStatus_t *berstats);
+undefined4 SYNTH_RfFreqGet(void);
+undefined4 SYNTH_ChSpacingGet(void);
+undefined4 SYNTH_IfFreqGet(void);
+uint SYNTH_IfFreqCompute(void);
+uint SYNTH_LoDivGet(void);
+uint SYNTH_Is2p4GHz(void);
+bool SYNTH_VcoRangeIsValid(uint param_1);
+void SYNTH_RetimeLimitsConfig(uint param_1);
+void SYNTH_RetimeClkConfig(void);
+void SYNTH_Config(int param_1,uint param_2);
+void SYNTH_ChannelSet(uint param_1,int param_2);
+void SYNTH_DCDCRetimeEnable(void);
+void SYNTH_DCDCRetimeClkSet(int param_1);
+void SYNTH_KvnFreqCompensationEnable(void);
+void RADIOCMU_ClockEnable(CMU_Clock_TypeDef param_1,undefined4 param_2);
+uint RADIOCMU_ClockFreqGet(CMU_Clock_TypeDef param_1);
+uint32_t RADIOCMU_ClockPrescGet(CMU_Clock_TypeDef param_1);
+uint8_t RAIL_RadioConfig(void *radioConfig);
+uint8_t RAIL_ChannelConfig(RAIL_ChannelConfig_t *config);
+void RAIL_DirectModeConfig(bool enable);
+RAIL_Status_t RAIL_DebugFrequencyOverride(uint32_t freq);
+void RAIL_PacketLengthConfigFrameType(RAIL_FrameType_t *frameType);
+int16_t RAIL_PollAverageRSSI(uint32_t averageTimeUs);
+RAIL_Status_t RAIL_StartAverageRSSI(uint8_t channel,uint32_t averagingTimeUs);
+int RAIL_GetAverageRSSI(void);
+void RAIL_SetTune(uint32_t tune);
+uint32_t RAIL_GetTune(void);
 uint32_t RAIL_GetTime(void);
-RAIL_Status_t_enum RAIL_SetTime(uint32_t time);
-RAIL_Status_t_enum RAIL_IEEE802154_Config2p4GHzRadio(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RAILCore_IEEE802154_SetAddresses(RAIL_Handle_t param_1,undefined2 *param_2);
-RAIL_Status_t_enum RAILCore_IEEE802154_Init(RAIL_Handle_t railHandle,RAIL_IEEE802154_Config_t *fifteenFourConfig);
-RAIL_Status_t_enum RAIL_IEEE802154_Init(RAIL_Handle_t railHandle,RAIL_IEEE802154_Config_t *fifteenFourConfig);
-RAIL_Status_t_enum RAIL_IEEE802154_SetPanId(RAIL_Handle_t railHandle,uint16_t panId,uint8_t index);
-RAIL_Status_t RAIL_IEEE802154_SetShortAddress(RAIL_Handle_t railHandle,uint16_t shortAddr,uint8_t index);
-RAIL_Status_t RAIL_IEEE802154_SetLongAddress(RAIL_Handle_t railHandle,uint8_t *longAddr,uint8_t index);
-RAIL_Status_t_enum RAIL_IEEE802154_SetPanCoordinator(RAIL_Handle_t railHandle,bool isPanCoordinator);
-RAIL_Status_t_enum RAIL_IEEE802154_SetPromiscuousMode(RAIL_Handle_t railHandle,bool enable);
-RAIL_Status_t_enum RAIL_IEEE802154_AcceptFrames(RAIL_Handle_t railHandle,uint8_t framesMask);
-RAIL_Status_t_enum RAIL_IEEE802154_SetFramePending(RAIL_Handle_t railHandle);
-RAIL_Status_t RAIL_IEEE802154_GetAddress(RAIL_Handle_t railHandle,RAIL_IEEE802154_Address_t *pAddress);
-RAIL_Status_t_enum RAILCore_BLE_Init(byte *param_1);
-void RAIL_BLE_Init(RAIL_Handle_t railHandle);
-void RAILCore_BLE_Deinit(RAIL_Handle_t railHandle);
-void RAIL_BLE_Deinit(RAIL_Handle_t railHandle);
-bool RAIL_BLE_IsEnabled(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RAILCore_BLE_ConfigPhy1MbpsViterbi(RAIL_Handle_t railHandle);
-RAIL_Status_t RAIL_BLE_ConfigPhy1MbpsViterbi(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RAILCore_BLE_ConfigPhy1Mbps(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RAIL_BLE_ConfigPhy1Mbps(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RAILCore_BLE_ConfigPhy2MbpsViterbi(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RAIL_BLE_ConfigPhy2MbpsViterbi(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RAILCore_BLE_ConfigPhy2Mbps(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RAIL_BLE_ConfigPhy2Mbps(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RAILCore_BLE_ConfigPhyCoded(RAIL_Handle_t railHandle,RAIL_BLE_Coding_t bleCoding);
-RAIL_Status_t_enum RAIL_BLE_ConfigPhyCoded(RAIL_Handle_t railHandle,RAIL_BLE_Coding_t bleCoding);
-RAIL_Status_t_enum RAILCore_BLE_ConfigChannelRadioParams(byte *param_1,undefined4 param_2,int param_3,uint param_4,char param_5);
-RAIL_Status_t_enum RAIL_BLE_ConfigChannelRadioParams(RAIL_Handle_t railHandle,uint32_t crcInit,uint32_t accessAddress,uint16_t channel,bool disableWhitening);
-void eventDefault(void);
-void radioConfigChangedDefault(void);
-void setRssiPeriod(uint param_1);
-void callRailGenericCb.isra.1(uint *param_1,undefined4 param_2,uint param_3,uint param_4);
-void RFHAL_NotifyUserOfIrCal(byte *param_1);
-void RFHAL_SetRadioConfigChangedCallback(RAIL_Handle_t railHandle,int cb);
-void RFHAL_IssueRadioConfigChangedCallback(undefined4 param_1);
-void GENERIC_PHY_EventCallback(uint param_1,uint param_2,int param_3);
-RAIL_Status_t_enum RFHAL_IEEE802154GetAddress(RAIL_IEEE802154_Address_t *pAddress);
-RAIL_Status_t_enum RFHAL_GetTxPacketDetails(RAIL_Handle_t railHandle,RAIL_TxPacketDetails_t *pPacketDetails);
-undefined4 RFHAL_IntEnable(int param_1,undefined4 param_2,uint param_3,uint param_4,uint param_5,uint param_6);
-void RFHAL_SetCallbackConfig(int *param_1);
-uint16_t RFHAL_PeekRxPacket(RAIL_RxPacketHandle_t packetHandle,uint8_t *pDst,uint16_t len,uint16_t offset);
-RAIL_Status_t_enum RFHAL_SetPtiProtocol(RAIL_Handle_t railHandle,RAIL_PtiProtocol_t protocol);
-void RFHAL_Idle(RAIL_IdleMode_t_enum mode);
-RAIL_RadioState_t_enum RFHAL_GetRadioState(void);
+RAIL_Status_t RAIL_SetTime(uint32_t time);
+RAIL_Status_t RAIL_SetStateTiming(RAIL_StateTiming_t *timings);
+bool RAIL_AddressFilterConfig(RAIL_AddrConfig_t *addrConfig);
+bool RAIL_AddressFilterByFrameType(uint8_t validFrames);
+bool RAIL_AddressFilterEnable(void);
+bool RAIL_AddressFilterDisable(void);
+bool RAIL_AddressFilterIsEnabled(void);
+void RAIL_AddressFilterReset(void);
+bool RAIL_AddressFilterSetAddress(uint8_t field,uint8_t index,uint8_t *value,bool enable);
+bool RAIL_AddressFilterEnableAddress(uint8_t field,uint8_t index);
+bool RAIL_AddressFilterDisableAddress(uint8_t field,uint8_t index);
+uint16_t RAIL_GetRadioEntropy(uint8_t *buffer,uint16_t bytes);
+void pktTxDoneEvt(undefined4 param_1,RAIL_TxPacketInfo_t param_2,undefined4 param_3);
+void pktRxOverflow(void);
+void preambleDetected(void);
+void frameDet0(void);
+void frameDet1(void);
+void RAIL_RFSENSE_Callback(void);
+void protmrRetry(void);
+void protmrStartCca(void);
+void racStateChange(void);
+void softwareTimerExpired(void);
+void rssiAverageDone(void);
+void racCalRequest(void);
+void rxTimeout(int param_1);
+void sequencerInterrupt(int param_1);
+void pktRxDoneEvt(void);
+void pktRxFrmErr(void);
+void pktRxAborted(void);
+void pktTxErrorEvt(uint param_1);
+void protmrLbtEvt(int param_1);
+uint8_t RFHAL_Init(RAIL_Init_t *railInit);
+uint RFHAL_SetPtiProtocol(uint param_1,undefined4 param_2,undefined4 param_3,uint param_4);
+void RFHAL_IdleExt(int param_1);
+RAIL_RadioState_t RFHAL_StateGet(void);
 uint RFHAL_OkToTransmit(void);
-RAIL_Status_t_enum RFHAL_StartAverageRssi(RAIL_Handle_t railHandle,uint16_t channel,uint32_t averagingTimeUs,undefined *schedulerInfo);
-int16_t RFHAL_GetAverageRssi(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RFHAL_ScheduleRx(RAIL_Handle_t railHandle,undefined4 param_2,uint *param_3);
-RAIL_Status_t_enum RFHAL_StartRx(void);
-undefined4 RFHAL_EnableRxRawCapture(int param_1,uint param_2);
-void RFHAL_DisableRxRawCapture(void);
-void RFHAL_AcceptCrcErrors(bool accepterrors);
-RAIL_Status_t_enum RFHAL_ConfigRxOptions(RAIL_Handle_t railHandle,RAIL_RxOptions_t mask,RAIL_RxOptions_t options);
-RAIL_Status_t_enum RFHAL_SetPaCTune(RAIL_Handle_t railHandle,uint8_t txPaCtuneValue,uint8_t rxPaCtuneValue);
-uint32_t RFHAL_GetTimer(RAIL_Handle_t railHandle);
-void RFHAL_CancelTimer(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RFHAL_SetTimer(uint32_t time,RAIL_TimeMode_t mode,byte cb);
-bool RFHAL_IsTimerExpired(RAIL_Handle_t railHandle);
-bool RFHAL_IsTimerRunning(RAIL_Handle_t railHandle);
-uint32_t RFHAL_GetSymbolRate(RAIL_Handle_t railHandle);
-uint32_t RFHAL_GetBitRate(RAIL_Handle_t railHandle);
-uint32_t RFHAL_StartRfSense(undefined param_1,undefined4 param_2,undefined4 param_3,uint param_4);
-bool RFHAL_IsRfSensed(RAIL_Handle_t railHandle);
-void RFHAL_RunCal(int param_1,int *param_2,int param_3);
-void RFHAL_EnablePaCal(bool enable);
-RAIL_Status_t_enum RFHAL_SetTxTransitions(RAIL_Handle_t railHandle,RAIL_StateTransitions_t *transitions);
-RAIL_Status_t_enum RFHAL_SetRxTransitions(RAIL_Handle_t railHandle,RAIL_StateTransitions_t *transitions);
+bool RFHAL_HeadedToIdle(void);
+uint RFHAL_TxDataLoad(undefined4 *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4);
+uint8_t RAIL_CcaCsma(void *params);
+uint8_t RAIL_CcaLbt(void *params);
+int16_t RFHAL_PollAverageRSSI(uint32_t averageTimeUs);
+RAIL_Status_t RFHAL_StartAverageRSSI(uint8_t channel,uint32_t averagingTimeUs);
+int RFHAL_GetAverageRSSI(void);
+uint8_t RFHAL_ScheduleRx(uint8_t channel,RAIL_ScheduleRxConfig_t *cfg);
+RAIL_Status_t RAIL_ScheduleTx(RAIL_ScheduleTxConfig_t *params);
+uint8_t RFHAL_RxStart(void);
+uint8_t RFHAL_RxIntEnable(uint32_t cbToEnable,bool appendedInfoEnable);
+undefined4 RFHAL_TxIntEnable(uint param_1);
+undefined4 RFHAL_ErrorConfig(uint param_1);
+RAIL_Status_t RAIL_PaCtuneSet(uint8_t txPaCtuneValue,uint8_t rxPaCtuneValue);
+void RAIL_TimerGet(void);
+void RAIL_TimerCancel(void);
+byte RAIL_TimerSet(uint32_t param_1,int param_2);
+byte RAIL_TimerExpired(void);
+void RAIL_TimerIsRunning(void);
+uint32_t RAIL_SymbolRateGet(void);
+uint32_t RAIL_BitRateGet(void);
+uint32_t RAIL_RfSense(RAIL_RfSenseBand_t band,uint32_t senseTime,bool enableCb);
+bool RAIL_RfSensed(void);
+void RFHAL_CalibrationRun(int *param_1,int param_2);
+RAIL_Status_t RFHAL_SetTxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t error);
+RAIL_Status_t RFHAL_SetRxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t error);
+void RFHAL_SetBerConfig(RAIL_BerConfig_t *berconfig);
+void RFHAL_StartBerRx(void);
+void RFHAL_StopBerRx(void);
+void RFHAL_GetBerStatus(RAIL_BerStatus_t *berstatus);
 void RFHAL_SetCRCInitVal(uint param_1);
-RAIL_Status_t RFHAL_ConfigTxPower(RAIL_Handle_t railHandle,RAIL_TxPowerConfig_t *config);
-RAIL_Status_t_enum RFHAL_SetTxPower(RAIL_Handle_t railHandle,RAIL_TxPower_t power);
-RAIL_Status_t_enum RFHAL_GetTxPowerConfig(RAIL_Handle_t railHandle,RAIL_TxPowerConfig_t *config);
-RAIL_TxPowerLevel_t RFHAL_GetTxPower(RAIL_Handle_t railHandle);
+int RFHAL_GetCurrPowerLevel(void);
+undefined4 RFHAL_SetCurrPowerLevel(void);
+void RFHAL_SetProtocolSpecificChCheckCB(undefined4 param_1);
 void RFHAL_StopTestMode(void);
 void RFHAL_StartCWTestMode(void);
 void RFHAL_StartStreamTestMode(void);
-undefined4 RFHAL_SetChannel(int param_1,int param_2,int param_3,int param_4);
-bool RFHAL_EnableAutoAck(RAIL_Handle_t railHandle,bool enable);
-bool RFHAL_IsAutoAckEnabled(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RFHAL_SetAutoAckTimeout(RAIL_Handle_t railHandle,uint32_t timeout);
-RAIL_Status_t RFHAL_WriteAutoAckFifo(RAIL_Handle_t railHandle,uint8_t *ackData,uint8_t ackDataLen);
-void RFHAL_PauseRxAutoAck(undefined4 param_1,int param_2);
-void RFHAL_PauseTxAutoAck(undefined4 param_1,int param_2);
-bool RFHAL_IsRxAutoAckPaused(RAIL_Handle_t railHandle);
-bool RFHAL_IsTxAutoAckPaused(void);
-RAIL_Status_t_enum RFHAL_UseTxFifoForAutoAck(RAIL_Handle_t railHandle);
-RAIL_Status_t RFHAL_CancelAutoAck(RAIL_Handle_t railHandle);
-void RFHAL_AutoAckWaitForAck(int param_1);
-uint preTxOps(undefined4 param_1,uint param_2);
-int RFHAL_StartTx(void);
-void RFHAL_StartScheduledTx(int param_1,undefined4 param_2,uint *param_3);
-RAIL_Status_t_enum RFHAL_StartCcaCsmaTx(RAIL_Handle_t railHandle,uint16_t channel,RAIL_TxOptions_t options,RAIL_CsmaConfig_t *csmaConfig,undefined *schedulerInfo);
-RAIL_Status_t_enum RFHAL_StartCcaLbtTx(RAIL_Handle_t param_1,uint param_2,RAIL_CsmaConfig_t *param_3,uint32_t param_4);
-uint16_t RFHAL_ReadRxFifo(RAIL_Handle_t railHandle,uint8_t *dataPtr,uint16_t readLength);
-RAIL_RxPacketHandle_t RFHAL_GetRxPacketInfo(RAIL_RxPacketHandle_t packetHandle,RAIL_RxPacketInfo_t *pPacketInfo);
-RAIL_Status_t_enum RFHAL_GetRxPacketDetails(RAIL_RxPacketHandle_t packetHandle,RAIL_RxPacketDetails_t *pPacketDetails);
-uint RFHAL_HoldRxPacket(void);
-RAIL_Status_t_enum RFHAL_ReleaseRxPacket(RAIL_RxPacketHandle_t packetHandle);
-uint16_t RFHAL_SetTxFifoThreshold(RAIL_Handle_t railHandle,uint16_t txThreshold);
-uint16_t RFHAL_SetRxFifoThreshold(RAIL_Handle_t railHandle,uint16_t rxThreshold);
-uint16_t RFHAL_GetTxFifoThreshold(RAIL_Handle_t railHandle);
-uint16_t RFHAL_GetRxFifoThreshold(RAIL_Handle_t railHandle);
-uint16_t RFHAL_GetTxFifoSpaceAvailable(RAIL_Handle_t railHandle);
-uint16_t RFHAL_GetRxFifoBytesAvailable(RAIL_Handle_t railHandle);
-uint16_t RFHAL_SetTxBuffer(RAIL_Handle_t railHandle,uint8_t *addr,uint16_t initLength,uint16_t size);
-void RFHAL_ResetTxFifo(RAIL_Handle_t railHandle);
-uint16_t RFHAL_WriteTxFifo(RAIL_Handle_t railHandle,uint8_t *dataPtr,uint16_t writeLength,bool reset);
-void RFHAL_ResetRxFifo(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RFHAL_ConfigData(RAIL_Handle_t railHandle,RAIL_DataConfig_t *dataConfig);
-RAIL_Status_t_enum RFHAL_Init(int param_1,code *param_2,undefined4 param_3);
-uint16_t RFHAL_SetFixedLength(RAIL_Handle_t railHandle,uint16_t length);
-void RFHAL_SetAbortScheduledTxDuringRx(int param_1);
-int RFHAL_ConfigRadio(byte *param_1);
-void RFHAL_EnableDirectMode(bool enable);
-RAIL_Status_t_enum RFHAL_OverrideDebugFrequency(uint32_t freq);
-int16_t RFHAL_GetRssi(RAIL_Handle_t railHandle,bool wait);
-RAIL_Status_t_enum RFHAL_SetTune(RAIL_Handle_t railHandle,uint32_t tune);
-uint32_t RFHAL_GetTune(RAIL_Handle_t railHandle);
-uint32_t RFHAL_GetTime(void);
-RAIL_Status_t_enum RFHAL_SetTime(uint32_t time);
-RAIL_Status_t_enum RFHAL_ConfigAddressFilter(RAIL_Handle_t railHandle,RAIL_AddrConfig_t *addrConfig);
-bool RFHAL_EnableAddressFilter(RAIL_Handle_t railHandle,bool enable);
-bool RFHAL_AddressFilterIsEnabled(RAIL_Handle_t railHandle);
-void RFHAL_SetAddressFilterAddress(void);
-RAIL_Status_t_enum RFHAL_EnableAddressFilterAddress(RAIL_Handle_t railHandle,bool enable,uint8_t field,uint8_t index);
-uint16_t RFHAL_GetRadioEntropy(uint8_t *buffer,uint16_t bytes);
-RAIL_Status_t_enum RFHAL_SetStateTiming(RAIL_Handle_t railHandle,RAIL_StateTiming_t *timings);
-RAIL_Status_t_enum RFHAL_ConfigPti(RAIL_PtiConfig_t *ptiConfig);
-RAIL_Status_t_enum RFHAL_EnablePti(bool enable);
-bool RFHAL_IEEE802154IsEnabled(void);
-RAIL_Status_t_enum RFHAL_IEEE802154RadioConfig2p4GHz(RAIL_Handle_t railHandle);
-int RFHAL_IEEE802154SetBroadcastAddresses(undefined4 param_1,undefined4 param_2,int param_3,undefined4 param_4);
-RAIL_Status_t_enum RFHAL_IEEE802154SetPanId(RAIL_Handle_t railHandle,uint16_t panId,uint8_t index);
-RAIL_Status_t_enum RFHAL_IEEE802154SetShortAddress(RAIL_Handle_t railHandle,uint16_t shortAddr,uint8_t index);
-RAIL_Status_t RFHAL_IEEE802154SetLongAddress(RAIL_Handle_t railHandle,uint8_t *longAddr,uint8_t index);
-undefined4 RFHAL_IEEE802154SetPromiscuousMode(undefined4 param_1,int param_2,undefined4 param_3,undefined4 param_4);
-undefined4 RFHAL_IEEE802154SetPanCoordinator(undefined4 param_1,int param_2,undefined4 param_3,undefined4 param_4);
-RAIL_Status_t_enum RFHAL_IEEE802154AcceptFrames(RAIL_Handle_t railHandle,uint8_t framesMask);
-undefined4 RFHAL_IEEE802154SetFeatures(undefined4 param_1,int param_2,int param_3,uint param_4);
-RAIL_Status_t_enum RFHAL_IEEE802154SetFramePending(void);
-RAIL_Status_t RFHAL_IEEE802154LoadAck(RAIL_Handle_t param_1,undefined4 param_2,undefined4 param_3);
-RAIL_Status_t_enum RFHAL_ConfigBle2Mbps(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RFHAL_ConfigBle2MbpsViterbi(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RFHAL_ConfigBle1Mbps(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RFHAL_ConfigBle1MbpsViterbi(RAIL_Handle_t railHandle);
-RAIL_Status_t_enum RFHAL_ConfigBleCoded(RAIL_Handle_t railHandle,RAIL_BLE_Coding_t bleCoding);
-void RFHAL_BleInit(RAIL_Handle_t param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4);
-void RFHAL_BleDeinit(int param_1);
-bool RFHAL_IsBleLongRangeEnabled(void);
-void RFHAL_BLEPreambleSyncWordSet(int param_1,uint param_2);
-void RFHAL_BLEWhiteningSet(uint param_1,uint param_2,int param_3);
-void BUFC_ReadHelper(int param_1,void *param_2,size_t param_3,uint param_4,char param_5);
-void checkAndAddRxLenOverflowEntry(void);
-void BUFC_SetTxBuffer(uint param_1,uint param_2,uint param_3);
-void BUFC_WriteBuffer(uint8_t buf,uint8_t *src,uint16_t len);
-void BUFC_ReadBuffer(uint param_1,undefined4 param_2,uint param_3);
-undefined4 BUFC_Peek(undefined4 param_1,undefined4 param_2,undefined4 param_3);
-uint BUFC_PeekByte(int param_1,uint param_2);
-uint16_t BUFC_GetSpaceAvailable(uint32_t buf);
-uint16_t BUFC_GetBytesAvailable(uint8_t buf);
-bool BUFC_TxAckBufferSet(uint8_t *src,uint8_t len);
-undefined BUFC_TxAckBufferReset(void);
-void BUFC_RxBufferReset(void);
-void BUFC_Init(undefined4 param_1);
-uint BUFC_RxBufferBytesAvailable(void);
-uint BUFC_HoldRxPacket(void);
-undefined4 BUFC_ReleaseRxPacket(ushort *param_1);
-void BUFC_StartRxLenThrEvent(void);
-void BUFC_EndRxLenThrEvent(void);
-void BUFC_HandleRxLenOvfEvent(void);
-ushort * BUFC_GetRxPacketInfo(ushort *param_1,byte *param_2,undefined2 *param_3);
+undefined4 RFHAL_SetChannel(int param_1,byte *param_2,int param_3);
+uint RFHAL_AutoAckEnable(void);
+uint RFHAL_AutoAckDisable(void);
+bool RFHAL_AutoAckIsEnabled(void);
+undefined4 RFHAL_AutoAckConfig(int param_1);
+uint RFHAL_AutoAckLoadBuffer(undefined4 *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4);
+void RFHAL_AutoAckRxPause(void);
+void RFHAL_AutoAckRxResume(void);
+void RFHAL_AutoAckTxPause(void);
+void RFHAL_AutoAckTxResume(void);
+bool RFHAL_AutoAckRxIsPaused(void);
+bool RFHAL_AutoAckTxIsPaused(void);
+bool RFHAL_AutoAckUseTxBuffer(void);
+bool RFHAL_AutoAckCancelAck(void);
+void RFHAL_AutoAckWaitForAck(uint param_1);
+code * RFHAL_TxStart(undefined4 param_1,undefined *param_2,code *param_3,undefined4 param_4);
+uint8_t RAIL_RfInit(RAIL_Init_t *railInit);
+RAIL_Status_t RAIL_SetPtiProtocol(RAIL_PtiProtocol_t protocol);
+void RAIL_RfIdle(void);
+void RAIL_RfIdleExt(undefined4 mode,bool wait);
+RAIL_RadioState_t RAIL_RfStateGet(void);
+bool RAIL_ChannelExists(uint16_t channel);
+void RAILInt_TrackChannelConfig(RAIL_ChannelConfig_t *param_1);
+uint8_t RAILInt_SetChannel(uint8_t channel);
+undefined RAILInt_GetChannel(void);
+void RAIL_VersionGet(RAIL_Version_t *version,bool verbose);
+RAIL_Status_t RAIL_DebugModeSet(uint32_t DebugMode);
+uint32_t RAIL_DebugModeGet(void);
+RAIL_Status_t RAIL_SetTxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t error);
+RAIL_Status_t RAIL_SetRxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t error,uint8_t ignoreerrors);
+uint8_t RAIL_RxConfig(uint32_t cbToEnable,bool appendedInfoEnable);
+uint8_t RAIL_RxStart(uint8_t channel);
+uint8_t RAIL_ScheduleRx(uint8_t channel,RAIL_ScheduleRxConfig_t *cfg);
+undefined4 RAIL_TxConfig(uint param_1);
+uint RAIL_TxDataLoad(undefined4 *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4);
+uint RAIL_TxStartWithOptions(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4);
+void RAIL_TxStart(undefined4 param_1,undefined4 param_2,undefined4 param_3);
+uint8_t RAIL_TxToneStart(uint8_t param_1);
+undefined4 RAIL_TxToneStop(void);
+uint8_t RAIL_TxStreamStart(uint8_t param_1,int param_2);
+undefined4 RAIL_TxStreamStop(void);
+undefined4 RAIL_TxPowerSet(void);
+int RAIL_TxPowerGet(void);
+void RFHAL_CalibrationInit(RAIL_CalMask_t calEnable);
+void RFHAL_CalibrationPend(RAIL_CalMask_t calpend);
+uint RFHAL_CalibrationClear(uint param_1);
+undefined4 RFHAL_CalibrationEnableGet(void);
+RAIL_CalMask_t RFHAL_CalibrationPendingGet(void);
+RAIL_CalMask_t RAIL_CalPendingGet(void);
+void RAIL_CalStart(undefined4 *calValues,RAIL_CalMask_t calForce,bool calSave);
+uint8_t RAIL_CalInit(RAIL_CalInit_t *railCalInit);
+RAIL_Status_t RAIL_AutoAckDisable(void);
+bool RAIL_AutoAckIsEnabled(void);
+RAIL_Status_t RAIL_AutoAckConfig(RAIL_AutoAckConfig_t *config);
+RAIL_Status_t RAIL_AutoAckLoadBuffer(RAIL_AutoAckData_t *ackData);
+void RAIL_AutoAckRxPause(void);
+void RAIL_AutoAckRxResume(void);
+bool RAIL_AutoAckRxIsPaused(void);
+void RAIL_AutoAckTxPause(void);
+void RAIL_AutoAckTxResume(void);
+bool RAIL_AutoAckTxIsPaused(void);
+bool RAIL_AutoAckUseTxBuffer(void);
+bool RAIL_AutoAckCancelAck(void);
+void RAIL_BerRxStop(void);
+void RAIL_BerConfigSet(RAIL_BerConfig_t *berConfig);
+void RAIL_BerRxStart(void);
+void RAIL_BerStatusGet(RAIL_BerStatus_t *berstatus);
+RAIL_Status_t RAIL_IEEE802154_2p4GHzRadioConfig(void);
+bool RAIL_IEEE802154_SetAddresses(RAIL_IEEE802154_AddrConfig_t *addresses);
+bool RAIL_IEEE802154_SetPanId(uint16_t panId);
+bool RAIL_IEEE802154_SetShortAddress(uint16_t shortAddr);
+void RAIL_IEEE802154_SetLongAddress(undefined4 param_1);
+RAIL_Status_t RAIL_IEEE802154_SetPanCoordinator(bool isPanCoordinator);
+RAIL_Status_t RAIL_IEEE802154_SetPromiscuousMode(bool enable);
+RAIL_Status_t RAIL_IEEE802154_AcceptFrames(uint8_t framesMask);
+RAIL_Status_t RAIL_IEEE802154_Init(RAIL_IEEE802154_Config_t *config);
+RAIL_Status_t RAIL_IEEE802154_SetFramePending(void);
+RAIL_Status_t RAIL_BLE_Init(void);
+uint RAIL_BLE_Deinit(uint param_1);
+bool RAIL_BLE_IsEnabled(void);
+bool RAIL_BLE_SetPhy1MbpsViterbi(void);
+bool RAIL_BLE_SetPhy1Mbps(void);
+bool RAIL_BLE_SetPhy2MbpsViterbi(void);
+bool RAIL_BLE_SetPhy2Mbps(void);
+bool RAIL_BLE_SetupChannelRadioParams(uint32_t crcInit,uint32_t accessAddress,uint8_t channel,bool disableWhitening);
 undefined4 IRCAL_Configure(undefined4 param_1);
 undefined IRCAL_GetGlobalCalType(void);
 void IRCAL_Set(uint param_1);
 undefined4 IRCAL_Init(byte *param_1);
 void IRCAL_SaveRegStates(void);
-int IRCAL_SetRxFrequency(int param_1);
+undefined4 IRCAL_SetRxFrequency(int param_1);
 void IRCAL_StartRx(void);
-void IRCAL_StopRx(void);
+void IRCAL_StopRx(undefined4 param_1,undefined4 param_2,int param_3);
 void IRCAL_SetSubGhzPllLoopback(void);
 void IRCAL_SetSubGhzPaLoopback(void);
 undefined4 IRCAL_Setup(int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4);
-int IRCAL_ReadRssi(uint param_1,uint param_2,uint param_3,uint32_t param_4,ushort param_5);
+int IRCAL_ReadRssi(uint param_1,uint param_2,uint param_3,undefined4 param_4,undefined2 param_5);
 uint IRCAL_SearchLinear2Stage(uint param_1,int param_2,undefined4 param_3,undefined4 param_4,undefined2 param_5);
 uint IRCAL_Search(int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4);
 void IRCAL_Teardown(void);
 uint IRCAL_GetDiValue(void);
 uint IRCAL_PerformSubfunction(uint param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined2 param_5);
 undefined4 IRCAL_Perform(undefined4 param_1,undefined4 param_2,undefined4 param_3);
-void PA_ProtectPa(uint param_1);
-uint32_t getRampTimeFromLevelAndRate(uint32_t level,uint32_t rate);
-RAIL_Status_t_enum PA_GetTxPowerConfig(RAIL_TxPowerConfig_t *config);
-RAIL_TxPowerLevel_t PA_GetPowerLevel(RAIL_Handle_t railHandle);
-uint16_t PA_SetPowerLevel(uint8_t level);
-void PA_RunPeakDetectorHigh(void);
-void PA_RunPeakDetectorLow(void);
-void PA_RunBatHigh(void);
-undefined2 PA_GetRampTime(void);
-void PA_ConfigRamp(uint *param_1);
-uint32_t PA_CalcRampTime(void);
-undefined2 PA_SetRampTime(uint param_1,undefined4 param_2,undefined4 param_3);
-void PA_SetCTune(uint8_t txPaCtuneValue,uint8_t rxPaCtuneValue);
-void PA_SelectBand(void);
-RAIL_Status_t_enum PA_Config(RAIL_TxPowerConfig_t *config);
-bool PA_UpdateConfig(undefined4 param_1);
-void PA_EnableCal(bool enable);
-void PROTIMER_Init(void);
+void PROTIMER_Init(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4);
 void PROTIMER_Start(void);
 void PROTIMER_Stop(void);
-bool PROTIMER_IsRunning(void);
+uint PROTIMER_IsRunning(void);
 void PROTIMER_Reset(void);
 int PROTIMER_ElapsedTime(uint param_1,uint param_2);
-void PROTIMER_CCTimerStop(uint32_t timer);
-undefined4 PROTIMER_CCTimerStart(uint32_t param_1,uint param_2,int param_3);
-void PROTIMER_WrapMultiple(uint param_1,undefined4 param_2,uint param_3,int param_4);
-bool PROTIMER_CCTimerIsEnabled(uint8_t timer);
+void PROTIMER_CCTimerStop(uint param_1);
+undefined4 PROTIMER_CCTimerStart(uint param_1,uint param_2,int param_3);
+uint PROTIMER_CCTimerIsEnabled(int param_1);
 void PROTIMER_CCTimerCapture(int param_1,uint param_2);
-void PROTIMER_ScheduleTxEnable(uint32_t param_1,undefined4 param_2,undefined4 param_3);
+bool PROTIMER_ScheduleTxEnable(void);
 void PROTIMER_ClearTxEnable(void);
-void PROTIMER_ScheduleRxEnable(uint32_t param_1,undefined4 param_2,undefined4 param_3);
-void PROTIMER_ScheduleRxDisable(uint32_t param_1,undefined4 param_2,undefined4 param_3);
+void PROTIMER_ScheduleRxEnable(int param_1,uint param_2,int param_3);
+void PROTIMER_ScheduleRxDisable(int param_1,undefined4 param_2,undefined4 param_3);
 void PROTIMER_ClearRxEnable(void);
 uint PROTIMER_GetTime(void);
-uint32_t PROTIMER_GetCCTime(uint32_t timer);
+bool PROTIMER_SetTime(uint32_t time);
+uint PROTIMER_GetCCTime(int param_1);
+void PROTIMER_LBTCfgSet(uint param_1,int param_2,uint param_3,int param_4,byte param_5);
 void PROTIMER_LBTUseLastConfig(void);
 void PROTIMER_LBTStart(void);
 void PROTIMER_LBTStop(void);
 bool PROTIMER_LBTIsActive(void);
-uint64_t PROTIMER_PrecntOverflowToUs(uint32_t cnt);
-uint64_t PROTIMER_UsToPrecntOverflow(uint32_t us);
-bool PROTIMER_SetTime(uint32_t time);
-void PROTIMER_LBTCfgSet(int param_1,uint param_2,int param_3,uint param_4,byte param_5,byte param_6);
-void PROTIMER_DelayUs(uint32_t us);
-uint PROTIMER_CheckCcaReallyFailed(uint param_1);
-RAIL_Status_t_enum PTI_Config(RAIL_PtiConfig_t *ptiConfig);
-void PTI_EnableAppendedInfo(int param_1);
-RAIL_Status_t_enum PTI_Enable(bool enable);
-void PTI_AuxdataOutput(uint param_1);
-void PTI_EnableSyncword(int param_1);
-void RADIO_SetAndForgetWrite(undefined4 param_1,uint param_2,undefined4 param_3);
-void RADIO_SeqInit(void *param_1,int param_2);
-void RADIO_CLKEnable(void);
-void RADIO_Init(void);
-void RADIO_Config(undefined4 param_1,uint *param_2);
-bool RADIO_IsRxOnForRssi(void);
-int RADIO_RxTrailDataLength(void);
-void RADIO_FrameControlDescrBufferIdSet(uint32_t fcd,uint32_t id);
-void RADIO_FrameControlDescrConfigSet(int param_1,uint param_2,int param_3,int param_4,byte param_5,byte param_6);
-void RADIO_FrameDescsConfig(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4);
-uint32_t RADIO_ComputeTxBaudrate(void);
-uint32_t RADIO_ComputeRxBaudrate(void);
-uint32_t RADIO_ComputeTxSymbolRate(RAIL_Handle_t railHandle);
-uint32_t RADIO_ComputeTxBitRate(RAIL_Handle_t railHandle);
-int16_t RADIO_GetRssi(bool wait);
-undefined4 RADIO_SetAgcCcaParams(int param_1,byte param_2);
-void RADIO_ComputeAgcSampleRate(void);
-undefined4 RADIO_SetRssiPeriod(uint param_1);
-void RADIO_SetCRCInitVal(uint param_1);
-void RADIO_RACClearRxOverflow(void);
-void RFTEST_SaveRadioConfiguration(void);
-void RFTEST_StartCwTx(void);
-void RFTEST_StartStreamTx(void);
-void RFTEST_StopTx(void);
-void RFTEST_RestoreRadioConfiguration(void);
+uint32_t PROTIMER_PrecntOverflowToUs(uint32_t cnt);
+uint32_t PROTIMER_UsToPrecntOverflow(uint32_t us);
+void PROTIMER_DelayUs(uint param_1);
+void PHY_UTILS_DelayUs(undefined4 param_1);
 void RFSENSE_Disable(void);
 int RFSENSE_CalcPeriod(uint param_1,uint param_2,char *param_3,undefined4 param_4);
 void RFSENSE_ReInit(void);
-bool RFSENSE_Sensed(RAIL_Handle_t railHandle);
-bool RFSENSE_IRQHandler(RAIL_Handle_t railHandle);
+bool RFSENSE_Sensed(void);
+bool RFSENSE_IRQHandler(void);
 void RFSENSE_DeInit(void);
 uint RFSENSE_Init(undefined4 *param_1,uint param_2);
-undefined4 SYNTH_RfFreqGet(void);
-undefined4 SYNTH_ChSpacingGet(void);
-undefined4 SYNTH_IfFreqGet(void);
-uint SYNTH_LoDivGet(void);
-uint SYNTH_Is2p4GHz(void);
-bool SYNTH_VcoRangeIsValid(uint32_t freq);
-void SYNTH_RetimeLimitsConfig(uint param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4);
-void SYNTH_RetimeClkConfig(void);
-RAIL_Status_t_enum SYNTH_Config(uint32_t freq,uint32_t spacing);
-void SYNTH_ChannelSet(uint16_t channel,bool rxcal);
-void SYNTH_DCDCRetimeClkSet(int param_1);
-void SYNTH_DCDCRetimeEnable(void);
-void SYNTH_DCDCRetimeDisable(void);
-void SYNTH_KvnFreqCompensationEnable(void);
-void RADIOCMU_ClockEnable(CMU_Clock_TypeDef clock,bool enable);
-uint RADIOCMU_ClockFreqGet(CMU_Clock_TypeDef param_1);
-uint32_t RADIOCMU_ClockPrescGet(CMU_Clock_TypeDef param_1);
 void TEMPCAL_Init(void);
 void TEMPCAL_Perform(void);
-int TIMING_PreambleSyncBits(void);
-undefined4 TIMING_CalcAdjustUs(RAIL_Handle_t param_1,int param_2);
-void TIMING_SeqTimingInit(void);
-int TIMING_NsToStimerTickCalcSigned(uint param_1);
-uint TIMING_NsToStimerTickCalc(void);
-void TIMING_InitStimer(void);
-void TIMING_TxWarmTimeRecalculate(RAIL_Handle_t railHandle);
-uint16_t TIMING_TxWarmTimeSet(RAIL_Handle_t railHandle,uint16_t time);
-void TIMING_RxToTxTimeRecalculate(RAIL_Handle_t railHandle);
-void TIMING_RxFrameToTxTimeRecalculate(RAIL_Handle_t railHandle);
-uint16_t TIMING_RxFrameToTxTimeSet(RAIL_Handle_t railHandle,uint16_t time);
-void TIMING_TxToTxTimeRecalculate(RAIL_Handle_t railHandle);
-void TIMING_TxToRxTimeRecalculate(RAIL_Handle_t railHandle);
-uint16_t TIMING_TxToRxTimeSet(RAIL_Handle_t railHandle,uint16_t time);
-void TIMING_RxWarmTimeRecalculate(RAIL_Handle_t railHandle);
-uint16_t TIMING_RxWarmTimeSet(RAIL_Handle_t railHandle,uint16_t time);
-void TIMING_RxSearchTimeRecalculate(RAIL_Handle_t railHandle);
-uint16_t TIMING_RxSearchTimeSet(RAIL_Handle_t railHandle,uint16_t time);
-void TIMING_TxToRxSearchTimeRecalculate(RAIL_Handle_t railHandle);
-uint16_t TIMING_TxToRxSearchTimeSet(RAIL_Handle_t railHandle,uint16_t time);
-void TIMING_RecalculateAll(RAIL_Handle_t railHandle);
-void TIMING_RecalculatePaRampChanged(RAIL_Handle_t param_1);
-undefined4 TIMING_SetChainDelays(undefined4 *param_1,undefined4 param_2,undefined4 param_3);
-undefined4 TIMING_SetRxDoneDelay(int param_1,undefined4 param_2);
-void TIMING_CalcRxTimeStampUs(int *param_1,uint32_t param_2,int *param_3,undefined4 param_4);
-void TIMING_CalcTxTimeStampUs(int param_1,uint32_t param_2,int *param_3);
 uint16_t RFRAND_GetRadioEntropy(uint8_t *buffer,uint16_t bytes);
 undefined4 RFRAND_SeedProtimerRandom(undefined4 param_1,uint param_2,undefined4 param_3);
-void GENERIC_PHY_ConfigureRollbackReporting(void);
-void GENERIC_PHY_ClearPendedRxWindowEnd(void);
+void GENERIC_PHY_RAC_IRQCallback(void);
+void GENERIC_PHY_MODEM_IRQCallback(void);
+void GENERIC_PHY_AGC_IRQCallback(void);
 void RADIO_RACRxAbort(undefined4 param_1,undefined4 param_2,int param_3);
-void GENERIC_PHY_IssueCallback(uint param_1,uint param_2,int param_3);
-void GENERIC_PHY_RxOverflowHook(void);
-void GENERIC_PHY_CheckPendedRxWindowEnd(void);
-void GENERIC_PHY_DisableRadioIrqs(void);
-void GENERIC_PHY_ConfigureEvents(uint param_1,uint param_2,uint param_3,uint param_4,uint param_5,uint param_6);
+void GENERIC_PHY_PROTIMER_IRQCallback(void);
+void GENERIC_PHY_SetAddressFilteringMatchTable(void);
+void GENERIC_PHY_ConfigureCallbacks(uint param_1);
+void GENERIC_PHY_SetCallbacks(int param_1);
+void GENERIC_PHY_FlushTxPacketBuffer(void);
 void GENERIC_PHY_PacketTxCommon(void);
 undefined4 GENERIC_PHY_PacketTx(void);
-undefined4 GENERIC_PHY_SchedulePacketRx(int param_1,undefined4 param_2,int param_3,int param_4,char param_5,char param_6,undefined param_7);
-undefined4 GENERIC_PHY_SchedulePacketTx(uint32_t *param_1);
+undefined4 GENERIC_PHY_SchedulePacketRx(undefined4 param_1,int param_2,int param_3,int param_4,char param_5,undefined param_6);
+RAIL_Status_t GENERIC_PHY_SchedulePacketTx(uint32_t when,RAIL_TimeMode_t mode);
+uint GENERIC_PHY_PacketRxDataHelper(int param_1,uint param_2);
+uint GENERIC_PHY_PacketRxAppendedInfoHelper(uint param_1,void *param_2,undefined4 param_3,undefined4 param_4);
 void GENERIC_PHY_StartRx(int param_1);
-void GENERIC_PHY_ChannelSet(uint16_t param_1);
+void GENERIC_PHY_ChannelSet(undefined4 param_1);
 void GENERIC_PHY_SeqAtomicLock(void);
-uint GENERIC_PHY_PreviousTxTime(void);
+void GENERIC_PHY_RadioIdle(int param_1,int param_2);
+void GENERIC_PHY_FRC_IRQCallback(void);
+void GENERIC_PHY_PreviousTxTime(void);
 void GENERIC_PHY_RACConfig(void);
-void GENERIC_PHY_ConfigDirectMode(byte *param_1);
-int GENERIC_PHY_ReleaseRxPacket(void);
-void GENERIC_PHY_ResetRxFifo(int param_1);
-void GENERIC_PHY_RadioIdle(int param_1,int param_2,int param_3);
-void RAILCb_RadioStateChanged(void);
-void RAC_RSM_IRQHandler(void);
-void AGC_IRQHandler(void);
-void SYNTH_IRQHandler(void);
-uint GENERIC_PHY_SetFeatures(undefined4 param_1,uint param_2,uint param_3);
-void GENERIC_PHY_ConfigureFrameType(undefined4 param_1,uint *param_2,undefined4 param_3);
-bool GENERIC_PHY_EnableAddressFiltering(RAIL_Handle_t railHandle,bool enable);
-bool GENERIC_PHY_IsEnabledAddressFiltering(RAIL_Handle_t railHandle);
+void GENERIC_PHY_DirectModeConfig(byte *param_1);
+void GENERIC_PHY_ResetPacketConfig(void);
+void GENERIC_PHY_ConfigureFrameType(RAIL_FrameType_t *frameType);
+bool GENERIC_PHY_EnableAddressFiltering(void);
+bool GENERIC_PHY_DisableAddressFiltering(void);
+bool GENERIC_PHY_IsEnabledAddressFiltering(void);
 void GENERIC_PHY_ResetAddressFiltering(void);
-void GENERIC_PHY_Init(int param_1);
-RAIL_Status_t_enum GENERIC_PHY_ConfigureAddressFiltering(RAIL_Handle_t railHandle,RAIL_AddrConfig_t *addrConfig,bool reset);
-RAIL_Status_t_enum GENERIC_PHY_EnableAddress(RAIL_Handle_t railHandle,bool enable,uint8_t field,uint8_t index);
-undefined4 GENERIC_PHY_SetAddressData(RAIL_Handle_t param_1,uint param_2,uint param_3,uint param_4,byte param_5,byte param_6,byte *param_7);
-int GENERIC_PHY_SetIeeePanId(undefined4 param_1,uint param_2);
-int GENERIC_PHY_SetIeeeShortAddress(undefined4 param_1,uint param_2,undefined4 param_3,undefined4 param_4);
-int GENERIC_PHY_SetIeeeLongAddress(undefined4 param_1,uint param_2);
-uint GENERIC_PHY_SetAddress(RAIL_Handle_t param_1,int param_2,undefined4 param_3,undefined4 param_4,char param_5);
-bool GENERIC_PHY_IsEnabledIEEE802154(void);
+void GENERIC_PHY_Init(void);
+undefined4 GENERIC_PHY_ConfigureAddressFiltering(undefined *param_1);
+bool GENERIC_PHY_EnableAddress(uint8_t field,uint8_t index);
+bool GENERIC_PHY_DisableAddress(uint8_t field,uint8_t index);
+undefined4 GENERIC_PHY_SetAddressData(uint param_1,uint param_2,uint param_3,uint param_4,byte param_5,byte *param_6);
+int GENERIC_PHY_SetIeeePanId(uint param_1,undefined4 param_2);
+int GENERIC_PHY_SetIeeeShortAddress(uint param_1,undefined4 param_2);
+int GENERIC_PHY_SetIeeeLongAddress(uint param_1,undefined4 param_2);
+bool GENERIC_PHY_SetAddress(uint8_t field,uint8_t index,uint8_t *value,bool enable);
+uint GENERIC_PHY_EnableIEEE802154(void);
+uint GENERIC_PHY_IsEnabledIEEE802154(void);
 void GENERIC_PHY_TimerStart(undefined4 param_1,undefined4 param_2);
 void GENERIC_PHY_TimerStop(void);
-uint32_t GENERIC_PHY_GetTimerTimeout(void);
-bool GENERIC_PHY_IsTimerExpired(void);
-bool GENERIC_PHY_IsTimerRunning(RAIL_Handle_t railHandle);
+void GENERIC_PHY_TimerGetTimeout(void);
+uint GENERIC_PHY_TimerExpired(void);
+void GENERIC_PHY_TimerIsRunning(void);
 bool GENERIC_PHY_CanModifyAck(void);
-void FRC_IRQHandler(void);
-void FRC_PRI_IRQHandler(void);
-void BUFC_IRQHandler(void);
-void PROTIMER_IRQHandler(void);
-void RAC_SEQ_IRQHandler(void);
-void MODEM_IRQHandler(void);
-int CORTEX_UTILS_BitsetLowestSetBit(int param_1,int param_2);
+uint RFHAL_802154SetPhyforChan(uint param_1);
+uint RFHAL_IEEE802154Enable(void);
+uint RFHAL_IEEE802154IsEnabled(void);
+undefined4 RFHAL_IEEE802154RadioConfig2p4GHz(void);
+byte RFHAL_IEEE802154SetBroadcastAddresses(undefined4 param_1,undefined4 param_2,undefined4 param_3);
+bool RFHAL_IEEE802154SetPanId(uint16_t panId);
+bool RFHAL_IEEE802154SetShortAddress(uint16_t shortAddr);
+void RFHAL_IEEE802154SetLongAddress(undefined4 param_1);
+undefined4 RFHAL_IEEE802154SetPromiscuousMode(int param_1);
+undefined4 RFHAL_IEEE802154SetPanCoordinator(int param_1);
+undefined4 RFHAL_IEEE802154AcceptFrames(int param_1);
+RAIL_Status_t RFHAL_IEEE802154SetFramePending(void);
+RAIL_Status_t RFHAL_IEEE802154LoadAck(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4);
+void RFHAL_BLESetPhyforChan(int param_1,int param_2);
+undefined4 RFHAL_Ble2MbpsSet(void);
+undefined4 RFHAL_Ble1MbpsSet(void);
+void RFHAL_BleInit(void);
+void RFHAL_BleDeinit(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4);
+void RFHAL_BLEPreambleSyncWordSet(int param_1,uint param_2);
+void RFHAL_BLEWhiteningSet(uint param_1,uint param_2,int param_3);
 void AUXPLL_AuxSettingsPllLoopback(void);
 void AUXPLL_AuxSettingsPaLoopback(void);
 void AUXPLL_Stop(void);
@@ -13145,28 +12752,48 @@ ulonglong __aeabi_f2d(uint param_1,undefined4 param_2,undefined4 param_3,uint pa
 ulonglong __floatundidf(uint param_1,uint param_2);
 ulonglong __aeabi_l2d(uint param_1,uint param_2);
 ulonglong __muldf3(undefined4 param_1,uint param_2,uint param_3,uint param_4);
-ulonglong FUN_0000f9f0(uint param_1,uint param_2,uint param_3,uint param_4);
+ulonglong FUN_0000cc78(uint param_1,uint param_2,uint param_3,uint param_4);
 ulonglong __divdf3(undefined4 param_1,uint param_2,uint param_3,uint param_4);
-ulonglong FUN_0000fbd6(uint param_1,uint param_2,uint param_3,uint param_4);
+ulonglong FUN_0000ce5e(uint param_1,uint param_2,uint param_3,uint param_4);
 uint __truncdfsf2(uint param_1,uint param_2);
+int __aeabi_ldivmod(int param_1,int param_2,int param_3,int param_4);
 void __aeabi_uldivmod(int param_1,int param_2,int param_3,int param_4);
 undefined8 __udivmoddi4(uint param_1,uint param_2,uint param_3,uint param_4,uint *param_5);
 void __aeabi_idiv0(void);
 undefined * __errno(void);
 void exit(int __status);
+int fileno(FILE *__stream);
+void std(undefined4 *param_1,undefined2 param_2,undefined2 param_3);
+void _cleanup_r(undefined4 param_1);
+undefined4 * __sfmoreglue(undefined4 param_1,int param_2);
+void __sinit(undefined4 *param_1);
+int * __sfp(undefined4 *param_1);
+uint _fwalk(int param_1,code *param_2);
+uint _fwalk_reent(int param_1,code *param_2,undefined4 param_3,undefined4 param_4);
 int getchar(void);
 void __libc_init_array(EVP_PKEY_CTX *param_1);
 int memcmp(void *__s1,void *__s2,size_t __n);
 void * memcpy(void *__dest,void *__src,size_t __n);
 void * memmove(void *__dest,void *__src,size_t __n);
 void * memset(void *__s,int __c,size_t __n);
+uint _malloc_r(undefined4 *param_1,uint param_2);
+char * __cvt(undefined4 param_1,undefined4 param_2,undefined4 param_3,int param_4,int param_5,int param_6,undefined *param_7,int *param_8,uint param_9,int *param_10);
+int __exponent(undefined *param_1,uint param_2,undefined4 param_3);
+uint _printf_float(undefined4 param_1,uint *param_2,undefined4 param_3,code *param_4,uint **param_5);
+undefined4 _printf_common(undefined4 param_1,uint *param_2,uint *param_3,undefined4 param_4,code *param_5);
+uint _printf_i(undefined4 param_1,uint *param_2,undefined4 param_3,code *param_4,uint **param_5);
 int iprintf(char *__format,...);
 int putchar(int __c);
 undefined4 _puts_r(int param_1,int param_2);
 int puts(char *__s);
+void _sbrk_r(int *param_1,int param_2);
 int setvbuf(FILE *__stream,char *__buf,int __modes,size_t __n);
 int sniprintf(char *__s,size_t __maxlen,char *__format,...);
 int siprintf(char *__s,char *__format,...);
+void __sread(undefined4 param_1,int param_2);
+void __swrite(undefined4 param_1,int param_2,undefined4 param_3,undefined4 param_4);
+void __sseek(undefined4 param_1,int param_2);
+void __sclose(undefined4 param_1,int param_2);
 int strcasecmp(char *__s1,char *__s2);
 char * strchr(char *__s,int __c);
 int strcmp(char *__s1,char *__s2);
@@ -13180,54 +12807,67 @@ uint _strtoul_l.isra.0(undefined4 *param_1,byte *param_2,byte **param_3,uint par
 ulong strtoul(char *__nptr,char **__endptr,int __base);
 int viprintf(char *__format,__gnuc_va_list __arg);
 uint __swbuf_r(int param_1,uint param_2,int *param_3,undefined4 param_4);
+void _write_r(int *param_1,int param_2,char *param_3,int param_4);
 undefined4 __swsetup_r(undefined4 *param_1,undefined4 *param_2);
+void _close_r(int *param_1,int param_2);
+uint quorem(int param_1,int param_2);
+char * _dtoa_r(int param_1,undefined4 param_2,uint param_3,uint param_4,uint param_5,uint param_6,int *param_7,undefined4 *param_8,char **param_9);
 undefined4 __sflush_r(uint *param_1,int *param_2);
 undefined4 _fflush_r(int param_1,undefined4 *param_2,undefined4 param_3,undefined4 param_4);
 int fflush(FILE *__stream);
-void std(undefined4 *param_1,undefined2 param_2,undefined2 param_3);
-void _cleanup_r(undefined4 param_1);
-undefined4 * __sfmoreglue(undefined4 param_1,int param_2);
-void __sinit(undefined4 *param_1);
-int * __sfp(undefined4 *param_1);
-uint _fwalk(int param_1,code *param_2);
-uint _fwalk_reent(int param_1,code *param_2,undefined4 param_3,undefined4 param_4);
 uint _getc_r(int param_1,byte **param_2);
 undefined4 __locale_ctype_ptr_l(int param_1);
 undefined4 __locale_ctype_ptr(void);
+undefined1 * _localeconv_r(void);
+void _lseek_r(int *param_1,int param_2,int param_3,int param_4);
 undefined4 __swhatbuf_r(undefined4 param_1,int param_2,undefined4 *param_3,uint *param_4);
 void __smakebuf_r(int param_1,int *param_2);
 void * malloc(size_t __size);
 code * __ascii_mbtowc(undefined4 param_1,uint *param_2,code *param_3,int param_4);
+void * memchr(void *__s,int __c,size_t __n);
+void __malloc_lock(void);
+void __malloc_unlock(void);
+undefined4 * _Balloc(int param_1,uint param_2);
+void _Bfree(int param_1,undefined4 *param_2);
+int __multadd(undefined4 param_1,int param_2,int param_3,uint param_4);
+int __hi0bits(uint param_1);
+uint __lo0bits(uint *param_1);
+void __i2b(undefined4 param_1,undefined4 param_2);
+void __multiply(undefined4 param_1,int param_2,int param_3);
+undefined4 __pow5mult(int param_1,undefined4 param_2,uint param_3,undefined4 param_4);
+int __lshift(undefined4 param_1,int param_2,uint param_3);
+int __mcmp(int param_1,int param_2);
+void __mdiff(undefined4 param_1,int param_2,int param_3,int param_4);
+int __d2b(uint param_1,uint param_2,uint param_3,uint param_4,int *param_5,int *param_6);
+void * _calloc_r(undefined4 param_1,int param_2,int param_3,undefined4 param_4);
 void _free_r(undefined4 *param_1,int param_2,undefined4 param_3,undefined4 param_4);
-uint _malloc_r(undefined4 *param_1,uint param_2);
 undefined4 __ssputs_r(undefined4 *param_1,void **param_2,void *param_3,void *param_4);
 int _svfiprintf_r(undefined4 *param_1,int *param_2,byte *param_3,int *param_4);
 int __sfputc_r(undefined4 param_1,int param_2,undefined4 *param_3);
 int __sfputs_r(undefined4 param_1,undefined4 param_2,undefined *param_3,int param_4);
 int _vfprintf_r(int param_1,undefined4 *param_2,byte *param_3,int *param_4);
-undefined4 _printf_common(undefined4 param_1,uint *param_2,uint *param_3,undefined4 param_4,code *param_5);
-uint _printf_i(undefined4 param_1,uint *param_2,undefined4 param_3,code *param_4,uint **param_5);
 uint _putc_r(int param_1,uint param_2,undefined4 *param_3);
+void _read_r(int *param_1,int param_2,char *param_3,int param_4);
 uint __srget_r(int param_1,byte **param_2);
-void _sbrk_r(int *param_1,int param_2);
-void __sread(undefined4 param_1,int param_2);
-void __swrite(undefined4 param_1,int param_2,undefined4 param_3,undefined4 param_4);
-void __sseek(undefined4 param_1,int param_2);
-void __sclose(undefined4 param_1,int param_2);
 undefined4 __ascii_wctomb(undefined4 *param_1,undefined *param_2,uint param_3);
-void _write_r(int *param_1,int param_2,char *param_3,int param_4);
-void _close_r(int *param_1,int param_2);
 void _fstat_r(int *param_1,int param_2,stat *param_3);
 void _isatty_r(int *param_1,int param_2);
-void _lseek_r(int *param_1,int param_2,int param_3,int param_4);
-void * memchr(void *__s,int __c,size_t __n);
-void __malloc_lock(void);
-void __malloc_unlock(void);
 void * _realloc_r(undefined4 param_1,void *param_2,void *param_3,undefined4 param_4);
-void _read_r(int *param_1,int param_2,char *param_3,int param_4);
 int lflush(FILE *param_1);
 undefined4 __srefill_r(undefined4 *param_1,undefined4 *param_2,undefined4 param_3,undefined4 param_4);
 int _malloc_usable_size_r(undefined4 param_1,int param_2);
+uint __gedf2(uint param_1,uint param_2,uint param_3,uint param_4);
+uint __ledf2(uint param_1,uint param_2,uint param_3,uint param_4);
+uint __nedf2(uint param_1,uint param_2,uint param_3,uint param_4);
+void __aeabi_cdrcmple(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4);
+undefined4 __aeabi_cdcmpeq(undefined4 param_1);
+bool __aeabi_dcmpeq(void);
+bool __aeabi_dcmplt(void);
+bool __aeabi_dcmple(void);
+bool __aeabi_dcmpge(void);
+bool __aeabi_dcmpgt(void);
+undefined4 __unorddf2(uint param_1,int param_2,uint param_3,int param_4);
+uint __aeabi_d2iz(uint param_1,uint param_2);
 int _init(EVP_PKEY_CTX *ctx);
 void _fini(void);
 
