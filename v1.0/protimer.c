@@ -2,45 +2,19 @@
 
 
 
-// WARNING: Globals starting with '_' overlap smaller symbols at the same address
-
-void PROTIMER_Init(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
+void PROTIMER_Init(void)
 
 {
-  longlong lVar1;
+  uint uVar1;
   uint uVar2;
-  uint uVar3;
-  int iVar4;
-  uint uVar5;
-  undefined8 uVar6;
-  undefined8 uVar7;
   
-  RADIOCMU_ClockEnable(0x60400,1,param_3,param_4,param_4);
-  write_volatile_4(Peripherals::PROTIMER.CTRL,0x11100);
-  uVar2 = RADIOCMU_ClockFreqGet(0x60400);
-  uVar2 = uVar2 / 1000;
-  uVar3 = (uint)((ulonglong)uVar2 * 2000);
-  uVar5 = uVar3 * 0x100;
-  uVar6 = __aeabi_uldivmod(uVar5 + 500000,
-                           ((int)((ulonglong)uVar2 * 2000 >> 0x20) << 8 | uVar3 >> 0x18) +
-                           (uint)(0xfff85edf < uVar5),1000000,0);
-  uVar3 = (uint)uVar6;
-  write_volatile_4(Peripherals::PROTIMER.PRECNTTOP,uVar3 - 0x100);
-  uVar7 = __aeabi_uldivmod(500,uVar2,1000,0);
-  uVar5 = (uint)uVar7 * 0x100;
-  _usRatioFrac = __aeabi_uldivmod((uVar3 >> 1) + uVar5,
-                                  ((int)((ulonglong)uVar7 >> 0x20) << 8 | (uint)uVar7 >> 0x18) +
-                                  (uint)CARRY4(uVar3 >> 1,uVar5),uVar3,
-                                  (int)((ulonglong)uVar6 >> 0x20));
-  iVar4 = (int)_usRatioFrac;
-  lVar1 = (ulonglong)(uVar3 << 0x18) * 1000;
-  uVar5 = (uint)lVar1;
-  uVar6 = __aeabi_uldivmod(uVar5 + (uVar2 >> 1),
-                           (uVar3 >> 8) * 1000 + (int)((ulonglong)lVar1 >> 0x20) +
-                           (uint)CARRY4(uVar5,uVar2 >> 1),uVar2,0);
-  write_volatile_4(Peripherals::PROTIMER.WRAPCNTTOP,iVar4 - 1);
-  precntRatioFrac = (int)uVar6;
-  precntRatioInt = (int)((ulonglong)uVar6 >> 0x20);
+  RADIOCMU_ClockEnable(0x60400,1);
+  write_volatile_4(Peripherals::PROTIMER.CTRL,(uint)"Variance:%f");
+  uVar1 = RADIOCMU_ClockFreqGet(0x60400);
+  uVar2 = ((uVar1 / 1000) * 0x200 + 500) / 1000;
+  write_volatile_4(Peripherals::PROTIMER.PRECNTTOP,uVar2 & 0xff | (uVar2 & 0xffffff00) - 0x100);
+  write_volatile_4(Peripherals::PROTIMER.WRAPCNTTOP,0x7fffffff);
+  proTimerClockkHz = uVar1 / 1000;
   return;
 }
 
@@ -73,13 +47,13 @@ void PROTIMER_Stop(void)
 
 
 
-uint PROTIMER_IsRunning(void)
+bool PROTIMER_IsRunning(void)
 
 {
   uint uVar1;
   
   uVar1 = read_volatile_4(Peripherals::PROTIMER.STATUS);
-  return uVar1 & 1;
+  return (bool)((byte)uVar1 & 1);
 }
 
 
@@ -94,28 +68,28 @@ void PROTIMER_Reset(void)
 }
 
 
-int PROTIMER_ElapsedTime(uint param_1,uint param_2)
+uint32_t PROTIMER_ElapsedTime(uint32_t start,uint32_t stop)
 
 {
   uint uVar1;
-  int iVar2;
+  uint32_t uVar2;
   
   uVar1 = read_volatile_4(Peripherals::PROTIMER.WRAPCNTTOP);
-  iVar2 = param_2 - param_1;
-  if (param_2 < param_1) {
-    iVar2 = iVar2 + uVar1 + 1;
+  uVar2 = stop - start;
+  if (stop < start) {
+    uVar2 = uVar2 + uVar1 + 1;
   }
-  return iVar2;
+  return uVar2;
 }
 
 
 
-void PROTIMER_TOUTTimerStop(int param_1)
+void PROTIMER_TOUTTimerStop(uint32_t timer)
 
 {
   uint uVar1;
   
-  if (param_1 == 0) {
+  if (timer == 0) {
     uVar1 = 0x20;
   }
   else {
@@ -127,18 +101,18 @@ void PROTIMER_TOUTTimerStop(int param_1)
 
 
 
-void PROTIMER_TOUTTimerStart(int param_1,int param_2)
+void PROTIMER_TOUTTimerStart(uint32_t time,uint32_t timer)
 
 {
   uint uVar1;
   
-  if (param_2 == 0) {
-    write_volatile_4(Peripherals::PROTIMER.TOUT0CNTTOP,param_1 << 8);
+  if (timer == 0) {
+    write_volatile_4(Peripherals::PROTIMER.TOUT0CNTTOP,time << 8);
     write_volatile_4(Peripherals::PROTIMER.IFC,0x50);
     uVar1 = 0x10;
   }
   else {
-    write_volatile_4(Peripherals::PROTIMER.TOUT1CNTTOP,param_1 << 8);
+    write_volatile_4(Peripherals::PROTIMER.TOUT1CNTTOP,time << 8);
     write_volatile_4(Peripherals::PROTIMER.IFC,0xa0);
     uVar1 = 0x40;
   }
@@ -148,12 +122,12 @@ void PROTIMER_TOUTTimerStart(int param_1,int param_2)
 
 
 
-uint PROTIMER_TOUTTimerGet(int param_1)
+uint32_t PROTIMER_TOUTTimerGet(uint32_tint timer)
 
 {
   uint uVar1;
   
-  if (param_1 == 0) {
+  if (timer == 0) {
     uVar1 = read_volatile_4(Peripherals::PROTIMER.TOUT0CNT);
   }
   else {
@@ -164,76 +138,70 @@ uint PROTIMER_TOUTTimerGet(int param_1)
 
 
 
-void PROTIMER_CCTimerStop(uint param_1)
+void PROTIMER_CCTimerStop(uint32_t timer)
 
 {
-  (&Peripherals::PROTIMER_CLR.CC0_CTRL)[param_1 * 4] = 1;
-  write_volatile_4(Peripherals::PROTIMER.IFC,0x100 << (param_1 & 0xff));
+  *(undefined4 *)(timer * 0x200 + 0x430a0e80) = 0;
+  write_volatile_4(Peripherals::PROTIMER.IFC,0x100 << (timer & 0xff));
   return;
 }
 
 
 
-undefined4 PROTIMER_CCTimerStart(uint param_1,uint param_2,int param_3)
+bool PROTIMER_CCTimerStart(uint32_t timer,uint32_t time,RAIL_TimeMode_t mode)
 
 {
   uint uVar1;
-  undefined4 uVar2;
-  uint uVar3;
+  uint stop;
+  uint uVar2;
+  CORE_irqState_t irqState;
+  uint32_t uVar3;
   int iVar4;
   bool bVar5;
-  uint uVar6;
-  uint uVar7;
-  int iVar8;
   
-  uVar6 = param_1;
-  iVar8 = param_3;
-  uVar2 = CORE_EnterCritical();
-  PROTIMER_CCTimerStop(param_1);
-  uVar1 = read_volatile_4(Peripherals::PROTIMER.WRAPCNT);
-  if (param_3 == 1) {
-    if (param_2 == 0) {
-      param_2 = 1;
-    }
-    param_2 = param_2 + uVar1;
+  irqState = CORE_EnterCritical();
+  PROTIMER_CCTimerStop(timer);
+  if (mode == RAIL_TIME_DELAY) {
+    uVar1 = read_volatile_4(Peripherals::PROTIMER.WRAPCNT);
+    time = time + uVar1 + 1;
   }
   else {
-    if (param_3 == 2) {
-      return 1;
+    if (mode == RAIL_TIME_DISABLED) {
+      return true;
     }
   }
   uVar1 = read_volatile_4(Peripherals::PROTIMER.WRAPCNTTOP);
-  if (uVar1 < param_2) {
-    param_2 = (param_2 - uVar1) - 1;
+  if (uVar1 < time) {
+    time = (time - uVar1) - 1;
   }
-  iVar4 = 1;
+  iVar4 = 0;
   while( true ) {
-    (&Peripherals::PROTIMER.CC0_WRAP)[param_1 * 4] = param_2;
-    (&Peripherals::PROTIMER.CC0_CTRL)[param_1 * 4] = 0x11;
-    uVar7 = read_volatile_4(Peripherals::PROTIMER.WRAPCNT);
-    uVar3 = PROTIMER_ElapsedTime(param_2,uVar7,uVar7,param_1 * 0x10 + 0x40085070,uVar6,uVar7,iVar8);
+    (&Peripherals::PROTIMER.CC0_WRAP)[timer * 4] = time;
+    (&Peripherals::PROTIMER.CC0_CTRL)[timer * 4] = 0x11;
+    stop = read_volatile_4(Peripherals::PROTIMER.WRAPCNT);
+    uVar3 = PROTIMER_ElapsedTime(time,stop);
     if (uVar1 >> 2 < uVar3) {
       bVar5 = false;
     }
     else {
-      uVar3 = read_volatile_4(Peripherals::PROTIMER.IF);
-      bVar5 = (0x100 << (param_1 & 0xff) & uVar3) == 0;
+      uVar2 = read_volatile_4(Peripherals::PROTIMER.IFS);
+      bVar5 = (0x100 << (timer & 0xff) & uVar2) == 0;
     }
     iVar4 = iVar4 + 1;
-    param_2 = iVar4 + uVar7;
-    if ((param_3 != 1) || (iVar4 == 7)) break;
+    time = iVar4 + stop;
+    if ((mode != RAIL_TIME_DELAY) || (iVar4 == 6)) break;
     if (!bVar5) {
-LAB_0001026a:
-      CORE_ExitCritical(uVar2);
-      return 1;
+LAB_0000ab38:
+      CORE_ExitCritical(irqState);
+      return true;
     }
   }
   if (bVar5) {
-    PROTIMER_CCTimerStop(param_1);
-    CORE_ExitCritical(uVar2);
-    return 0;
+    PROTIMER_CCTimerStop(timer);
+    CORE_ExitCritical(irqState);
+    return false;
   }
-  goto LAB_0001026a;
+  goto LAB_0000ab38;
 }
 
 
@@ -256,18 +224,18 @@ void PROTIMER_WrapMultiple(uint param_1,undefined4 param_2,uint param_3,int para
 
 
 
-uint PROTIMER_CCTimerIsEnabled(int param_1)
+bool PROTIMER_CCTimerIsEnabled(uint32_t timer)
 
 {
-  return (&Peripherals::PROTIMER.CC0_CTRL)[param_1 * 4] & 1;
+  return (&Peripherals::PROTIMER.CC0_CTRL)[timer * 4] & 1;
 }
 
 
 
-void PROTIMER_CCTimerCapture(int param_1,uint param_2)
+void PROTIMER_CCTimerCapture(uint32_t timer,uint32_t time)
 
 {
-  (&Peripherals::PROTIMER.CC0_CTRL)[param_1 * 4] = param_2 & 0xe00000 | 3;
+  (&Peripherals::PROTIMER.CC0_CTRL)[timer * 4] = time & 0xe00000 | 3;
   return;
 }
 
@@ -332,21 +300,20 @@ void PROTIMER_ClearRxEnable(void)
 
 
 
-uint PROTIMER_GetTime(void)
+uint32_t PROTIMER_GetTime(void)
 
 {
   uint uVar1;
   
   uVar1 = read_volatile_4(Peripherals::PROTIMER.WRAPCNT);
   return uVar1;
-}
 
 
 
-uint PROTIMER_GetCCTime(int param_1)
+uint32_t PROTIMER_GetCCTime(uint32_t timer)
 
 {
-  return (&Peripherals::PROTIMER.CC0_WRAP)[param_1 * 4];
+  return (&Peripherals::PROTIMER.CC0_WRAP)[timer * 4];
 }
 
 
@@ -490,37 +457,36 @@ void PROTIMER_LBTCfgSet(uint param_1,int param_2,uint param_3,int param_4,byte p
 
 
 
-void PROTIMER_DelayUs(void)
+void PROTIMER_DelayUs(uint32_t us)
 
 {
+  uint stop;
   uint uVar1;
-  uint uVar2;
-  uint uVar3;
-  int iVar4;
+  bool bVar2;
+  uint32_t uVar3;
+  uint uVar4;
+  uint start;
   uint uVar5;
-  uint uVar6;
-  uint uVar7;
   
-  uVar3 = PROTIMER_UsToPrecntOverflow();
-  uVar6 = read_volatile_4(Peripherals::PROTIMER.WRAPCNT);
-  uVar2 = read_volatile_4(Peripherals::PROTIMER.WRAPCNTTOP);
-  iVar4 = PROTIMER_IsRunning();
-  if (iVar4 != 0) {
+  start = read_volatile_4(Peripherals::PROTIMER.WRAPCNT);
+  uVar1 = read_volatile_4(Peripherals::PROTIMER.WRAPCNTTOP);
+  bVar2 = PROTIMER_IsRunning();
+  if (bVar2 != false) {
+    uVar4 = (us & 1) + (us >> 1);
     while( true ) {
-      uVar7 = uVar3;
-      if (uVar2 >> 1 <= uVar3) {
-        uVar7 = uVar2 >> 1;
+      uVar5 = uVar4;
+      if (uVar1 >> 1 <= uVar4) {
+        uVar5 = uVar1 >> 1;
       }
       do {
-        uVar1 = read_volatile_4(Peripherals::PROTIMER.WRAPCNT);
-        uVar5 = PROTIMER_ElapsedTime(uVar6,uVar1);
-      } while (uVar5 < uVar7);
-      if (uVar3 <= uVar5) break;
-      uVar3 = uVar3 - uVar5;
-      uVar6 = uVar1;
+        stop = read_volatile_4(Peripherals::PROTIMER.WRAPCNT);
+        uVar3 = PROTIMER_ElapsedTime(start,stop);
+      } while (uVar3 < uVar5);
+      if (uVar4 <= uVar3) break;
+      uVar4 = uVar4 - uVar3;
+      start = stop;
     }
   }
   return;
 }
-
 

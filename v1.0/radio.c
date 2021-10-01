@@ -2,136 +2,145 @@
 
 
 
-void RADIO_WriteSync(undefined4 *param_1,undefined4 param_2)
+void RADIO_WriteSync(uint32_t *addr,uint32_t mask)
 
 {
-  *param_1 = param_2;
+  *addr = mask;
   return;
 }
 
 
 
-void RADIO_SetBitSync(int param_1,uint param_2)
+void RADIO_SetBitSync(uint32_t *addr,uint32_t bit)
 
 {
-  *(int *)(param_1 + 0x6000000) = 1 << (param_2 & 0xff);
+  *(uint32_t *)(addr + 0x6000000) = 1 << (bit & 0xff);
   return;
 }
 
 
 
-void RADIO_ClrBitSync(int param_1,uint param_2)
+void RADIO_ClrBitSync(uint32_t *addr,uint32_t bit)
 
 {
-  *(int *)(param_1 + 0x4000000) = 1 << (param_2 & 0xff);
+  *(uint32_t *)(addr + 0x4000000) = 1 << (bit & 0xff);
   return;
 }
 
 
 
-void RADIO_OrSync(int param_1,undefined4 param_2)
+/* void RADIO_OrSync(uint32_t *addr,uint32_t mask)
 
 {
-  *(undefined4 *)(param_1 + 0x6000000) = param_2;
+  *(uint32_t *)(addr + 0x6000000) = mask;
+  return;
+} */
+
+void RADIO_OrSync(uint32_t *addr,uint32_t mask)
+
+{
+  *addr = mask | *addr;
+  return;
+}
+
+void RADIO_XorSync(uint32_t *addr,uint32_t mask)
+
+{
+  *addr = mask ^ *addr;
   return;
 }
 
 
 
-void RADIO_XorSync(uint *param_1,uint param_2)
+void RADIO_AndSync(uint32_t *addr,uint32_t mask)
 
 {
-  *param_1 = param_2 ^ *param_1;
+  *addr = mask & *addr;
   return;
 }
 
 
 
-void RADIO_AndSync(int param_1,uint param_2)
+void RADIO_WaitForSetSync(uint32_t *addr,uint32_t mask)
 
 {
-  *(uint *)(param_1 + 0x4000000) = ~param_2;
-  return;
-}
-
-
-
-void RADIO_WaitForSetSync(uint *param_1,uint param_2)
-
-{
-  CORE_EnterCritical();
-  do {
-  } while ((*param_1 & param_2) != param_2);
-  CORE_ExitCritical();
-  return;
-}
-
-
-
-void RADIO_Delay(undefined4 param_1,undefined4 param_2)
-
-{
-  PHY_UTILS_DelayUs(param_2);
-  return;
-}
-
-
-
-void RADIO_SetAndForgetWrite(undefined4 param_1,uint param_2,undefined4 param_3)
-
-{
-  undefined4 local_c;
-  undefined4 uStack8;
+  CORE_irqState_t irqState;
   
-  local_c = param_2;
-  uStack8 = param_3;
-  SYSTEM_ChipRevisionGet(&local_c);
+  irqState = CORE_EnterCritical();
+  do {
+  } while ((*addr & mask) != mask);
+  CORE_ExitCritical(irqState);
+  return;
+}
+
+
+void RADIO_Delay(uint32_t us)
+
+{
+  PHY_UTILS_DelayUs(us);
+  return;
+}
+
+
+
+void RADIO_SetAndForgetWrite(void)
+
+{
+  uint uVar1;
+  undefined4 in_r1;
+  undefined2 local_c;
+  
+  local_c = (undefined2)((uint)in_r1 >> 8);
+  SYSTEM_ChipRevisionGet((SYSTEM_ChipRevision_TypeDef *)&local_c);
   write_volatile_4(Peripherals::RAC.IFADCCTRL,0x5153e6c0);
   write_volatile_4(Peripherals::RAC.IFPGACTRL,0x87e6);
   write_volatile_4(Peripherals::RAC.LNAMIXCTRL1,0x880);
   write_volatile_4(Peripherals::RAC.VCOCTRL,0xf00277a);
-  if ((local_c._1_1_ == '\x01') && ((local_c & 0xff) < 2)) {
+  if ((local_c._1_1_ == '\x01') && ((byte)local_c < 2)) {
     write_volatile_4(Peripherals::SYNTH.VCOGAIN,0x28);
   }
   write_volatile_4(Peripherals::SYNTH.CTRL,0xac3f);
   write_volatile_4(Peripherals::AGC.MANGAIN,0x1800000);
   write_volatile_4(Peripherals::RAC.LNAMIXCTRL,0);
   write_volatile_4(Peripherals::RAC.SYNTHREGCTRL,0x3636d80);
-  write_volatile_4(Peripherals::SYNTH_CLR.VCDACCTRL,0x7f);
-  write_volatile_4(Peripherals::SYNTH_SET.VCDACCTRL,0x23);
+  uVar1 = read_volatile_4(Peripherals::SYNTH.VCDACCTRL);
+  write_volatile_4(Peripherals::SYNTH.VCDACCTRL,uVar1 & 0xffffff80);
+  uVar1 = read_volatile_4(Peripherals::SYNTH.VCDACCTRL);
+  write_volatile_4(Peripherals::SYNTH.VCDACCTRL,uVar1 | 0x23);
   return;
 }
 
 
-
-void RADIO_SeqInit(void *param_1,int param_2)
+void RADIO_SeqInit(void *src,int32_t len)
 
 {
   uint uVar1;
   uint uVar2;
   uint uVar3;
-  undefined4 uVar4;
+  CORE_irqState_t irqState;
+  int iVar4;
   
   read_volatile(Peripherals::RAC.STATUS._0_1_);
   write_volatile_4(Peripherals::RAC.VECTADDR,0x21000000);
   write_volatile_4(Peripherals::RAC.SEQCTRL,1);
-  uVar4 = CORE_EnterCritical();
-  memcpy((void *)0x21000000,param_1,param_2 << 2);
-  CORE_ExitCritical(uVar4);
-  write_volatile_4(Peripherals::RAC.R6,0x21000fbc);
-  uVar1 = read_volatile_4(Peripherals::SEQ.REG0E4);
-  uVar2 = read_volatile_4(Peripherals::SEQ.REG0E8);
-  uVar3 = read_volatile_4(Peripherals::SEQ.DYNAMIC_CHPWR_TABLE);
-  memset(&Peripherals::SEQ.REG064,0,0x9c);
-  write_volatile_4(Peripherals::SEQ.REG0E4,uVar1);
-  write_volatile_4(Peripherals::SEQ.REG0E8,uVar2);
-  write_volatile_4(Peripherals::SEQ.DYNAMIC_CHPWR_TABLE,uVar3);
+  irqState = CORE_EnterCritical();
+  memcpy((void *)0x21000000,src,len << 2);
+  CORE_ExitCritical(irqState);
+  write_volatile_4(Peripherals::RAC.R6,0x21000fc0);
+  uVar1 = read_volatile_4(Peripherals::SEQ.REG0E8);
+  uVar2 = read_volatile_4(Peripherals::SEQ.DYNAMIC_CHPWR_TABLE);
+  uVar3 = read_volatile_4(Peripherals::SEQ.PHYINFO);
+  memset(&Peripherals::SEQ.REG068,0,0x98);
+  write_volatile_4(Peripherals::SEQ.REG0E8,uVar1);
+  write_volatile_4(Peripherals::SEQ.DYNAMIC_CHPWR_TABLE,uVar2);
+  write_volatile_4(Peripherals::SEQ.PHYINFO,uVar3);
+  iVar4 = RADIO_UsToStimerTickCalc(0x3c);
+  write_volatile_4(Peripherals::SEQ.REG0BC,-iVar4);
   return;
 }
 
 
-
-void RADIO_CLKEnable(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
+void RADIO_CLKEnable(void)
 
 {
   RADIOCMU_ClockEnable(0x63400,1);
@@ -141,7 +150,7 @@ void RADIO_CLKEnable(undefined4 param_1,undefined4 param_2,undefined4 param_3,un
   RADIOCMU_ClockEnable(0x66400,1);
   RADIOCMU_ClockEnable(0x65400,1);
   RADIOCMU_ClockEnable(0x62400,1);
-  RADIOCMU_ClockEnable(0x68400,1,param_3,param_4);
+  RADIOCMU_ClockEnable(0x68400,1);
   return;
 }
 
@@ -162,47 +171,93 @@ void RADIO_Init(void)
   return;
 }
 
-
-
-void RADIO_Config(int param_1)
+/* void RADIO_Init(void)
 
 {
-  undefined4 uVar1;
-  uint uVar2;
+  uint uVar1;
+  
+  RADIO_CLKEnable();
+  write_volatile_4(Peripherals::BUFC.BUF1_CTRL,2);
+  write_volatile_4(Peripherals::BUFC.BUF1_ADDR,(uint)RADIO_rxBuffer);
+  write_volatile_4(Peripherals::BUFC.BUF1_THRESHOLDCTRL,0xaf);
+  write_volatile_4(Peripherals::BUFC.BUF0_CTRL,2);
+  write_volatile_4(Peripherals::BUFC.BUF0_ADDR,(uint)&RADIO_txBuffer);
+  write_volatile_4(Peripherals::BUFC.BUF0_THRESHOLDCTRL,0x2020);
+  write_volatile_4(Peripherals::BUFC.BUF2_CTRL,0);
+  write_volatile_4(Peripherals::BUFC.BUF2_ADDR,(uint)&RADIO_rxLengthBuffer);
+  write_volatile_4(Peripherals::BUFC.BUF2_THRESHOLDCTR,0x3c);
+  write_volatile_4(Peripherals::BUFC.BUF3_CTRL,0);
+  write_volatile_4(Peripherals::BUFC.BUF3_ADDR,(uint)&RADIO_txAckBuffer);
+  write_volatile_4(Peripherals::BUFC.BUF3_THRESHOLDCTRL,0x2020);
+  RADIO_FrameControlDescrBufferIdSet(0,0);
+  RADIO_FrameControlDescrBufferIdSet(1,0);
+  RADIO_FrameControlDescrBufferIdSet(2,1);
+  RADIO_FrameControlDescrBufferIdSet(3,1);
+  uVar1 = read_volatile_4(Peripherals::FRC.CTRL);
+  write_volatile_4(Peripherals::FRC.CTRL,uVar1 & 0xffffff0f);
+  uVar1 = read_volatile_4(Peripherals::FRC.CTRL);
+  write_volatile_4(Peripherals::FRC.CTRL,uVar1 | 0xa0);
+  DAT_20002d20 = 0x7b05;
+  _DAT_e000e280 = 0x80;
+  _DAT_e000e100 = 0x80;
+  RADIO_BUFCClear(0);
+  RADIO_BUFCClear(1);
+  RADIO_BUFCClear(2);
+  RADIO_BUFCClear(3);
+  uVar1 = read_volatile_4(Peripherals::BUFC.IEN);
+  write_volatile_4(Peripherals::BUFC.IEN,uVar1 | 0xb0b0a0b);
+  RADIO_RXBufferDisableThrInt();
+  RADIO_SetAndForgetWrite();
+  uVar1 = read_volatile_4(Peripherals::MODEM.DCCOMP);
+  write_volatile_4(Peripherals::MODEM.DCCOMP,uVar1 | 3);
+  write_volatile_4(Peripherals::RAC.SR3,0);
+  _DAT_43081280 = 1;
+  SYNTH_KvnFreqCompensationEnable();
+  SYNTH_DCDCRetimeEnable();
+  _DAT_4308019c = 1;
+  _DAT_430801a0 = 1;
+  _DAT_430801a4 = 1;
+  return;
+} */
+
+
+void RADIO_Config(void *radioconfig)
+
+{
+  CORE_irqState_t irqState;
+  uint uVar1;
+  int iVar2;
   void *__dest;
   uint uVar3;
   void *__src;
   
-  if (param_1 != 0) {
-    param_1 = param_1 + 8;
-    while( true ) {
-      uVar2 = *(uint *)(param_1 + -8);
-      if (uVar2 == 0xffffffff) break;
-      uVar3 = (uVar2 << 8) >> 0x18;
-      __dest = (void *)(uVar2 & 0xffff | *(uint *)(&regBases + ((uVar2 << 4) >> 0x1c) * 4));
-      if (uVar3 < 2) {
-        (*(code *)(&EFRDRV_actionFunc)[uVar2 >> 0x1c])(__dest,*(undefined4 *)(param_1 + -4));
-      }
-      else {
-        __src = *(void **)(param_1 + -4);
-        uVar1 = CORE_EnterCritical();
-        memcpy(__dest,__src,uVar3 << 2);
-        CORE_ExitCritical(uVar1);
-      }
-      param_1 = param_1 + 8;
+  iVar2 = (int)radioconfig + 8;
+  while( true ) {
+    uVar1 = *(uint *)(iVar2 + -8);
+    if (uVar1 == 0xffffffff) break;
+    uVar3 = (uVar1 << 8) >> 0x18;
+    __dest = (void *)(uVar1 & 0xffff | (uint)(&regBases)[(uVar1 << 4) >> 0x1c]);
+    if (uVar3 < 2) {
+      (**(code **)(&EFRDRV_actionFunc + (uVar1 >> 0x1c) * 4))(__dest,*(undefined4 *)(iVar2 + -4));
     }
+    else {
+      __src = *(void **)(iVar2 + -4);
+      irqState = CORE_EnterCritical();
+      memcpy(__dest,__src,uVar3 << 2);
+      CORE_ExitCritical(irqState);
+    }
+    iVar2 = iVar2 + 8;
   }
-  PA_UpdateConfig();
-  TIMING_SeqTimingInit();
+  PA_BandSelect();
   return;
 }
 
 
 
-void RADIO_RegisterIrqCallback(int param_1,undefined4 param_2)
+void RADIO_RegisterIrqCallback(uint8_t intNo,void *callbackPtr)
 
 {
-  (&EFRDRV_irqClbk)[param_1] = param_2;
+  (&EFRDRV_irqClbk)[intNo] = callbackPtr;
   return;
 }
 
@@ -213,7 +268,7 @@ void FRC_PRI_IRQHandler(void)
 {
                     // WARNING: Could not recover jumptable at 0x00010278. Too many branches
                     // WARNING: Treating indirect jump as call
-  (*EFRDRV_irqClbk)();
+  (*EFRDRV_irqClbk)(); //20002d14
   return;
 }
 
@@ -224,7 +279,7 @@ void RAC_RSM_IRQHandler(void)
 {
                     // WARNING: Could not recover jumptable at 0x00010284. Too many branches
                     // WARNING: Treating indirect jump as call
-  (*DAT_00010780)();
+  (*DAT_00010780)(); //DAT_20002d28 EFRDRV_irqClbk + 0x14
   return;
 }
 
@@ -235,7 +290,7 @@ void RAC_SEQ_IRQHandler(void)
 {
                     // WARNING: Could not recover jumptable at 0x00010290. Too many branches
                     // WARNING: Treating indirect jump as call
-  (*DAT_00010780)();
+  (*DAT_00010780)(); //DAT_20002d28 EFRDRV_irqClbk + 0x14
   return;
 }
 
@@ -246,7 +301,7 @@ void AGC_IRQHandler(void)
 {
                     // WARNING: Could not recover jumptable at 0x0001029c. Too many branches
                     // WARNING: Treating indirect jump as call
-  (*DAT_00010790)();
+  (*DAT_00010790)(); //DAT_20002d38 EFRDRV_irqClbk + 0x24
   return;
 }
 
@@ -257,7 +312,7 @@ void PROTIMER_IRQHandler(void)
 {
                     // WARNING: Could not recover jumptable at 0x000102a8. Too many branches
                     // WARNING: Treating indirect jump as call
-  (*DAT_00010788)();
+  (*DAT_00010788)(); //DAT_20002d30 EFRDRV_irqClbk + 0x1C
   return;
 }
 
@@ -268,7 +323,7 @@ void BUFC_IRQHandler(void)
 {
                     // WARNING: Could not recover jumptable at 0x000102b4. Too many branches
                     // WARNING: Treating indirect jump as call
-  (*DAT_00010778)();
+  (*DAT_00010778)(); //DAT_20002d20 EFRDRV_irqClbk + 0x0C
   return;
 }
 
@@ -284,7 +339,7 @@ void FRC_IRQHandler(void)
   }
                     // WARNING: Could not recover jumptable at 0x000102d4. Too many branches
                     // WARNING: Treating indirect jump as call
-  (*DAT_00010770)();
+  (*DAT_00010770)(); //DAT_20002d18 EFRDRV_irqClbk + 0x04
   return;
 }
 
@@ -295,7 +350,7 @@ void MODEM_IRQHandler(void)
 {
                     // WARNING: Could not recover jumptable at 0x000102e4. Too many branches
                     // WARNING: Treating indirect jump as call
-  (*DAT_00010774)();
+  (*DAT_00010774)(); //DAT_20002d1c EFRDRV_irqClbk + 0x08
   return;
 }
 
@@ -316,11 +371,11 @@ bool RADIO_IsRxActive(void)
 
 
 
-int RADIO_RxTrailDataLength(void)
+int32_t RADIO_RxTrailDataLength(void)
 
 {
   uint uVar1;
-  int iVar2;
+  int32_t iVar2;
   
   uVar1 = read_volatile_4(Peripherals::FRC.TRAILRXDATA);
   if ((uVar1 & 0x20) == 0) {
@@ -349,17 +404,17 @@ int RADIO_RxTrailDataLength(void)
 
 
 
-void RADIO_FrameControlDescrBufferIdSet(int param_1,int param_2)
+void RADIO_FrameControlDescrBufferIdSet(int32_t fcd,int32_t id)
 
 {
-  (&Peripherals::FRC_CLR.FCD0)[param_1] = 0x300;
-  (&Peripherals::FRC_SET.FCD0)[param_1] = param_2 << 8;
+  (&Peripherals::FRC.FCD0)[fcd] = (&Peripherals::FRC.FCD0)[fcd] & 0xfffffcff;
+  (&Peripherals::FRC.FCD0)[fcd] = (&Peripherals::FRC.FCD0)[fcd] | id << FRC_FCD0_BUFFER_Pos; //8;
   return;
 }
 
 
 
-void RADIO_FrameControlDescrConfigSet
+/* void RADIO_FrameControlDescrConfigSet
                (int param_1,uint param_2,int param_3,int param_4,byte param_5,byte param_6)
 
 {
@@ -367,9 +422,29 @@ void RADIO_FrameControlDescrConfigSet
   (&Peripherals::FRC_SET.FCD0)[param_1] =
        param_2 | (uint)param_6 << 10 | (uint)param_5 << 0xb | param_4 << 0xc | param_3 << 0xe;
   return;
+} */
+
+/* void RADIO_FrameControlDescrConfigSet
+               (int param_1,uint param_2,int param_3,int param_4,byte param_5,byte param_6)
+
+{
+  (&Peripherals::FRC_CLR.FCD0)[param_1] = 0x7cff;//31999;
+  (&Peripherals::FRC_SET.FCD0)[param_1] =
+       param_2 | (uint)param_6 << FRC_FCD0_INCLUDECRC_Pos | (uint)param_5 << FRC_FCD0_CALCCRC_Pos | param_4 << FRC_FCD0_SKIPCRC_Pos | param_3 << FRC_FCD0_SKIPWHITE_Pos;
+  return;
+} */
+
+void RADIO_FrameControlDescrConfigSet
+               (int32_t fcd,uint8_t words,uint8_t skipwhite,uint8_t skipcrc,uint8_t calccrc,
+               uint8_t includecrc)
+
+{
+  (&Peripherals::FRC.FCD0)[fcd] = (&Peripherals::FRC.FCD0)[fcd] & 0xffff8300;
+  (&Peripherals::FRC.FCD0)[fcd] =
+       (uint)words | (uint)includecrc << 10 | (uint)calccrc << 0xb | (uint)skipcrc << 0xc |
+       (uint)skipwhite << 0xe | (&Peripherals::FRC.FCD0)[fcd];
+  return;
 }
-
-
 
 void RADIO_FrameDescsConfig
                (undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
@@ -463,47 +538,46 @@ void RADIO_VcoFineCalDisable(void)
 
 
 
-uint RADIO_ComputeTxBaudrate(void)
+uint32_t RADIO_ComputeTxBaudrate(void)
 
 {
   uint uVar1;
-  uint uVar2;
+  uint32_t uVar2;
   
-  uVar2 = CMU_ClockFreqGet(0x11);
+  uVar2 = CMU_ClockFreqGet(cmuClock_HF);
   uVar1 = read_volatile_4(Peripherals::MODEM.TXBR);
   return (((uVar1 << 8) >> 0x18) * (uVar2 >> 3)) / (uVar1 & 0xffff);
 }
 
 
 
-uint RADIO_ComputeRxBaudrate(void)
+uint32_t RADIO_ComputeRxBaudrate(void)
 
 {
   uint uVar1;
   uint uVar2;
-  int iVar3;
-  uint uVar4;
-  int iVar5;
-  uint uVar6;
+  uint32_t uVar3;
+  int iVar4;
+  uint uVar5;
   
   uVar2 = read_volatile_4(Peripherals::MODEM.CF);
   uVar1 = read_volatile_4(Peripherals::MODEM.RXBR);
-  uVar6 = (uVar1 << 0x16) >> 0x1b;
-  uVar4 = (uint)*(byte *)((int)&modemCfDec0Factors + (uVar2 & 7));
-  iVar5 = (((uVar2 << 0xf) >> 0x12) * uVar4 + uVar4) * 2;
-  iVar3 = CMU_ClockFreqGet(0x11);
-  return (uVar6 * iVar3) /
-         ((((uVar2 << 9) >> 0x1a) * iVar5 + iVar5) *
-         (uVar6 * ((uVar1 << 0x13) >> 0x1d) + (uVar1 & 0x1f)));
+  uVar5 = (uVar1 << 0x16) >> 0x1b;
+  iVar4 = (((uVar2 << 0xf) >> 0x12) * (uint)(byte)(&modemCfDec0Factors)[uVar2 & 7] +
+          (uint)(byte)(&modemCfDec0Factors)[uVar2 & 7]) * 2;
+  uVar3 = CMU_ClockFreqGet(cmuClock_HF);
+  return (uVar5 * uVar3) /
+         ((((uVar2 << 9) >> 0x1a) * iVar4 + iVar4) *
+         (uVar5 * ((uVar1 << 0x13) >> 0x1d) + (uVar1 & 0x1f)));
 }
 
 
 
-uint RADIO_ComputeTxSymbolRate(void)
+uint32_t RADIO_ComputeTxSymbolRate(void)
 
 {
   uint uVar1;
-  uint uVar2;
+  uint32_t uVar2;
   
   uVar2 = RADIO_ComputeTxBaudrate();
   uVar1 = read_volatile_4(Peripherals::MODEM.CTRL0);
@@ -515,11 +589,11 @@ uint RADIO_ComputeTxSymbolRate(void)
 
 
 
-int RADIO_ComputeTxBitRate(void)
+uint32_t RADIO_ComputeTxBitRate(void)
 
 {
   uint uVar1;
-  int iVar2;
+  uint32_t uVar2;
   uint uVar3;
   
   uVar1 = read_volatile_4(Peripherals::MODEM.CTRL0);
@@ -542,160 +616,171 @@ int RADIO_ComputeTxBitRate(void)
       uVar3 = 1;
     }
   }
-  iVar2 = RADIO_ComputeTxSymbolRate();
-  return uVar3 * iVar2;
+  uVar2 = RADIO_ComputeTxSymbolRate();
+  return uVar3 * uVar2;
 }
 
 
 
-int RADIO_GetRSSI(void)
+int16_t RADIO_GetRSSI(void)
+
+{
+  short sVar1;
+  uint uVar2;
+  CORE_irqState_t irqState;
+  uint uVar3;
+  uint uVar4;
+  
+  do {
+    irqState = CORE_EnterCritical();
+    uVar3 = read_volatile_4(Peripherals::RAC.STATUS);
+    uVar3 = uVar3 & 0xf000000;
+    uVar2 = read_volatile_4(Peripherals::AGC.RSSI);
+    uVar4 = read_volatile_4(Peripherals::RAC.STATUS);
+    uVar4 = uVar4 & 0xf000000;
+    sVar1 = (short)uVar2 >> 6;
+    CORE_ExitCritical(irqState);
+    if (sVar1 != -0x200) {
+      if ((uVar4 == 0x2000000 || uVar4 == 0x3000000) && (uVar3 == 0x2000000 || uVar3 == 0x3000000))
+      {
+        return sVar1;
+      }
+      return -0x200;
+    }
+  } while ((uVar4 == 0x2000000 || uVar4 == 0x3000000) && (uVar3 == 0x2000000 || uVar3 == 0x3000000))
+  ;
+  return -0x200;
+}
+
+
+
+RAIL_Status_t RADIO_SetAgcCcaParams(uint32_t period,uint8_t threshold)
 
 {
   uint uVar1;
-  uint uVar2;
-  uint uVar3;
-  short sVar4;
+  RAIL_Status_t RVar2;
+  uint32_t uVar3;
+  uint uVar4;
   
-  do {
-    CORE_EnterCritical();
-    uVar2 = read_volatile_4(Peripherals::RAC.STATUS);
-    uVar2 = uVar2 & 0xf000000;
-    uVar1 = read_volatile_4(Peripherals::AGC.RSSI);
-    uVar3 = read_volatile_4(Peripherals::RAC.STATUS);
-    uVar3 = uVar3 & 0xf000000;
-    sVar4 = (short)uVar1 >> 6;
-    CORE_ExitCritical();
-    if (sVar4 != -0x200) {
-      if (uVar3 != 0x2000000 && uVar3 != 0x3000000 || uVar2 != 0x2000000 && uVar2 != 0x3000000) {
-        sVar4 = -0x200;
-      }
-      break;
-    }
-  } while ((uVar3 == 0x2000000 || uVar3 == 0x3000000) && (uVar2 == 0x2000000 || uVar2 == 0x3000000))
-  ;
-  return (int)sVar4;
-}
-
-
-
-undefined4 RADIO_SetAgcCcaParams(int param_1,uint param_2)
-
-{
-  int iVar1;
-  uint uVar2;
-  
-  iVar1 = RADIO_ComputeRxBaudrate();
-  for (uVar2 = 0; (uint)(1 << (uVar2 & 0xff)) < (uint)(param_1 * iVar1) / 1000000; uVar2 = uVar2 + 1
-      ) {
-    if (uVar2 == 0x10) {
-      return 1;
+  uVar3 = RADIO_ComputeRxBaudrate();
+  for (uVar4 = 0; (uint)(1 << (uVar4 & 0xff)) < (period * uVar3) / 1000000; uVar4 = uVar4 + 1) {
+    if (uVar4 == 0x10) {
+      return RAIL_STATUS_INVALID_PARAMETER;
     }
   }
-  write_volatile_4(Peripherals::AGC_CLR.CTRL1,0xf00);
-  write_volatile_4(Peripherals::AGC_SET.CTRL1,uVar2 << 8);
-  uVar2 = read_volatile_4(Peripherals::AGC.CTRL1);
-  if ((uVar2 & 0xff) == 0x80) {
-    return 2;
+  uVar1 = read_volatile_4(Peripherals::AGC.CTRL1);
+  write_volatile_4(Peripherals::AGC.CTRL1,uVar1 & 0xfffff0ff);
+  uVar1 = read_volatile_4(Peripherals::AGC.CTRL1);
+  write_volatile_4(Peripherals::AGC.CTRL1,uVar1 | uVar4 << 8);
+  uVar4 = read_volatile_4(Peripherals::AGC.CTRL1);
+  if ((uVar4 & 0xff) == 0x80) {
+    return RAIL_STATUS_INVALID_STATE;
   }
-  write_volatile_4(Peripherals::AGC_CLR.CTRL1,0xff);
-  write_volatile_4(Peripherals::AGC_SET.CTRL1,param_2 & 0xff);
-  return 0;
+  RVar2 = RADIO_AGCCCAThresholdSet(threshold);
+  return RVar2;
 }
 
 
-
-undefined4 RADIO_AGCCCAThresholdSet(byte param_1)
+RAIL_Status_t RADIO_AGCCCAThresholdSet(uint8_t threshold)
 
 {
-  write_volatile_4(Peripherals::AGC_CLR.CTRL1,0xff);
-  write_volatile_4(Peripherals::AGC_SET.CTRL1,(uint)param_1);
-  return 0;
+  uint uVar1;
+  
+  uVar1 = read_volatile_4(Peripherals::AGC.CTRL1);
+  write_volatile_4(Peripherals::AGC.CTRL1,uVar1 & 0xffffff00);
+  uVar1 = read_volatile_4(Peripherals::AGC.CTRL1);
+  write_volatile_4(Peripherals::AGC.CTRL1,uVar1 | threshold);
+  return RAIL_STATUS_NO_ERROR;
 }
 
 
 
-undefined4 RADIO_CalcRssiPeriod(uint param_1)
+uint32_t RADIO_CalcRssiPeriod(uint32_t time)
 
 {
   undefined uVar1;
   longlong lVar2;
-  uint uVar3;
+  uint32_t uVar3;
   uint uVar4;
   uint uVar5;
-  undefined4 uVar6;
-  int iVar7;
+  uint uVar6;
+  undefined4 uVar7;
   int iVar8;
-  undefined8 uVar9;
-  ulonglong uVar10;
+  int iVar9;
+  undefined8 uVar10;
+  ulonglong uVar11;
   
-  write_volatile_4(Peripherals::AGC_SET.CTRL1,0x8000);
-  uVar3 = read_volatile_4(Peripherals::MODEM.CF);
+  uVar4 = read_volatile_4(Peripherals::AGC.CTRL1);
+  write_volatile_4(Peripherals::AGC.CTRL1,uVar4 | 0x8000);
   uVar4 = read_volatile_4(Peripherals::MODEM.CF);
   uVar5 = read_volatile_4(Peripherals::MODEM.CF);
-  uVar1 = *(undefined *)((int)&modemCfDec0Factors + (uVar3 & 7));
-  uVar3 = CMU_ClockFreqGet(0x11);
-  uVar9 = __aeabi_uldivmod((int)((ulonglong)uVar3 * 1000),(int)((ulonglong)uVar3 * 1000 >> 0x20),
-                           uVar1,0);
-  uVar9 = __aeabi_uldivmod((int)uVar9,(int)((ulonglong)uVar9 >> 0x20),((uVar4 << 0xf) >> 0x12) + 1,0
-                          );
-  uVar10 = __aeabi_uldivmod((int)uVar9,(int)((ulonglong)uVar9 >> 0x20),((uVar5 << 9) >> 0x1a) + 1,0)
-  ;
-  iVar7 = (int)(uVar10 >> 0x20);
-  uVar3 = __aeabi_uldivmod(0xdb000000,0x7558b,(int)uVar10,iVar7);
-  if (uVar3 < param_1) {
+  uVar6 = read_volatile_4(Peripherals::MODEM.CF);
+  uVar1 = (&modemCfDec0Factors)[uVar4 & 7];
+  uVar3 = CMU_ClockFreqGet(cmuClock_HF);
+  uVar10 = __aeabi_uldivmod((int)((ulonglong)uVar3 * 1000),(int)((ulonglong)uVar3 * 1000 >> 0x20),
+                            uVar1,0);
+  uVar10 = __aeabi_uldivmod((int)uVar10,(int)((ulonglong)uVar10 >> 0x20),
+                            ((uVar5 << 0xf) >> 0x12) + 1,0);
+  uVar11 = __aeabi_uldivmod((int)uVar10,(int)((ulonglong)uVar10 >> 0x20),((uVar6 << 9) >> 0x1a) + 1,
+                            0);
+  iVar8 = (int)(uVar11 >> 0x20);
+  uVar4 = __aeabi_uldivmod(0xdb000000,0x7558b,(int)uVar11,iVar8);
+  if (uVar4 < time) {
     return 1;
   }
-  lVar2 = (uVar10 & 0xffffffff) * (ulonglong)param_1;
-  uVar6 = (undefined4)lVar2;
-  iVar7 = param_1 * iVar7 + (int)((ulonglong)lVar2 >> 0x20);
-  uVar4 = __aeabi_uldivmod(uVar6,iVar7,1000000000,0);
-  iVar8 = 1;
-  uVar3 = 0;
+  lVar2 = (uVar11 & 0xffffffff) * (ulonglong)time;
+  uVar7 = (undefined4)lVar2;
+  iVar8 = time * iVar8 + (int)((ulonglong)lVar2 >> 0x20);
+  uVar5 = __aeabi_uldivmod(uVar7,iVar8,1000000000,0);
+  iVar9 = 1;
+  uVar4 = 0;
   do {
-    uVar5 = uVar3 + 1;
-    if (uVar4 <= (uint)(1 << (uVar5 & 0xff))) {
-LAB_000106a4:
-      write_volatile_4(Peripherals::AGC_CLR.CTRL1,0xf00);
-      write_volatile_4(Peripherals::AGC_SET.CTRL1,uVar3 << 8);
-      uVar9 = __aeabi_uldivmod(uVar6,iVar7,10000000,0);
-      uVar9 = __aeabi_uldivmod((int)uVar9,(int)((ulonglong)uVar9 >> 0x20),iVar8,0);
-      iVar7 = __aeabi_uldivmod((int)uVar9,(int)((ulonglong)uVar9 >> 0x20),100,0);
-      uVar3 = ((int)uVar9 + iVar7 * -100 & 0xffU) / 3;
-      if (uVar3 < 0x20) {
-        if (uVar3 == 0) {
-          uVar3 = read_volatile_4(Peripherals::AGC.CTRL1);
-          write_volatile_4(Peripherals::AGC.CTRL1,uVar3 & 0xffe0ffff | 0x10000);
-          uVar3 = read_volatile_4(Peripherals::AGC.CTRL1);
-          write_volatile_4(Peripherals::AGC.CTRL1,uVar3 & 0xfc1fffff | 0x200000);
+    uVar6 = uVar4 + 1;
+    if (uVar5 <= (uint)(1 << (uVar6 & 0xff))) {
+LAB_00008302:
+      uVar5 = read_volatile_4(Peripherals::AGC.CTRL1);
+      write_volatile_4(Peripherals::AGC.CTRL1,uVar5 & 0xfffff0ff);
+      uVar5 = read_volatile_4(Peripherals::AGC.CTRL1);
+      write_volatile_4(Peripherals::AGC.CTRL1,uVar5 | uVar4 << 8);
+      uVar10 = __aeabi_uldivmod(uVar7,iVar8,10000000,0);
+      uVar10 = __aeabi_uldivmod((int)uVar10,(int)((ulonglong)uVar10 >> 0x20),iVar9,0);
+      iVar8 = __aeabi_uldivmod((int)uVar10,(int)((ulonglong)uVar10 >> 0x20),100,0);
+      uVar4 = ((int)uVar10 + iVar8 * -100 & 0xffU) / 3;
+      if (uVar4 < 0x20) {
+        if (uVar4 == 0) {
+          uVar4 = read_volatile_4(Peripherals::AGC.CTRL1);
+          write_volatile_4(Peripherals::AGC.CTRL1,uVar4 & 0xffe0ffff | 0x10000);
+          uVar4 = read_volatile_4(Peripherals::AGC.CTRL1);
+          write_volatile_4(Peripherals::AGC.CTRL1,uVar4 & 0xfc1fffff | 0x200000);
           return 0;
         }
       }
       else {
-        uVar3 = 0x1f;
+        uVar4 = 0x1f;
       }
+      uVar5 = read_volatile_4(Peripherals::AGC.CTRL1);
+      write_volatile_4(Peripherals::AGC.CTRL1,uVar5 & 0x3ffffff | iVar8 << 0x1a);
+      uVar5 = read_volatile_4(Peripherals::AGC.CTRL1);
+      write_volatile_4(Peripherals::AGC.CTRL1,uVar5 & 0xffe0ffff | uVar4 << 0x10);
       uVar4 = read_volatile_4(Peripherals::AGC.CTRL1);
-      write_volatile_4(Peripherals::AGC.CTRL1,uVar4 & 0x3ffffff | iVar7 << 0x1a);
-      uVar4 = read_volatile_4(Peripherals::AGC.CTRL1);
-      write_volatile_4(Peripherals::AGC.CTRL1,uVar4 & 0xffe0ffff | uVar3 << 0x10);
-      uVar3 = read_volatile_4(Peripherals::AGC.CTRL1);
-      write_volatile_4(Peripherals::AGC.CTRL1,uVar3 | 0x3e00000);
+      write_volatile_4(Peripherals::AGC.CTRL1,uVar4 | 0x3e00000);
       return 0;
     }
-    if (uVar5 == 0x10) {
-      uVar3 = 0xf;
-      goto LAB_000106a4;
+    if (uVar6 == 0x10) {
+      uVar4 = 0xf;
+      goto LAB_00008302;
     }
-    iVar8 = iVar8 << 1;
-    uVar3 = uVar5;
+    iVar9 = iVar9 << 1;
+    uVar4 = uVar6;
   } while( true );
 }
 
 
 
-void RADIO_SetCRCInitVal(uint param_1)
+void RADIO_SetCRCInitVal(uint32_t val)
 
 {
-  write_volatile_4(Peripherals::CRC.INIT,param_1);
+  write_volatile_4(Peripherals::CRC.INIT,val);
   write_volatile_4(Peripherals::CRC.CMD,1);
   return;
 }

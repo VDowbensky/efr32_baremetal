@@ -2,56 +2,57 @@
 
 
 
-void RADIO_PTI_Init(byte *param_1)
+void RADIO_PTI_Init(RADIO_PTIInit_t *ptiInit)
 
 {
   byte bVar1;
-  byte bVar2;
-  uint uVar3;
-  uint uVar4;
+  GPIO_Port_TypeDef port;
+  uint out;
+  uint uVar2;
   
-  if (param_1 == (byte *)0x0) {
+  if (ptiInit == (RADIO_PTIInit_t *)0x0) {
     return;
   }
   RADIOCMU_ClockEnable(0x63400,1);
-  CMU_ClockEnable(0x82500,1);
-  sniffBaudHz = *(undefined4 *)(param_1 + 4);
-  uVar4 = (uint)*param_1;
+  CMU_ClockEnable(cmuClock_GPIO,true);
+  sniffBaudHz = ptiInit->baud;
+  uVar2 = (uint)ptiInit->mode;
   write_volatile_4(Peripherals::FRC.SNIFFCTRL,0xf8);
   write_volatile_4(Peripherals::FRC.ROUTELOC0,
-                   (uint)param_1[0xe] << 0x10 | (uint)param_1[0xb] << 8 | (uint)param_1[8]);
-  if (uVar4 == 0) {
+                   (uint)ptiInit->dframeLoc << 0x10 | (uint)ptiInit->dclkLoc << 8 |
+                   (uint)ptiInit->doutLoc);
+  if (uVar2 == 0) {
     sniffMode = 2;
     write_volatile_4(Peripherals::FRC.ROUTEPEN,7);
-    GPIO_PinModeSet(param_1[0xc],param_1[0xd],4,0);
-    bVar1 = param_1[0xf];
-    bVar2 = param_1[0x10];
-    uVar3 = uVar4;
+    GPIO_PinModeSet(ptiInit->dclkPort,(uint)ptiInit->dclkPin,gpioModePushPull,0);
+    port = ptiInit->dframePort;
+    bVar1 = ptiInit->dframePin;
+    out = uVar2;
   }
   else {
-    if (uVar4 != 1) {
-      if (uVar4 == 2) {
+    if (uVar2 != 1) {
+      if (uVar2 == 2) {
         sniffMode = 5;
         write_volatile_4(Peripherals::FRC.ROUTEPEN,1);
       }
       else {
-        if (uVar4 == 3) {
+        if (uVar2 == 3) {
           write_volatile_4(Peripherals::FRC.ROUTEPEN,0);
           sniffMode = 0;
           return;
         }
       }
-      goto LAB_00010090;
+      goto LAB_00007708;
     }
-    bVar1 = param_1[0xf];
+    port = ptiInit->dframePort;
     write_volatile_4(Peripherals::FRC.ROUTEPEN,5);
-    bVar2 = param_1[0x10];
-    uVar3 = 0;
-    sniffMode = uVar4;
+    bVar1 = ptiInit->dframePin;
+    out = 0;
+    sniffMode = uVar2;
   }
-  GPIO_PinModeSet(bVar1,bVar2,4,uVar3);
-LAB_00010090:
-  GPIO_PinModeSet(param_1[9],param_1[10],4,1);
+  GPIO_PinModeSet(port,(uint)bVar1,gpioModePushPull,out);
+LAB_00007708:
+  GPIO_PinModeSet(ptiInit->doutPort,(uint)ptiInit->doutPin,gpioModePushPull,1);
   return;
 }
 
@@ -108,7 +109,7 @@ void RADIO_PTI_AppendedInfoDisable(void)
 
 
 
-void RADIO_PTI_AuxdataOutput(uint param_1)
+void RADIO_PTI_AuxdataOutput(uint32_t auxdata)
 
 {
   FRC *pFVar1;
@@ -120,7 +121,7 @@ void RADIO_PTI_AuxdataOutput(uint param_1)
     pFVar1 = &Peripherals::FRC;
   }
   if (bVar2) {
-    pFVar1->AUXDATA = param_1;
+    pFVar1->AUXDATA = auxdata;
   }
   return;
 }

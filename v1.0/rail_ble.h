@@ -145,25 +145,19 @@ bool RAIL_BLE_SetPhy2MbpsViterbi(void);
  * manual to be sure that it does before trying this.
  */
 bool RAIL_BLE_SetPhy2Mbps(void);
-
 /**
- * Helper function to change BLE radio parameters.
- *
+ * This function should be used to switch radio parameters on every connection
+ * and/or channel change. It is BLE-aware and will set the access address,
+ * preamble, CRC initialization value, and whitening configuration without
+ * requiring you to load a new radio config.
  * @param crcInit The value to use for CRC initialization.
  * @param accessAddress The access access address to use for the connection.
  * @param channel The logical channel that you're changing to. This is used to
  * initialize the whitener if you're using whitening.
  * @param disableWhitening This can turn off the whitening engine and is useful
  * for sending BLE test mode packets that don't have this turned on.
- * @return Returns true on success and false on failure. If you are not in BLE
- * mode this function will always fail.
- *
- * This function can be used to switch radio parameters on every connection
- * and/or channel change. It is BLE-aware and will set the access address,
- * preamble, CRC initialization value, and whitening configuration without
- * requiring you to load a new radio config.
  */
-bool RAIL_BLE_SetupChannelRadioParams(uint32_t crcInit,
+void RAIL_BLE_SetupChannelRadioParams(uint32_t crcInit,
                                       uint32_t accessAddress,
                                       uint8_t channel,
                                       bool disableWhitening);

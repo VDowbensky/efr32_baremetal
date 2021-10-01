@@ -2,16 +2,35 @@
 
 
 
-void RAIL_TxDataLoad(void)
+uint8_t RAIL_TxDataLoad(RAIL_TxData_t *txData)
 
 {
   RFHAL_TxDataLoad();
   return;
 }
 
+uint8_t RFHAL_TxDataLoad(RAIL_TxData_t *txData)
 
+{
+  CORE_irqState_t irqState;
+  uint uVar1;
+  
+  irqState = CORE_EnterCritical();
+  _DAT_43081100 = 1;
+  uVar1 = read_volatile_4(Peripherals::RAC.SR0);
+  uVar1 = uVar1 & 0x10000;
+  if (uVar1 == 0) {
+    RADIO_TxBufferSet(txData->dataPtr,txData->dataLength,0,0);
+  }
+  else {
+    uVar1 = 3;
+  }
+  _DAT_43081100 = 0;
+  CORE_ExitCritical(irqState);
+  return (uint8_t)uVar1;
+}
 
-void RAIL_DataConfig(void)
+RAIL_Status_t RAIL_DataConfig(RAIL_DataConfig_t *dataConfig)
 
 {
   RFHAL_DataConfig();
@@ -20,7 +39,7 @@ void RAIL_DataConfig(void)
 
 
 
-void RAIL_WriteTxFifo(void)
+uint16_t RAIL_WriteTxFifo(uint8_t *dataPtr, uint16_t writeLength)
 
 {
   RFHAL_WriteTxFifo();
@@ -29,7 +48,7 @@ void RAIL_WriteTxFifo(void)
 
 
 
-void RAIL_ReadRxFifo(void)
+uint16_t RAIL_ReadRxFifo(uint8_t *dataPtr, uint16_t readLength)
 
 {
   RFHAL_ReadRxFifo();
@@ -38,7 +57,7 @@ void RAIL_ReadRxFifo(void)
 
 
 
-void RAIL_ReadRxFifoAppendedInfo(void)
+void RAIL_ReadRxFifoAppendedInfo(RAIL_AppendedInfo_t *appendedInfo)
 
 {
   RFHAL_ReadRxFifoAppendedInfo();
@@ -47,7 +66,7 @@ void RAIL_ReadRxFifoAppendedInfo(void)
 
 
 
-void RAIL_SetTxFifoThreshold(int param_1)
+uint16_t RAIL_SetTxFifoThreshold(uint16_t txThreshold)
 
 {
   if (param_1 != 0) {
@@ -60,7 +79,7 @@ void RAIL_SetTxFifoThreshold(int param_1)
 
 
 
-void RAIL_SetRxFifoThreshold(int param_1)
+uint16_t RAIL_SetRxFifoThreshold(uint16_t rxThreshold)
 
 {
   if (param_1 != 0xffff) {
@@ -73,7 +92,7 @@ void RAIL_SetRxFifoThreshold(int param_1)
 
 
 
-void RAIL_GetTxFifoThreshold(void)
+uint16_t RAIL_GetTxFifoThreshold(void)
 
 {
   RFHAL_GetTxFifoThreshold();
@@ -82,7 +101,7 @@ void RAIL_GetTxFifoThreshold(void)
 
 
 
-void RAIL_GetRxFifoThreshold(void)
+uint16_t RAIL_GetRxFifoThreshold(void)
 
 {
   RFHAL_GetRxFifoThreshold();
@@ -109,7 +128,7 @@ void RAIL_DisableRxFifoThreshold(void)
 
 
 
-void RAIL_GetTxFifoSpaceAvailable(void)
+uint16_t  RAIL_GetTxFifoSpaceAvailable(void)
 
 {
   RFHAL_GetTxFifoSpaceAvailable();
@@ -118,7 +137,7 @@ void RAIL_GetTxFifoSpaceAvailable(void)
 
 
 
-void RAIL_GetRxFifoBytesAvailable(void)
+uint16_t  RAIL_GetRxFifoBytesAvailable(void)
 
 {
   RFHAL_GetRxFifoBytesAvailable();
@@ -127,7 +146,7 @@ void RAIL_GetRxFifoBytesAvailable(void)
 
 
 
-void RAIL_ResetFifo(int param_1,int param_2)
+void RAIL_ResetFifo(bool txFifo, bool rxFifo)
 
 {
   if (param_1 != 0) {

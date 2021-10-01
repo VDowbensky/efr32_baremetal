@@ -109,8 +109,7 @@ RAIL_RadioState_t RAIL_RfStateGet(void);
  * This function fails if unsupported transitions are passed in, or if the
  * radio is currently in the RX state. Success can transition to TX, RX, or
  * IDLE, while error can transition to RX or IDLE. The full list of options for
- * the ignoreErrors parameter is any define that starts with
- * \link RAIL_IGNORE_NO_ERRORS RAIL_IGNORE_\endlink.
+ * the ignoreErrors parameter is any define that starts with RAIL_IGNORE_.
  */
 RAIL_Status_t RAIL_SetRxTransitions(RAIL_RadioState_t success,
                                     RAIL_RadioState_t error,
@@ -208,20 +207,6 @@ uint32_t RAIL_RfSense(RAIL_RfSenseBand_t band, uint32_t senseTime, bool enableCb
  * time.
  */
 bool RAIL_RfSensed(void);
-
-/**
- * Modify the currently configured fixed length
- *
- * @param[in] length Expected fixed length; 0 is infinite
- * @return Length configured; 0xFFFF if not in fixed length, 0 if in infinite
- *
- * Set the fixed length configuration for transmit and receive. Users should
- * be careful when using this function in receive and transmit. This function
- * returns \ref RAIL_SETFIXEDLENGTH_INVALID if the radio is not in fixed length
- * mode. The function returns 0 if in infinite length mode. Otherwise it will
- * return the length configured into the hardware.
- */
-uint16_t RAIL_SetFixedLength(uint16_t length);
 
 /***************************************************************************//**
  * Collect entropy from the radio if available.
@@ -411,380 +396,6 @@ void RAILCb_EndWriteMemory(void *handle, uint32_t offset, uint32_t size);
  */
 
 /******************************************************************************
- * Data Management
- *****************************************************************************/
-/**
- * @addtogroup Data_Management
- * @brief Data management functions
- *
- * These functions allow the application to choose how data is presented to the
- * application. There are two methods for RAIL to provide data, in a packet
- * based method leveraging \ref Memory_Management callbacks or in a FIFO based
- * method which gives the application more granularity and responsibility in
- * managing transmit and receive data.
- *
- * The application can configure RAIL data mangement through RAIL_DataConfig();
- * this function allows the application to specify the type of radio data (\ref
- * RAIL_TxDataSource_t and \ref RAIL_RxDataSource_t) and the method of
- * interacting with this data (\ref RAIL_DataMethod_t). By default, RAIL
- * configures Tx and Rx both with packet data source and packet mode.
- *
- * In packet based data management:
- *   - Load transmit data with RAIL_TxDataLoad()
- *   - Received data is returned in RAILCb_RxPacketReceived()
- *   - Packet lengths are determined from the Radio Configurator configuration
- *   - \ref Memory_Management callbacks will fire to ask for pointers to store
- *     data
- *
- * In FIFO based data management:
- *   - Load transmit data with RAIL_WriteTxFifo()
- *   - Received data is retrieved through RAIL_ReadRxFifo()
- *   - Packet Lengths are determined from the Radio Configurator configuration
- *   - Set fifo thresholds through RAIL_SetTxFifoThreshold() and
- *     RAIL_SetRxFifoThreshold() which fires RAILCb_RxFifoAlmostFull() and
- *     RAILCb_TxFifoAlmostEmpty().
- *   - Get fifo count information through RAIL_GetRxFifoBytesAvailable()
- *     and RAIL_GetTxFifoSpaceAvailable()
- *   - Reset fifos with RAIL_ResetFifo()
- *   - CRC Error acceptance is on by default
- *
- * Both transmit and receive fifos are the same size; when trying to determine
- * an appropriate threshold, the application can use
- * RAIL_GetTxFifoSpaceAvailable() to query the size of the fifo if it is empty
- * and use that as the size of the receive fifo as well.  The transmit fifo is edge
- * based where it only provides an interrupt once when the threshold is
- * crossed. The receive fifo is level based where the interrupt will constantly
- * pend if the threshold is exceeded. This normally means that inside
- * RAILCb_RxFifoAlmostFull(), the application should empty enough of the fifo
- * to go under the threshold. If the application wishes to defer reading the
- * fifo to main, it can disable the receive fifo threshold interrupt via
- * RAIL_DisableRxFifoThreshold(). The application can reenable the interrupt
- * via RAIL_EnableRxFifoThreshold().
- *
- * In fifo mode, the fifos can store multiple packets. Depending on traffic,
- * RAIL can receive multiple packets into the receive fifo before the
- * application gets around to reading out the received data from the fifo. If
- * appended info is enabled, make sure to read out the appended info with
- * RAIL_ReadRxFifoAppendedInfo() before attempting to read out the next packet.
- * If the application aborts during packet reception, appended info will not be
- * present in the receive fifo. If a frame error occurs in fifo mode, the
- * contents of the receive fifo is unreliable and should be flushed.
- *
- * When calling RAIL_DataConfig() for fifo mode, RAIL will set \ref
- * RAIL_IGNORE_CRC_ERRORS. Otherwise for packet mode, RAIL will set \ref
- * RAIL_IGNORE_NO_ERRORS. It is highly suggested that the application maintains
- * \ref RAIL_IGNORE_CRC_ERRORS in fifo mode if using hardware crc checking.
- *
- * While RAIL defaults to packet mode, the application can explicitly
- * initialize RAIL for packet mode in the following manner:
- * @code{.c}
- * static const RAIL_DataConfig_t railDataConfig = {
- *   .txSource = TX_PACKET_DATA,
- *   .rxSource = RX_PACKET_DATA,
- *   .txMethod = PACKET_MODE,
- *   .rxMethod = PACKET_MODE,
- * };
- *
- * status = RAIL_DataConfig(&railDataConfig);
- *
- * // Callbacks that occur in Packet Mode
- * void RAILCb_TxPacketSent(RAIL_TxPacketInfo_t *txPacketInfo);
- * void RAILCb_RxPacketReceived(void *rxPacketHandle);
- * void *RAILCb_AllocateMemory(uint32_t size);
- * void RAILCb_FreeMemory(void *handle);
- * void *RAILCb_BeginWriteMemory(void *handle,
- *                          uint32_t offset,
- *                          uint32_t *available);
- * void RAILCb_EndWriteMemory(void *handle, uint32_t offset, uint32_t size);
- * @endcode
- *
- * Initializing RAIL for Fifo Mode requires a few more function calls:
- * @code{.c}
- * static const RAIL_DataConfig_t railDataConfig = {
- *   .txSource = TX_PACKET_DATA,
- *   .rxSource = RX_PACKET_DATA,
- *   .txMethod = FIFO_MODE,
- *   .rxMethod = FIFO_MODE,
- * };
- *
- * status = RAIL_DataConfig(&railDataConfig);
- *
- * // Get the size of the fifos
- * // The transmit and receive fifos are the same size
- * uint16_t fifoSize = RAIL_GetTxFifoSpaceAvailable();
- *
- * // Set the transmit and receive fifo thresholds
- * // For this example, set the threshold in the middle of each fifo
- * RAIL_SetRxFifoThreshold(fifoSize / 2);
- * RAIL_SetTxFifoThreshold(fifoSize / 2);
- *
- * //Callbacks that occur in Fifo mode
- * void RAILCb_TxPacketSent(RAIL_TxPacketInfo_t *txPacketInfo);
- * void RAILCb_RxPacketReceived(void *rxPacketHandle);
- * void RAILCb_TxFifoAlmostEmpty(uint16_t spaceAvailable);
- * void RAILCb_RxFifoAlmostFull(uint16_t bytesAvailable);
- * @endcode
- *
- * On receive, there are multiple data sources that an application can use that
- * are only compatible with the fifo method of data delivery. All that differs
- * from the fifo mode example above is the RAIL_DataConfig_t::rxSource setting.
- * IQ data samples are taken at the hardware's oversample rate and the amount
- * of data can easily overwhelm CPU processing time. The sample rate depends on
- * the chosen PHY as is determined by the data rate as well as the decimation
- * chain. It is <b>not</b> recommended to use the IQ data source with sample
- * rates above 300k samples/second as the CPU might not be able to keep up with
- * the data.  Depending on the application and needed CPU bandwidth, slower
- * data rates may be required.
- * @code{.c}
- * // IQ data is provided into the receive fifo
- * static const RAIL_DataConfig_t railDataConfig = {
- *   .txSource = TX_PACKET_DATA,
- *   .rxSource = RX_IQDATA_FILTLSB,
- *   .txMethod = FIFO_MODE,
- *   .rxMethod = FIFO_MODE,
- * };
- *
- * // When reading IQ data out of the fifo, it comes in the following format:
- * //------------------------------------
- * // I[LSB] | I[MSB] | Q[LSB] | Q[MSB] |
- * //------------------------------------
- * @endcode
- *
- * @note \ref RAIL_DataConfig_t.txMethod and \ref RAIL_DataConfig_t.rxMethod
- * must have the same \ref RAIL_DataMethod_t configuration.
- *
- * @warning Do not call RAIL fifo functions while in \ref
- * RAIL_DataMethod_t::PACKET_MODE.
- * @{
- */
-
-/**
- * RAIL data management configuration
- *
- * @param[in] dataConfig RAIL data configuration structure
- * @return RAIL Status of configuration
- *
- * This function configures how RAIL manages data. The application can
- * configure RAIL to receive data in a packet based or FIFO based format. When
- * configuring tx or rx for fifo mode, this function will reset the configured
- * fifos.
- *
- * If \ref RAIL_DataConfig_t.rxMethod is set to \ref
- * RAIL_DataMethod_t.PACKET_MODE, the radio will filter packets with invalid
- * CRCs by default. This is similar to setting the <b>ignoreErrors</b>
- * parameter in RAIL_SetRxTransitions() to \ref RAIL_IGNORE_NO_ERRORS.
- *
- * If \ref RAIL_DataConfig_t.rxMethod is set to \ref
- * RAIL_DataMethod_t.FIFO_MODE, the radio will accept packets with CRCs as
- * 'valid' packets by default. This is meant to treat 'fully received' packets
- * the same way regardless if CRC passes or fails. The application can parse
- * CRC errors via appended info obtained from RAIL_ReadRxFifoAppendedInfo().
- * This is similar to setting the <b>ignoreErrors</b> parameter in
- * RAIL_SetRxTransitions() to \ref RAIL_IGNORE_CRC_ERRORS.
- *
- * In either situation, the application can set <b>ignoreErrors</b> as needed;
- * in fifo mode, appended info will not be present for frame errors. The
- * defaults defined above are the recommended setting.
- */
-RAIL_Status_t RAIL_DataConfig(RAIL_DataConfig_t *dataConfig);
-
-/**
- * Write data to the transmit fifo
- *
- * @param[in] dataPtr Application provided pointer to transmit data
- * @param[in] writeLength Number of bytes to write to the transmit fifo
- *
- * @return The number of bytes written to the transmit fifo
- *
- * This function reads data from the provided dataPtr and writes it to the TX
- * Fifo.  If the requested writeLength exceeds the current number of bytes open
- * in the transmit fifo, the function will only write until the transmit fifo
- * is full. The function returns the number of bytes written to the transmit
- * fifo.
- *
- * @note This function does not create a critical section but depending on the
- * application a critical section could be appropriate.
- */
-uint16_t RAIL_WriteTxFifo(uint8_t *dataPtr, uint16_t writeLength);
-
-/**
- * Read data from the receive fifo
- *
- * @param[out] dataPtr Application provided pointer to store data
- * @param[in] readLength Number of bytes to read from the fifo
- *
- * @return The number of bytes read from the receive fifo
- *
- * This function reads data from the receive fifo and writes it to the provided
- * dataPtr. If the requested readLength exceeds the current number of bytes in
- * the receive fifo, the function will only read the current amount of bytes
- * available.
- *
- * This function does not have a critical section, so either use it only in one
- * context or make sure function calls are protected to prevent buffer
- * corruption.
- */
-uint16_t RAIL_ReadRxFifo(uint8_t *dataPtr, uint16_t readLength);
-
-/**
- * Read appended info from the receive fifo
- *
- * @param[out] appendedInfo Application provided pointer to store RAIL_AppendedInfo_t
- * @return void
- *
- * This function reads appended info from the receive fifo and writes it to the
- * provided pointer; appended info is added to the receive fifo once a packet is
- * received.  Using this function while not at the end of a packet can corrupt
- * your buffer by processing receive data as appended info.
- *
- * @note The following fields in appended info are not implemented in fifo mode and
- * do not contain valid info:
- * - RAIL_AppendedInfo_t.isAck
- * - RAIL_AppendedInfo_t.lqi
- * - RAIL_AppendedInfo_t.frameCodingStatus (will reflect the last received packet)
- */
-void RAIL_ReadRxFifoAppendedInfo(RAIL_AppendedInfo_t *appendedInfo);
-
-/**
- * Configure the RAIL transmit fifo almost empty threshold
- *
- * @param[in] txThreshold Threshold once fallen under
- * will fire RAILCb_TxFifoAlmostEmpty()
- * @return Configured transmit fifo threshold value
- *
- * This function configures the threshold for the transmit fifo. When the count
- * of the transmit fifo is less than the configured threshold,
- * RAILCb_TxFifoAlmostEmpty() will fire. A value of 0 is invalid and will not
- * change the current configuration.
- */
-uint16_t RAIL_SetTxFifoThreshold(uint16_t txThreshold);
-
-/**
- * Configure the RAIL receive fifo almost full threshold
- *
- * @param[in] rxThreshold Threshold once exceeded will fire
- * RAILCb_RxFifoAlmostFull()
- * @return Configured receive fifo threshold value
- *
- * This function configures the threshold for the transmit fifo. When the count
- * of the receive fifo is greater than the configured threshold,
- * RAILCb_RxFifoAlmostFull() will fire. A value of 0xFFFF is invalid and will
- * not change the current configuration. Depending on the hardware the maximum
- * value can vary. If the rxThreshold value exceeds the capability of the
- * hardware, the rx threshold will be configured so that it fires only when the
- * FIFO is one byte away from being full.
- *
- */
-uint16_t RAIL_SetRxFifoThreshold(uint16_t rxThreshold);
-
-/**
- * Get the RAIL transmit fifo almost empty threshold value
- *
- * @return Configured Tx Threshold value
- *
- * Retrieve the configured tx threshold value
- */
-uint16_t RAIL_GetTxFifoThreshold(void);
-
-/**
- * Get the RAIL receive fifo almost full threshold value
- *
- * @return Configured Rx Threshold value
- *
- * Retrieve the configured rx threshold value
- */
-uint16_t RAIL_GetRxFifoThreshold(void);
-
-/**
- * Enable the RAIL receive fifo threshold interrupt
- *
- * @return void
- *
- * Enable the RAIL receive fifo threshold interrupt.
- */
-void RAIL_EnableRxFifoThreshold(void);
-
-/**
- * Disable the RAIL receive fifo threshold interrupt
- *
- * @return void
- *
- * Disable the RAIL receive fifo threshold interrupt. This is useful if the
- * application wishes to defer reading the receive fifo into another context.
- */
-void RAIL_DisableRxFifoThreshold(void);
-
-/**
- * Reset the RAIL Fifos
- *
- * @param[in] txFifo If true, reset the transmit fifo
- * @param[in] rxFifo If true, reset the receive fifo
- * @return void
- *
- * This function can reset each fifo. The application should not reset the Rx
- * Fifo while receiving a frame.
- */
-//@TODO interrupt protect when clearing; need to check race conditions with hw team
-void RAIL_ResetFifo(bool txFifo, bool rxFifo);
-
-/**
- * Get the number of bytes in the receive fifo
- *
- * @return Number of bytes in the receive fifo
- *
- * Get the number of bytes in the receive fifo
- */
-uint16_t  RAIL_GetRxFifoBytesAvailable(void);
-
-/**
- * Get the number of bytes open in the transmit fifo
- *
- * @return Number of bytes open in the transmit fifo
- *
- * Get the number of bytes open in the transmit fifo
- */
-uint16_t  RAIL_GetTxFifoSpaceAvailable(void);
-
-/**
- * Callback that fires when the receive fifo exceeds the configured threshold
- * value
- *
- * @param[in] bytesAvailable Number of bytes available in the receive fifo at
- * the time of the callback dispatch
- *
- * @return void
- * @warning You must implement a stub for this in your RAIL application.
- *
- * Callback that fires when the receive fifo exceeds the configured threshold
- * value.  Provides the number of bytes available in the receive fifo at the
- * time of the callback dispatch.
- */
-void RAILCb_RxFifoAlmostFull(uint16_t bytesAvailable);
-
-/**
- * Callback that fires when the transmit fifo falls under the configured
- * threshold value
- *
- * @param[in] spaceAvailable Number of bytes open in the transmit fifo at the
- * time of the callback dispatch
- *
- * @return void
- * @warning You must implement a stub for this in your RAIL application.
- *
- * Callback that fires when the transmit fifo falls under the configured
- * threshold value. It only fires if a rising edge occurs across this
- * threshold. This callback will not fire on initailization nor after resetting
- * the transmit fifo with RAIL_ResetFifo().
- *
- * Provides the number of bytes open in the transmit fifo at the time of the
- * callback dispatch.
- */
-void RAILCb_TxFifoAlmostEmpty(uint16_t spaceAvailable);
-/**
- * @}
- */
-
-/******************************************************************************
  * Timing Information
  *****************************************************************************/
 /**
@@ -953,9 +564,7 @@ uint8_t RAIL_RadioConfig(void *radioConfig);
  *
  * @param[in] frameType Frame type configuration structure.
  *
- * Currently the frame type passed in only handles packet length decoding. If
- * NULL is passed into this function, it will clear any currently configured
- * frame type settings.
+ * Currently the frame type passed in only handles packet length decoding.
  */
 void RAIL_PacketLengthConfigFrameType(const RAIL_FrameType_t *frameType);
 
@@ -1077,20 +686,19 @@ int32_t RAIL_TxPowerGet(void);
 RAIL_Status_t RAIL_TxConfig(uint32_t cbToEnable);
 
 /**
- * Load payload to transmit.
+ * Load payload to send.
  *
  * @param[in] txData Pointer to a RAIL_TxData_t structure which defines the
- * payload bytes and the number of bytes to write into the transmit buffer.
+ *   payload bytes and length to transmit. If the fields are configured for
+ *   fixed length.
  * @return Returns 0 on success and an error code on fail.
  *
- * This function will overwrite current TX data held by RAIL, and will return
- * an error if called during transmit operations. RAIL_TxData_t.dataLength
- * defines the number of bytes to load into the transmit buffer from
- * RAIL_TxData_t.dataPtr while the number of bytes transmitted is determined by
- * the packet configuration defined in the radio configuration.
+ * This function may overwrite current TX data held by RAIL, and should not be
+ * called repetitively or during TX. The recommended way to use this is to call
+ * RAIL_TxDataLoad() and RAIL_TxStart() almost immediately in succession.
  *
- * @note This function creates a critical section while writing to the transmit
- * buffer.
+ * Will return \ref RAIL_STATUS_INVALID_CALL if the Tx buffer is in use by the
+ * radio and cannot be updated.
  */
 uint8_t RAIL_TxDataLoad(RAIL_TxData_t *txData);
 
@@ -1225,14 +833,8 @@ uint8_t RAIL_ScheduleTx(void *params);
  *
  * A RAIL_PreTxOp_t function that performs the CSMA algorithm when specified
  * within a RAIL_TxStart() transmit operation. Packets can be received during
- * CSMA backoff periods if receive is active throughout the CSMA process. This
- * will happen either by starting the CSMA process while receive is already
- * active, or if the ccaBackoff time in the RAIL_CsmaConfig_t is less than the
- * idleToRx time (set by RAIL_SetStateTimings). If the ccaBackoff time is
- * greater than the idleToRx time, then receive will only be active during the
- * clear channel assessments.
+ * CSMA backoff periods if receive is active at the beginning of CSMA.
  */
-
 uint8_t RAIL_CcaCsma(void *params);
 
 /**
@@ -1244,12 +846,7 @@ uint8_t RAIL_CcaCsma(void *params);
  *
  * A RAIL_PreTxOp_t function that performs the LBT algorithm when specified
  * within a RAIL_TxStart() transmit operation. Packets can be received during
- * CSMA backoff periods if receive is active throughout the LBT process. This
- * will happen either by starting the LBT process while receive is already
- * active, or if the lbtBackoff time in the RAIL_LbtConfig_t is less than the
- * idleToRx time (set by RAIL_SetStateTimings). If the lbtBackoff time is
- * greater than the idleToRx time, then receive will only be active during the
- * clear channel assessments.
+ * LBT backoff periods if receive is active at the beginning of LBT.
  */
 uint8_t RAIL_CcaLbt(void *params);
 
@@ -1294,8 +891,7 @@ RAIL_Status_t RAIL_SetCcaThreshold(int8_t ccaThresholdDbm);
  * @param[in] cbToEnable Define which callbacks to trigger for receive events.
  *  The full list of available callabcks can be found by looking at the
  *  RAIL_RX_CONFIG_* set of defines.
- * @param[in] appendedInfoEnable Enable/Disable appended info for receive
- * packets.
+ * @param[in] appendedInfoEnable Enable/Disable appended info (not implemented)
  * @return Return 0 for success or an error code
  *
  * Setup which receive interrupts will generate a RAILCb_RxRadioStatus()
@@ -1303,19 +899,6 @@ RAIL_Status_t RAIL_SetCcaThreshold(int8_t ccaThresholdDbm);
  * RAIL_RX_CONFIG_.
  */
 uint8_t RAIL_RxConfig(uint32_t cbToEnable, bool appendedInfoEnable);
-
-/**
- * Configure receive options
- *
- * @param[in] options Bitfield of options which affect recieve. The available
- *  options begin with RAIL_RX_OPTION.
- * @return Return 0 for success or an error code
- *
- * Configure the radio receive flow, based on the list of available options.
- * This will fail with RAIL_STATUS_INVALID_STATE if a packet is being received
- * during this configuration.
- */
-RAIL_Status_t RAIL_SetRxOptions(uint32_t options);
 
 /**
  * Listen on a channel for a packet
@@ -1370,12 +953,8 @@ int16_t RAIL_RxGetRSSI(void);
  * unable to get an RSSI value, otherwise, return the RSSI in quarter dBm,
  * dbm*4.
  *
- * This blocking function will poll the hardware for RSSI values and compute
- * the average RSSI over the requested time period. If no valid readings have
- * been made function will return \ref RAIL_RSSI_INVALID reading. Receiving a
- * packet during the averaging will cause invalid reading(s). However, invalid
- * readings during the averaging will not be included in the average. Number of
- * RSSI readings per baud depends on the phy.
+ * This blocking function will poll the hardware for RSSI values and compute the
+ * average RSSI over the requested time period.
  */
 int16_t RAIL_PollAverageRSSI(uint32_t averageTimeUs);
 
@@ -1440,9 +1019,6 @@ void RAILCb_RssiAverageDone(int16_t avgRssi);
  * stored. After this callback is done we will release the memory handle so you
  * must somehow increment a reference count or copy the data out within this
  * function.
- *
- * If \ref RAIL_IGNORE_CRC_ERRORS is set, this callback will fire for packets
- * with crc errors as well.
  */
 void RAILCb_RxPacketReceived(void *rxPacketHandle);
 
@@ -1563,9 +1139,8 @@ void RAILCb_RxRadioStatusExt(uint32_t status);
  * ADDRCONFIG_MATCH_TABLE_DOUBLE_FIELD. For more complex systems you'll have to
  * create a valid table on your own.
  *
- * @note Address filtering does not function properly with PHYs that use a data
- * rate greater than 500kbps. If you require this you must filter in software
- * for the time being.
+ * @note When using a 38.4 MHz crystal, address filtering will not function with
+ * any data rate greater than 1Mbps.
  *
  * @{
  */
@@ -2124,7 +1699,6 @@ uint8_t RAIL_TxStreamStop(void);
  * During BER test mode, this device will expect to receive a standard PN9
  * signal (x^9 + x^5 + 1). In order to use this BER test, the selection
  * for BER mode should be enabled from the radio configurator.
- * This function has been deprecated.
  */
 void RAIL_BerConfigSet(RAIL_BerConfig_t *berConfig);
 
@@ -2135,7 +1709,6 @@ void RAIL_BerConfigSet(RAIL_BerConfig_t *berConfig);
  *
  * Enter BER receive with the settings specified by RAIL_BerConfigSet().
  * This also resets the BER status.
- * This function has been deprecated.
  */
 void RAIL_BerRxStart(void);
 
@@ -2145,7 +1718,6 @@ void RAIL_BerRxStart(void);
  * @return void
  *
  * Halt a test early, or exit infinite BER receive mode.
- * This function has been deprecated.
  */
 void RAIL_BerRxStop(void);
 
@@ -2156,7 +1728,6 @@ void RAIL_BerRxStop(void);
  * @return void
  *
  * Get status of latest BER test.
- * This function has been deprecated.
  */
 void RAIL_BerStatusGet(RAIL_BerStatus_t *status);
 
@@ -2205,21 +1776,24 @@ RAIL_Status_t RAIL_DebugFrequencyOverride(uint32_t freq);
 #endif
 
 /**
- * Callback function to signify when the radio changes state.
+ * Interrupt level callback to signify when the radio changes state. This is
+ * for debug and __NOT__ for application use. It is not called by default but
+ * is required for the linking process.
  *
- * @param[in] state Current state of the radio. Exact values are for internal
- * use only.
- *
- * This is for debug and __NOT__ for application use. It is not called by
- * default but is required for the linking process.
- *
- * Create an empty function for this callback as shown below.
+ * Create an empty function for this callback.
  *
  * @code{.c}
  * RAILCb_RadioStateChanged(uint8_t state) {
  * }
  * @endcode
  */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+/**
+ * @param[in] state Current state of the radio, as defined by EFR32 data sheet
+ * TODO: Unify these states with the RAIL_RadioState_t type? (There are much
+ *    more than just TX, RX, and IDLE)
+ */
+#endif
 void RAILCb_RadioStateChanged(uint8_t state);
 
 /**

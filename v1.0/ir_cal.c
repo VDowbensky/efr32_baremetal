@@ -2,72 +2,72 @@
 
 
 
-undefined4 IRCAL_Configure(undefined4 param_1)
+bool IRCAL_Configure(uint32_t cal)
 
 {
   char cVar1;
   
-  switch(param_1) {
+  switch(cal) {
   case 0:
     cVar1 = rcIrCalData[8];
     if (rcIrCalData[8] == '\x01') {
       if (rcIrCalData[5] == '\0') {
-        return 0;
+        return false;
       }
     }
     else {
       if (rcIrCalData[8] == '\x02') {
         if (rcIrCalData[6] == '\0') {
-          return 0;
+          return false;
         }
       }
       else {
         if (rcIrCalData[8] != '\x03') {
-          return 0;
+          return false;
         }
         if (rcIrCalData[7] == '\0') {
-          return 0;
+          return false;
         }
       }
     }
     break;
   case 1:
     if (rcIrCalData[5] == '\0') {
-      return 0;
+      return false;
     }
     cVar1 = '\x01';
     break;
   case 2:
     if (rcIrCalData[6] == '\0') {
-      return 0;
+      return false;
     }
     cVar1 = '\x02';
     break;
   case 3:
     if (rcIrCalData[7] == '\0') {
-      return 0;
+      return false;
     }
     cVar1 = '\x03';
     break;
   default:
-    return 0;
+    return false;
   }
   globalCalType = cVar1;
-  return 1;
+  return true;
 }
 
 
 
-void IRCAL_SetGlobalCalType(undefined param_1)
+void IRCAL_SetGlobalCalType(uint32_t caltype)
 
 {
-  globalCalType = param_1;
+  globalCalType = caltype;
   return;
 }
 
 
 
-undefined IRCAL_GetGlobalCalType(void)
+uint32_t IRCAL_GetGlobalCalType(void)
 
 {
   IRCAL_Configure(globalCalType);
@@ -76,75 +76,74 @@ undefined IRCAL_GetGlobalCalType(void)
 
 
 
-void IRCAL_Set(uint param_1)
+void IRCAL_Set(uint32_t ifpgaparams)
 
 {
   uint uVar1;
   
-  if (param_1 != 0xffffffff) {
+  if (ifpgaparams != 0xffffffff) {
     uVar1 = read_volatile_4(Peripherals::RAC.IFPGACAL);
-    write_volatile_4(Peripherals::RAC.IFPGACAL,uVar1 & 0xffff0000 | param_1 & 0xffff);
+    write_volatile_4(Peripherals::RAC.IFPGACAL,uVar1 & 0xffff0000 | ifpgaparams & 0xffff);
   }
   return;
 }
 
 
 
-undefined4 IRCAL_Init(byte *param_1)
+RAIL_Status_t IRCAL_Init(uint8_t *params)
 
 {
-  byte bVar1;
-  byte bVar2;
+  uint8_t uVar1;
+  uint8_t uVar2;
   
-  if ((param_1 != (byte *)0x0) && (0x11 < *param_1)) {
-    rcIrCalData[5] = param_1[6];
-    if (rcIrCalData[5] != 0) {
-      rcIrCalData[5] = 1;
+  if ((params != (uint8_t *)0x0) && (0x11 < *params)) {
+    rcIrCalData[5] = params[6];
+    if (rcIrCalData[5] != '\0') {
+      rcIrCalData[5] = '\x01';
     }
-    rcIrCalData[6] = param_1[7];
-    if (rcIrCalData[6] != 0) {
-      rcIrCalData[6] = 1;
+    rcIrCalData[6] = params[7];
+    if (rcIrCalData[6] != '\0') {
+      rcIrCalData[6] = '\x01';
     }
-    rcIrCalData[7] = param_1[8];
-    if (rcIrCalData[7] != 0) {
-      rcIrCalData[7] = 1;
+    rcIrCalData[7] = params[8];
+    if (rcIrCalData[7] != '\0') {
+      rcIrCalData[7] = '\x01';
     }
-    if (*param_1 < 0x18) {
-      rcIrCalData[9] = param_1[10];
-      if (rcIrCalData[9] != 0) {
-        rcIrCalData[9] = 1;
+    if (*params < 0x18) {
+      rcIrCalData[9] = params[10];
+      if (rcIrCalData[9] != '\0') {
+        rcIrCalData[9] = '\x01';
       }
-      rcIrCalData[10] = param_1[0xb];
-      rcIrCalData[11] = param_1[0xc];
-      rcIrCalData._12_2_ = CONCAT11(param_1[0xe],param_1[0xd]);
-      bVar1 = param_1[0x10];
-      bVar2 = param_1[0xf];
+      rcIrCalData[10] = params[0xb];
+      rcIrCalData[11] = params[0xc];
+      rcIrCalData._12_2_ = CONCAT11(params[0xe],params[0xd]);
+      uVar1 = params[0x10];
+      uVar2 = params[0xf];
     }
     else {
-      rcIrCalData[9] = param_1[0x12];
-      if (rcIrCalData[9] != 0) {
-        rcIrCalData[9] = 1;
+      rcIrCalData[9] = params[0x12];
+      if (rcIrCalData[9] != '\0') {
+        rcIrCalData[9] = '\x01';
       }
-      rcIrCalData[10] = param_1[0x13];
-      rcIrCalData[11] = param_1[0x14];
-      rcIrCalData._12_2_ = CONCAT11(param_1[0x16],param_1[0x15]);
-      bVar1 = param_1[0x18];
-      bVar2 = param_1[0x17];
+      rcIrCalData[10] = params[0x13];
+      rcIrCalData[11] = params[0x14];
+      rcIrCalData._12_2_ = CONCAT11(params[0x16],params[0x15]);
+      uVar1 = params[0x18];
+      uVar2 = params[0x17];
     }
-    rcIrCalData[0] = param_1[1];
-    rcIrCalData[1] = param_1[2];
-    rcIrCalData[2] = param_1[3];
-    rcIrCalData[3] = param_1[4];
-    rcIrCalData[4] = param_1[5];
-    rcIrCalData[8] = param_1[9];
-    rcIrCalData._14_2_ = CONCAT11(bVar1,bVar2);
-    rcIrCalData[16] = param_1[0x11];
-    return 0;
+    rcIrCalData[0] = params[1];
+    rcIrCalData[1] = params[2];
+    rcIrCalData[2] = params[3];
+    rcIrCalData[3] = params[4];
+    rcIrCalData[4] = params[5];
+    rcIrCalData[8] = params[9];
+    rcIrCalData._14_2_ = CONCAT11(uVar1,uVar2);
+    rcIrCalData[16] = params[0x11];
+    return RAIL_STATUS_NO_ERROR;
   }
   IRCAL_Set(0);
-  return 1;
+  return RAIL_STATUS_INVALID_PARAMETER;
 }
-
 
 
 // WARNING: Globals starting with '_' overlap smaller symbols at the same address
@@ -185,7 +184,7 @@ void IRCAL_SaveRegStates(void)
 
 
 
-undefined4 IRCAL_SetRxFrequency(int param_1)
+int32_t IRCAL_SetRxFrequency(uint32_t freq)
 
 {
   uint uVar1;
@@ -198,15 +197,14 @@ undefined4 IRCAL_SetRxFrequency(int param_1)
   if ((uVar1 & 0x100000) != 0) {
     iVar3 = iVar2 * -2;
   }
-  iVar2 = SYNTH_VcoRangeIsValid(param_1 + iVar3);
+  iVar2 = SYNTH_VcoRangeIsValid(freq + iVar3);
   if (iVar2 == 0) {
-    IRCAL_Set();
-    return 0xffffffff;
+    IRCAL_Set(0);
+    return -1;
   }
-  SYNTH_Config(param_1 + iVar3,0);
+  SYNTH_Config(freq + iVar3,0);
   return 0;
 }
-
 
 
 void IRCAL_StartRx(void)
@@ -331,44 +329,46 @@ void IRCAL_SetSubGhzPaLoopback(void)
 
 
 
-undefined4 IRCAL_Setup(int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
+int32_t IRCAL_Setup(uint32_t cal)
 
 {
-  undefined uVar1;
-  int iVar2;
+  byte bVar1;
+  uint32_t freq;
+  int32_t iVar2;
   
   IRCAL_SaveRegStates();
-  uVar1 = rcIrCalData[3];
-  if (((param_1 == 2) || (uVar1 = rcIrCalData[4], param_1 == 3)) &&
-     (iVar2 = AUXPLL_Start(param_1,uVar1,rcIrCalData[0],rcIrCalData[1],param_4), iVar2 != -1)) {
+  bVar1 = rcIrCalData[3];
+  if (((cal == 2) || (bVar1 = rcIrCalData[4], cal == 3)) &&
+     (freq = AUXPLL_Start(cal,(uint)bVar1,(uint)rcIrCalData[0],(uint)rcIrCalData[1]),
+     freq != 0xffffffff)) {
     IRCAL_StopRx();
-    iVar2 = IRCAL_SetRxFrequency(iVar2);
+    iVar2 = IRCAL_SetRxFrequency(freq);
     if (iVar2 != -1) {
       IRCAL_StartRx();
-      if (param_1 == 2) {
+      if (cal == 2) {
         IRCAL_SetSubGhzPllLoopback();
       }
       else {
-        if (param_1 != 3) {
-          return 0xffffffff;
+        if (cal != 3) {
+          return -1;
         }
         IRCAL_SetSubGhzPaLoopback();
       }
       return 0;
     }
   }
-  return 0xffffffff;
+  return -1;
 }
 
 
 
-uint IRCAL_TranslateToRssiIndex(uint param_1)
+uint32_t IRCAL_TranslateToRssiIndex(uint32_t param)
 
 {
-  if (param_1 < 0x40) {
-    param_1 = 0x40 - param_1 & 0xff;
+  if (param < 0x40) {
+    param = 0x40 - param & 0xff;
   }
-  return param_1;
+  return param;
 }
 
 
@@ -555,7 +555,7 @@ void IRCAL_Teardown(void)
 
 
 
-uint IRCAL_Get(void)
+uint32_t IRCAL_Get(void)
 
 {
   uint uVar1;
@@ -566,30 +566,33 @@ uint IRCAL_Get(void)
 
 
 
-// WARNING: Globals starting with '_' overlap smaller symbols at the same address
-
-uint IRCAL_GetDiValue(void)
+uint32_t IRCAL_GetDiValue(void)
 
 {
   uint uVar1;
-  uint uVar2;
   
   uVar1 = SYNTH_RfFreqGet();
   if (uVar1 == 0) {
-    uVar2 = 0xffffffff;
+    uVar1 = 0xffffffff;
   }
   else {
-    uVar2 = _DAT_0fe081c8;
-    if ((999999999 < uVar1) &&
-       (uVar1 = read_volatile_4(Peripherals::MODEM.CTRL0), uVar2 = _DAT_0fe081c4,
-       (uVar1 << 0x17) >> 0x1d != 4)) {
-      uVar2 = _DAT_0fe081c0;
+    if (uVar1 < 1000000000) {
+      uVar1 = read_volatile_4(DAT_0fe081c8);
     }
-    if (uVar2 != 0xffffffff) {
-      return uVar2 & 0xffff;
+    else {
+      uVar1 = read_volatile_4(Peripherals::MODEM.CTRL0);
+      if ((uVar1 << 0x17) >> 0x1d == 4) {
+        uVar1 = read_volatile_4(DAT_0fe081c4);
+      }
+      else {
+        uVar1 = read_volatile_4(DAT_0fe081c0);
+      }
+    }
+    if (uVar1 != 0xffffffff) {
+      return uVar1 & 0xffff;
     }
   }
-  return uVar2;
+  return uVar1;
 }
 
 
