@@ -95,7 +95,7 @@ void RADIO_PTI_Disable(void)
 void RADIO_PTI_AppendedInfoEnable(void)
 
 {
-  write_volatile_4(Peripherals::RAC_SET.SR3,0x40000000);
+  BUS_RegMaskedSet(&RAC->SR3,0x40000000);
   return;
 }
 
@@ -104,7 +104,7 @@ void RADIO_PTI_AppendedInfoEnable(void)
 void RADIO_PTI_AppendedInfoDisable(void)
 
 {
-  write_volatile_4(Peripherals::RAC_CLR.SR3,0x40000000);
+  BUS_RegMaskedClear(&RAC->SR3,0x40000000);
   return;
 }
 
@@ -132,7 +132,7 @@ void RADIO_PTI_AuxdataOutput(uint32_t auxdata)
 void RADIO_PTI_AuxdataEnable(void)
 
 {
-  write_volatile_4(Peripherals::RAC_SET.SR3,0x80000000);
+  BUS_RegMaskedSet(&RAC->SR3,0x80000000);
   return;
 }
 
@@ -141,7 +141,7 @@ void RADIO_PTI_AuxdataEnable(void)
 void RADIO_PTI_AuxdataDisable(void)
 
 {
-  write_volatile_4(Peripherals::RAC_CLR.SR3,0x80000000);
+  BUS_RegMaskedClear(&RAC->SR3,0x80000000);
   return;
 }
 

@@ -12338,7 +12338,7 @@ void RADIO_Delay(undefined4 param_1,undefined4 param_2)
 
 
 
-void RADIO_SetAndForgetWrite(undefined4 param_1,uint param_2,undefined4 param_3)
+void RADIO_SetAndForgetWrite(void)
 
 {
   undefined4 local_c;
@@ -12392,9 +12392,12 @@ void RADIO_SeqInit(void *src,uint32_t len)
 
 
 
-void RADIO_CLKEnable(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
+void RADIO_CLKEnable(void)
 
 {
+  undefined4 in_r2;
+  undefined4 in_r3;
+  
   RADIOCMU_ClockEnable(0x63400,1);
   RADIOCMU_ClockEnable(0x60400,1);
   RADIOCMU_ClockEnable(0x64400,1);
@@ -12402,7 +12405,7 @@ void RADIO_CLKEnable(undefined4 param_1,undefined4 param_2,undefined4 param_3,un
   RADIOCMU_ClockEnable(0x66400,1);
   RADIOCMU_ClockEnable(0x65400,1);
   RADIOCMU_ClockEnable(0x62400,1);
-  RADIOCMU_ClockEnable(0x68400,1,param_3,param_4);
+  RADIOCMU_ClockEnable(0x68400,1);
   return;
 }
 
@@ -12594,34 +12597,36 @@ uint32_t RADIO_RxTrailDataLength(void)
 
 
 
-void RADIO_FrameControlDescrBufferIdSet(int param_1,int param_2)
+void RADIO_FrameControlDescrBufferIdSet(uint32_t fcd,uint32_t id)
 
 {
-  (&Peripherals::FRC_CLR.FCD0)[param_1] = 0x300;
-  (&Peripherals::FRC_SET.FCD0)[param_1] = param_2 << 8;
+  (&Peripherals::FRC_CLR.FCD0)[fcd] = 0x300;
+  (&Peripherals::FRC_SET.FCD0)[fcd] = id << 8;
   return;
 }
 
 
 
 void RADIO_FrameControlDescrConfigSet
-               (int param_1,uint param_2,int param_3,int param_4,byte param_5,byte param_6)
+               (uint32_t fcd,uint8_t words,uint8_t skipwhitening,uint8_t skipcrc,uint8_t calccrc,
+               uint8_t includecrc)
 
 {
-  (&Peripherals::FRC_CLR.FCD0)[param_1] = 31999;
-  (&Peripherals::FRC_SET.FCD0)[param_1] =
-       param_2 | (uint)param_6 << 10 | (uint)param_5 << 0xb | param_4 << 0xc | param_3 << 0xe;
+  (&Peripherals::FRC_CLR.FCD0)[fcd] = 31999;
+  (&Peripherals::FRC_SET.FCD0)[fcd] =
+       (uint)words | (uint)includecrc << 10 | (uint)calccrc << 0xb | (uint)skipcrc << 0xc |
+       (uint)skipwhitening << 0xe;
   return;
 }
 
 
 
 void RADIO_FrameDescsConfig
-               (undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
+               (uint8_t skipwhitening,uint8_t skipcrc,uint8_t calccrc,uint8_t includecrc)
 
 {
-  RADIO_FrameControlDescrConfigSet(0,0xff,param_1,param_2,param_3,param_4,param_3);
-  RADIO_FrameControlDescrConfigSet(2,0xff,param_1,param_2,param_3,param_4);
+  RADIO_FrameControlDescrConfigSet(0,0xff,skipwhitening,skipcrc,calccrc,includecrc);
+  RADIO_FrameControlDescrConfigSet(2,0xff,skipwhitening,skipcrc,calccrc,includecrc);
   return;
 }
 
@@ -12656,7 +12661,7 @@ uint32_t RADIO_ComputeTxBaudrate(void)
 
 
 
-uint RADIO_ComputeRxBaudrate(void)
+uint32_t RADIO_ComputeRxBaudrate(void)
 
 {
   uint uVar1;
@@ -13105,63 +13110,64 @@ void SYNTH_KvnFreqCompensationEnable(void)
 
 
 
-void RADIOCMU_ClockEnable(CMU_Clock_TypeDef param_1,int param_2)
+void RADIOCMU_ClockEnable(CMU_Clock_TypeDef clock,bool enable)
 
 {
   uint uVar1;
   CMU *pCVar2;
   uint *puVar3;
   
-  uVar1 = (param_1 << 0x14) >> 0x1c;
+  uVar1 = (clock << 0x14) >> 0x1c;
   if (uVar1 == 1) {
     pCVar2 = &Peripherals::CMU;
   }
   else {
     if (uVar1 != 4) {
-      CMU_ClockEnable(param_1,SUB41(param_2,0));
+      CMU_ClockEnable(clock,(_Bool)enable);
       return;
     }
-    pCVar2 = (CMU *)&CMU->HFRADIOCLKEN0;
+    pCVar2 = (CMU *)&Peripherals::CMU.HFRADIOCLKEN0;
   }
-  if (param_2 == 0) {
+  if (enable == false) {
     puVar3 = &pCVar2[0x2192e].CALCTRL;
   }
   else {
     puVar3 = (uint *)&pCVar2[0x325c5].field_0x78;
   }
-  *puVar3 = 1 << ((param_1 << 0xf) >> 0x1b);
+  *puVar3 = 1 << ((clock << 0xf) >> 0x1b);
   return;
 }
 
 
 
-uint RADIOCMU_ClockFreqGet(CMU_Clock_TypeDef param_1)
+
+uint32_t RADIOCMU_ClockFreqGet(CMU_Clock_TypeDef clock)
 
 {
   uint uVar1;
   uint uVar2;
   
-  uVar2 = param_1 & 0x3e0000;
+  uVar2 = clock & 0x3e0000;
   if (uVar2 == 0x40000) {
     uVar1 = SystemHFClockGet();
-    uVar2 = (CMU->HFPERPRESC);
+    uVar2 = read_volatile_4(Peripherals::CMU.HFPERPRESC);
   }
   else {
     if (uVar2 < 0x40001) {
       if (uVar2 == 0) {
         uVar1 = SystemHFClockGet();
-        uVar2 = (CMU->HFPRESC);
+        uVar2 = read_volatile_4(Peripherals::CMU.HFPRESC);
 LAB_0000e21c:
         uVar2 = (uVar2 << 0x13) >> 0x1b;
         goto LAB_0000e220;
       }
       if (uVar2 != 0x20000) {
 LAB_0000e228:
-        uVar2 = CMU_ClockFreqGet(param_1);
+        uVar2 = CMU_ClockFreqGet(clock);
         return uVar2;
       }
       uVar1 = SystemHFClockGet();
-      uVar2 = (CMU->HFCOREPRESC);
+      uVar2 = read_volatile_4(Peripherals::CMU.HFCOREPRESC);
     }
     else {
       if (uVar2 == 0x80000) {
@@ -13170,12 +13176,12 @@ LAB_0000e228:
       }
       if (uVar2 == 0xa0000) {
         uVar1 = SystemHFClockGet();
-        uVar2 = (CMU->HFEXPPRESC);
+        uVar2 = read_volatile_4(Peripherals::CMU.HFEXPPRESC);
         goto LAB_0000e21c;
       }
       if (uVar2 != 0x60000) goto LAB_0000e228;
       uVar1 = SystemHFClockGet();
-      uVar2 = (CMU->HFRADIOPRESC);
+      uVar2 = read_volatile_4(Peripherals::CMU.HFRADIOPRESC);
     }
   }
   uVar2 = (uVar2 << 0xf) >> 0x17;
@@ -13185,17 +13191,17 @@ LAB_0000e220:
 
 
 
-uint32_t RADIOCMU_ClockPrescGet(CMU_Clock_TypeDef param_1)
+uint32_t RADIOCMU_ClockPrescGet(CMU_Clock_TypeDef clock)
 
 {
   uint uVar1;
   uint32_t uVar2;
   
-  if ((param_1 << 0x18) >> 0x1c != 6) {
-    uVar2 = CMU_ClockPrescGet(param_1);
+  if ((clock << 0x18) >> 0x1c != 6) {
+    uVar2 = CMU_ClockPrescGet(clock);
     return uVar2;
   }
-  uVar1 = (CMU->HFRADIOPRESC);
+  uVar1 = read_volatile_4(Peripherals::CMU.HFRADIOPRESC);
   return (uVar1 << 0xf) >> 0x17;
 }
 
@@ -13209,21 +13215,22 @@ bool TIMING_SeqTimingInit(bool init)
 
 
 
-int TIMING_NsToStimerTickCalc(uint param_1)
+uint32_t TIMING_NsToStimerTickCalc(uint32_t ns)
 
 {
   uint uVar1;
   
-  if ((0 < (int)param_1) &&
-     (uVar1 = (uint)((ulonglong)param_1 * (ulonglong)nsToStimerRatio),
+  if ((0 < (int)ns) &&
+     (uVar1 = (uint)((ulonglong)ns * (ulonglong)nsToStimerRatio),
      uVar1 = uVar1 + 0x1000000 >> 0x19 |
-             (nsToStimerRatio * ((int)param_1 >> 0x1f) +
-              (int)((ulonglong)param_1 * (ulonglong)nsToStimerRatio >> 0x20) +
-             (uint)(0xfeffffff < uVar1)) * 0x80, 0x80 < uVar1)) {
+             (nsToStimerRatio * ((int)ns >> 0x1f) +
+              (int)((ulonglong)ns * (ulonglong)nsToStimerRatio >> 0x20) + (uint)(0xfeffffff < uVar1)
+             ) * 0x80, 0x80 < uVar1)) {
     return uVar1 - 0x80;
   }
   return 0;
 }
+
 
 
 
@@ -13259,15 +13266,15 @@ void TIMING_TxWarmTimeRecalculate(void)
 
 
 
-uint16_t TIMING_TxWarmTimeSet(uint16_t tme)
+uint16_t TIMING_TxWarmTimeSet(uint16_t time)
 
 {
   if (tme < 100) {
     DAT_20002de6 = 100;
   }
   else {
-    DAT_20002de6 = tme;
-    if (12999 < tme) {
+    DAT_20002de6 = time;
+    if (12999 < time) {
       DAT_20002de6 = 13000;
     }
   }
@@ -13277,7 +13284,7 @@ uint16_t TIMING_TxWarmTimeSet(uint16_t tme)
 
 
 
-undefined2 TIMING_TxWarmTimeGet(void)
+uint16_t TIMING_TxWarmTimeGet(void)
 
 {
   return DAT_20002de6;
@@ -13300,17 +13307,17 @@ void TIMING_RxToTxTimeRecalculate(void)
 
 
 
-undefined2 TIMING_RxToTxTimeSet(uint param_1)
+uint16_t TIMING_RxToTxTimeSet(uint16_t time)
 
 {
-  if (param_1 < 100) {
+  if (time < 100) {
     DAT_20002de2 = 100;
   }
   else {
-    if (12999 < param_1) {
-      param_1 = 13000;
+    if (12999 < time) {
+      time = 13000;
     }
-    DAT_20002de2 = (undefined2)param_1;
+    DAT_20002de2 = (uint16_t)time;
   }
   TIMING_RxToTxTimeRecalculate();
   return DAT_20002de2;
@@ -13366,27 +13373,27 @@ void TIMING_TxToTxTimeRecalculate(void)
 
 
 
-undefined2 TIMING_TxToTxTimeSet(uint param_1)
+uint16_t TIMING_TxToTxTimeSet(uint16_t time)
 
 {
   uint32_t uVar1;
   uint uVar2;
   
   uVar1 = PA_RampTimeGet();
-  uVar2 = param_1;
-  if (12999 < param_1) {
+  uVar2 = time;
+  if (12999 < time) {
     uVar2 = 13000;
   }
   if (uVar2 < uVar1) {
     uVar1 = PA_RampTimeGet();
-    param_1 = uVar1 & 0xffff;
+    time = uVar1 & 0xffff;
   }
   else {
-    if (12999 < param_1) {
-      param_1 = 13000;
+    if (12999 < time) {
+      time = 13000;
     }
   }
-  DAT_20002dea = (undefined2)param_1;
+  DAT_20002dea = time;
   TIMING_TxToTxTimeRecalculate();
   return DAT_20002dea;
 }
@@ -13459,7 +13466,7 @@ uint16_t TIMING_RxWarmTimeSet(uint16_t time)
 
 
 
-undefined2 TIMING_RxWarmTimeGet(void)
+uint16_t TIMING_RxWarmTimeGet(void)
 
 {
   return DAT_20002de0;
@@ -13467,15 +13474,15 @@ undefined2 TIMING_RxWarmTimeGet(void)
 
 
 
-uint TIMING_RxSearchTimeSet(uint param_1)
+uint32_t TIMING_RxSearchTimeSet(uint16_t time)
 
 {
   uint uVar1;
   uint uVar2;
   
   uVar2 = 13000;
-  if (param_1 < 0x32c9) {
-    uVar2 = param_1;
+  if (time < 0x32c9) {
+    uVar2 = time;
   }
   uVar1 = TIMING_NsToStimerTickCalc(uVar2 * 1000);
   write_volatile_4(SEQ->REG09C,uVar1);
@@ -13484,15 +13491,15 @@ uint TIMING_RxSearchTimeSet(uint param_1)
 
 
 
-uint TIMING_TxToRxSearchTimeSet(uint param_1)
+uint32_t TIMING_TxToRxSearchTimeSet(uint16_t time)
 
 {
   uint uVar1;
   uint uVar2;
   
   uVar2 = 13000;
-  if (param_1 < 0x32c9) {
-    uVar2 = param_1;
+  if (time < 0x32c9) {
+    uVar2 = time;
   }
   uVar1 = TIMING_NsToStimerTickCalc(uVar2 * 1000);
   write_volatile_4(SEQ->REG0B0,uVar1);
@@ -13532,18 +13539,18 @@ uint64_t TIMING_GetRxTimestampUs(uint32_t cnt)
   uint64_t uVar1;
   
   uVar1 = PROTIMER_PrecntOverflowToUs(cnt);
-  return uVar1 & 0xffffffff00000000 | (ulonglong)((int)uVar1 - (timings + 500U) / 1000);
+  return uVar1 & 0xffffffff00000000 | (uint64_t)((int)uVar1 - (timings + 500U) / 1000);
 }
 
 
 
-ulonglong TIMING_GetTxTimestampUs(uint32_t param_1)
+uint64_t TIMING_GetTxTimestampUs(uint32_t cnt)
 
 {
   uint64_t uVar1;
   
-  uVar1 = PROTIMER_PrecntOverflowToUs(param_1);
-  return uVar1 & 0xffffffff00000000 | (ulonglong)((int)uVar1 - (DAT_20002ddc + 500U) / 1000);
+  uVar1 = PROTIMER_PrecntOverflowToUs(cnt);
+  return uVar1 & 0xffffffff00000000 | (uint64_t)((int)uVar1 - (DAT_20002ddc + 500U) / 1000);
 }
 
 
@@ -14584,7 +14591,7 @@ RAIL_Status_t RFHAL_SetPtiProtocol(RAIL_PtiProtocol_t protocol1)
 
 
 
-void RFHAL_IdleExt(undefined4 mode)
+void RFHAL_IdleExt(RAIL_RfIdleMode_t mode)
 
 {
   undefined4 uVar1;
@@ -14683,42 +14690,41 @@ bool RFHAL_OkToTransmit(void)
 
 
 
-int RFHAL_HeadedToIdle(void)
+bool RFHAL_HeadedToIdle(void)
 
 {
   uint uVar1;
-  bool bVar2;
   CORE_irqState_t irqState;
+  int iVar2;
   uint uVar3;
-  int iVar4;
+  bool bVar4;
   
   irqState = CORE_EnterCritical();
-  bVar2 = PROTIMER_CCTimerIsEnabled(3);
-  if ((bVar2 == false) && (iVar4 = PROTIMER_LBTIsActive(), iVar4 == 0)) {
-    uVar3 = (RAC->STATUS);
-    uVar1 = (RAC->SR0);
+  iVar2 = PROTIMER_CCTimerIsEnabled(3);
+  if ((iVar2 == 0) && (iVar2 = PROTIMER_LBTIsActive(), iVar2 == 0)) {
+    uVar3 = read_volatile_4(Peripherals::RAC.STATUS);
+    uVar1 = read_volatile_4(Peripherals::RAC.SR0);
     CORE_ExitCritical(irqState);
-    if ((((uVar3 & 0xc0000000) == 0) && (-1 < (int)(uVar1 << 0x18))) &&
-       (uVar3 = uVar3 & 0xf000000, uVar3 != 0x6000000)) {
+    if (((uVar3 & 0xc0000000) == 0) &&
+       ((-1 < (int)(uVar1 << 0x18) && (uVar3 = uVar3 & 0xf000000, uVar3 != 0x6000000)))) {
       if (uVar3 < 0x6000001) {
-        bVar2 = uVar3 == 0x3000000;
+        bVar4 = uVar3 == 0x3000000;
       }
       else {
-        if (uVar3 == 0x9000000) {
-          return 0;
-        }
-        bVar2 = uVar3 == 0xc000000;
+        if (uVar3 == 0x9000000) goto LAB_0000ed58;
+        bVar4 = uVar3 == 0xc000000;
       }
-      if (!bVar2) {
-        iVar4 = 1;
+      if (!bVar4) {
+        iVar2 = 1;
       }
     }
   }
   else {
     CORE_ExitCritical(irqState);
-    iVar4 = 0;
+    iVar2 = 0;
   }
-  return iVar4;
+LAB_0000ed58:
+  return SUB41(iVar2,0);
 }
 
 
@@ -15582,33 +15588,34 @@ void RFHAL_StartStreamTestMode(void)
 
 
 
-undefined4 RFHAL_SetChannel(undefined4 param_1,char *param_2,int param_3)
+RAIL_Status_t RFHAL_SetChannel(uint8_t channel,RAIL_ChannelConfig_t *config)
 
 {
   uint uVar1;
-  uint32_t uVar2;
+  bool bVar2;
   int iVar3;
+  int in_r2;
   
-  uVar2 = RAIL_DebugModeGet();
-  if (uVar2 != 1) {
+  iVar3 = RAIL_DebugModeGet();
+  if (iVar3 != 1) {
     do {
-      iVar3 = RFHAL_HeadedToIdle();
-      if (iVar3 == 0) break;
-      uVar1 = (RAC->STATUS);
+      bVar2 = RFHAL_HeadedToIdle();
+      if (bVar2 == false) break;
+      uVar1 = read_volatile_4(Peripherals::RAC.STATUS);
     } while ((uVar1 & 0xf000000) != 0);
-    uVar1 = (RAC->STATUS);
+    uVar1 = read_volatile_4(Peripherals::RAC.STATUS);
     if ((uVar1 & 0xf000000) != 0) {
-      return 2;
+      return RAIL_STATUS_INVALID_STATE;
     }
     if (protChChngCB != FUN_00000000) {
-      (*protChChngCB)(param_1);
+      (*protChChngCB)(channel);
     }
-    if (param_3 != 0) {
-      SYNTH_Config(*(undefined4 *)(param_2 + 8),*(undefined4 *)(param_2 + 4));
+    if (in_r2 != 0) {
+      SYNTH_Config(config[1].configs,config->length);
     }
-    GENERIC_PHY_ChannelSet((char)param_1 - *param_2);
+    GENERIC_PHY_ChannelSet(channel - *(char *)&config->configs);
   }
-  return 0;
+  return RAIL_STATUS_NO_ERROR;
 }
 
 
@@ -16142,7 +16149,7 @@ void RAIL_RfIdle(void)
 
 
 
-void RAIL_RfIdleExt(undefined4 mode,bool wait)
+void RAIL_RfIdleExt(RAIL_RfIdleMode_t mode,bool wait)
 
 {
   RAIL_RadioState_t RVar1;
@@ -16555,7 +16562,7 @@ uint8_t RAIL_TxToneStop(void)
 
 
 
-uint8_t RAIL_TxStreamStart(uint8_t channel,int mode)
+uint8_t RAIL_TxStreamStart(uint8_t channel,RAIL_StreamMode_t mode)
 
 {
   uint8_t uVar1;
@@ -19021,7 +19028,7 @@ void RFTEST_SaveRadioConfiguration(void)
     DAT_2000311c = (FRC->SNIFFCTRL);
     DAT_20003120 = (FRC->IEN);
     write_volatile_4(FRC->IEN,0);
-    testModeRegisterState = '\x01';
+    testModeRegisterState = true;
   }
   return;
 }
@@ -19031,7 +19038,7 @@ void RFTEST_SaveRadioConfiguration(void)
 void RFTEST_RestoreRadioConfiguration(void)
 
 {
-  if (testModeRegisterState != '\0') {
+  if (testModeRegisterState != false) {
     write_volatile_4(MODEM->AFC,DAT_200030d8);
     write_volatile_4(MODEM->CTRL0,DAT_200030dc);
     write_volatile_4(MODEM->CTRL1,DAT_200030e0);
@@ -21193,32 +21200,33 @@ void RFHAL_BleInit(void)
 
 
 
-void RFHAL_BleDeinit(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
+void RFHAL_BleDeinit(void)
 
 {
   undefined4 extraout_r1;
+  undefined4 in_r2;
+  undefined4 in_r3;
   
   RFHAL_SetProtocolSpecificChCheckCB(0);
-  TIMING_TxToRxSearchTimeSet(0,extraout_r1,param_3,param_4);
+  TIMING_TxToRxSearchTimeSet(0,extraout_r1,in_r2,in_r3);
   return;
 }
 
 
-
-void RFHAL_BLEPreambleSyncWordSet(int param_1,uint param_2)
+void RFHAL_BLEPreambleSyncWordSet(uint32_t pre,uint32_t sync)
 
 {
   uint uVar1;
   
-  write_volatile_4(MODEM->SYNC0,param_2);
-  uVar1 = (MODEM->PRE);
-  if (param_1 == 0x55) {
+  write_volatile_4(Peripherals::MODEM.SYNC0,sync);
+  uVar1 = read_volatile_4(Peripherals::MODEM.PRE);
+  if (pre == 0x55) {
     uVar1 = uVar1 & 0xfffffff0 | 1;
   }
   else {
     uVar1 = uVar1 & 0xfffffff0 | 2;
   }
-  write_volatile_4(MODEM->PRE,uVar1);
+  write_volatile_4(Peripherals::MODEM.PRE,uVar1);
   return;
 }
 
