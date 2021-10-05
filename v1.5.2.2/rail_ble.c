@@ -5,12 +5,9 @@
 RAIL_Status_t RAIL_BLE_Init(void)
 
 {
-  RAIL_Status_t RVar1;
-  
   RFHAL_BleInit();
   isBleEnabled = true;
-  RVar1 = RAIL_SetPtiProtocol(RAIL_PTI_PROTOCOL_BLE);
-  return RVar1;
+  return RAIL_SetPtiProtocol(RAIL_PTI_PROTOCOL_BLE);
 }
 
 
@@ -18,13 +15,12 @@ RAIL_Status_t RAIL_BLE_Init(void)
 void RAIL_BLE_Deinit(void)
 
 {
-  if (isBleEnabled != false) {
+  if (isBleEnabled != false) 
+  {
     RFHAL_BleDeinit();
     isBleEnabled = false;
     RAIL_SetPtiProtocol(RAIL_PTI_PROTOCOL_CUSTOM);
-    return;
   }
-  return;
 }
 
 
@@ -40,14 +36,8 @@ bool RAIL_BLE_IsEnabled(void)
 bool RAIL_BLE_SetPhy1MbpsViterbi(void)
 
 {
-  RAIL_RadioState_t RVar1;
-  bool bVar2;
-  
-  if ((isBleEnabled != false) && (RVar1 = RFHAL_StateGet(), RVar1 == RAIL_RF_STATE_IDLE)) {
-    bVar2 = RFHAL_Ble1MbpsSet();
-    return bVar2;
-  }
-  return false;
+  if ((isBleEnabled != false) && (RFHAL_StateGet() == RAIL_RF_STATE_IDLE)) return RFHAL_Ble1MbpsSet();
+  else return false;
 }
 
 
@@ -55,14 +45,8 @@ bool RAIL_BLE_SetPhy1MbpsViterbi(void)
 bool RAIL_BLE_SetPhy1Mbps(void)
 
 {
-  RAIL_RadioState_t RVar1;
-  bool bVar2;
-  
-  if ((isBleEnabled != false) && (RVar1 = RFHAL_StateGet(), RVar1 == RAIL_RF_STATE_IDLE)) {
-    bVar2 = RFHAL_Ble1MbpsSet();
-    return bVar2;
-  }
-  return false;
+  if ((isBleEnabled != false) && (RFHAL_StateGet() == RAIL_RF_STATE_IDLE)) return RFHAL_Ble1MbpsSet();
+  else return false;
 }
 
 
@@ -70,14 +54,8 @@ bool RAIL_BLE_SetPhy1Mbps(void)
 bool RAIL_BLE_SetPhy2MbpsViterbi(void)
 
 {
-  RAIL_RadioState_t RVar1;
-  bool bVar2;
-  
-  if ((isBleEnabled != false) && (RVar1 = RFHAL_StateGet(), RVar1 == RAIL_RF_STATE_IDLE)) {
-    bVar2 = RFHAL_Ble2MbpsSet();
-    return bVar2;
-  }
-  return false;
+  if ((isBleEnabled != false) && (RFHAL_StateGet() == RAIL_RF_STATE_IDLE)) return RFHAL_Ble2MbpsSet();
+  else return false;
 }
 
 
@@ -85,20 +63,13 @@ bool RAIL_BLE_SetPhy2MbpsViterbi(void)
 bool RAIL_BLE_SetPhy2Mbps(void)
 
 {
-  RAIL_RadioState_t RVar1;
-  bool bVar2;
-  
-  if ((isBleEnabled != false) && (RVar1 = RFHAL_StateGet(), RVar1 == RAIL_RF_STATE_IDLE)) {
-    bVar2 = RFHAL_Ble2MbpsSet();
-    return bVar2;
-  }
-  return false;
+  if ((isBleEnabled != false) && (RFHAL_StateGet() == RAIL_RF_STATE_IDLE)) return RFHAL_Ble2MbpsSet();
+  else return false;
 }
 
 
 
-bool RAIL_BLE_SetupChannelRadioParams
-               (uint32_t crcInit,uint32_t accessAddress,uint8_t channel,bool disableWhitening)
+bool RAIL_BLE_SetupChannelRadioParams(uint32_t crcInit,uint32_t accessAddress,uint8_t channel,bool disableWhitening)
 
 {
   byte bVar1;
@@ -109,7 +80,8 @@ bool RAIL_BLE_SetupChannelRadioParams
   uint32_t init;
   
   bVar4 = isBleEnabled;
-  if (isBleEnabled != false) {
+  if (isBleEnabled != false) 
+  {
     bVar1 = (byte)crcInit;
     bVar2 = (byte)(crcInit >> 8);
     bVar3 = (byte)(crcInit >> 0x10);
@@ -125,11 +97,13 @@ bool RAIL_BLE_SetupChannelRadioParams
                                       bVar3 >> 5 & 1) << 1 | bVar3 >> 6 & 1) << 1 | bVar3 >> 7) << 8
                         ) >> 8);
     RFHAL_BLEPreambleSyncWordSet();
-    if (disableWhitening != false) {
+    if (disableWhitening != false) 
+	{
       poly = 0;
       init = 0;
     }
-    else {
+    else 
+	{
       poly = 0x44;
       init = channel | 0x40;
     }

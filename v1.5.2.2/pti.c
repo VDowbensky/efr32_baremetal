@@ -10,34 +10,36 @@ void RADIO_PTI_Init(RADIO_PTIInit_t *ptiInit)
   uint out;
   uint uVar2;
   
-  if (ptiInit == (RADIO_PTIInit_t *)0x0) {
-    return;
-  }
+  if (ptiInit == (RADIO_PTIInit_t *)0x0) return;
   RADIOCMU_ClockEnable(0x63400,1);
   CMU_ClockEnable(cmuClock_GPIO,true);
   sniffBaudHz = ptiInit->baud;
   uVar2 = (uint)ptiInit->mode;
-  write_volatile_4(FRC->SNIFFCTRL,0xf8);
-  write_volatile_4(FRC->ROUTELOC0,
-                   (uint)ptiInit->dframeLoc << 0x10 | (uint)ptiInit->dclkLoc << 8 |
-                   (uint)ptiInit->doutLoc);
-  if (uVar2 == 0) {
+  FRC->SNIFFCTRL = 0xf8;
+  FRC->ROUTELOC0 = (uint)ptiInit->dframeLoc << 0x10 | (uint)ptiInit->dclkLoc << 8 | (uint)ptiInit->doutLoc;
+  if (uVar2 == 0) 
+  {
     sniffMode = 2;
-    write_volatile_4(FRC->ROUTEPEN,7);
+    FRC->ROUTEPEN = 7;
     GPIO_PinModeSet(ptiInit->dclkPort,(uint)ptiInit->dclkPin,gpioModePushPull,0);
     port = ptiInit->dframePort;
     bVar1 = ptiInit->dframePin;
     out = uVar2;
   }
-  else {
-    if (uVar2 != 1) {
-      if (uVar2 == 2) {
+  else 
+  {
+    if (uVar2 != 1) 
+	{
+      if (uVar2 == 2) 
+	  {
         sniffMode = 5;
-        write_volatile_4(FRC->ROUTEPEN,1);
+        FRC->ROUTEPEN = 1;
       }
-      else {
-        if (uVar2 == 3) {
-          write_volatile_4(FRC->ROUTEPEN,0);
+      else 
+	  {
+        if (uVar2 == 3) 
+		{
+          FRC->ROUTEPEN = 0;
           sniffMode = 0;
           return;
         }
@@ -45,7 +47,7 @@ void RADIO_PTI_Init(RADIO_PTIInit_t *ptiInit)
       goto LAB_0000d710;
     }
     port = ptiInit->dframePort;
-    write_volatile_4(FRC->ROUTEPEN,5);
+    FRC->ROUTEPEN = 5;
     bVar1 = ptiInit->dframePin;
     out = 0;
     sniffMode = uVar2;
@@ -53,7 +55,6 @@ void RADIO_PTI_Init(RADIO_PTIInit_t *ptiInit)
   GPIO_PinModeSet(port,(uint)bVar1,gpioModePushPull,out);
 LAB_0000d710:
   GPIO_PinModeSet(ptiInit->doutPort,(uint)ptiInit->doutPin,gpioModePushPull,1);
-  return;
 }
 
 
@@ -61,19 +62,13 @@ LAB_0000d710:
 void RADIO_PTI_Enable(void)
 
 {
-  uint uVar1;
-  int iVar2;
-  uint uVar3;
+  uint32_t sniffbaud;
   
-  uVar1 = (FRC->SNIFFCTRL);
-  uVar3 = sniffBaudHz;
-  if (sniffBaudHz != 0) {
-    iVar2 = RADIOCMU_ClockFreqGet(0x63400);
-    uVar3 = ((iVar2 + (sniffBaudHz >> 1)) / sniffBaudHz - 1) * 0x100;
-  }
+  sniffbaud = sniffBaudHz;
+  if (sniffBaudHz != 0) sniffbaud = ((RADIOCMU_ClockFreqGet(0x63400) + (sniffBaudHz >> 1)) / sniffBaudHz - 1) * 0x100;
   BUS_RegMaskedSet(&RAC->SR3,0x40000000);
-  write_volatile_4(FRC->SNIFFCTRL,uVar3 | uVar1 & 0xffff00fc | sniffMode);
-  return;
+  FRC->SNIFFCTRL &= 0xffff00fc;
+  FRC->SNIFFCTRL |= sniffbaud | sniffMode;
 }
 
 
@@ -82,12 +77,8 @@ void RADIO_PTI_Enable(void)
 void RADIO_PTI_Disable(void)
 
 {
-  uint uVar1;
-  
-  uVar1 = (FRC->SNIFFCTRL);
-  write_volatile_4(FRC->SNIFFCTRL,uVar1 & 0xfffffffc);
+  FRC->SNIFFCTRL &= 0xfffffffc;
   BUS_RegMaskedClear(&RAC->SR3,0x40000000);
-  return;
 }
 
 
@@ -96,7 +87,6 @@ void RADIO_PTI_AppendedInfoEnable(void)
 
 {
   BUS_RegMaskedSet(&RAC->SR3,0x40000000);
-  return;
 }
 
 
@@ -105,7 +95,6 @@ void RADIO_PTI_AppendedInfoDisable(void)
 
 {
   BUS_RegMaskedClear(&RAC->SR3,0x40000000);
-  return;
 }
 
 
@@ -113,18 +102,7 @@ void RADIO_PTI_AppendedInfoDisable(void)
 void RADIO_PTI_AuxdataOutput(uint32_t auxdata)
 
 {
-  FRC *pFVar1;
-  bool bVar2;
-  
-  pFVar1 = (FRC *)read_volatile_4(Peripherals::RAC.SR3);
-  bVar2 = (int)pFVar1 < 0;
-  if (bVar2) {
-    pFVar1 = &Peripherals::FRC;
-  }
-  if (bVar2) {
-    pFVar1->AUXDATA = auxdata;
-  }
-  return;
+  if (RAC->SR3 & 0x80000000) FRC->AUXDATA = auxdata;
 }
 
 
@@ -133,7 +111,6 @@ void RADIO_PTI_AuxdataEnable(void)
 
 {
   BUS_RegMaskedSet(&RAC->SR3,0x80000000);
-  return;
 }
 
 
@@ -142,7 +119,6 @@ void RADIO_PTI_AuxdataDisable(void)
 
 {
   BUS_RegMaskedClear(&RAC->SR3,0x80000000);
-  return;
 }
 
 

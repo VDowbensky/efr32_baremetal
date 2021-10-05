@@ -10,7 +10,8 @@ RAIL_Status_t RAIL_AutoAckDisable(void)
   
   RVar1 = RAIL_SetRxTransitions(RAIL_RF_STATE_IDLE,RAIL_RF_STATE_IDLE,'\0');
   RVar2 = RAIL_SetTxTransitions(RAIL_RF_STATE_IDLE,RAIL_RF_STATE_IDLE);
-  if ((RVar2 == RAIL_STATUS_NO_ERROR) && (RVar1 == RAIL_STATUS_NO_ERROR)) {
+  if ((RVar2 == RAIL_STATUS_NO_ERROR) && (RVar1 == RAIL_STATUS_NO_ERROR)) 
+  {
     RFHAL_AutoAckRxResume();
     RFHAL_AutoAckTxResume();
     RFHAL_AutoAckDisable();
@@ -31,10 +32,7 @@ RAIL_Status_t RAIL_AutoAckDisable(void)
 bool RAIL_AutoAckIsEnabled(void)
 
 {
-  uint uVar1;
-  
-  uVar1 = (SEQ->REG000);
-  return SUB41((uVar1 << 0x1a) >> 0x1f,0);
+  return SUB41((SEQ->REG000 << 0x1a) >> 0x1f,0);
 }
 
 
@@ -48,18 +46,15 @@ RAIL_Status_t RAIL_AutoAckConfig(RAIL_AutoAckConfig_t *config)
   
   local_18 = config;
   RVar1 = RAIL_SetRxTransitions(RAIL_RF_STATE_TX,config->defaultState,'\0');
-  if ((RVar1 == RAIL_STATUS_NO_ERROR) &&
-     (RVar1 = RAIL_SetTxTransitions(RAIL_RF_STATE_RX,config->defaultState),
-     RVar1 == RAIL_STATUS_NO_ERROR)) {
+  if ((RAIL_SetRxTransitions(RAIL_RF_STATE_TX,config->defaultState,'\0') == RAIL_STATUS_NO_ERROR) &&(RAIL_SetTxTransitions(RAIL_RF_STATE_RX,config->defaultState) == RAIL_STATUS_NO_ERROR)) 
+  {
     local_14 = *(undefined4 *)&config->idleTiming;
     local_18 = (RAIL_AutoAckConfig_t *)CONCAT22(config->turnaroundTime - 10,config->idleTiming);
     RAIL_SetStateTiming((RAIL_StateTiming_t *)&local_18);
     RFHAL_AutoAckConfig(config);
     RFHAL_AutoAckEnable();
   }
-  else {
-    RVar1 = RAIL_STATUS_INVALID_PARAMETER;
-  }
+  else RVar1 = RAIL_STATUS_INVALID_PARAMETER;
   return RVar1;
 }
 
@@ -67,13 +62,8 @@ RAIL_Status_t RAIL_AutoAckConfig(RAIL_AutoAckConfig_t *config)
 RAIL_Status_t RAIL_AutoAckLoadBuffer(RAIL_AutoAckData_t *ackData)
 
 {
-  RAIL_Status_t RVar1;
-  
-  if (ackData->dataLength < 0x41) {
-    RVar1 = RFHAL_AutoAckLoadBuffer(ackData);
-    return RVar1;
-  }
-  return RAIL_STATUS_INVALID_PARAMETER;
+  if (ackData->dataLength < 0x41) return RFHAL_AutoAckLoadBuffer(ackData);
+  else return RAIL_STATUS_INVALID_PARAMETER;
 }
 
 
@@ -88,14 +78,11 @@ RAIL_Status_t RAIL_AutoAckLoadBuffer(RAIL_AutoAckData_t *ackData)
 void RAIL_AutoAckRxPause(void)
 
 {
-  uint uVar1;
   CORE_irqState_t irqState;
   
   irqState = CORE_EnterCritical();
-  uVar1 = (SEQ->REG000);
-  write_volatile_4(SEQ->REG000,uVar1 | 8);
+  SEQ->REG000 |= 8;
   CORE_ExitCritical(irqState);
-  return;
 }
 
 /* void RAIL_AutoAckRxResume(void)
@@ -108,14 +95,11 @@ void RAIL_AutoAckRxPause(void)
 void RAIL_AutoAckRxResume(void)
 
 {
-  uint uVar1;
   CORE_irqState_t irqState;
   
   irqState = CORE_EnterCritical();
-  uVar1 = (SEQ->REG000);
-  write_volatile_4(SEQ->REG000,uVar1 & 0xfffffff7);
+  SEQ->REG000 &= 0xfffffff7;
   CORE_ExitCritical(irqState);
-  return;
 }
 
 /* void RAIL_AutoAckRxIsPaused(void)
@@ -128,10 +112,7 @@ void RAIL_AutoAckRxResume(void)
 bool RAIL_AutoAckRxIsPaused(void)
 
 {
-  uint uVar1;
-  
-  uVar1 = (SEQ->REG000);
-  return SUB41((uVar1 << 0x1c) >> 0x1f,0);
+  return SUB41((SEQ->REG000 << 0x1c) >> 0x1f,0);
 }
 
 /* void RAIL_AutoAckTxPause(void)
@@ -144,14 +125,11 @@ bool RAIL_AutoAckRxIsPaused(void)
 void RAIL_AutoAckTxPause(void)
 
 {
-  uint uVar1;
   CORE_irqState_t irqState;
   
   irqState = CORE_EnterCritical();
-  uVar1 = (SEQ->REG000);
-  write_volatile_4(SEQ->REG000,uVar1 | 0x100);
+  SEQ->REG000 |= 0x100;
   CORE_ExitCritical(irqState);
-  return;
 }
 
 /* void RAIL_AutoAckTxResume(void)
@@ -164,14 +142,11 @@ void RAIL_AutoAckTxPause(void)
 void RAIL_AutoAckTxResume(void)
 
 {
-  uint uVar1;
   CORE_irqState_t irqState;
   
   irqState = CORE_EnterCritical();
-  uVar1 = (SEQ->REG000);
-  write_volatile_4(SEQ->REG000,uVar1 & 0xfffffeff);
+  SEQ->REG000 &= 0xfffffeff;
   CORE_ExitCritical(irqState);
-  return;
 }
 
 /* void RAIL_AutoAckTxIsPaused(void)
@@ -184,10 +159,7 @@ void RAIL_AutoAckTxResume(void)
 bool RAIL_AutoAckTxIsPaused(void)
 
 {
-  uint uVar1;
-  
-  uVar1 = (SEQ->REG000);
-  return SUB41((uVar1 << 0x17) >> 0x1f,0);
+  return SUB41((SEQ->REG000 << 0x17) >> 0x1f,0);
 }
 
 /* void RAIL_AutoAckUseTxBuffer(void)
@@ -201,23 +173,18 @@ bool RAIL_AutoAckUseTxBuffer(void)
 
 {
   CORE_irqState_t irqState;
-  uint uVar1;
   bool bVar2;
   
   irqState = CORE_EnterCritical();
-  uVar1 = GENERIC_PHY_CanModifyAck();
-  if (uVar1 != 0) {
+  if (GENERIC_PHY_CanModifyAck() != false) 
+  {
     BUS_RegMaskedSet(&RAC->SR0,2);
-    uVar1 = (RAC->SR0);
-    bVar2 = -1 < (int)(uVar1 << 0xe);
-    if (bVar2) {
-      BUS_RegMaskedSet(&RAC->SR2,0x40);
-    }
-    uVar1 = (uint)bVar2;
+    bVar2 = -1 < (int)(RAC->SR0 << 0xe);
+    if (bVar2) BUS_RegMaskedSet(&RAC->SR2,0x40);
     BUS_RegMaskedClear(&RAC->SR0,2);
   }
   CORE_ExitCritical(irqState);
-  return SUB41(uVar1,0);
+  return bVar2;
 }
 
 /* void RAIL_AutoAckCancelAck(void)
@@ -231,30 +198,24 @@ bool RAIL_AutoAckCancelAck(void)
 
 {
   CORE_irqState_t irqState;
-  uint uVar1;
   bool bVar2;
   
   irqState = CORE_EnterCritical();
-  uVar1 = GENERIC_PHY_CanModifyAck();
-  if (uVar1 != 0) {
+  if (GENERIC_PHY_CanModifyAck() != false) 
+  {
     BUS_RegMaskedSet(&RAC->SR0,2);
-    uVar1 = (RAC->SR0);
-    bVar2 = -1 < (int)(uVar1 << 0xe);
-    if (bVar2) {
-      BUS_RegMaskedSet(&RAC->SR2,0x20);
-    }
-    uVar1 = (uint)bVar2;
+    bVar2 = -1 < (int)(RAC->SR0 << 0xe);
+    if (bVar2) BUS_RegMaskedSet(&RAC->SR2,0x20);
     BUS_RegMaskedClear(&RAC->SR0,2);
   }
   CORE_ExitCritical(irqState);
-  return SUB41(uVar1,0);
+  return bVar2;
 }
 
 void RAIL_AutoAckWaitingForAck(void)
 
 {
   RFHAL_AutoAckWaitingForAck();
-  return;
 }
 
 

@@ -11,7 +11,6 @@ void RAILINT_CalibrationEnable(RAIL_CalMask_t cbtoenable)
   RAIL_CalPend = 0;
   RAIL_CalEnable = cbtoenable;
   CORE_ExitCritical(irqState);
-  return;
 }
 
 
@@ -19,17 +18,13 @@ void RAILINT_CalibrationPend(RAIL_CalMask_t calpend)
 
 {
   CORE_irqState_t irqState;
-  uint uVar1;
+  RAIL_CalMask_t cal;
   
   irqState = CORE_EnterCritical();
-  uVar1 = calpend & RAIL_CalEnable;
-  RAIL_CalPend = RAIL_CalPend | uVar1;
+  cal = calpend & RAIL_CalEnable;
+  RAIL_CalPend = RAIL_CalPend | cal;
   CORE_ExitCritical(irqState);
-  if (uVar1 != 0) {
-    RAILCb_CalNeeded();
-    return;
-  }
-  return;
+  if (cal != 0) RAILCb_CalNeeded();
 }
 
 
@@ -38,13 +33,13 @@ RAIL_CalMask_t RAILINT_CalibrationClear(RAIL_CalMask_t caltoclear)
 
 {
   CORE_irqState_t irqState;
-  uint uVar1;
+  RAIL_CalMask_t cal;
   
   irqState = CORE_EnterCritical();
-  uVar1 = RAIL_CalPend & ~(caltoclear & RAIL_CalEnable);
-  RAIL_CalPend = uVar1;
+  cal = RAIL_CalPend & ~(caltoclear & RAIL_CalEnable);
+  RAIL_CalPend = cal;
   CORE_ExitCritical(irqState);
-  return uVar1;
+  return cal;
 }
 
 
@@ -60,13 +55,13 @@ RAIL_CalMask_t RAILINT_CalibrationEnableGet(void)
 RAIL_CalMask_t RAIL_CalPendingGet(void)
 
 {
-  RAIL_CalMask_t RVar1;
+  RAIL_CalMask_t cal;
   CORE_irqState_t irqState;
   
   irqState = CORE_EnterCritical();
-  RVar1 = RAIL_CalPend;
+  cal = RAIL_CalPend;
   CORE_ExitCritical(irqState);
-  return RVar1;
+  return cal;
 }
 
 
@@ -76,21 +71,12 @@ void RAIL_CalStart(RAIL_CalValues_t *calValues,RAIL_CalMask_t calForce,RAIL_CalM
 {
   int local_14;
   
-  if (calValues == (undefined4 *)0x0) {
-    local_14 = -1;
-  }
-  else {
-    local_14 = *calValues;
-  }
-  if (calForce == 0) {
-    calForce = RAIL_CalPendingGet();
-  }
+  if (calValues == (undefined4 *)0x0) local_14 = -1;
+  else local_14 = *calValues;
+  if (calForce == 0) calForce = RAIL_CalPendingGet();
   RAILINT_CalibrationClear(calForce);
   RFHAL_CalibrationRun(&local_14,calForce);
-  if ((calSave != 0) && (calValues != (undefined4 *)0x0)) {
-    *calValues = local_14;
-  }
-  return;
+  if ((calSave != 0) && (calValues != (undefined4 *)0x0)) *calValues = local_14;
 }
 
 
@@ -98,11 +84,11 @@ void RAIL_CalStart(RAIL_CalValues_t *calValues,RAIL_CalMask_t calForce,RAIL_CalM
 uint8_t RAIL_CalInit(RAIL_CalInit_t *railCalInit)
 
 {
-  uint8_t uVar1;
+  uint8_t res;
   
-  uVar1 = RFHAL_CalibrationInit(railCalInit);
+  res = RFHAL_CalibrationInit(railCalInit);
   RAILINT_CalibrationEnable(railCalInit->calEnable & 0x10001);
-  return uVar1;
+  return res;
 }
 
 

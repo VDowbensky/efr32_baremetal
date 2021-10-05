@@ -140,7 +140,7 @@ void RADIO_SetAndForgetWrite(void)
   RAC->IFPGACTRL = 0x87e6;
   RAC->LNAMIXCTRL1 = 0x880;
   RAC->VCOCTRL = 0xf00277a;
-	if((local_c.major & 0x01) && (local_c.minor < 2)) SYNTH->VCOGAIN = 0x28;
+	if((local_c.major == 0x01) && (local_c.minor < 2)) SYNTH->VCOGAIN = 0x28;
   SYNTH->CTRL = 0xac3f;
   AGC->MANGAIN = 0x1800000;
   RAC->LNAMIXCTRL = 0;

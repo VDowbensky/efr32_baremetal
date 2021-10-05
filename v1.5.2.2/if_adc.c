@@ -9,29 +9,26 @@ void IF_ADC_Calibrate(void)
   int iVar2;
   uint uVar3;
   
-  write_volatile_4(Peripherals::RAC_SET.RFENCTRL,0x8050);
-  write_volatile_4(Peripherals::RAC_SET.IFADCCTRL,0x20000000);
-  write_volatile_4(Peripherals::RAC.IFADCCAL,0x10);
+  BUS_RegMaskedSet(&RAC->RFENCTRL,0x8050);
+  BUS_RegMaskedSet(&RAC->IFADCCTRL,0x20000000);
+  RAC->IFADCCAL = 0x10;
   PHY_UTILS_DelayUs(100);
-  write_volatile_4(Peripherals::RAC.RCTUNE,0);
+  RAC->RCTUNE = 0;
   uVar3 = 0x200020;
   iVar2 = 6;
-  do {
-    write_volatile_4(Peripherals::RAC_SET.RCTUNE,uVar3);
+  do 
+  {
+    BUS_RegMaskedSet(&RAC->RCTUNE,uVar3);
     PHY_UTILS_DelayUs(100);
-    uVar1 = read_volatile_4(Peripherals::RAC.IFADCCAL);
-    if (-1 < (int)(uVar1 << 0x1a)) {
-      write_volatile_4(Peripherals::RAC_CLR.RCTUNE,uVar3);
-    }
+    if (-1 < (int)(RAC->IFADCCAL << 0x1a)) BUS_RegMaskedClear(&RAC->RCTUNE,uVar3);
     iVar2 = iVar2 + -1;
     uVar3 = uVar3 >> 1;
   } while (iVar2 != 0);
-  uVar3 = read_volatile_4(Peripherals::RAC.RCTUNE);
-  write_volatile_4(Peripherals::RAC.RCTUNE,uVar3 + 0x10004);
-  write_volatile_4(Peripherals::RAC.IFADCCAL,0);
-  write_volatile_4(Peripherals::RAC_CLR.IFADCCTRL,0x20000000);
-  write_volatile_4(Peripherals::RAC_CLR.RFENCTRL,0x8050);
-  return;
+  uVar3 = (RAC->RCTUNE);
+  RAC->RCTUNE = uVar3 + 0x10004;
+  RAC->IFADCCAL = 0;
+  BUS_RegMaskedClear(&RAC->IFADCCTRL,0x20000000);
+  BUS_RegMaskedClear(&RAC->RFENCTRL,0x8050);
 }
 
 

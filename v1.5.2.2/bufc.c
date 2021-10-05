@@ -5,26 +5,25 @@
 void BUFC_SetCallbacks(uint32_t *callbacks)
 
 {
-  uint uVar1;
+  uint32_t i;
   uint uVar2;
   
   uVar2 = 0;
   availableCallbacks = 0;
-  if (callbacks != (uint32_t *)0x0) {
-    uVar1 = 0;
-    do {
-      if (callbacks[uVar1] != 0) {
-        uVar2 = uVar2 | 1 << (uVar1 & 0xff);
-      }
-      uVar1 = uVar1 + 1;
+  if (callbacks != (uint32_t *)0x0) 
+  {
+    i = 0;
+    do 
+	{
+      if (callbacks[i] != 0) uVar2 = uVar2 | 1 << (i & 0xff);
+      i = i + 1;
       availableCallbacks = uVar2;
-    } while (uVar1 != 4);
+    } while (i != 4);
   }
   currentCallbacks = callbacks;
   _DAT_e000e100 = 0x80;
   _DAT_e000e180 = 0x80;
   _DAT_e000e280 = 0x80;
-  return;
 }
 
 
@@ -37,26 +36,17 @@ void BUFC_ConfigureCallbacks(uint32_t callbacks)
   
   enabledCallbacks = callbacks & availableCallbacks;
   uVar3 = 0x90e0a09;
-  if ((enabledCallbacks & 1) != 0) {
-    uVar3 = 0x90e0a0d;
-  }
-  if ((int)(enabledCallbacks << 0x1e) < 0) {
-    uVar3 = uVar3 | 1;
-  }
-  if ((int)(enabledCallbacks << 0x1d) < 0) {
-    uVar3 = uVar3 | 0x400;
-  }
+  if ((enabledCallbacks & 1) != 0) uVar3 = 0x90e0a0d;
+  if ((int)(enabledCallbacks << 0x1e) < 0) uVar3 = uVar3 | 1;
+  if ((int)(enabledCallbacks << 0x1d) < 0) uVar3 = uVar3 | 0x400;
   uVar1 = (BUFC->IEN);
-  if ((int)(enabledCallbacks << 0x1c) < 0) {
-    uVar3 = uVar3 | 0x200;
-  }
+  if ((int)(enabledCallbacks << 0x1c) < 0) uVar3 = uVar3 | 0x200;
   uVar2 = uVar1 & (uVar3 ^ uVar1);
   BUS_RegMaskedClear(&BUFC->IEN,uVar2);
-  write_volatile_4(BUFC->IFC,uVar2);
+  BUFC->IFC = uVar2;
   uVar3 = uVar3 & (uVar3 ^ uVar1);
-  write_volatile_4(BUFC->IFC,uVar3);
+  BUFC->IFC = uVar3;
   BUS_RegMaskedSet(&BUFC->IEN,uVar3);
-  return;
 }
 
 
@@ -68,11 +58,10 @@ void BUFC_WriteBuffer(uint32_t buf,uint8_t *src,uint16_t len)
   uint uVar2;
   
   uVar1 = (uint)len;
-  if (uVar1 == 0) {
-    return;
-  }
+  if (uVar1 == 0) return;
   uVar2 = uVar1 + 7 >> 3;
-  switch(uVar1 & 7) {
+  switch(uVar1 & 7) 
+  {
   case 1:
     break;
   case 2:
@@ -93,9 +82,7 @@ void BUFC_WriteBuffer(uint32_t buf,uint8_t *src,uint16_t len)
 switchD_0001015e_caseD_1:
   (&BUFC->BUF0_WRITEDATA)[buf * 0xc] = (uint)*src;
   uVar2 = uVar2 - 1;
-  if (uVar2 == 0) {
-    return;
-  }
+  if (uVar2 == 0) return;
   src = src + 1;
 switchD_0001015e_caseD_7:
   (&BUFC->BUF0_WRITEDATA)[buf * 0xc] = (uint)*src;
@@ -131,11 +118,10 @@ void BUFC_ReadBuffer(uint32_t buf,uint8_t *dest,uint16_t len)
   uint uVar2;
   
   uVar1 = (uint)len;
-  if (uVar1 == 0) {
-    return;
-  }
+  if (uVar1 == 0) return;
   uVar2 = uVar1 + 7 >> 3;
-  switch(uVar1 & 7) {
+  switch(uVar1 & 7) 
+  {
   case 1:
     break;
   case 2:
@@ -156,9 +142,7 @@ void BUFC_ReadBuffer(uint32_t buf,uint8_t *dest,uint16_t len)
 switchD_000101c4_caseD_1:
   *dest = (uint8_t)(&BUFC->BUF0_READDATA)[buf * 0xc];
   uVar2 = uVar2 - 1;
-  if (uVar2 == 0) {
-    return;
-  }
+  if (uVar2 == 0) return;
   dest = dest + 1;
 switchD_000101c4_caseD_7:
   *dest = (uint8_t)(&BUFC->BUF0_READDATA)[buf * 0xc];
@@ -189,7 +173,7 @@ switchD_000101c4_caseD_2:
 uint16_t BUFC_GetSpaceAvailable(uint32_t buf)
 
 {
-  return 0x200 - (ushort)(((&BUFC->BUF0_STATUS)[buf * 0xc] << 0x13) >> 0x13);
+  return 0x200 - (uint16_t)(((&BUFC->BUF0_STATUS)[buf * 0xc] << 0x13) >> 0x13);
 }
 
 
@@ -209,12 +193,11 @@ void BUFC_TxAckBufferSet(uint8_t *src,uint16_t len)
 {
   CORE_irqState_t irqState;
   
-  write_volatile_4(BUFC->BUF3_CMD,1);
+  BUFC->BUF3_CMD = 1;
   irqState = CORE_EnterCritical();
   BUFC_WriteBuffer(3,src,len);
   CORE_ExitCritical(irqState);
-  write_volatile_4(BUFC->BUF3_CMD,4);
-  return;
+  BUFC->BUF3_CMD = 4;
 }
 
 
@@ -222,8 +205,7 @@ void BUFC_TxAckBufferSet(uint8_t *src,uint16_t len)
 void BUFC_TxAckBufferReset(void)
 
 {
-  BUFC_TxAckBufferSet((uint8_t *)0x0,0);
-  return;
+  BUFC_TxAckBufferSet(NULL,0);
 }
 
 
@@ -231,10 +213,7 @@ void BUFC_TxAckBufferReset(void)
 uint16_t BUFC_TxAckBufferBytesAvailable(void)
 
 {
-  uint uVar1;
-  
-  uVar1 = read_volatile_4(Peripherals::BUFC.BUF3_STATUS);
-  return uVar1 & 0x1fff;
+  return BUFC->BUF3_STATUS & 0x1fff;
 }
 
 
@@ -242,17 +221,14 @@ uint16_t BUFC_TxAckBufferBytesAvailable(void)
 void BUFC_RxBufferSet(int param_1)
 
 {
-  if (param_1 != 0) {
-    BUS_RegMaskedSet(&BUFC->IEN,0x400);
-  }
+  if (param_1 != 0) BUS_RegMaskedSet(&BUFC->IEN,0x400);
   bufcRxStreaming._0_2_ = 0;
   bufcRxStreaming._4_4_ = param_1;
-  return;
 }
 
 
 
-undefined4 BUFC_RxBufferGet(void)
+uint32_t BUFC_RxBufferGet(void)
 
 {
   return bufcRxStreaming._4_4_;
@@ -265,11 +241,10 @@ void BUFC_RxBufferReset(void)
 {
   CORE_EnterCritical();
   bufcRxStreaming._0_2_ = 0;
-  write_volatile_4(Peripherals::BUFC.BUF1_CMD,1);
-  write_volatile_4(Peripherals::BUFC.BUF2_CMD,1);
-  write_volatile_4(Peripherals::FRC.IFC,0x10);
+  BUFC->BUF1_CMD = 1;
+  BUFC->BUF2_CMD = 1;
+  FRC->IFC = 0x10;
   CORE_ExitCritical();
-  return;
 }
 
 
@@ -277,18 +252,18 @@ void BUFC_RxBufferReset(void)
 void BUFC_Init(void)
 
 {
-  write_volatile_4(BUFC->BUF1_CTRL,3);
-  write_volatile_4(BUFC->BUF1_ADDR,(uint)BUFC_RxBuffer);
-  write_volatile_4(BUFC->BUF1_THRESHOLDCTRL,0xfff);
-  write_volatile_4(BUFC->BUF0_CTRL,3);
-  write_volatile_4(BUFC->BUF0_ADDR,(uint)&BUFC_TxBuffer);
-  write_volatile_4(BUFC->BUF0_THRESHOLDCTRL,0xfff);
-  write_volatile_4(BUFC->BUF2_CTRL,0);
-  write_volatile_4(BUFC->BUF2_ADDR,(uint)&BUFC_RxLengthBuffer);
-  write_volatile_4(BUFC->BUF2_THRESHOLDCTR,3);
-  write_volatile_4(BUFC->BUF3_CTRL,0);
-  write_volatile_4(BUFC->BUF3_ADDR,(uint)&BUFC_TxAckBuffer);
-  write_volatile_4(BUFC->BUF3_THRESHOLDCTRL,0x2000);
+  BUFC->BUF1_CTRL = 3;
+  BUFC->BUF1_ADDR = BUFC_RxBuffer;
+  BUFC->BUF1_THRESHOLDCTRL = 0xfff;
+  BUFC->BUF0_CTRL = 3;
+  BUFC->BUF0_ADDR = BUFC_TxBuffer;
+  BUFC->BUF0_THRESHOLDCTRL,0xfff;
+  BUFC->BUF2_CTRL = 0;
+  BUFC->BUF2_ADDR = BUFC_RxLengthBuffer;
+  BUFC->BUF2_THRESHOLDCTR = 3;
+  BUFC->BUF3_CTRL = 0;
+  BUFC->BUF3_ADDR = BUFC_TxAckBuffer;
+  BUFC->BUF3_THRESHOLDCTRL = 0x2000;
   RADIO_FrameControlDescrBufferIdSet(0,0);
   RADIO_FrameControlDescrBufferIdSet(1,0);
   RADIO_FrameControlDescrBufferIdSet(2,1);
@@ -298,16 +273,13 @@ void BUFC_Init(void)
   RADIO_RegisterIrqCallback(3,0x10375);
   _DAT_e000e280 = 0x80;
   _DAT_e000e100 = 0x80;
-  write_volatile_4(BUFC->BUF0_CMD,1);
-  write_volatile_4(BUFC->BUF3_CMD,1);
+  BUFC->BUF0_CMD = 1;
+  BUFC->BUF3_CMD = 1;
   BUFC_RxBufferReset();
   BUFC_ConfigureCallbacks(0);
-  return;
 }
 
 
-
-// WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
 void BUFC_IrqHandler(void)
 
@@ -315,10 +287,10 @@ void BUFC_IrqHandler(void)
   uint uVar1;
   uint uVar2;
   
-  uVar1 = read_volatile_4(Peripherals::BUFC.IF);
-  uVar2 = read_volatile_4(Peripherals::BUFC.IEN);
+  uVar1 = read_volatile_4(BUFC->IF);
+  uVar2 = read_volatile_4(BUFC->IEN);
   uVar2 = uVar2 & uVar1;
-  write_volatile_4(Peripherals::BUFC.IFC,uVar2);
+  write_volatile_4(BUFC->IFC,uVar2);
   if (((int)(uVar2 << 0x1d) < 0) && ((int)((uint)(byte)enabledCallbacks << 0x1f) < 0)) {
     if (_DAT_430204b4 == 0) {
       write_volatile_4(Peripherals::BUFC_SET.BUF0_THRESHOLDCTRL,0x2000);
@@ -333,11 +305,11 @@ void BUFC_IrqHandler(void)
   }
   if ((int)(uVar2 << 0xd) < 0) {
     if (_DAT_430210b4 == 0) {
-      write_volatile_4(Peripherals::FRC.IFS,0x10);
+      write_volatile_4(FRC->IFS,0x10);
       write_volatile_4(Peripherals::FRC_SET.IEN,0x10);
       if (bufcPendRxFrameError != '\0') {
         bufcPendRxFrameError = '\0';
-        write_volatile_4(Peripherals::FRC.IFS,0x40);
+        write_volatile_4(FRC->IFS,0x40);
       }
       write_volatile_4(Peripherals::BUFC_SET.BUF2_THRESHOLDCTR,0x2000);
     }
@@ -354,7 +326,7 @@ void BUFC_IrqHandler(void)
   }
   if ((uVar2 & 9) != 0) {
     write_volatile_4(Peripherals::RAC.CMD,0x20);
-    write_volatile_4(Peripherals::BUFC.BUF0_CMD,1);
+    write_volatile_4(BUFC->BUF0_CMD,1);
     if (((int)(uVar2 << 0x1f) < 0) && ((int)((uint)(byte)enabledCallbacks << 0x1e) < 0)) {
       (*currentCallbacks[1])();
     }
@@ -372,16 +344,12 @@ void BUFC_IrqHandler(void)
 uint16_t BUFC_RxBufferReadBytes(uint8_t *dest,uint16_t len)
 
 {
-  uint16_t uVar1;
-  
-  uVar1 = 1;
-  BUFC_ReadBuffer(1,dest,len);
-  return uVar1;
+  return BUFC_ReadBuffer(1,dest,len);
 }
 
 
 
-uint BUFC_RxBufferDropBytes(uint param_1,undefined4 param_2)
+uint16_t BUFC_RxBufferDropBytes(uint param_1,undefined4 param_2)
 
 {
   uint16_t uVar1;
@@ -389,7 +357,8 @@ uint BUFC_RxBufferDropBytes(uint param_1,undefined4 param_2)
   undefined4 uStack12;
   
   uStack12 = param_2;
-  for (uVar2 = param_1; uVar2 != 0; uVar2 = uVar2 - 1 & 0xffff) {
+  for (uVar2 = param_1; uVar2 != 0; uVar2 = uVar2 - 1 & 0xffff) 
+  {
     uVar1 = BUFC_RxBufferReadBytes((uint8_t *)((int)&uStack12 + 3),1);
     param_1 = (uint)uVar1;
   }
@@ -401,10 +370,7 @@ uint BUFC_RxBufferDropBytes(uint param_1,undefined4 param_2)
 bool BUFC_RxBufferPacketAvailable(void)
 
 {
-  uint uVar1;
-  
-  uVar1 = (BUFC->BUF2_STATUS);
-  return 3 < (uVar1 & 0x1fff);
+  return 3 < (BUFC->BUF2_STATUS & 0x1fff);
 }
 
 
@@ -412,10 +378,7 @@ bool BUFC_RxBufferPacketAvailable(void)
 uint16_t BUFC_RxBufferBytesAvailable(void)
 
 {
-  uint uVar1;
-  
-  uVar1 = (BUFC->BUF1_STATUS);
-  return (uint16_t)((uVar1 << 0x13) >> 0x13);
+  return (uint16_t)((BUFC->BUF1_STATUS << 0x13) >> 0x13);
 }
 
 
@@ -423,10 +386,7 @@ uint16_t BUFC_RxBufferBytesAvailable(void)
 uint8_t BUFC_RxBufferReadByte(void)
 
 {
-  uint uVar1;
-  
-  uVar1 = read_volatile_4(Peripherals::BUFC.BUF1_READDATA);
-  return uVar1 & 0xff;
+  return BUFC->BUF1_READDATA & 0xff;
 }
 
 
@@ -434,10 +394,7 @@ uint8_t BUFC_RxBufferReadByte(void)
 uint16_t BUFC_RxLengthBufferBytesAvailable(void)
 
 {
-  uint uVar1;
-  
-  uVar1 = read_volatile_4(Peripherals::BUFC.BUF2_STATUS);
-  return uVar1 & 0x1fff;
+  return BUFC->BUF2_STATUS & 0x1fff;
 }
 
 
@@ -445,10 +402,8 @@ uint16_t BUFC_RxLengthBufferBytesAvailable(void)
 void BUFC_RxLengthReadNext(uint16_t *param_1)
 
 {
-  int iVar1;
-  
-  iVar1 = BUFC_RxBufferPacketAvailable();
-  if (iVar1 == 0) {
+  if (BUFC_RxBufferPacketAvailable() == 0) 
+  {
     *(undefined *)(param_1 + 1) = 0;
     *(undefined *)param_1 = 0xff;
     *(undefined *)((int)param_1 + 1) = 0xff;
@@ -456,12 +411,9 @@ void BUFC_RxLengthReadNext(uint16_t *param_1)
   }
   BUFC_ReadBuffer(2,param_1,4);
   *param_1 = (ushort)(((uint)*param_1 << 0x17) >> 0x17);
-  return;
 }
 
 
-
-// WARNING: Could not reconcile some variable overlaps
 
 uint BUFC_RxBufferFinalizeAndGet(int *param_1,uint param_2)
 
@@ -474,7 +426,8 @@ uint BUFC_RxBufferFinalizeAndGet(int *param_1,uint param_2)
   local_14 = param_2;
   BUFC_RxLengthReadNext(&local_14);
   uVar1 = local_14 & 0xffff;
-  if (uVar1 != 0xffff) {
+  if (uVar1 != 0xffff) 
+  {
     BUFC_ReadBuffer(1,bufcRxStreaming._4_4_ + (uint)(ushort)bufcRxStreaming,
                     uVar1 - (ushort)bufcRxStreaming,0xffff,piVar2);
     bufcRxStreaming._0_2_ = (ushort)local_14;
