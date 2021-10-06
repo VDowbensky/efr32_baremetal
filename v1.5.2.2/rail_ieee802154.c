@@ -5,11 +5,8 @@
 RAIL_Status_t RAIL_IEEE802154_2p4GHzRadioConfig(void)
 
 {
-  RAIL_Status_t RVar1;
-  
   RAIL_ChannelConfig((RAIL_ChannelConfig_t *)&channels);
-  RVar1 = RFHAL_IEEE802154RadioConfig2p4GHz();
-  return RVar1;
+  return RFHAL_IEEE802154RadioConfig2p4GHz();
 }
 
 
@@ -24,7 +21,8 @@ int RAIL_IEEE802154_Deinit(undefined4 param_1,undefined4 param_2)
   local_10 = param_1;
   uStack12 = param_2;
   iVar1 = RAIL_RfStateGet();
-  if (iVar1 == 0) {
+  if (iVar1 == 0) 
+  {
     RAIL_AddressFilterDisable();
     RAIL_AddressFilterReset();
     RAIL_AutoAckDisable();
@@ -33,9 +31,7 @@ int RAIL_IEEE802154_Deinit(undefined4 param_1,undefined4 param_2)
     RAIL_SetStateTiming(&local_10,0x640064,&DAT_00010160,&stack0xfffffff8);
     RFHAL_IEEE802154Disable();
   }
-  else {
-    iVar1 = 2;
-  }
+  else iVar1 = 2;
   return iVar1;
 }
 
@@ -45,7 +41,6 @@ void RAIL_IEEE802154_IsEnabled(void)
 
 {
   RFHAL_IEEE802154IsEnabled();
-  return;
 }
 
 
@@ -57,7 +52,8 @@ bool RAIL_IEEE802154_SetAddresses(RAIL_IEEE802154_AddrConfig_t *addresses)
   bool bVar2;
   bool bVar3;
   
-  if (addresses != (RAIL_IEEE802154_AddrConfig_t *)0x0) {
+  if (addresses != (RAIL_IEEE802154_AddrConfig_t *)0x0) 
+  {
     bVar1 = RFHAL_IEEE802154SetPanId(addresses->panId);
     bVar2 = RFHAL_IEEE802154SetShortAddress(addresses->shortAddr);
     bVar3 = RFHAL_IEEE802154SetLongAddress(addresses->longAddr);
@@ -77,15 +73,13 @@ bool RAIL_IEEE802154_SetAddresses(RAIL_IEEE802154_AddrConfig_t *addresses)
 bool RAIL_IEEE802154_SetPanId(uint16_t panId)
 
 {
-  undefined uVar1;
   uint in_r1;
   undefined4 in_r2;
   undefined4 in_r3;
   uint auStack12 [3];
   
   auStack12[0] = in_r1 & 0xffff0000 | (uint)panId;
-  uVar1 = GENERIC_PHY_SetIeeePanId(1,auStack12,in_r2,in_r3,panId);
-  return (bool)uVar1;
+  return GENERIC_PHY_SetIeeePanId(1,auStack12,in_r2,in_r3,panId);
 }
 
 /* void RAIL_IEEE802154_SetShortAddress(void)
@@ -98,10 +92,7 @@ bool RAIL_IEEE802154_SetPanId(uint16_t panId)
 bool RAIL_IEEE802154_SetShortAddress(uint16_t shortAddr)
 
 {
-  bool bVar1;
-  
-  bVar1 = GENERIC_PHY_SetIeeeShortAddress(1);
-  return bVar1;
+  return GENERIC_PHY_SetIeeeShortAddress(1);
 }
 
 /* void RAIL_IEEE802154_SetLongAddress(void)
@@ -114,24 +105,14 @@ bool RAIL_IEEE802154_SetShortAddress(uint16_t shortAddr)
 bool RAIL_IEEE802154_SetLongAddress(uint8_t *longAddr)
 
 {
-  bool bVar1;
-  
-  bVar1 = GENERIC_PHY_SetIeeeLongAddress(1,longAddr);
-  return bVar1;
+  return GENERIC_PHY_SetIeeeLongAddress(1,longAddr);
 }
 
 RAIL_Status_t RAIL_IEEE802154_SetPanCoordinator(bool isPanCoordinator)
 
 {
-  bool bVar1;
-  RAIL_Status_t RVar2;
-  
-  bVar1 = RFHAL_IEEE802154IsEnabled();
-  if (bVar1 != false) {
-    RVar2 = RFHAL_IEEE802154SetPanCoordinator(isPanCoordinator);
-    return RVar2;
-  }
-  return RAIL_STATUS_INVALID_STATE;
+  if (RFHAL_IEEE802154IsEnabled() != false) return RFHAL_IEEE802154SetPanCoordinator(isPanCoordinator);
+  else return RAIL_STATUS_INVALID_STATE;
 }
 
 
@@ -140,15 +121,8 @@ RAIL_Status_t RAIL_IEEE802154_SetPanCoordinator(bool isPanCoordinator)
 RAIL_Status_t RAIL_IEEE802154_SetPromiscuousMode(bool enable)
 
 {
-  bool bVar1;
-  RAIL_Status_t RVar2;
-  
-  bVar1 = RFHAL_IEEE802154IsEnabled();
-  if (bVar1 != false) {
-    RVar2 = RFHAL_IEEE802154SetPromiscuousMode(enable);
-    return RVar2;
-  }
-  return RAIL_STATUS_INVALID_STATE;
+  if (RFHAL_IEEE802154IsEnabled() != false) return RFHAL_IEEE802154SetPromiscuousMode(enable);
+  else return RAIL_STATUS_INVALID_STATE;
 }
 
 
@@ -156,15 +130,8 @@ RAIL_Status_t RAIL_IEEE802154_SetPromiscuousMode(bool enable)
 RAIL_Status_t RAIL_IEEE802154_AcceptFrames(uint8_t framesMask)
 
 {
-  bool bVar1;
-  RAIL_Status_t RVar2;
-  
-  bVar1 = RFHAL_IEEE802154IsEnabled();
-  if (bVar1 != false) {
-    RVar2 = RFHAL_IEEE802154AcceptFrames(framesMask);
-    return RVar2;
-  }
-  return RAIL_STATUS_INVALID_STATE;
+  if (RFHAL_IEEE802154IsEnabled() != false) return RFHAL_IEEE802154AcceptFrames(framesMask);
+  else return RAIL_STATUS_INVALID_STATE;
 }
 
 
@@ -191,9 +158,7 @@ RAIL_Status_t RAIL_IEEE802154_Init(RAIL_IEEE802154_Config_t *config)
   local_28.turnaroundTime = config->turnaroundTime;
   local_28.ackTimeout = config->ackTimeout;
   RVar1 = RAIL_AutoAckConfig(&local_28);
-  if (RVar1 == RAIL_STATUS_NO_ERROR) {
-    RVar1 = RFHAL_IEEE802154LoadAck();
-  }
+  if (RVar1 == RAIL_STATUS_NO_ERROR) RVar1 = RFHAL_IEEE802154LoadAck();
   RAIL_AddressFilterReset();
   local_2c[0] = 0x802;
   local_20.numFields = '\x02';
@@ -203,9 +168,7 @@ RAIL_Status_t RAIL_IEEE802154_Init(RAIL_IEEE802154_Config_t *config)
   local_20.matchTable = 0;
   bVar2 = RAIL_AddressFilterConfig(&local_20);
   iVar3 = RFHAL_IEEE802154SetBroadcastAddresses();
-  if ((iVar3 == 0) || (bVar2 == false)) {
-    RVar1 = RAIL_STATUS_INVALID_PARAMETER;
-  }
+  if ((iVar3 == 0) || (bVar2 == false)) RVar1 = RAIL_STATUS_INVALID_PARAMETER;
   RAIL_AddressFilterEnable();
   RAIL_IEEE802154_SetAddresses(config->addresses);
   return RVar1;
@@ -229,10 +192,12 @@ RAIL_Status_t RAIL_IEEE802154_SetFramePending(void)
   
   iVar2 = GENERIC_PHY_CanModifyAck();
   uVar3 = 2;
-  if (iVar2 != 0) {
+  if (iVar2 != 0) 
+  {
     BUS_RegMaskedSet(&RAC->SR0,2);
     uVar1 = (RAC->SR0);
-    if ((uVar1 & 0x20000) == 0) {
+    if ((uVar1 & 0x20000) == 0) 
+	{
       BUS_RegMaskedSet(&RAC->SR2,0x10);
       uVar3 = uVar1 & 0x20000;
     }
