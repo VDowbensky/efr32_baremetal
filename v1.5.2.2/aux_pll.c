@@ -31,17 +31,11 @@ void AUXPLL_Stop(void)
 
 
 
-undefined AUXPLL_ConvertAuxLoDivToRegVal(int param_1)
+uint8_t AUXPLL_ConvertAuxLoDivToRegVal(int auxlodiv)
 
 {
-  undefined uVar1;
-  
-  if (param_1 - 2U < 0x17) 
-  {
-    uVar1 = *(undefined *)(param_1 + 0x101b8);
-  }
-  else uVar1 = 0;
-  return uVar1;
+  if (auxlodiv - 2U < 0x17) return  *(uint8_t *)(auxlodiv + 0x101b8);
+  else return 0;
 }
 
 /* undefined AUXPLL_ConvertAuxLoDivToRegVal(int param_1)
@@ -83,8 +77,8 @@ void AUXPLL_Configure(uint param_1,undefined4 param_2,int param_3,int param_4)
   {
     SYNTH->CMD = 0x80;
     SYNTH->CMD = 0x100;
-	while ((int)(SYNTH->STATUS << 0x14) < 0);
-  } while ((int)(SYNTH->STATUS << 0x11) < 0);
+	while (SYNTH->STATUS & 0x800);
+  } while (SYNTH->STATUS & 0x4000);
   BUS_RegMaskedSet(&RAC->AUXCTRL,8);
   BUS_RegMaskedClear(&SYNTH->AUXVCDACCTRL,0x10);
   SYNTH->CMD = 0x40;

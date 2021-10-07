@@ -7,71 +7,52 @@ void GENERIC_PHY_RAC_IRQCallback(void)
   
   uVar1 = (RAC->IF);
   uVar2 = (RAC->IEN);
-  uVar2 = uVar2 & uVar1;
-  write_volatile_4(RAC->IFC,uVar2);
-  if ((int)(uVar2 << 0x1f) < 0) 
+  flags = uVar2 & uVar1;
+  RAC->IFC = flags;
+  if ((int)(flags << 0x1f) < 0) (**(code **)(currentCallbacks + 0x3c))();
   {
-    (**(code **)(currentCallbacks + 0x3c))();
+    
   }
-  if ((int)(uVar2 << 0x1d) < 0) 
+  if ((int)(flags << 0x1d) < 0) (**(code **)(currentCallbacks + 0x38))();
   {
-    (**(code **)(currentCallbacks + 0x38))();
+    
   }
-  if ((int)(uVar2 << 6) < 0) 
+  if ((int)(flags << 6) < 0) 
   {
-    if ((int)((uint)DAT_20003136 << 0x1f) < 0) {
-      (**(code **)(currentCallbacks + 0x40))();
-    }
+    if ((int)((uint)DAT_20003136 << 0x1f) < 0) (**(code **)(currentCallbacks + 0x40))();
     PA_PeakDetectorHighRun();
   }
-  if ((int)(uVar2 << 5) < 0) 
+  if ((int)(flags << 5) < 0) 
   {
-    if ((int)((uint)DAT_20003136 << 0x1e) < 0) 
-	{
-      (**(code **)(currentCallbacks + 0x44))();
-    }
+    if ((int)((uint)DAT_20003136 << 0x1e) < 0) (**(code **)(currentCallbacks + 0x44))();
     PA_PeakDetectorLowRun();
   }
-  if ((int)(uVar2 << 4) < 0) 
+  if ((int)(flags << 4) < 0) 
   {
-    if ((int)((uint)DAT_20003136 << 0x1d) < 0) 
-	{
-      (**(code **)(currentCallbacks + 0x48))();
-    }
+    if ((int)((uint)DAT_20003136 << 0x1d) < 0) (**(code **)(currentCallbacks + 0x48))();
     PA_BatHighRun();
   }
-  uVar1 = uVar2 & 0xff0000;
-  if (uVar1 != 0) {
-    if ((uVar2 & 0x40000) != 0) 
+  uVar1 = flags & 0xff0000;
+  if (uVar1 != 0) 
+  {
+    if ((flags & 0x40000) != 0) 
 	{
-      if ((int)((uint)DAT_20003136 << 0x1c) < 0) 
-	  {
-        (**(code **)(currentCallbacks + 0x4c))();
-      }
-      uVar1 = uVar2 & 0xfb0000;
+      if ((int)((uint)DAT_20003136 << 0x1c) < 0) (**(code **)(currentCallbacks + 0x4c))();
+      uVar1 = flags & 0xfb0000;
     }
     if ((int)(uVar1 << 0xf) < 0) 
 	{
-      if ((int)((uint)enabledCallbacks << 0x19) < 0) 
-	  {
-        (**(code **)(currentCallbacks + 0x18))(2);
-      }
+      if ((int)((uint)enabledCallbacks << 0x19) < 0) (**(code **)(currentCallbacks + 0x18))(2);
       uVar1 = uVar1 & 0xfffeffff;
     }
     if ((int)(uVar1 << 0xe) < 0) 
 	{
-      if ((int)((uint)enabledCallbacks << 0x1e) < 0) 
-	  {
-        (**(code **)(currentCallbacks + 4))(0x10);
-      }
+      if ((int)((uint)enabledCallbacks << 0x1e) < 0) (**(code **)(currentCallbacks + 4))(0x10);
       uVar1 = uVar1 & 0xfffdffff;
     }
     if ((int)(uVar1 << 0xb) < 0) 
 	{
-      if ((int)((uint)DAT_20003135 << 0x1e) < 0) 
-	  {
-        (**(code **)(currentCallbacks + 0x24))();
-      }
+      if ((int)((uint)DAT_20003135 << 0x1e) < 0) (**(code **)(currentCallbacks + 0x24))();
       uVar1 = uVar1 & 0xffefffff;
     }
     if ((*(code **)(currentCallbacks + 0x50) != FUN_00000000) && (uVar1 != 0)) 
@@ -94,21 +75,12 @@ void GENERIC_PHY_MODEM_IRQCallback(void)
   
   uVar1 = (MODEM->IF);
   uVar2 = (MODEM->IEN);
-  uVar2 = uVar2 & uVar1;
-  write_volatile_4(MODEM->IFC,uVar2);
-  if ((int)(uVar2 << 0x12) < 0) 
-  {
-    (**(code **)(currentCallbacks + 0x28))();
-  }
-  if ((int)(uVar2 << 0x16) < 0) 
-  {
-    (**(code **)(currentCallbacks + 0x2c))();
-  }
-  if ((int)(uVar2 << 0x15) < 0) 
-  {
-    (**(code **)(currentCallbacks + 0x30))();
-  }
-  if ((int)(uVar2 << 0x14) < 0) 
+  flags = uVar2 & uVar1;
+  MODEM->IFC = flags;
+  if ((int)(flags << 0x12) < 0) (**(code **)(currentCallbacks + 0x28))();
+  if ((int)(flags << 0x16) < 0) (**(code **)(currentCallbacks + 0x2c))();
+  if ((int)(flags << 0x15) < 0) (**(code **)(currentCallbacks + 0x30))();
+  if ((int)(flags << 0x14) < 0) 
   {
                     // WARNING: Could not recover jumptable at 0x00011988. Too many branches
                     // WARNING: Treating indirect jump as call
@@ -125,10 +97,10 @@ void GENERIC_PHY_AGC_IRQCallback(void)
   uint uVar1;
   uint uVar2;
   
-  uVar1 = (AGC->IF);
-  uVar2 = (AGC->IEN);
-  write_volatile_4(AGC->IFC,uVar1 & uVar2);
-  if ((int)((uVar1 & uVar2) << 0x1f) < 0) 
+  uVar1 = AGC->IF;
+  flags = AGC->IEN;
+  AGC->IFC,flags;
+  if ((int)((flags) << 0x1f) < 0) 
   {
                     // WARNING: Could not recover jumptable at 0x000119a8. Too many branches
                     // WARNING: Treating indirect jump as call
@@ -153,7 +125,7 @@ void RADIO_RACRxAbort(undefined4 param_1,undefined4 param_2,int param_3)
   if (bVar2) 
   {
     param_3 = 0x21000f64;
-    uVar1 = (SEQ->REG06C);
+    uVar1 = SEQ->REG06C;
     uVar1 = uVar1 & 0xffffff0f | 0xe0;
 	*(uint *)(param_3 + 8) = uVar1;
   }
@@ -175,27 +147,21 @@ void GENERIC_PHY_PROTIMER_IRQCallback(void)
   uint uVar5;
   
   iVar2 = PROTIMER_LBTIsActive();
-  uVar3 = (PROTIMER->IF);
-  uVar5 = (PROTIMER->IEN);
-  uVar5 = uVar5 & uVar3;
-  write_volatile_4(PROTIMER->IFC,uVar5);
-  if ((int)(uVar5 << 0x14) < 0) 
+  uVar3 = PROTIMER->IF;
+  uVar5 = PROTIMER->IEN;
+  flags = uVar5 & uVar3;
+  PROTIMER->IFC = flags;
+  if ((int)(flags << 0x14) < 0) PROTIMER_CCTimerStop(3);
+  if ((flags & 0x500000) == 0) 
   {
-    PROTIMER_CCTimerStop(3);
-  }
-  if ((uVar5 & 0x500000) == 0) 
-  {
-    if (-1 < (int)(uVar5 << 0x13)) goto LAB_00011a7e;
+    if (-1 < (int)(flags << 0x13)) goto LAB_00011a7e;
     if (iVar2 != 0) goto LAB_00011a18;
     PROTIMER_CCTimerStop(3);
     PROTIMER_CCTimerStop(4);
     PROTIMER_ClearRxEnable();
     irqState = CORE_EnterCritical();
-    if (scheduledRxHardEnd != '\0') 
-	{
-      RADIO_RACRxAbort();
-    }
-    uVar3 = (RAC->STATUS);
+    if (scheduledRxHardEnd != '\0') RADIO_RACRxAbort();
+    uVar3 = RAC->STATUS;
     if (((uVar3 << 4) >> 0x1c == 3) || (uVar1 = BUFC_RxBufferBytesAvailable(), uVar1 != 0)) 
 	{
       uVar1 = 1;
@@ -210,22 +176,13 @@ void GENERIC_PHY_PROTIMER_IRQCallback(void)
   {
 LAB_00011a18:
     pcVar4 = *(code **)(currentCallbacks + 0x58);
-    uVar3 = uVar5;
+    uVar3 = flags;
   }
   (*pcVar4)(uVar3);
 LAB_00011a7e:
-  if ((int)(uVar5 << 10) < 0) 
-  {
-    (**(code **)(currentCallbacks + 0x5c))();
-  }
-  if ((int)(uVar5 << 6) < 0) 
-  {
-    (**(code **)(currentCallbacks + 0x60))();
-  }
-  if (-1 < (int)(uVar5 << 0x15)) 
-  {
-    return;
-  }
+  if ((int)(flags << 10) < 0) (**(code **)(currentCallbacks + 0x5c))();
+  if ((int)(flags << 6) < 0) (**(code **)(currentCallbacks + 0x60))();
+  if (-1 < (int)(flags << 0x15)) return;
                     // WARNING: Could not recover jumptable at 0x00011aa4. Too many branches
                     // WARNING: Treating indirect jump as call
   (**(code **)(currentCallbacks + 100))();
@@ -317,23 +274,11 @@ void GENERIC_PHY_ConfigureCallbacks(uint32_t callbacks)
   
   _enabledCallbacks = callbacks & availableCallbacks;
   uVar3 = 0x161;
-  if ((_enabledCallbacks & 1) != 0) 
-  {
-    uVar3 = 0x163;
-  }
-  if ((int)(_enabledCallbacks << 0x1e) < 0) 
-  {
-    uVar3 = uVar3 | 0xc;
-  }
-  if ((int)(_enabledCallbacks << 0x18) < 0) 
-  {
-    uVar3 = uVar3 | 0x4000;
-  }
-  uVar2 = (FRC->IEN);
-  if ((int)(_enabledCallbacks << 0x17) < 0) 
-  {
-    uVar3 = uVar3 | 0x2000;
-  }
+  if ((_enabledCallbacks & 1) != 0) uVar3 = 0x163;
+  if ((int)(_enabledCallbacks << 0x1e) < 0) uVar3 = uVar3 | 0xc;
+  if ((int)(_enabledCallbacks << 0x18) < 0) uVar3 = uVar3 | 0x4000;
+  uVar2 = FRC->IEN;
+  if ((int)(_enabledCallbacks << 0x17) < 0) uVar3 = uVar3 | 0x2000;
   uVar1 = (uVar3 ^ uVar2) & 0xffffffef;
   uVar2 = uVar2 & uVar1;
   BUS_RegMaskedClear(&FRC->IEN,uVar2);
@@ -341,65 +286,27 @@ void GENERIC_PHY_ConfigureCallbacks(uint32_t callbacks)
   uVar3 = uVar3 & uVar1;
   FRC->IFC = uVar3;
   BUS_RegMaskedSet(&FRC->IEN,uVar3);
-  if ((_enabledCallbacks & 0x400) == 0) 
-  {
-    uVar3 = 0;
-  }
-  else {
-    uVar3 = 0x2000;
-  }
-  if ((int)(_enabledCallbacks << 0x14) < 0) 
-  {
-    uVar3 = uVar3 | 0x200;
-  }
-  if ((int)(_enabledCallbacks << 0x13) < 0) 
-  {
-    uVar3 = uVar3 | 0x400;
-  }
-  uVar2 = (MODEM->IEN);
-  if ((int)(_enabledCallbacks << 0x12) < 0) 
-  {
-    uVar3 = uVar3 | 0x800;
-  }
+  if ((_enabledCallbacks & 0x400) == 0) uVar3 = 0;
+  else uVar3 = 0x2000;
+  if ((int)(_enabledCallbacks << 0x14) < 0) uVar3 = uVar3 | 0x200;
+  if ((int)(_enabledCallbacks << 0x13) < 0) uVar3 = uVar3 | 0x400;
+  uVar2 = MODEM->IEN;
+  if ((int)(_enabledCallbacks << 0x12) < 0) uVar3 = uVar3 | 0x800;
   uVar1 = uVar2 & (uVar3 ^ uVar2);
   BUS_RegMaskedClear(&MODEM->IEN,uVar1);
   MODEM->IFC = uVar1;
   uVar3 = uVar3 & (uVar3 ^ uVar2);
   MODEM->IFC = uVar3;
   BUS_RegMaskedSet(&MODEM->IEN,uVar3);
-  if ((_enabledCallbacks & 0x4000) == 0) 
-  {
-    uVar3 = 0;
-  }
-  else 
-  {
-    uVar3 = 4;
-  }
-  if ((int)(_enabledCallbacks << 0x10) < 0) 
-  {
-    uVar3 = uVar3 | 1;
-  }
-  if ((int)(_enabledCallbacks << 0xc) < 0) 
-  {
-    uVar3 = uVar3 | 0x40000;
-  }
-  if ((int)(_enabledCallbacks << 0x1e) < 0) 
-  {
-    uVar3 = uVar3 | 0x20000;
-  }
-  if ((int)(_enabledCallbacks << 0x19) < 0) 
-  {
-    uVar3 = uVar3 | 0x10000;
-  }
-  if ((int)(_enabledCallbacks << 0x16) < 0) 
-  {
-    uVar3 = uVar3 | 0x100000;
-  }
-  uVar2 = (RAC->IEN);
-  if ((int)(_enabledCallbacks << 0xb) < 0) 
-  {
-    uVar3 = uVar3 | 0xe80000;
-  }
+  if ((_enabledCallbacks & 0x4000) == 0) uVar3 = 0;
+  else uVar3 = 4;
+  if ((int)(_enabledCallbacks << 0x10) < 0) uVar3 = uVar3 | 1;
+  if ((int)(_enabledCallbacks << 0xc) < 0) uVar3 = uVar3 | 0x40000;
+  if ((int)(_enabledCallbacks << 0x1e) < 0) uVar3 = uVar3 | 0x20000;
+  if ((int)(_enabledCallbacks << 0x19) < 0) uVar3 = uVar3 | 0x10000;
+  if ((int)(_enabledCallbacks << 0x16) < 0) uVar3 = uVar3 | 0x100000;
+  uVar2 = RAC->IEN;
+  if ((int)(_enabledCallbacks << 0xb) < 0) uVar3 = uVar3 | 0xe80000;
   uVar1 = uVar2 & (uVar3 ^ uVar2);
   BUS_RegMaskedClear(&RAC->IEN,uVar1);
   RAC->IFC = uVar1;
@@ -407,30 +314,18 @@ void GENERIC_PHY_ConfigureCallbacks(uint32_t callbacks)
   RAC->IFC = uVar3;
   BUS_RegMaskedSet(&RAC->IEN,uVar3);
   uVar3 = 0x501800;
-  if ((_enabledCallbacks & 0x400000) == 0) 
-  {
-    uVar3 = 0x1800;
-  }
-  if ((int)(_enabledCallbacks << 8) < 0) 
-  {
-    uVar3 = uVar3 | 0x200000;
-  }
-  if ((int)(_enabledCallbacks << 7) < 0) 
-  {
-    uVar3 = uVar3 | 0x2000000;
-  }
-  uVar2 = (PROTIMER->IEN);
-  if ((int)(_enabledCallbacks << 6) < 0) 
-  {
-    uVar3 = uVar3 | 0x400;
-  }
+  if ((_enabledCallbacks & 0x400000) == 0) uVar3 = 0x1800;
+  if ((int)(_enabledCallbacks << 8) < 0) uVar3 = uVar3 | 0x200000;
+  if ((int)(_enabledCallbacks << 7) < 0) uVar3 = uVar3 | 0x2000000;
+  uVar2 = PROTIMER->IEN;
+  if ((int)(_enabledCallbacks << 6) < 0) uVar3 = uVar3 | 0x400;
   uVar1 = uVar2 & (uVar3 ^ uVar2);
   BUS_RegMaskedClear(&PROTIMER->IEN,uVar1);
   PROTIMER->IFC = uVar1;
   uVar3 = uVar3 & (uVar3 ^ uVar2);
   PROTIMER->IFC = uVar3;
   BUS_RegMaskedSet(&PROTIMER->IEN,uVar3);
-  uVar3 = (AGC->IEN);
+  uVar3 = AGC->IEN;
   uVar2 = (_enabledCallbacks << 5) >> 0x1f;
   uVar1 = uVar2 ^ uVar3;
   uVar3 = uVar3 & uVar1;
@@ -458,10 +353,7 @@ void GENERIC_PHY_SetCallbacks(uint32_t *callbacks)
     uVar1 = 0;
     do 
 	{
-      if (callbacks[uVar1] != 0) 
-	  {
-        uVar2 = uVar2 | 1 << (uVar1 & 0xff);
-      }
+      if (callbacks[uVar1] != 0) uVar2 = uVar2 | 1 << (uVar1 & 0xff);
       uVar1 = uVar1 + 1;
       availableCallbacks = uVar2;
     } while (uVar1 != 0x1b);
@@ -477,15 +369,7 @@ void GENERIC_PHY_SetCallbacks(uint32_t *callbacks)
 void GENERIC_PHY_PacketTxCommon(void)
 
 {
-  uint uVar1;
-  uint16_t uVar2;
-  
-  uVar1 = (FRC->DFLCTRL);
-  if (((uVar1 & 7) == 0) && (uVar1 = (SEQ->REG060), uVar1 != 0)) 
-  {
-    uVar2 = BUFC_GetBytesAvailable(0);
-    FRC->WCNTCMP0 = uVar2 - 1;
-  }
+  if (((FRC->DFLCTRL & 7) == 0) && (SEQ->REG060 != 0)) FRC->WCNTCMP0 = BUFC_GetBytesAvailable(0) - 1;
   BUS_RegMaskedSet(&RAC->SR0,0x80);
   SEQ->REG000 &= 0xffffffbf;
 }
@@ -511,25 +395,16 @@ RAIL_Status_t GENERIC_PHY_PacketTx(void)
 
 
 
-undefined4
-GENERIC_PHY_SchedulePacketRx
-          (undefined4 param_1,int param_2,int param_3,int param_4,char param_5,undefined param_6)
+undefined4 GENERIC_PHY_SchedulePacketRx(undefined4 param_1,int param_2,int param_3,int param_4,char param_5,undefined param_6)
 
 {
-  bool bVar1;
   CORE_irqState_t irqState;
-  int iVar2;
-  uint32_t uVar3;
   uint32_t us;
-  uint uVar4;
-  uint64_t uVar5;
   
-  iVar2 = param_4;
   irqState = CORE_EnterCritical();
   if (param_2 != 2) 
   {
-    bVar1 = PROTIMER_CCTimerIsEnabled(3);
-    if (bVar1 != false) 
+    if (PROTIMER_CCTimerIsEnabled(3) != false) 
 	{
       CORE_ExitCritical(irqState);
       return 1;
@@ -537,18 +412,9 @@ GENERIC_PHY_SchedulePacketRx
     PROTIMER_ClearRxEnable();
     PROTIMER_ClearTxEnable();
     scheduledRxLoop = param_5;
-    uVar4 = (SEQ->REG000);
-    if (param_5 == '\0') 
-	{
-      uVar4 = uVar4 & 0xffffffbf;
-    }
-    else 
-	{
-      uVar4 = uVar4 | 0x40;
-    }
-    SEQ->REG000 = uVar4;
-    iVar2 = PROTIMER_ScheduleRxEnable(3,param_1,param_2,&Peripherals::SEQ,iVar2);
-    if (iVar2 == 0) 
+    if (param_5 == '\0') SEQ->REG000 &= 0xffffffbf; //uVar4 = uVar4 & 0xffffffbf;
+    else SEQ->REG000 |= 0x40; //uVar4 = uVar4 | 0x40;
+    if (PROTIMER_ScheduleRxEnable(3,param_1,param_2,&SEQ,param_4) == 0) 
 	{
       CORE_ExitCritical(irqState);
       return 2;
@@ -556,8 +422,7 @@ GENERIC_PHY_SchedulePacketRx
   }
   if (param_4 != 2) 
   {
-    bVar1 = PROTIMER_CCTimerIsEnabled(3);
-    if ((bVar1 == false) && (uVar4 = (RAC->STATUS), -1 < (int)(uVar4 << 0x11))) 
+    if ((PROTIMER_CCTimerIsEnabled(3) == false) && (-1 < (int)(RAC->STATUS << 0x11))) 
 	{
       CORE_ExitCritical(irqState);
       return 4;
@@ -565,15 +430,12 @@ GENERIC_PHY_SchedulePacketRx
     scheduledRxHardEnd = param_6;
     if ((param_4 == 1) && (param_2 != 2)) 
 	{
-      uVar3 = PROTIMER_GetCCTime(3);
       us = TIMING_RxWarmTimeGet();
-      uVar5 = PROTIMER_UsToPrecntOverflow(us);
       param_4 = 0;
-      param_3 = param_3 + uVar3 + (int)uVar5;
+      param_3 = param_3 + PROTIMER_GetCCTime(3) + (int)PROTIMER_UsToPrecntOverflow(us);
     }
     pendedRxWindowEnd = 0;
-    iVar2 = PROTIMER_ScheduleRxDisable(4,param_3,param_4);
-    if (iVar2 == 0) 
+    if (PROTIMER_ScheduleRxDisable(4,param_3,param_4) == 0) 
 	{
       PROTIMER_CCTimerStop(3);
       PROTIMER_ClearRxEnable();
@@ -590,19 +452,15 @@ GENERIC_PHY_SchedulePacketRx
 undefined4 GENERIC_PHY_SchedulePacketTx(undefined4 param_1,undefined4 param_2)
 
 {
-  bool bVar1;
   CORE_irqState_t irqState;
-  int iVar2;
   
   irqState = CORE_EnterCritical();
-  bVar1 = PROTIMER_CCTimerIsEnabled(3);
-  if ((bVar1 == false) && (iVar2 = PROTIMER_LBTIsActive(), iVar2 == 0)) 
+  if ((PROTIMER_CCTimerIsEnabled(3) == false) && (iPROTIMER_LBTIsActive() == 0)) 
   {
     GENERIC_PHY_PacketTxCommon();
     PROTIMER_ClearRxEnable();
     PROTIMER_ClearTxEnable();
-    iVar2 = PROTIMER_ScheduleTxEnable(3,param_1,param_2);
-    if (iVar2 == 0) 
+    if (PROTIMER_ScheduleTxEnable(3,param_1,param_2) == 0) 
 	{
       BUS_RegMaskedClear(&RAC->SR0,0x80);
       CORE_ExitCritical(irqState);
@@ -636,8 +494,7 @@ uint16_t GENERIC_PHY_PacketRxDataHelper(int param_1,uint param_2)
 }
 
 
-uint GENERIC_PHY_PacketRxAppendedInfoHelper
-               (uint param_1,void *param_2,undefined4 param_3,undefined4 param_4)
+uint GENERIC_PHY_PacketRxAppendedInfoHelper(uint param_1,void *param_2,undefined4 param_3,undefined4 param_4)
 
 {
   uint uVar1;
@@ -652,10 +509,7 @@ uint GENERIC_PHY_PacketRxAppendedInfoHelper
   apvStack28[0] = param_2;
   apvStack28[1] = (void *)param_3;
   apvStack28[2] = (void *)param_4;
-  if (param_2 == (void *)0x0) 
-  {
-    BUFC_RxBufferDropBytes();
-  }
+  if (param_2 == NULL) BUFC_RxBufferDropBytes();
   else 
   {
     BUFC_RxBufferReadBytes((uint8_t *)apvStack28,(ushort)param_1 & 0xff);
@@ -668,15 +522,11 @@ uint GENERIC_PHY_PacketRxAppendedInfoHelper
       uVar5 = param_1 - 4 & 0xffff;
       uVar3 = *(undefined4 *)((int)apvStack28 + uVar5);
     }
-    if (bVar6) 
-	{
-      *(undefined4 *)((int)param_2 + 0x10) = uVar3;
-    }
+    if (bVar6) *(undefined4 *)((int)param_2 + 0x10) = uVar3;
     if ((int)(uVar1 << 0x1b) < 0) 
 	{
       uVar5 = uVar5 - 2 & 0xffff;
-      *(uint *)((int)param_2 + 0xc) =
-           *(uint *)((int)param_2 + 0xc) | (uint)*(ushort *)((int)apvStack28 + uVar5) << 0x10;
+      *(uint *)((int)param_2 + 0xc) = *(uint *)((int)param_2 + 0xc) | (uint)*(ushort *)((int)apvStack28 + uVar5) << 0x10;
     }
     uVar4 = uVar1 << 0x1c;
     if ((int)uVar4 < 0) 
@@ -692,24 +542,15 @@ uint GENERIC_PHY_PacketRxAppendedInfoHelper
       uVar5 = uVar5 - 2 & 0xffff;
       uVar2 = *(undefined2 *)((int)apvStack28 + uVar5);
     }
-    if (bVar6) 
-	{
-      *(undefined2 *)((int)param_2 + 8) = uVar2;
-    }
+    if (bVar6) *(undefined2 *)((int)param_2 + 8) = uVar2;
     if ((int)(uVar1 << 0x1e) < 0) 
 	{
       uVar5 = uVar5 - 1 & 0xffff;
       *(byte *)((int)param_2 + 6) = *(byte *)((int)apvStack28 + uVar5) >> 7;
     }
     bVar6 = (int)(uVar1 << 0x1f) < 0;
-    if (bVar6) 
-	{
-      uVar5 = (uint)*(byte *)((int)apvStack28 + (uVar5 - 1 & 0xffff));
-    }
-    if (bVar6) 
-	{
-      *(char *)((int)param_2 + 5) = (char)uVar5;
-    }
+    if (bVar6) uVar5 = (uint)*(byte *)((int)apvStack28 + (uVar5 - 1 & 0xffff));
+    if (bVar6) *(char *)((int)param_2 + 5) = (char)uVar5;
   }
   return param_1;
 }
@@ -762,10 +603,7 @@ void GENERIC_PHY_PacketRxGet(undefined2 *param_1)
       *(undefined4 *)(param_1 + 8) = uStack28;
       *(undefined4 *)(param_1 + 10) = uStack24;
       *(undefined4 *)(param_1 + 0xc) = local_14;
-      if (*(code **)(currentCallbacks + 0x54) != (code *)0x0) 
-	  {
-        uVar2 = (**(code **)(currentCallbacks + 0x54))();
-      }
+      if (*(code **)(currentCallbacks + 0x54) != NULL) uVar2 = (**(code **)(currentCallbacks + 0x54))();
       BUFC_RxBufferSet(uVar2);
     }
   }
@@ -776,16 +614,11 @@ void GENERIC_PHY_PacketRxGet(undefined2 *param_1)
 void GENERIC_PHY_StartRx(int param_1)
 
 {
-  uint uVar1;
   int iVar2;
   CORE_irqState_t irqState;
   
-  if (param_1 != 0) 
-  {
-    write_volatile_4(FRC->WCNTCMP0,param_1 - 1);
-  }
-  iVar2 = BUFC_RxBufferGet();
-  if ((iVar2 == 0) && (*(code **)(currentCallbacks + 0x54) != FUN_00000000)) 
+  if (param_1 != 0) FRC->WCNTCMP0 = param_1 - 1;
+  if ((BUFC_RxBufferGet() == 0) && (*(code **)(currentCallbacks + 0x54) != NULL)) 
   {
     (**(code **)(currentCallbacks + 0x54))();
     BUFC_RxBufferSet();
@@ -794,7 +627,6 @@ void GENERIC_PHY_StartRx(int param_1)
   SEQ->REG000 &= 0xffffffbf);
   CORE_ExitCritical(irqState);
   BUS_RegMaskedSet(&RAC->RXENSRCEN,2);
-  return;
 }
 
 
@@ -809,9 +641,7 @@ void GENERIC_PHY_ChannelSet(uint8_t channel)
 void GENERIC_PHY_SeqAtomicLock(void)
 
 {
-  uint uVar1;
-  
-  read_volatile(RAC->SR0._0_1_);
+  //read_volatile(RAC->SR0._0_1_);
   BUS_RegMaskedSet(&RAC->SR0,4);
   while ((int)(RAC->SR0 << 0xd) < 0) 
   {
@@ -834,10 +664,8 @@ void GENERIC_PHY_RadioIdle(int param_1,int param_2,int param_3)
   {
     do 
 	{
-      uVar1 = (RAC->STATUS);
-      if ((uVar1 << 4) >> 0x1c != 3) break;
-      uVar1 = (SEQ->REG064);
-    } while ((uVar1 & 0xf) != 3);
+      if ((RAC->STATUS << 4) >> 0x1c != 3) break;
+    } while ((SEQ->REG064 & 0xf) != 3);
     if (param_2 != 0) 
 	{
       GENERIC_PHY_SeqAtomicLock();
