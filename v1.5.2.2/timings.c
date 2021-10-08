@@ -2,10 +2,10 @@
 
 
 
-bool TIMING_SeqTimingInit(bool init)
+void TIMING_SeqTimingInit(void)
 
 {
-  return init;
+
 }
 
 
@@ -27,7 +27,7 @@ void TIMING_InitStimer(void)
 {
   undefined4 in_r3;
   
-  RAC->PRESC = 7;
+  RAC->PRESC = 7 << RAC_PRESC_STIMER_Pos;
   nsToStimerRatio = __aeabi_uldivmod(4000000,RADIOCMU_ClockFreqGet(0x75160) / 1000,8000000,0,in_r3);
   SEQ->REG0B8 = -(TIMING_NsToStimerTickCalc(60000));
 }
@@ -76,12 +76,9 @@ void TIMING_RxToTxTimeRecalculate(void)
 uint16_t TIMING_RxToTxTimeSet(uint16_t time)
 
 {
-  if (time < 100) txtorxtime = 100;
-  else 
-  {
-    if (12999 < time) time = 13000;
-    txtorxtime = (uint16_t)time;
-  }
+  if(time < 100) time = 100;
+  if(time > 13000) time = 13000;
+  txtorxtime = time;
   TIMING_RxToTxTimeRecalculate();
   return txtorxtime;
 }
@@ -98,12 +95,10 @@ void TIMING_RxFrameToTxTimeRecalculate(void)
 uint16_t TIMING_RxFrameToTxTimeSet(uint16_t time)
 
 {
-  if (time < 100) rxframetotxtime = 100;
-  else 
-  {
-    rxframetotxtime = time;
-    if (12999 < time) rxframetotxtime = 13000;
-  }
+  if(time < 100) time = 100;
+  if(time > 13000) time = 13000;
+  txtorxtime = time;
+  rxframetotxtime = time;
   TIMING_RxFrameToTxTimeRecalculate();
   return (uint16_t)rxframetotxtime;
 }
@@ -121,21 +116,8 @@ void TIMING_TxToTxTimeRecalculate(void)
 uint16_t TIMING_TxToTxTimeSet(uint16_t time)
 
 {
-  uint32_t uVar1;
-  uint uVar2;
-  
-  uVar1 = PA_RampTimeGet();
-  uVar2 = time;
-  if (12999 < time) uVar2 = 13000;
-  if (uVar2 < uVar1) 
-  {
-    uVar1 = PA_RampTimeGet();
-    time = uVar1 & 0xffff;
-  }
-  else 
-  {
-    if (12999 < time) time = 13000;
-  }
+  if(time < PA_RampTimeGet()) time = PA_RampTimeGet();
+  if(time > 13000) time = 13000;
   txtotxtime = time;
   TIMING_TxToTxTimeRecalculate();
   return txtotxtime;
@@ -153,17 +135,11 @@ void TIMING_TxToRxTimeRecalculate(void)
 uint16_t TIMING_TxToRxTimeSet(uint16_t time)
 
 {
-  uint16_t uVar1;
-  
-  if (time < 100) txtorxtime = 100;
-  else 
-  {
-    txtorxtime = time;
-    if (12999 < time) txtorxtime = 13000;
-  }
-  uVar1 = txtorxtime;
+  if(time < 100) time = 100;
+  if(time > 13000) time = 13000;
+  txtorxtime = time;
   TIMING_TxToRxTimeRecalculate();
-  return uVar1;
+  return txtorxtime;
 }
 
 
@@ -180,17 +156,11 @@ void TIMING_RxWarmTimeRecalculate(void)
 uint16_t TIMING_RxWarmTimeSet(uint16_t time)
 
 {
-  uint16_t uVar1;
-  
-  if (time < 100) rxwarmtime = 100;
-  else 
-  {
-    rxwarmtime = time;
-    if (12999 < time) rxwarmtime = 13000;
-  }
-  uVar1 = rxwarmtime;
+  if(time < 100) time = 100;
+  if(time > 13000) time = 13000;
+  rxwarmtime = time;
   TIMING_RxWarmTimeRecalculate();
-  return uVar1;
+  return rxwarmtime;
 }
 
 
@@ -205,13 +175,9 @@ uint16_t TIMING_RxWarmTimeGet(void)
 uint32_t TIMING_RxSearchTimeSet(uint16_t time)
 
 {
-  uint uVar1;
-  uint uVar2;
-  
-  uVar2 = 13000;
-  if (time < 0x32c9) uVar2 = time;
-  SEQ->REG09C = TIMING_NsToStimerTickCalc(uVar2 * 1000);
-  return uVar2;
+  if (time > 13000) time = 13000;
+  SEQ->REG09C = TIMING_NsToStimerTickCalc(time * 1000);
+  return time;
 }
 
 
@@ -227,12 +193,9 @@ uint32_t TIMING_RxSearchTimeGet(void)
 uint32_t TIMING_TxToRxSearchTimeSet(uint16_t time)
 
 {
-  uint uVar2;
-  
-  uVar2 = 13000;
-  if (time < 0x32c9) uVar2 = time;
-  SEQ->REG0B0 = TIMING_NsToStimerTickCalc(uVar2 * 1000);
-  return uVar2;
+  if (time > 13000) time = 13000;
+  SEQ->REG0B0 = TIMING_NsToStimerTickCalc(time * 1000);
+  return time;
 }
 
 
@@ -263,10 +226,10 @@ uint32_t TIMING_SetChainDelays(uint32_t rxdelay,uint32_t txdelay)
 uint64_t TIMING_GetRxTimestampUs(uint32_t cnt)
 
 {
-  uint64_t uVar1;
+  uint64_t tmp;
   
-  uVar1 = PROTIMER_PrecntOverflowToUs(cnt);
-  return uVar1 & 0xffffffff00000000 | (uint64_t)((int)uVar1 - (rxchaindelay + 500U) / 1000);
+  tmp = PROTIMER_PrecntOverflowToUs(cnt);
+  return tmp & 0xffffffff00000000 | (uint64_t)((int)tmp - (rxchaindelay + 500U) / 1000);
 }
 
 
@@ -274,10 +237,10 @@ uint64_t TIMING_GetRxTimestampUs(uint32_t cnt)
 uint64_t TIMING_GetTxTimestampUs(uint32_t cnt)
 
 {
-  uint64_t uVar1;
+  uint64_t tmp;
   
-  uVar1 = PROTIMER_PrecntOverflowToUs(cnt);
-  return uVar1 & 0xffffffff00000000 | (uint64_t)((int)uVar1 - (txchaindelay + 500U) / 1000);
+  tmp = PROTIMER_PrecntOverflowToUs(cnt);
+  return tmp & 0xffffffff00000000 | (uint64_t)((int)tmp - (txchaindelay + 500U) / 1000);
 }
 
 

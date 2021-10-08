@@ -396,7 +396,7 @@ uint8_t RFHAL_Init(RAIL_Init_t *railinit)
     FRC->TRAILRXDATA = 0x1b;
     FRC->RXCTRL = 0x60;
     _enabledCallbacks = _enabledCallbacks & 0xff000000 | (uint)(uint3)((uint3)_enabledCallbacks | 7) | 0x400000;
-    if ((int)(RAILINT_CalibrationEnableGet() << 0x1f) < 0) _enabledCallbacks = _enabledCallbacks | 0x80000;
+    if (RAILINT_CalibrationEnableGet() & 0x01) _enabledCallbacks = _enabledCallbacks | 0x80000;
     _enabledCallbacks = _enabledCallbacks | 0x100000;
     GENERIC_PHY_SetCallbacks((uint32_t *)&callbacks);
     GENERIC_PHY_ConfigureCallbacks(_enabledCallbacks);
@@ -1721,7 +1721,15 @@ uint16_t RFHAL_ReadRxFifo(uint8_t *dataPtr,uint16_t readLength)
 }
 
 
-
+/* typedef struct RAIL_AppendedInfo {
+  uint32_t timeUs;
+  bool crcStatus:1;
+  bool frameCodingStatus:1;
+  bool isAck:1;
+  int8_t rssiLatch;
+  uint8_t lqi;
+  uint8_t syncWordId;
+} RAIL_AppendedInfo_t; */
 
 void RFHAL_ReadRxFifoAppendedInfo(RAIL_AppendedInfo_t *appendedInfo)
 
@@ -1734,6 +1742,7 @@ void RFHAL_ReadRxFifoAppendedInfo(RAIL_AppendedInfo_t *appendedInfo)
   GENERIC_PHY_PacketRxAppendedInfoHelper(RADIO_RxTrailDataLength(),auStack28);
   //read_volatile(FRC->IEN._0_1_);
   *(byte *)&appendedInfo->field_0x4 = *(byte *)&appendedInfo->field_0x4 & 0xfd | (byte)((((FRC->IF ^ 0x80) << 0x18) >> 0x1f) << 1);
+  
   FRC->IFC = 0x80;
   if (local_16 != 0) local_16 = 1;
   appendedInfo->rssiLatch = local_17;
@@ -1830,7 +1839,7 @@ void RFHAL_ResetTxFifo(void)
 
 {
   BUS_RegMaskedClear(&BUFC->IEN,4);
-  write_volatile_4(BUFC->BUF0_CMD,1);
+  BUFC->BUF0_CMD = 1;
   BUS_RegMaskedClear(&BUFC->BUF0_THRESHOLDCTRL,0x2000);
   BUS_RegMaskedSet(&BUFC->IEN,4);
 }

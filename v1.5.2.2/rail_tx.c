@@ -30,7 +30,6 @@ uint8_t RAIL_TxStartWithOptions(uint8_t channel,RAIL_TxOptions_t *options,RAIL_P
   if (RFHAL_OkToTransmit() == false) return 2;
   else 
   {
-    uVar2 = RAILInt_SetChannel(channel);
     if (RAILInt_SetChannel(channel) == 0) return RFHAL_TxStart(channel,options,preTxOp,preTxOpParams);
 	else return 1;
   }
@@ -93,13 +92,6 @@ uint8_t RAIL_TxStreamStop(void)
 
 
 
-/* void RAIL_TxPowerSet(void)
-
-{
-  RFHAL_SetCurrPowerLevel();
-  return;
-} */
-
 int32_t RAIL_TxPowerSet(int32_t powerLevel)
 
 {
@@ -114,13 +106,6 @@ int32_t RAIL_TxPowerSet(int32_t powerLevel)
 }
 
 
-/* void RAIL_TxPowerGet(void)
-
-{
-  RFHAL_GetCurrPowerLevel();
-  return;
-}
- */
 int32_t RAIL_TxPowerGet(void)
 
 {

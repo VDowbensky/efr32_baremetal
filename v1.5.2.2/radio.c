@@ -61,7 +61,7 @@ void RADIO_WaitForSetSync(uint32_t *addr,uint32_t mask)
 
 
 
-void RADIO_Delay(uint32_t us,undefined4 param_2)
+void RADIO_Delay(uint32_t us)
 
 {
   PHY_UTILS_DelayUs(us);
@@ -97,18 +97,18 @@ void RADIO_SeqInit(void *src,uint32_t len)
   
   //read_volatile(RAC->STATUS._0_1_);
   RAC->VECTADDR = 0x21000000;
-  RAC->SEQCTRL = 1;
+  RAC->SEQCTRL = RAC_SEQCTRL_COMPACT_Msk; //1;
   irqState = CORE_EnterCritical();
   memcpy((void *)0x21000000,src,len << 2);
   CORE_ExitCritical(irqState);
   RAC->R6 = 0x21000fbc;
   t1 = SEQ->REG0E4;
   t2 = SEQ->REG0E8;
-  t3 = SEQ->DYNAMIC_CHPWR_TABLE;
+  t3 = SEQ->DYNAMIC_CHPWR_TABLE; //SEQ->REG0EC;
   memset(&SEQ->REG064,0,0x9c);
   SEQ->REG0E4 = t1;
   SEQ->REG0E8 = t2;
-  SEQ->DYNAMIC_CHPWR_TABLE = t3;
+  SEQ->DYNAMIC_CHPWR_TABLE = t3; //SEQ->REG0EC;
 }
 
 
@@ -134,12 +134,12 @@ void RADIO_Init(void)
   RADIO_CLKEnable();
   BUFC_Init();
   RADIO_SetAndForgetWrite();
-  BUS_RegMaskedSet(&MODEM->DCCOMP,3);
+  BUS_RegMaskedSet(&MODEM->DCCOMP,MODEM_DCCOMP_DCCOMPEN_Msk | MODEM_DCCOMP_DCESTIEN_Msk); //3);
   RAC->SR3 = 0;
   BUS_RegMaskedSet(&RAC->SR3,1);
   SYNTH_KvnFreqCompensationEnable();
   SYNTH_DCDCRetimeEnable();
-  BUS_RegMaskedSet(&RAC->CTRL,0x380);
+  BUS_RegMaskedSet(&RAC->CTRL,RAC_CTRL_LNAENPOL_Msk | RAC_CTRL_PAENPOL_Msk | RAC_CTRL_ACTIVEPOL_Msk); //0x380);
 }
 
 
@@ -147,7 +147,6 @@ void RADIO_Init(void)
 void RADIO_Config(void *config)
 
 {
-  bool init;
   CORE_irqState_t irqState;
   uint uVar1;
   int iVar2;
@@ -155,7 +154,7 @@ void RADIO_Config(void *config)
   uint uVar3;
   void *__src;
   
-  if (config != (void *)0x0) 
+  if (config != NULL) 
   {
     for (iVar2 = (int)config + 8; uVar1 = *(uint *)(iVar2 + -8), uVar1 != 0xffffffff; iVar2 = iVar2 + 8) 
 	{
@@ -171,8 +170,8 @@ void RADIO_Config(void *config)
       }
     }
   }
-  init = PA_UpdateConfig();
-  TIMING_SeqTimingInit(init);
+  PA_UpdateConfig();
+  TIMING_SeqTimingInit();
 }
 
 
@@ -381,9 +380,9 @@ void RADIO_FRCErrorHandle(void)
   
   irqState = CORE_EnterCritical();
   bufcRxStreaming._0_2_ = 0;
-  write_volatile_4(BUFC->BUF1_CMD,1);
-  write_volatile_4(BUFC->BUF2_CMD,1);
-  write_volatile_4(FRC->IFC,0x10);
+  BUFC->BUF1_CMD = 1;
+  BUFC->BUF2_CMD = 1;
+  FRC->IFC = 0x10;
   CORE_ExitCritical(irqState);
   return;
 } */

@@ -8,35 +8,26 @@ void PROTIMER_Init(void)
   longlong lVar1;
   uint uVar2;
   uint uVar3;
-  int iVar4;
   uint uVar5;
   undefined8 uVar6;
   undefined8 uVar7;
   
   RADIOCMU_ClockEnable(0x60400,1);
-  PROTIMER->CTRL = 0x11100;
-  uVar2 = RADIOCMU_ClockFreqGet(0x60400);
-  uVar2 = uVar2 / 1000;
+  PROTIMER->CTRL = (1 << PROTIMER_CTRL_WRAPCNTSRC_Pos) | (1 << PROTIMER_CTRL_BASECNTSRC_Pos) | (1 << PROTIMER_CTRL_PRECNTSRC_Pos); //0x11100;
+
+  uVar2 = RADIOCMU_ClockFreqGet(0x60400) / 1000;
   uVar3 = (uint)((ulonglong)uVar2 * 2000);
   uVar5 = uVar3 * 0x100;
-  uVar6 = __aeabi_uldivmod(uVar5 + 500000,
-                           ((int)((ulonglong)uVar2 * 2000 >> 0x20) << 8 | uVar3 >> 0x18) +
-                           (uint)(0xfff85edf < uVar5),1000000,0);
+  uVar6 = __aeabi_uldivmod(uVar5 + 500000,((int)((ulonglong)uVar2 * 2000 >> 0x20) << 8 | uVar3 >> 0x18) + (uint)(0xfff85edf < uVar5),1000000,0);
   uVar3 = (uint)uVar6;
   PROTIMER->PRECNTTOP = uVar3 - 0x100;
   uVar7 = __aeabi_uldivmod(500,uVar2,1000,0);
   uVar5 = (uint)uVar7 * 0x100;
-  _usRatioFrac = __aeabi_uldivmod((uVar3 >> 1) + uVar5,
-                                  ((int)((ulonglong)uVar7 >> 0x20) << 8 | (uint)uVar7 >> 0x18) +
-                                  (uint)CARRY4(uVar3 >> 1,uVar5),uVar3,
-                                  (int)((ulonglong)uVar6 >> 0x20));
-  iVar4 = (int)_usRatioFrac;
+  _usRatioFrac = __aeabi_uldivmod((uVar3 >> 1) + uVar5,((int)((ulonglong)uVar7 >> 0x20) << 8 | (uint)uVar7 >> 0x18) + (uint)CARRY4(uVar3 >> 1,uVar5),uVar3,(int)((ulonglong)uVar6 >> 0x20));
   lVar1 = (ulonglong)(uVar3 << 0x18) * 1000;
   uVar5 = (uint)lVar1;
-  uVar6 = __aeabi_uldivmod(uVar5 + (uVar2 >> 1),
-                           (uVar3 >> 8) * 1000 + (int)((ulonglong)lVar1 >> 0x20) +
-                           (uint)CARRY4(uVar5,uVar2 >> 1),uVar2,0);
-  PROTIMER->WRAPCNTTOP = iVar4 - 1;
+  uVar6 = __aeabi_uldivmod(uVar5 + (uVar2 >> 1),(uVar3 >> 8) * 1000 + (int)((ulonglong)lVar1 >> 0x20) + (uint)CARRY4(uVar5,uVar2 >> 1),uVar2,0);
+  PROTIMER->WRAPCNTTOP = (int)_usRatioFrac - 1;
   precntRatioFrac = (int)uVar6;
   precntRatioInt = (int)((ulonglong)uVar6 >> 0x20);
 }
@@ -46,9 +37,9 @@ void PROTIMER_Init(void)
 void PROTIMER_Start(void)
 
 {
-  PROTIMER->CMD = 1;
-  _DAT_e000e100 = 0x10000000;
-  _DAT_e000e280 = 0x10000000;
+  PROTIMER->CMD = PROTIMER_CMD_START_Msk; //1;
+  NVIC_EnableIRQ(PROTIMER_IRQn);
+  NVIC_ClearPendingIRQ(PROTIMER_IRQn);
 }
 
 
@@ -56,8 +47,8 @@ void PROTIMER_Start(void)
 void PROTIMER_Stop(void)
 
 {
-  _DAT_e000e180 = 0x10000000;
-  _DAT_e000e280 = 0x10000000;
+  NVIC_DisableIRQ(PROTIMER_IRQn);
+  NVIC_ClearPendingIRQ(PROTIMER_IRQn);  
 }
 
 
@@ -65,7 +56,7 @@ void PROTIMER_Stop(void)
 bool PROTIMER_IsRunning(void)
 
 {
-  return PROTIMER->STATUS & 1;
+  return PROTIMER->STATUS & PROTIMER_STATUS_RUNNING_Msk; //1;
 }
 
 
@@ -83,11 +74,11 @@ void PROTIMER_Reset(void)
 uint32_t PROTIMER_ElapsedTime(uint32_t begin,uint32_t end)
 
 {
-  uint32_t uVar2;
+  uint32_t time;
   
-  uVar2 = end - begin;
-  if (end < begin) uVar2 = uVar2 + PROTIMER->WRAPCNTTOP + 1;
-  return uVar2;
+  time = end - begin;
+  if (end < begin) time = time + PROTIMER->WRAPCNTTOP + 1;
+  return time;
 }
 
 
@@ -95,26 +86,26 @@ uint32_t PROTIMER_ElapsedTime(uint32_t begin,uint32_t end)
 void PROTIMER_TOUTTimerStop(uint32_t timer)
 
 {
-  if (timer == 0) PROTIMER->CMD = 0x20;
-  else PROTIMER->CMD = 0x80;
+  if (timer == 0) PROTIMER->CMD = PROTIMER_CMD_TOUT0STOP_Msk; //0x20;
+  else PROTIMER->CMD = PROTIMER_CMD_TOUT1STOP_Msk; //0x80;
 }
 
 
 
-void PROTIMER_TOUTTimerStart(uint32_t timer)
+void PROTIMER_TOUTTimerStart(uint32_t timer, uint32_t time)
 
 {
   if (timer == 0) 
   {
-    PROTIMER->TOUT0CNTTOP = timer << 8;
-    PROTIMER->IFC = 0x50;
-	PROTIMER->CMD = 0x10;
+    PROTIMER->TOUT0CNTTOP = time << 8;
+    PROTIMER->IFC = PROTIMER_IFC_TOUT0MATCH_Msk | PROTIMER_IFC_TOUT0_Msk; //0x50;
+	PROTIMER->CMD = PROTIMER_CMD_TOUT0START_Msk; //0x10;
   }
   else 
   {
-    PROTIMER->TOUT1CNTTOP = timer << 8;
-    PROTIMER->IFC = 0xa0;
-	PROTIMER->CMD = 0x40;
+    PROTIMER->TOUT1CNTTOP = time << 8;
+    PROTIMER->IFC = PROTIMER_IFC_TOUT1MATCH_Msk | PROTIMER_IFC_TOUT1_Msk; //0xa0;
+	PROTIMER->CMD = PROTIMER_CMD_TOUT1START_Msk; //0x40;
   }
 }
 
@@ -123,8 +114,8 @@ void PROTIMER_TOUTTimerStart(uint32_t timer)
 uint32_t PROTIMER_TOUTTimerGet(uint32_t timer)
 
 {
-  if (timer == 0) return (PROTIMER->TOUT0CNT << 8) >> 0x10;
-  else return (PROTIMER->TOUT1CNT << 8) >> 0x10;
+  if (timer == 0) return (PROTIMER->TOUT0CNT & 0xff000000) >> 8;
+  else return (PROTIMER->TOUT1CNT & 0xff000000) >> 8;
 }
 
 
@@ -132,8 +123,36 @@ uint32_t PROTIMER_TOUTTimerGet(uint32_t timer)
 void PROTIMER_CCTimerStop(uint32_t timer)
 
 {
-  (&Peripherals::PROTIMER_CLR.CC0_CTRL)[timer * 4] = 1;
-  PROTIMER->IFC = 0x100 << (timer & 0xff);
+  switch(timer)
+  {
+	case 0:
+	BUS_RegMaskedClear(&PROTIMER->CC0_CTRL,PROTIMER_CC0_CTRL_ENABLE_Msk);
+	PROTIMER->IFC = PROTIMER_IFC_CC0_Msk;
+	break;
+	
+	case 1:
+	BUS_RegMaskedClear(&PROTIMER->CC1_CTRL,PROTIMER_CC1_CTRL_ENABLE_Msk);
+	PROTIMER->IFC = PROTIMER_IFC_CC1_Msk;
+	break;
+	
+	case 2:
+	BUS_RegMaskedClear(&PROTIMER->CC2_CTRL,PROTIMER_CC2_CTRL_ENABLE_Msk);
+	PROTIMER->IFC = PROTIMER_IFC_CC2_Msk;
+	break;
+	
+	case 3:
+	BUS_RegMaskedClear(&PROTIMER->CC3_CTRL,PROTIMER_CC3_CTRL_ENABLE_Msk);
+	PROTIMER->IFC = PROTIMER_IFC_CC3_Msk;
+	break;
+	
+	case 4:
+	BUS_RegMaskedClear(&PROTIMER->CC4_CTRL,PROTIMER_CC4_CTRL_ENABLE_Msk);
+	PROTIMER->IFC = PROTIMER_IFC_CC4_Msk;
+	break;
+	
+	default:
+	break;
+  }
 }
 
 
@@ -151,18 +170,17 @@ bool PROTIMER_CCTimerStart(uint32_t timer,uint32_t time,RAIL_TimeMode_t mode)
   
   irqState = CORE_EnterCritical();
   PROTIMER_CCTimerStop(timer);
-  uVar1 = (PROTIMER->WRAPCNT);
   if (mode == RAIL_TIME_DELAY) 
   {
     if (time == 0) time = 1;
-    time = time + uVar1;
+    time = time + PROTIMER->WRAPCNT;
   }
   else 
   {
     if (mode == RAIL_TIME_DISABLED) return true;
   }
   uVar1 = (PROTIMER->WRAPCNTTOP);
-  if (uVar1 < time) time = (time - uVar1) - 1;
+  if (PROTIMER->WRAPCNTTOP < time) time = (time - PROTIMER->WRAPCNTTOP) - 1;
   iVar4 = 1;
   while( true ) 
   {
@@ -173,7 +191,7 @@ bool PROTIMER_CCTimerStart(uint32_t timer,uint32_t time,RAIL_TimeMode_t mode)
     if (uVar1 >> 2 < uVar3) bVar5 = false;
     else 
 	{
-      uVar2 = (PROTIMER->IF);
+      uVar2 = PROTIMER->IF;
       bVar5 = (0x100 << (timer & 0xff) & uVar2) == 0;
     }
     iVar4 = iVar4 + 1;
@@ -203,7 +221,7 @@ void PROTIMER_WrapMultiple(uint param_1,undefined4 param_2,uint param_3,int para
 {
   bool bVar1;
   
-  while( true ) 
+  while(1) 
   {
     bVar1 = param_4 == 0;
     if (param_4 == 0) bVar1 = param_3 <= param_1;
@@ -360,11 +378,9 @@ uint64_t PROTIMER_PrecntOverflowToUs(uint32_t cnt)
   int in_r1;
   uint uVar2;
   
-  uVar2 = precntRatioFrac * in_r1 + (int)((ulonglong)cnt * (ulonglong)precntRatioFrac >> 0x20) +
-          (uint)(0x7fffffff < (uint)((ulonglong)cnt * (ulonglong)precntRatioFrac));
+  uVar2 = precntRatioFrac * in_r1 + (int)((ulonglong)cnt * (ulonglong)precntRatioFrac >> 0x20) + (uint)(0x7fffffff < (uint)((ulonglong)cnt * (ulonglong)precntRatioFrac));
   uVar1 = (uint)((ulonglong)cnt * (ulonglong)precntRatioInt);
-  return CONCAT44(precntRatioInt * in_r1 + (int)((ulonglong)cnt * (ulonglong)precntRatioInt >> 0x20)
-                  + (uint)CARRY4(uVar1,uVar2),uVar1 + uVar2);
+  return CONCAT44(precntRatioInt * in_r1 + (int)((ulonglong)cnt * (ulonglong)precntRatioInt >> 0x20) + (uint)CARRY4(uVar1,uVar2),uVar1 + uVar2);
 }
 
 
@@ -373,9 +389,7 @@ uint64_t PROTIMER_PrecntOverflowToUs(uint32_t cnt)
 uint64_t PROTIMER_UsToPrecntOverflow(uint32_t us)
 
 {
-  return (uint64_t)
-         ((ulonglong)usRatioInt * (ulonglong)us +
-         ((ulonglong)usRatioFrac * (ulonglong)us + 0x80000000 >> 0x20));
+  return (uint64_t)((ulonglong)usRatioInt * (ulonglong)us + ((ulonglong)usRatioFrac * (ulonglong)us + 0x80000000 >> 0x20));
 }
 
 

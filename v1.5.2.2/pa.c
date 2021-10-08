@@ -80,17 +80,12 @@ void PA_SubGhz20dbmConfigSet(void)
 void PA_PowerModeConfigSet(void)
 
 {
-  if (gPaConfig.paSel == PA_SEL_SUBGIG) 
+  if (gPaConfig.paSel == PA_SEL_SUBGIG) PA_SubGhz20dbmConfigSet();
+  else 
   {
-    PA_SubGhz20dbmConfigSet();
-    return;
+	if (gPaConfig.paSel == PA_SEL_2P4_LP) PA_0dbmConfigSet();
+	else PA_20dbmConfigSet();
   }
-  if (gPaConfig.paSel == PA_SEL_2P4_LP) 
-  {
-    PA_0dbmConfigSet();
-    return;
-  }
-  PA_20dbmConfigSet();
 }
 
 
@@ -177,10 +172,10 @@ uint32_t PA_StripesAndSlicesCommonCalc(int32_t power,uint16_t *table)
   int iVar2;
   uint uVar3;
   
-  if ((short)*table <= power) power = (int)(short)*table;
+  if (*table <= power) power = (int)*table;
   iVar2 = -((power - 200U) / 0x28);
   if (6 < iVar2) iVar2 = 7;
-  uVar3 = power * (short)(table + iVar2 * 4)[3] + *(int *)(table + iVar2 * 4 + 4);
+  uVar3 = power * (uint16_t)(table + iVar2 * 4)[3] + *(int *)(table + iVar2 * 4 + 4);
   if (0 < power) uVar3 = uVar3 + 500;
   uVar1 = uVar3 / 1000;
   if ((iVar2 != 7) && (gPaConfig.paSel != PA_SEL_SUBGIG)) uVar1 = uVar1 | 0x8000;
@@ -324,16 +319,16 @@ void PA_PeakDetectorHighRun(void)
   int iVar3;
   
   iVar3 = SYNTH_Is2p4GHz();
-  if (iVar3 == 0) 
+  if (SYNTH_Is2p4GHz() == false) 
   {
-    uVar1 = (RAC->SGPACTRL0);
-    uVar2 = (RAC->SGPACTRL0);
+    uVar1 = RAC->SGPACTRL0;
+    uVar2 = RAC->SGPACTRL0;
     RAC->SGPACTRL0 = uVar1 & 0xffc03fff | (uVar2 & 0x3f8000) >> 1;
   }
   else 
   {
-    uVar1 = (RAC->PACTRL0);
-    uVar2 = (RAC->PACTRL0);
+    uVar1 = RAC->PACTRL0;
+    uVar2 = RAC->PACTRL0;
     RAC->PACTRL0 = uVar1 & 0xffc03fff | (uVar2 & 0x3f8000) >> 1;
   }
   RAC->IFC = 0x2000000;
@@ -362,12 +357,12 @@ void PA_BatHighRun(void)
 uint32_t PA_RampTimeGet(void)
 
 {
-  return (uint)gPaConfig.rampTime;
+  return (uint32_t)gPaConfig.rampTime;
 }
 
 
 
-void PA_RampConfigSet(uint *param_1)
+void PA_RampConfigSet(uint32_t *param_1) //
 
 {
   MODEM->RAMPLEV = param_1[1];
