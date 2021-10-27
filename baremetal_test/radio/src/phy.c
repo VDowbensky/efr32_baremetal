@@ -211,12 +211,14 @@ uint8_t RAIL_TxStreamStop(void)
  * power output to be close to the given powerLevel, and return the value that
  * was set as the power.
  */
+
+/*
 int32_t RAIL_TxPowerSet(int32_t powerLevel) // in 0.1 dBm
 
 {
   return PA_OutputPowerSet(powerLevel);
 }
-
+*/
 
 /**
  * Get the radio transmit power level
