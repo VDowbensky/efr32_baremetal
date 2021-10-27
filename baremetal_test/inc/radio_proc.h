@@ -3,9 +3,10 @@
 
 #define RADIO_BUFFER_SIZE 64
 
-#define TX_PACTUNE	8
-#define RX_PACTUNE	8
+//#define TX_PACTUNE	8
+//#define RX_PACTUNE	8
 
+#include "bsp.h"
 #include "synth.h"
 #include "rf_test.h"
 #include "pa.h"

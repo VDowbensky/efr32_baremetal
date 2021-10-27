@@ -84,13 +84,13 @@ typedef enum RADIO_PAVoltMode
  */
 typedef struct RADIO_PAInit {
   /** Power Amplifier mode */
-  RADIO_PASel_t paSel;
+  RADIO_PASel_t paSel; //not needed for Sub-G only
   /** Power Amplifier vPA Voltage mode */
-  RADIO_PAVoltMode_t voltMode;
+  RADIO_PAVoltMode_t voltMode; //not needed using table
   /** Desired output power in dBm * 10 */
   int16_t power;
   /** Output power offset in dBm * 10 */
-  int16_t offset;
+  int16_t offset; //not needed
   /** Desired ramp time in us */
   uint16_t rampTime;
 } RADIO_PAInit_t;
@@ -112,6 +112,14 @@ uint32_t PA_PowerLevelSet(uint32_t pwr);
 void PA_PeakDetectorHighRun(void);
 void PA_PeakDetectorLowRun(void);
 void PA_BatHighRun(void);
+
+void PA_SetPowerLevel(uint8_t level);
+
+
+extern uint32_t bootstrap;
+extern uint32_t cascode;
+extern uint32_t slice;
+extern uint32_t stripe;
 
 //extern RADIO_PAInit_t  gPaConfig;
 

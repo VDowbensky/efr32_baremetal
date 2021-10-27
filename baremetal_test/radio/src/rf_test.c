@@ -142,8 +142,7 @@ void RFTEST_StartCwTx(void)
 	BUS_RegMaskedSet(&FRC->CTRL, FRC_CTRL_RANDOMTX_Msk);
 	RAC->IFPGACTRL = 0x000087F6; //!!!
 	RAC->CMD = 0x01; //TXEN
-	//BM_TxOn(); //for test only
-	
+	//RAC->SGPACTRL0 |= (bootstrap << 3) | (cascode << 6) | (stripe << 0x18) | (slice  << 0xe);
 }
 
 void RFTEST_StartStreamTx(void)

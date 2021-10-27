@@ -29,8 +29,6 @@ int main(void)
 	dcdcInit.maxCurrent_mA = 200;
 	dcdcInit.anaPeripheralPower = emuDcdcAnaPeripheralPower_DCDC;
 	dcdcInit.reverseCurrentControl = 160;
-
-	
   EMU_DCDCInit(&dcdcInit);
 	//EMU_DCDCPowerOff();
 #if (MX || GN)

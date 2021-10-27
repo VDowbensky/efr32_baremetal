@@ -2,9 +2,9 @@
 #include <stdint.h>
 #include <string.h>
 
-uint8_t RADIO_rxBuffer[RADIO_BUFFER_SIZE];
-uint8_t RADIO_txBuffer[RADIO_BUFFER_SIZE];
-uint8_t RADIO_rxLengthBuffer[RADIO_BUFFER_SIZE];
+volatile uint8_t RADIO_rxBuffer[RADIO_BUFFER_SIZE];
+volatile uint8_t RADIO_txBuffer[RADIO_BUFFER_SIZE];
+volatile uint8_t RADIO_rxLengthBuffer[RADIO_BUFFER_SIZE];
 
 uint8_t txpactune;
 uint8_t rxpactune;
@@ -32,13 +32,13 @@ void init_radio(void)
   CMU_ClockEnable(0x68400,true); //8
 	
 	BUFC->BUF1_CTRL = 2; //size
-  BUFC->BUF1_ADDR = (uint32_t)&RADIO_rxBuffer;
+	BUFC->BUF1_ADDR = (uint32_t)RADIO_rxBuffer;
   BUFC->BUF1_THRESHOLDCTRL = 0xaf;
   BUFC->BUF0_CTRL = 2; //size
-  BUFC->BUF0_ADDR = (uint32_t)&RADIO_txBuffer;
+  BUFC->BUF0_ADDR = (uint32_t)RADIO_txBuffer;
   BUFC->BUF0_THRESHOLDCTRL = 0x2020; //BUFC_BUF0_THRESHOLDCTRL_THRESHOLDMODE_Msk | THRESHOLD
   BUFC->BUF2_CTRL = 0; //size
-  BUFC->BUF2_ADDR = (uint32_t)&RADIO_rxLengthBuffer;
+  BUFC->BUF2_ADDR = (uint32_t)RADIO_rxLengthBuffer;
   BUFC->BUF2_THRESHOLDCTR = 0x3e; 
   RADIO_FrameControlDescrBufferIdSet(0,0);
   RADIO_FrameControlDescrBufferIdSet(1,0);
@@ -253,7 +253,8 @@ painit.power = 100; //100
 painit.offset = 0;
 painit.rampTime = 10;
 RADIO_PA_Init(&painit);
-PA_OutputPowerSet(150);
+//PA_OutputPowerSet(150);
+PA_SetPowerLevel(200);
 uint32_t tmp;
 tmp = *(uint32_t *) (DEVID_ADDR + 0x104);
 
@@ -269,7 +270,8 @@ tmp = *(uint32_t *) (DEVID_ADDR + 0x104);
       rxpactune = (tmp >> 8) & 0x000000FF;
     }
 		PA_CTuneSet(txpactune, rxpactune); //default
-		PA_PowerLevelSet(75);
+		//PA_PowerLevelSet(75);
+		PA_SetPowerLevel(50);
 }
 
 

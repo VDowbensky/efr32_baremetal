@@ -10,7 +10,7 @@
 
 CommandState_t state;
 char ciBuffer[256];
-
+uint8_t txmode = 0;
 
 //cli functions prototypes
 
@@ -204,11 +204,18 @@ void cli_setpowerlevel(int argc, char **argv)
 	uint32_t p;
 	printf("SET_POWERLEVEL: Under development\r\n");
 	p = ciGetUnsigned(argv[1]);
-	if(p > 252) p = 252;
+	if(p > 248) p = 248;
+	if(txmode != 0) 
+	{
+		RFTEST_StopTx();
+		PHY_UTILS_DelayUs(100);
+	}
+	PA_SetPowerLevel(p);
+	if(txmode == 1) RFTEST_StartCwTx();
+	if(txmode == 1) RFTEST_StartStreamTx();
 	printf("SET_POWERLEVEL: %d\r\n", p);
 	
 }
-
 
 void cli_getrssi(int argc, char **argv)
 {
@@ -311,6 +318,7 @@ void cli_txstream(int argc, char **argv)
 			RFTEST_StopTx();
 			PHY_UTILS_DelayUs(10);
 		  RFTEST_RestoreRadioConfiguration();
+		  txmode = 0;
 			printf("TX_STREAM: 0\r\n");
 		break;
 		
@@ -320,6 +328,7 @@ void cli_txstream(int argc, char **argv)
 			PHY_UTILS_DelayUs(10);
 			RFTEST_SaveRadioConfiguration();
 			RFTEST_StartCwTx();
+		  txmode = 1;
 			printf("TX_STREAM: 1\r\n");
 		break;
 		
@@ -329,6 +338,7 @@ void cli_txstream(int argc, char **argv)
 			PHY_UTILS_DelayUs(10);
 			RFTEST_SaveRadioConfiguration();
 			RFTEST_StartStreamTx();
+		  txmode = 2;
 			printf("TX_STREAM: 2\r\n");
 		break;
 		
@@ -382,6 +392,5 @@ void cli_setem(int argc, char **argv)
 {
 	printf("SET_EM: Not implemented\r\n");
 }
-
 
 

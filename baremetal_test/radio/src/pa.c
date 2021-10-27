@@ -19,6 +19,11 @@ struct
 	
 }gPaConfig;
 
+	uint32_t bootstrap = 0;
+	uint32_t cascode = 0;
+	uint32_t slice = 1;
+	uint32_t stripe = 1;
+
 uint8_t power0dBmParams[] = {0x83, 0xff, 0xbf, 0xff, 0xe2, 0xff, 0xf1, 0xff, 0xf9, 0xff}; 
 
 uint8_t paParams[272UL + 1] = 
@@ -34,7 +39,7 @@ uint8_t paParams[272UL + 1] =
 
 uint32_t peakDetectorOldSlices;
 void PA_StripesAndSlicesCalc(int32_t pwr);
-
+void PA_CalcRegValues (uint8_t level);
 
 void apcConfigure(int32_t p)
 
@@ -50,7 +55,83 @@ void apcConfigure(int32_t p)
   }
 }
 
+void PA_SetPowerLevel(uint8_t level)
+{
+	if(level == 0) level = 1;
+	if(level > 248) level = 248;
+	PA_CalcRegValues(level);
+	SEQ->REG0C0 &= 0xe0c03fff;
+  //SEQ->REG0C0 |= 0x3fc8 | (stripe << 0x18) | (slice  << 0xe);
+	SEQ->REG0C0 |= (bootstrap << 3) | (cascode << 6) | (stripe << 0x18) | (slice  << 0xe);
+	//RAC->SGPACTRL0 |= (bootstrap << 3) | (cascode << 6);
+	//apcConfigure(200);
+}
 
+void PA_CalcRegValues (uint8_t level)
+{
+	if(level > 201) bootstrap = 1;
+	else bootstrap = 0;
+	if (level <= 31)
+	{
+		cascode = 1;
+		slice = 1;
+		stripe = level;
+		return;
+	}
+	
+	if ((level > 31) && (level < 63))
+	{
+		cascode = 3;
+		slice = 3;
+		stripe = level - 31;
+		return;
+	}	
+
+	if ((level > 62) && (level < 94))
+	{
+		cascode = 7;
+		slice = 7;
+		stripe = level - 62;
+		return;
+	}
+
+	if ((level > 93) && (level < 125))
+	{
+		cascode = 15;
+		slice = 15;
+		stripe = level - 93;
+		return;
+	}	
+	
+	if ((level > 124) && (level < 156))
+	{
+		cascode = 31;
+		slice = 31;
+		stripe = level - 124;
+		return;
+	}
+	
+	if ((level > 155) && (level < 187))
+	{
+		cascode = 63;
+		slice = 63;
+		stripe = level - 155;
+		return;
+	}
+	
+	if ((level > 186) && (level < 218))
+	{
+		if(level < 202) cascode = 127;
+		else cascode = 255;
+		slice = 127;
+		stripe = level - 186;
+		return;
+	}
+	//if ((level > 217) 
+    cascode = 255;
+		slice = 255;
+		stripe = level - 217;
+}
 
 int32_t PA_OutputPowerGet(void)
 
@@ -126,7 +207,7 @@ void PA_PowerModeConfigSet(void)
 
 
 
-
+/*
 
 uint32_t PA_StripesAndSlicesSet(uint32_t param_1)
 
@@ -329,8 +410,8 @@ void PA_StripesAndSlicesCalc(int32_t pwr)
   return;
 }
 
-
-
+*/
+/*
 int32_t PA_OutputPowerSet(int32_t level)
 
 {
@@ -348,7 +429,7 @@ int32_t PA_MaxOutputPowerSet(void) //20 dBm
 	return gPaConfig.pwr;
 }
 
-
+*/
 
 void PA_APCEnable(void)
 
@@ -372,7 +453,7 @@ void PA_APCDisable(void)
 void PA_PeakDetectorHighRun(void)
 
 {
-  uint32_t uVar3;
+ /* uint32_t uVar3;
   
   uVar3 = SEQ->REG0C0 >> 1 & 0x1fc000;
 
@@ -394,7 +475,7 @@ void PA_PeakDetectorHighRun(void)
   }
   //RAC->IFC = 0x2000000; //25
 	BUS_RegMaskedSet(&RAC->IFC, RAC_IFC_PAVHIGH_Msk);
-	
+	*/
 }
 
 
@@ -403,7 +484,7 @@ void PA_PeakDetectorLowRun(void)
 {
   RAC->IEN &= 0xfbffffff; //bit 26 PAVLOW
 	BUS_RegMaskedClear(&RAC->IEN, RAC_IEN_PAVLOW_Msk);
-  SEQ->REG0C0 = peakDetectorOldSlices; //!!!!!!!
+  //SEQ->REG0C0 = peakDetectorOldSlices; //!!!!!!!
 }
 
 
