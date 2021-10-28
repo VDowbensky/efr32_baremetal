@@ -115,6 +115,7 @@ void PA_BatHighRun(void);
 void PA_SetPowerLevel(uint8_t level);
 
 
+extern uint8_t PA_Powerlevel;
 extern uint32_t bootstrap;
 extern uint32_t cascode;
 extern uint32_t slice;

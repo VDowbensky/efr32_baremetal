@@ -570,11 +570,6 @@
           <GroupName>radio</GroupName>
           <Files>
             <File>
-              <FileName>generic_phy.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\generic_phy.c</FilePath>
-            </File>
-            <File>
               <FileName>generic_seq.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\radio\src\generic_seq.c</FilePath>
@@ -585,34 +580,9 @@
               <FilePath>.\radio\src\pa.c</FilePath>
             </File>
             <File>
-              <FileName>phy_utils.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\phy_utils.c</FilePath>
-            </File>
-            <File>
               <FileName>protimer.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\radio\src\protimer.c</FilePath>
-            </File>
-            <File>
-              <FileName>rail_rf.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\rail_rf.c</FilePath>
-            </File>
-            <File>
-              <FileName>rail_rf_hal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\rail_rf_hal.c</FilePath>
-            </File>
-            <File>
-              <FileName>rail_rx.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\rail_rx.c</FilePath>
-            </File>
-            <File>
-              <FileName>rail_tx.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\rail_tx.c</FilePath>
             </File>
             <File>
               <FileName>rf_test.c</FileName>
@@ -625,6 +595,21 @@
               <FilePath>.\radio\src\synth.c</FilePath>
             </File>
             <File>
+              <FileName>radio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\radio\src\radio.c</FilePath>
+            </File>
+            <File>
+              <FileName>generic_phy.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\radio\src\generic_phy.c</FilePath>
+            </File>
+            <File>
+              <FileName>rail_rf_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\radio\src\rail_rf_hal.c</FilePath>
+            </File>
+            <File>
               <FileName>rail_callbacks.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\rail_callbacks.c</FilePath>
@@ -633,11 +618,6 @@
               <FileName>nibblebits.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\radio\src\nibblebits.c</FilePath>
-            </File>
-            <File>
-              <FileName>radio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\radio.c</FilePath>
             </File>
           </Files>
         </Group>

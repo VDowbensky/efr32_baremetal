@@ -30,5 +30,7 @@ uint32_t SYNTH_IfFreqCompute(void);
 void SYNTH_DCDCRetimeClkSet(int param_1);
 void SYNTH_RetimeLimitsConfig(uint32_t param_1);
 
+extern uint8_t Channel;
+
 #endif
 

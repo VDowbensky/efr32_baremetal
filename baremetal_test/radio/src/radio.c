@@ -8,7 +8,7 @@
 //#include "tempcal.h"
 #include "radio.h"
 //#include "radio_cmu.h"
-#include "phy_utils.h"
+//#include "phy_utils.h"
 #include "em_system.h"
 #include "pa.h"
 #include "rf_test.h"
@@ -79,13 +79,13 @@ uint32_t RADIO_UsToStimerTickCalc(uint32_t us)
 }
 
 
-
+/*
 void RADIO_Delay(uint32_t us)
 
 {
   PHY_UTILS_DelayUs(us);
 }
-
+*/
 
 
 void RADIO_BUFCWriteContSync_constprop_3(uint8_t *addr,int len)
@@ -401,20 +401,13 @@ bool RADIO_IsRxActive(void)
 
 
 
-
-
 void RADIO_RxBufferSet(int param_1)
 
 {
-  if (param_1 != 0)
-  {
-//    _DAT_43022d80 = 1; //BUFC->REG16C (!!!) bit 0
-  }
-//  bufcRxStreaming = 0;
-//  DAT_00010b7c = param_1;
+  if (param_1 != 0) BUS_RegMaskedSet(&BUFC->IEN,BUFC_IEN_BUF1THR_Msk); //0x400);
+  //bufcRxStreaming._0_2_ = 0;
+  //bufcRxStreaming._4_4_ = param_1;
 }
-
-
 
 uint32_t RADIO_RxBufferGet(void)
 

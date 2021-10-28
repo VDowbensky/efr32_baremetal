@@ -28,6 +28,8 @@ struct
 	
 }gPaConfig;
 
+	uint8_t PA_Powerlevel;
+	
 	uint32_t bootstrap = 0;
 	uint32_t cascode = 0;
 	uint32_t slice = 1;
@@ -200,7 +202,7 @@ void PA_RampConfigSet(uint32_t level,  uint16_t rate)
 int PA_RampTimeCalc(void)
 
 {
-  return ((MODEM_RAMPLEV2 - MODEM_RAMPLEV1 << MODEM_RAMPRATE2)/32) + ((MODEM_RAMPLEV1 - MODEM_RAMPLEV0 << MODEM_RAMPRATE1)/32) + ((MODEM_RAMPLEV0 << MODEM_RAMPRATE0)/32);
+  return (((MODEM_RAMPLEV2 - MODEM_RAMPLEV1) << MODEM_RAMPRATE2)/32) + (((MODEM_RAMPLEV1 - MODEM_RAMPLEV0) << MODEM_RAMPRATE1)/32) + ((MODEM_RAMPLEV0 << MODEM_RAMPRATE0)/32);
 }
 				 
 		 
@@ -208,48 +210,25 @@ int PA_RampTimeCalc(void)
 uint16_t PA_RampTimeSet(uint16_t ramptime)
 {
   uint32_t uVar1;
-  int iVar2;
   char cVar3;
   uint32_t uVar4;
   int local_18;
   int local_14;
   
-  //uVar4 = MODEM->CTRL0;
-  //gCurrentModulation = (uint8_t)((uVar4 << 0x17) >> 0x1d);
-	
 	//gCurrentModulation = (uint8_t)((MODEM->CTRL0 & MODEM_CTRL0_MODFORMAT_Msk) >> MODEM_CTRL0_MODFORMAT_Pos);
-	
   uVar4 = ((MODEM->CTRL0 & MODEM_CTRL0_MODFORMAT_Msk) >> MODEM_CTRL0_MODFORMAT_Pos) - 2 & 0xff;
 
   if ((uVar4 < 5) && ((1 << uVar4 & 0x13U) != 0)) uVar4 = 0;
-
-  else 
-	{
-    if (gPaConfig.pasel == PA_SEL_SUBGIG) uVar4 = 0x96;
-    else 
-		{
-      if (gPaConfig.pasel == PA_SEL_2P4_LP) uVar4 = 0x32;
-      else uVar4 = 0xb4;
-    }
-  }
+  else uVar4 = 0x96;
   //gDesiredRampTime = ramptime;
-  local_18 = ramptime;
-  uVar1 = SystemHFXOClockGet();
   cVar3 = -1;
-  for (uVar1 = (((uVar1 / 1000) * ramptime) / uVar4 << 5) / 1000; uVar1 != 0; uVar1 = uVar1 >> 1) cVar3 ++;
-
+  for (uVar1 = (((SystemHFXOClockGet() / 1000) * ramptime) / uVar4 << 5) / 1000; uVar1 != 0; uVar1 >>= 1) cVar3 ++;
   local_18 = (int32_t)cVar3;
-  if (local_18 < 0x10) 
-	{
-    if (local_18 < 0) local_18 = 0; 
-  }
-  else local_18 = 0xf;
-  local_18 = local_18 << 8;
+  if (local_18 >= 0x10) local_18 = 0xf;
+  if (local_18 < 0) local_18 = 0; 
+  local_18 <<= 8;
   local_14 = uVar4 << 0x10;
-  //PA_RampConfigSet(&local_18);
-	//PA_RampConfigSet(local_18, local_14); //????
 	PA_RampConfigSet(local_14, local_18);
-  //iVar2 = PA_RampTimeCalc();
   gPaConfig.rt = (uint16_t)((uint32_t)(PA_RampTimeCalc() * 10000) / (SystemHFXOClockGet() / 100));
   //TIMING_RecalculateAll();
   return gPaConfig.rt;
@@ -266,9 +245,6 @@ void PA_CTuneSet(uint8_t txPaCtuneValue, uint8_t rxPaCtuneValue)
 bool RADIO_PA_Init(RADIO_PAInit_t * paInit) //power config structure
 
 {
-  uint32_t uVar1;
-  bool papresent;
-  
   if (paInit != NULL)
 	{
 			gPaConfig.pasel = paInit->paSel;

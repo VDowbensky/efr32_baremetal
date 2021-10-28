@@ -22,7 +22,7 @@ void pktRxFrmErr(void);
 uint8_t RAIL_RfHalInit(const RAIL_Init_t *railInit);
 void RAIL_RfHalIdleStart(void);
 
-int RFHAL_HeadedToIdle(void);
+uint32_t RFHAL_HeadedToIdle(void);
 uint8_t RAIL_RfHalTxDataLoad(RAIL_TxData_t *txData);
 uint8_t RAIL_CcaCsma(void *params);
 uint8_t RAIL_CcaLbt(void *params);
@@ -52,6 +52,8 @@ void RFHAL_StopBerRx(void);
 void RFHAL_GetBerStatus (RAIL_BerStatus_t *status);
 
 RAIL_RadioState_t RAIL_RfHalStateGet(void);
+
+void PHY_UTILS_DelayUs(uint32_t us);
 
 
 #endif

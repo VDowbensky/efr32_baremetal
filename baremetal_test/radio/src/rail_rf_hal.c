@@ -84,7 +84,7 @@ void pktTxErrorEvt(void)
 void racStateChange(void)
 
 {
-  RAILCb_RadioStateChanged((RAC->STATUS << 4) >> 0x1c);
+  RAILCb_RadioStateChanged((RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos);
 }
 
 
@@ -248,6 +248,8 @@ void pktRxFrmErr(void)
 //  const uint32_t rfXtalFreq; /**< The xtal frequency of the radio. */
 //  RAIL_CalMask_t calEnable; /**< Mask that defines calibrations to perform in RAIL. */
 //} RAIL_Init_t;
+
+/*
 uint8_t RAIL_RfHalInit(const RAIL_Init_t *railInit)
 
 {
@@ -265,7 +267,7 @@ uint8_t RAIL_RfHalInit(const RAIL_Init_t *railInit)
   RAILCb_RfReady();
   return 0;
 }
-
+*/
 
 
 void RAIL_RfHalIdleStart(void)
@@ -286,6 +288,7 @@ void RAIL_RfHalIdleStart(void)
 //  RAIL_STATUS_INVALID_STATE,
 //} RAIL_Status_t;
 
+/*
 RAIL_RadioState_t RAIL_RfHalStateGet(void)
 
 {
@@ -334,9 +337,37 @@ RAIL_RadioState_t RAIL_RfHalStateGet(void)
 	}
 	return RAIL_RF_STATE_RX; //?????
 	}
+*/
+RAIL_RadioState_t RFHAL_StateGet(void)
 
+{
+  uint32_t state;
 
-
+  state = (RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos;
+//TX states: 0x0a,0x08,0x0b,0x0c,0x09
+//RX states: 0x07,0x01,0x02,0x04,0x03,0x05 
+  switch(state)
+  {
+	  case 0x01:
+	  case 0x02:
+	  case 0x03:
+	  case 0x04:
+	  case 0x05:
+	  case 0x07:
+	  return RAIL_RF_STATE_RX;
+	  
+	  case 0x08:
+	  case 0x09:
+	  case 0x0a:
+	  case 0x0b:
+	  case 0x0c:
+	  return RAIL_RF_STATE_TX;
+	  
+	  default:
+	  return RAIL_RF_STATE_IDLE;
+  }
+}
+/*
 int RFHAL_HeadedToIdle(void)
 
 {
@@ -368,6 +399,26 @@ int RFHAL_HeadedToIdle(void)
     iVar1 = 0;
   }
   return iVar1;
+}
+*/
+uint32_t RFHAL_HeadedToIdle(void)
+
+{
+  uint32_t state;
+  
+  INT_Disable();
+  if ((PROTIMER_CCTimerIsEnabled(3) == false) && (PROTIMER_LBTIsActive() == false)) 
+  {
+	state = (RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos;
+  INT_Enable();
+	if ((RAC->STATUS & (RAC_STATUS_RXENS_Msk | RAC_STATUS_TXENS_Msk)) || (state == 0x3) || (state == 0x6) || (state == 0x9) || (state == 0xc)) return 0;
+	else return 1;
+  }
+  else 
+  {
+    INT_Enable();
+    return 0;
+  }
 }
 
 
@@ -597,15 +648,15 @@ uint8_t RAIL_ScheduleTx(void *params)
 //undefined4 RAIL_RfHalTxStart(undefined4 param_1,code *UNRECOVERED_JUMPTABLE,undefined4 param_3)
 uint8_t RAIL_RfHalTxStart(uint8_t channel, RAIL_PreTxOp_t preTxOp, void *preTxOpParams)
 {
-  if (RAIL_DebugModeGet() != 1) 
-  {
+//  if (RAIL_DebugModeGet() != 1) 
+//  {
     do 
 		{
       if (RFHAL_HeadedToIdle() == 0) break;
     } while ((RAC->STATUS & 0xf000000) != 0);
     if ((RAC->STATUS & 0xf000000) != 0) return 2;
     GENERIC_PHY_ChannelSet(channel);
-  }
+//  }
  // if (UNRECOVERED_JUMPTABLE != NULL)
  // {
                     // WARNING: Could not recover jumptable at 0x000105e8. Too many branches
@@ -622,15 +673,12 @@ uint8_t RAIL_RfHalTxStart(uint8_t channel, RAIL_PreTxOp_t preTxOp, void *preTxOp
 uint8_t RAIL_RfHalRxStart(uint8_t channel)
 {
   if ((RAC->RXENSRCEN & 0xff) == 0) RADIO_RxBufferReset();
-  if (RAIL_DebugModeGet() != 1) 
-	{
     do 
 		{ 
       if (RFHAL_HeadedToIdle() == 0) break;
     } while ((RAC->STATUS & 0xf000000) != 0);
     if ((RAC->STATUS & 0xf000000) != 0) return 2; 
-    GENERIC_PHY_ChannelSet(channel);
-  }
+  GENERIC_PHY_ChannelSet(channel);
   GENERIC_PHY_StartRx(0);
   return 0;
 }
@@ -667,16 +715,17 @@ RAIL_Status_t RAIL_RfHalErrorConfig(RAIL_RadioState_t errors)
   return RAIL_STATUS_NO_ERROR;
 }
 
-
+/*
 
 uint32_t RAIL_RfHalSetChannelConfig(int param_1)
 
 {
-  if (RAIL_DebugModeGet() != 1) SYNTH_Config(*(uint32_t *)(param_1 + 8),*(uint32_t *)(param_1 + 4));
+  //if (RAIL_DebugModeGet() != 1) 
+	SYNTH_Config(*(uint32_t *)(param_1 + 8),*(uint32_t *)(param_1 + 4));
   return 0;
 }
 
-
+*/
 /**
  * Set the PA capacitor tune value for transmit and receive
  *
@@ -754,9 +803,6 @@ uint32_t RAIL_TimerGet(void)
 void RAIL_TimerCancel(void)
 
 {
-  uint32_t extraout_r1;
-  uint32_t in_r3;
-  
   GENERIC_PHY_TimerStop();
   _enabledCallbacks = _enabledCallbacks & 0xffefffff;
   GENERIC_PHY_ConfigureCallbacks(_enabledCallbacks);
@@ -775,14 +821,7 @@ void RAIL_TimerCancel(void)
 bool RAIL_TimerExpired(void)
 
 {
-//  uint8_t bVar1;
-//  int iVar2;
-  
-//  iVar2 = GENERIC_PHY_TimerExpired();
-//  bVar1 = timerExpired;
-//  if (GENERIC_PHY_TimerExpired() != 0) bVar1 = 1;
-//  return bVar1 & 1;
-	return (GENERIC_PHY_TimerExpired() != 0);
+	return GENERIC_PHY_TimerExpired();
 }
 
 
@@ -799,7 +838,25 @@ bool RAIL_TimerIsRunning(void)
   return GENERIC_PHY_TimerIsRunning();
 }
 
+void PHY_UTILS_DelayUs(uint32_t us)
 
+{
+  bool tmp; 
+	
+	tmp = PROTIMER_IsRunning();
+	if (tmp == false) 
+  {
+    PROTIMER_Init();
+    PROTIMER_Start();
+  }
+  PROTIMER_DelayUs(us);
+  if (tmp == false)
+  {
+    PROTIMER_Stop();
+    PROTIMER_Reset();
+    return;
+  }
+}
 /**
  * Return the symbol rate for the current PHY
  *
@@ -948,16 +1005,7 @@ RAIL_Status_t RAIL_RfHalSetTxTransitions(RAIL_RadioState_t success,RAIL_RadioSta
 {
   SEQ->REG000 = 1 << (success + 0x10U & 0xff) | (uint32_t)SEQ->REG000 | 1 << (error + 0x18U & 0xff);
   return RAIL_STATUS_NO_ERROR;
-	
-//	  ushort uVar1;
-  
-//  uVar1 = read_volatile_2(Peripherals::SEQ.REG00C._0_2_);
-//  write_volatile_4(Peripherals::SEQ.REG00C,1 << (success + 0x10 & 0xff) | (uint)uVar1 | 1 << (error + 0x18 & 0xff));
-//  return RAIL_STATUS_NO_ERROR;
 }
-
-
-
 
 
 RAIL_Status_t RAIL_RfHalSetRxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t error)

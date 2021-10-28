@@ -636,9 +636,8 @@ void GENERIC_PHY_StartRx(int param_1)
 //	  	  	  	 RADIO_RxBufferSet();
 //		  }
   *(uint32_t*)0x21000efc = *(uint32_t*)0x21000efc  & 0xffffffdf;
-	BUS_RegMaskedSet(&RAC->RXENSRCEN, 2);
+//	BUS_RegMaskedSet(&RAC->RXENSRCEN, 2);
 }
-
 
 
 void GENERIC_PHY_ChannelSet(uint16_t ch)
