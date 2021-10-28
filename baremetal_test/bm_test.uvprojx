@@ -570,29 +570,9 @@
           <GroupName>radio</GroupName>
           <Files>
             <File>
-              <FileName>generic_phy.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\generic_phy.c</FilePath>
-            </File>
-            <File>
               <FileName>generic_seq.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\radio\src\generic_seq.c</FilePath>
-            </File>
-            <File>
-              <FileName>if_adc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\if_adc.c</FilePath>
-            </File>
-            <File>
-              <FileName>ir_cal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\ir_cal.c</FilePath>
-            </File>
-            <File>
-              <FileName>lna.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\lna.c</FilePath>
             </File>
             <File>
               <FileName>pa.c</FileName>
@@ -600,74 +580,9 @@
               <FilePath>.\radio\src\pa.c</FilePath>
             </File>
             <File>
-              <FileName>aux_pll.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\aux_pll.c</FilePath>
-            </File>
-            <File>
-              <FileName>phy.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\phy.c</FilePath>
-            </File>
-            <File>
-              <FileName>phy_utils.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\phy_utils.c</FilePath>
-            </File>
-            <File>
               <FileName>protimer.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\radio\src\protimer.c</FilePath>
-            </File>
-            <File>
-              <FileName>radio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\radio.c</FilePath>
-            </File>
-            <File>
-              <FileName>radio_cmu.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\radio_cmu.c</FilePath>
-            </File>
-            <File>
-              <FileName>RADIO_pti.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\RADIO_pti.c</FilePath>
-            </File>
-            <File>
-              <FileName>rail_calibration.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\rail_calibration.c</FilePath>
-            </File>
-            <File>
-              <FileName>rail_diagnostic.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\rail_diagnostic.c</FilePath>
-            </File>
-            <File>
-              <FileName>rail_rf.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\rail_rf.c</FilePath>
-            </File>
-            <File>
-              <FileName>rail_rf_hal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\rail_rf_hal.c</FilePath>
-            </File>
-            <File>
-              <FileName>rail_rx.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\rail_rx.c</FilePath>
-            </File>
-            <File>
-              <FileName>rail_tx.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\rail_tx.c</FilePath>
-            </File>
-            <File>
-              <FileName>rf_rand.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\rf_rand.c</FilePath>
             </File>
             <File>
               <FileName>rf_test.c</FileName>
@@ -675,24 +590,24 @@
               <FilePath>.\radio\src\rf_test.c</FilePath>
             </File>
             <File>
-              <FileName>rfsense.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\rfsense.c</FilePath>
-            </File>
-            <File>
-              <FileName>rtccsync.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\rtccsync.c</FilePath>
-            </File>
-            <File>
               <FileName>synth.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\radio\src\synth.c</FilePath>
             </File>
             <File>
-              <FileName>tempcal.c</FileName>
+              <FileName>radio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\radio\src\tempcal.c</FilePath>
+              <FilePath>.\radio\src\radio.c</FilePath>
+            </File>
+            <File>
+              <FileName>generic_phy.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\radio\src\generic_phy.c</FilePath>
+            </File>
+            <File>
+              <FileName>rail_rf_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\radio\src\rail_rf_hal.c</FilePath>
             </File>
             <File>
               <FileName>rail_callbacks.c</FileName>

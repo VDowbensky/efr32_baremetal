@@ -9,10 +9,10 @@ volatile uint8_t RADIO_rxLengthBuffer[RADIO_BUFFER_SIZE];
 uint8_t txpactune;
 uint8_t rxpactune;
 
-const uint32_t generated_phyInfo[] = {
-  0UL,
-  0x00100000UL, // 16.0
-};
+//const uint32_t generated_phyInfo[] = {
+//  0UL,
+//  0x00100000UL, // 16.0
+//};
 
 void init_radio(void)
 {
@@ -61,9 +61,6 @@ void init_radio(void)
   MODEM->DCCOMP |= MODEM_DCCOMP_DCCOMPEN_Msk | MODEM_DCCOMP_DCESTIEN_Msk; //3; 
   RAC->SR3 = 0;
   RADIO_DccalEnable();
-  //RAC->CTRL |= 0x80; //RAC_CTRL_ACTIVEPOL_Msk 
-  //RAC->CTRL |= 0x00010000; //bit 8 0x100 RAC_CTRL_PAENPOL_Msk
-  //RAC->CTRL |= 0x00040000; //bit 9 0x200 RAC_CTRL_LNAENPOL_Msk
   BUS_RegMaskedSet(&RAC->CTRL, RAC_CTRL_ACTIVEPOL_Msk | RAC_CTRL_PAENPOL_Msk | 	RAC_CTRL_LNAENPOL_Msk);
 	
   NVIC_ClearPendingIRQ(SYNTH_IRQn);
@@ -116,7 +113,7 @@ void init_radio(void)
 //changeRadioConfig
 
 
-	SEQ->PHYINFO = 	(uint32_t) &generated_phyInfo;
+	//SEQ->PHYINFO = 	(uint32_t) &generated_phyInfo;
 	//misc.
 	//channel BW
 	SEQ->MISC = 0x00000000;
@@ -124,7 +121,6 @@ void init_radio(void)
 	SEQ->SYNTHLPFCTRLTX = 0x0003C002;	
   //RAC
   RAC->VCOCTRL = 0x0F00277A; //27,26,25,24,13,10,9,8,6,5,4,3,1
-  //RAC->RFENCTRL = 0x00001020; //12,5 RAC_RFENCTRL_DEMEN_Msk | RAC_RFENCTRL_IFADCCAPRESET_Msk
 	RAC->RFENCTRL = RAC_RFENCTRL_DEMEN_Msk | RAC_RFENCTRL_IFADCCAPRESET_Msk;
   RAC->LNAMIXCTRL1 = 0x00000880; //11,7 trim values
   RAC->IFPGACTRL = 0x000087F6; //15,10,9,8,7,6,5,4,2,1 bandsel & trim values
@@ -253,8 +249,9 @@ painit.power = 100; //100
 painit.offset = 0;
 painit.rampTime = 10;
 RADIO_PA_Init(&painit);
-//PA_OutputPowerSet(150);
-PA_SetPowerLevel(200);
+PA_Powerlevel = 100;
+PA_SetPowerLevel(PA_Powerlevel);
+
 uint32_t tmp;
 tmp = *(uint32_t *) (DEVID_ADDR + 0x104);
 
@@ -315,5 +312,21 @@ void BM_TxOff(void)
 	RAC->CTRL = 0;
 }
 
+void RAIL_SetTune(uint32_t tune)
 
+{
+  CMU_ClockSelectSet(0x11,5);
+  CMU_OscillatorEnable(2,0,0);
+	BUS_RegMaskedClear(&CMU->HFXOSTEADYSTATECTRL, _CMU_HFXOSTEADYSTATECTRL_CTUNE_MASK);
+	CMU->HFXOSTEADYSTATECTRL |= (tune & 0x1ff) << _CMU_HFXOSTEADYSTATECTRL_CTUNE_SHIFT;
+  CMU_OscillatorEnable(2,1,1);
+  CMU_ClockSelectSet(0x11,4);
+}
+
+
+uint32_t RAIL_GetTune(void)
+
+{
+	return (CMU->HFXOSTEADYSTATECTRL & _CMU_HFXOSTEADYSTATECTRL_CTUNE_MASK) >> _CMU_HFXOSTEADYSTATECTRL_CTUNE_SHIFT;
+}
 

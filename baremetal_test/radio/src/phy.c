@@ -43,6 +43,8 @@ uint16_t validateSetTiming(uint16_t *timing)
  * The radioConfig passed into this function should be generated for you, and
  * not created or edited by hand.
  */
+
+/*
 uint8_t RAIL_RadioConfig(void *radioConfig) //currently not used
 
 {
@@ -50,7 +52,7 @@ uint8_t RAIL_RadioConfig(void *radioConfig) //currently not used
   forceIrCal = true;
   return 0;
 }
-
+*/
 /**
  * Configure the channels supported by this device
  *

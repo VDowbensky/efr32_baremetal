@@ -161,18 +161,20 @@ void cli_getver(int argc, char **argv)
 
 void cli_getchannel(int argc, char **argv)
 {
-	printf("GET_CHANNEL: Under development\r\n");
-	printf("GET_CHANNEL: 0\r\n");
+	//printf("GET_CHANNEL: Under development\r\n");
+	printf("GET_CHANNEL: %d\r\n", Channel);
 }
 
 void cli_setchannel(int argc, char **argv)
 {
 	uint16_t ch;
 	ch = ciGetUnsigned(argv[1]);
-	if(ch > 1023) ch = 1023;
-	printf("SET_CHANNEL: Under development\r\n");
-	//set  actual channel here
-	printf("SET_CHANNEL: %d\r\n", ch);
+	if(ch > 63) ch = 63;
+	//printf("SET_CHANNEL: Under development\r\n");
+	//set  actual channel here. 
+	Channel = ch;
+	SYNTH_ChannelSet(ch,0);
+	printf("SET_CHANNEL: %d\r\n", Channel);
 }
 
 void cli_getpower(int argc, char **argv)
@@ -195,32 +197,32 @@ void cli_setpower(int argc, char **argv)
 
 void cli_getpowerlevel(int argc, char **argv)
 {
-	printf("GET_POWERLEVEL: Under development\r\n");
-	printf("GET_POWERLEVEL: 0\r\n");
+	printf("GET_POWERLEVEL: %d\r\n", PA_Powerlevel);
 }
 
 void cli_setpowerlevel(int argc, char **argv)
 {
 	uint32_t p;
-	printf("SET_POWERLEVEL: Under development\r\n");
 	p = ciGetUnsigned(argv[1]);
+	if(p == 0) p = 1;
 	if(p > 248) p = 248;
 	if(txmode != 0) 
 	{
 		RFTEST_StopTx();
 		PHY_UTILS_DelayUs(100);
 	}
-	PA_SetPowerLevel(p);
+	PA_Powerlevel = p;
+	PA_SetPowerLevel(PA_Powerlevel);
 	if(txmode == 1) RFTEST_StartCwTx();
-	if(txmode == 1) RFTEST_StartStreamTx();
-	printf("SET_POWERLEVEL: %d\r\n", p);
+	if(txmode == 2) RFTEST_StartStreamTx();
+	printf("SET_POWERLEVEL: %d\r\n", PA_Powerlevel);
 	
 }
 
 void cli_getrssi(int argc, char **argv)
 {
 	printf("GET_RSSI: Under development\r\n");
-	printf("GET_RSSI: -200 dBm\r\n");
+	printf("GET_RSSI: %.2f dBm\r\n",(float)RADIO_GetRSSI()/4);
 }
 
 void cli_getrssioffset(int argc, char **argv)
@@ -256,7 +258,7 @@ void cli_setctune(int argc, char **argv)
 	//printf("SET_CTUNE: Under development\r\n");
 	t = ciGetUnsigned(argv[1]);
 	if(t > 511) t = 511;
-	RAIL_RfIdle();
+	RAIL_RfHalIdleStart();
 	RAIL_SetTune(t);
 	printf("SET_CTUNE: %d\r\n", t);
 }
@@ -323,8 +325,8 @@ void cli_txstream(int argc, char **argv)
 		break;
 		
 		case 1:
-			RAIL_RfIdle();
-			SYNTH_Config(868000000, 100000);
+			RAIL_RfHalIdleStart();
+			//SYNTH_Config(868000000, 100000);
 			PHY_UTILS_DelayUs(10);
 			RFTEST_SaveRadioConfiguration();
 			RFTEST_StartCwTx();
@@ -333,8 +335,8 @@ void cli_txstream(int argc, char **argv)
 		break;
 		
 		case 2:
-			RAIL_RfIdle();
-			SYNTH_Config(868000000, 100000);
+			RAIL_RfHalIdleStart();
+			//SYNTH_Config(868000000, 100000);
 			PHY_UTILS_DelayUs(10);
 			RFTEST_SaveRadioConfiguration();
 			RFTEST_StartStreamTx();

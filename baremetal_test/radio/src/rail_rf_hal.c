@@ -7,16 +7,16 @@
 #include "em_assert.h"
 #include "rail_rf_hal.h"
 #include "rf_test.h"
-#include "ir_cal.h"
+//#include "ir_cal.h"
 #include "generic_phy.h"
 #include "protimer.h"
-#include "tempcal.h"
-#include "rfsense.h"
+//#include "tempcal.h"
+//#include "rfsense.h"
 #include "pa.h"
 #include "radio.h"
-#include "radio_pti.h"
+//#include "radio_pti.h"
 #include "synth.h"
-#include "rail_calibration.h"
+//#include "rail_calibration.h"
 
 void pktTxDoneEvt(uint32_t param_1,RAIL_TxPacketInfo_t param_2,uint32_t param_3)
 
@@ -65,11 +65,11 @@ void sequencerInterrupt(int param_1)
 
 
 
-void RAIL_RFSENSE_Callback(void)
+//void RAIL_RFSENSE_Callback(void)
 
-{
-  RAILCb_RxRadioStatus(0x80);
-}
+//{
+//  RAILCb_RxRadioStatus(0x80);
+//}
 
 
 
@@ -84,7 +84,7 @@ void pktTxErrorEvt(void)
 void racStateChange(void)
 
 {
-  RAILCb_RadioStateChanged((RAC->STATUS << 4) >> 0x1c);
+  RAILCb_RadioStateChanged((RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos);
 }
 
 
@@ -102,7 +102,7 @@ void softwareTimerExpired(void)
 void racCalRequest(void)
 
 {
-  RAIL_RfHalCalibrationPend(1);
+  //RAIL_RfHalCalibrationPend(1);
 }
 
 
@@ -117,7 +117,7 @@ void protmrLbtEvt(int param_1)
   PROTIMER_CCTimerStop(4);
   if(param_1 & 0x00400000)
   {
-    RADIO_PTI_AuxdataOutput(0x27);
+    //RADIO_PTI_AuxdataOutput(0x27);
     GENERIC_PHY_FlushTxPacketBuffer();
     if ((SEQ->REG000 & 0xff000000) == 0x2000000)
     {
@@ -130,7 +130,7 @@ LAB_000100fc:
   //if (param_1 << 0xb < 0)
 	  if(param_1 & 0x00100000)
   {
-    RADIO_PTI_AuxdataOutput(0x28);
+    //RADIO_PTI_AuxdataOutput(0x28);
     return;
   }
   //if (param_1 << 0x13 < 0)
@@ -139,7 +139,7 @@ LAB_000100fc:
     PROTIMER_LBTStop();
     if ((PROTIMER->IF & 0x500000) == 0)
     {
-      RADIO_PTI_AuxdataOutput(0x2a);
+      //RADIO_PTI_AuxdataOutput(0x2a);
       GENERIC_PHY_FlushTxPacketBuffer();
       goto LAB_000100fc;
     }
@@ -248,6 +248,8 @@ void pktRxFrmErr(void)
 //  const uint32_t rfXtalFreq; /**< The xtal frequency of the radio. */
 //  RAIL_CalMask_t calEnable; /**< Mask that defines calibrations to perform in RAIL. */
 //} RAIL_Init_t;
+
+/*
 uint8_t RAIL_RfHalInit(const RAIL_Init_t *railInit)
 
 {
@@ -258,14 +260,14 @@ uint8_t RAIL_RfHalInit(const RAIL_Init_t *railInit)
   GENERIC_PHY_Init();
   //_enabledCallbacks = _enabledCallbacks & 0xff000000 | (uint)(uint3)((uint3)_enabledCallbacks | 7) | 0x80000;
 	_enabledCallbacks = _enabledCallbacks & 0xff000000 | (uint32_t) (_enabledCallbacks | 7) | 0x80000;
-  iVar1 = RAIL_RfHalCalibrationEnableGet();
-  if (iVar1 << 0x1f < 0) _enabledCallbacks = _enabledCallbacks | 0x10000;
+  //iVar1 = RAIL_RfHalCalibrationEnableGet();
+  //if (iVar1 << 0x1f < 0) _enabledCallbacks = _enabledCallbacks | 0x10000;
 //  GENERIC_PHY_SetCallbacks(&_enabledCallbacks);
 //  GENERIC_PHY_ConfigureCallbacks(_enabledCallbacks);
   RAILCb_RfReady();
   return 0;
 }
-
+*/
 
 
 void RAIL_RfHalIdleStart(void)
@@ -286,6 +288,7 @@ void RAIL_RfHalIdleStart(void)
 //  RAIL_STATUS_INVALID_STATE,
 //} RAIL_Status_t;
 
+/*
 RAIL_RadioState_t RAIL_RfHalStateGet(void)
 
 {
@@ -334,9 +337,37 @@ RAIL_RadioState_t RAIL_RfHalStateGet(void)
 	}
 	return RAIL_RF_STATE_RX; //?????
 	}
+*/
+RAIL_RadioState_t RFHAL_StateGet(void)
 
+{
+  uint32_t state;
 
-
+  state = (RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos;
+//TX states: 0x0a,0x08,0x0b,0x0c,0x09
+//RX states: 0x07,0x01,0x02,0x04,0x03,0x05 
+  switch(state)
+  {
+	  case 0x01:
+	  case 0x02:
+	  case 0x03:
+	  case 0x04:
+	  case 0x05:
+	  case 0x07:
+	  return RAIL_RF_STATE_RX;
+	  
+	  case 0x08:
+	  case 0x09:
+	  case 0x0a:
+	  case 0x0b:
+	  case 0x0c:
+	  return RAIL_RF_STATE_TX;
+	  
+	  default:
+	  return RAIL_RF_STATE_IDLE;
+  }
+}
+/*
 int RFHAL_HeadedToIdle(void)
 
 {
@@ -368,6 +399,26 @@ int RFHAL_HeadedToIdle(void)
     iVar1 = 0;
   }
   return iVar1;
+}
+*/
+uint32_t RFHAL_HeadedToIdle(void)
+
+{
+  uint32_t state;
+  
+  INT_Disable();
+  if ((PROTIMER_CCTimerIsEnabled(3) == false) && (PROTIMER_LBTIsActive() == false)) 
+  {
+	state = (RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos;
+  INT_Enable();
+	if ((RAC->STATUS & (RAC_STATUS_RXENS_Msk | RAC_STATUS_TXENS_Msk)) || (state == 0x3) || (state == 0x6) || (state == 0x9) || (state == 0xc)) return 0;
+	else return 1;
+  }
+  else 
+  {
+    INT_Enable();
+    return 0;
+  }
 }
 
 
@@ -597,15 +648,15 @@ uint8_t RAIL_ScheduleTx(void *params)
 //undefined4 RAIL_RfHalTxStart(undefined4 param_1,code *UNRECOVERED_JUMPTABLE,undefined4 param_3)
 uint8_t RAIL_RfHalTxStart(uint8_t channel, RAIL_PreTxOp_t preTxOp, void *preTxOpParams)
 {
-  if (RAIL_DebugModeGet() != 1) 
-  {
+//  if (RAIL_DebugModeGet() != 1) 
+//  {
     do 
 		{
       if (RFHAL_HeadedToIdle() == 0) break;
     } while ((RAC->STATUS & 0xf000000) != 0);
     if ((RAC->STATUS & 0xf000000) != 0) return 2;
     GENERIC_PHY_ChannelSet(channel);
-  }
+//  }
  // if (UNRECOVERED_JUMPTABLE != NULL)
  // {
                     // WARNING: Could not recover jumptable at 0x000105e8. Too many branches
@@ -622,15 +673,12 @@ uint8_t RAIL_RfHalTxStart(uint8_t channel, RAIL_PreTxOp_t preTxOp, void *preTxOp
 uint8_t RAIL_RfHalRxStart(uint8_t channel)
 {
   if ((RAC->RXENSRCEN & 0xff) == 0) RADIO_RxBufferReset();
-  if (RAIL_DebugModeGet() != 1) 
-	{
     do 
 		{ 
       if (RFHAL_HeadedToIdle() == 0) break;
     } while ((RAC->STATUS & 0xf000000) != 0);
     if ((RAC->STATUS & 0xf000000) != 0) return 2; 
-    GENERIC_PHY_ChannelSet(channel);
-  }
+  GENERIC_PHY_ChannelSet(channel);
   GENERIC_PHY_StartRx(0);
   return 0;
 }
@@ -667,16 +715,17 @@ RAIL_Status_t RAIL_RfHalErrorConfig(RAIL_RadioState_t errors)
   return RAIL_STATUS_NO_ERROR;
 }
 
-
+/*
 
 uint32_t RAIL_RfHalSetChannelConfig(int param_1)
 
 {
-  if (RAIL_DebugModeGet() != 1) SYNTH_Config(*(uint32_t *)(param_1 + 8),*(uint32_t *)(param_1 + 4));
+  //if (RAIL_DebugModeGet() != 1) 
+	SYNTH_Config(*(uint32_t *)(param_1 + 8),*(uint32_t *)(param_1 + 4));
   return 0;
 }
 
-
+*/
 /**
  * Set the PA capacitor tune value for transmit and receive
  *
@@ -754,9 +803,6 @@ uint32_t RAIL_TimerGet(void)
 void RAIL_TimerCancel(void)
 
 {
-  uint32_t extraout_r1;
-  uint32_t in_r3;
-  
   GENERIC_PHY_TimerStop();
   _enabledCallbacks = _enabledCallbacks & 0xffefffff;
   GENERIC_PHY_ConfigureCallbacks(_enabledCallbacks);
@@ -775,14 +821,7 @@ void RAIL_TimerCancel(void)
 bool RAIL_TimerExpired(void)
 
 {
-//  uint8_t bVar1;
-//  int iVar2;
-  
-//  iVar2 = GENERIC_PHY_TimerExpired();
-//  bVar1 = timerExpired;
-//  if (GENERIC_PHY_TimerExpired() != 0) bVar1 = 1;
-//  return bVar1 & 1;
-	return (GENERIC_PHY_TimerExpired() != 0);
+	return GENERIC_PHY_TimerExpired();
 }
 
 
@@ -799,7 +838,25 @@ bool RAIL_TimerIsRunning(void)
   return GENERIC_PHY_TimerIsRunning();
 }
 
+void PHY_UTILS_DelayUs(uint32_t us)
 
+{
+  bool tmp; 
+	
+	tmp = PROTIMER_IsRunning();
+	if (tmp == false) 
+  {
+    PROTIMER_Init();
+    PROTIMER_Start();
+  }
+  PROTIMER_DelayUs(us);
+  if (tmp == false)
+  {
+    PROTIMER_Stop();
+    PROTIMER_Reset();
+    return;
+  }
+}
 /**
  * Return the symbol rate for the current PHY
  *
@@ -861,24 +918,24 @@ uint32_t RAIL_BitRateGet(void)
  *          85 degrees Celsius. RF Sense should be disabled
  *          outside this Temperature range.
  */
-uint32_t RAIL_RfSense(RAIL_RfSenseBand_t band, uint32_t senseTime, bool enableCb)
+//uint32_t RAIL_RfSense(RAIL_RfSenseBand_t band, uint32_t senseTime, bool enableCb)
 
-{
+//{
  // code *local_14;
   //undefined4 local_10;
   //uint local_c;
   
 //  local_14 = RAIL_RFSENSE_Callback;
-  if (enableCb == false)
-  {
+//  if (enableCb == false)
+//  {
 //    local_14 = NULL;
-  }
+//  }
   //local_c._0_2_ = CONCAT11(1,band);
   //local_c = param_4 & 0xffff0000 | (uint)(ushort)local_c;
   //local_10 = senseTime;
 //  RFSENSE_Init(&local_14);
-  return 0;
-}
+//  return 0;
+//}
 
 
 /**
@@ -891,11 +948,11 @@ uint32_t RAIL_RfSense(RAIL_RfSenseBand_t band, uint32_t senseTime, bool enableCb
  * set to false. It is generally used after EM4 reboot, but can be used any
  * time.
  */
-bool RAIL_RfSensed(void)
+//bool RAIL_RfSensed(void)
 
-{
-  return RFSENSE_Sensed();
-}
+//{
+//  return RFSENSE_Sensed();
+//}
 
 
 
@@ -917,7 +974,7 @@ void RAIL_DebugCbConfig(uint32_t cbToEnable)
 }
 
 
-
+/*
 void RAIL_RfHalCalibrationRun(int *param_1,int param_2)
 
 {
@@ -939,7 +996,7 @@ void RAIL_RfHalCalibrationRun(int *param_1,int param_2)
   return;
 }
 
-
+*/
 
 
 
@@ -948,16 +1005,7 @@ RAIL_Status_t RAIL_RfHalSetTxTransitions(RAIL_RadioState_t success,RAIL_RadioSta
 {
   SEQ->REG000 = 1 << (success + 0x10U & 0xff) | (uint32_t)SEQ->REG000 | 1 << (error + 0x18U & 0xff);
   return RAIL_STATUS_NO_ERROR;
-	
-//	  ushort uVar1;
-  
-//  uVar1 = read_volatile_2(Peripherals::SEQ.REG00C._0_2_);
-//  write_volatile_4(Peripherals::SEQ.REG00C,1 << (success + 0x10 & 0xff) | (uint)uVar1 | 1 << (error + 0x18 & 0xff));
-//  return RAIL_STATUS_NO_ERROR;
 }
-
-
-
 
 
 RAIL_Status_t RAIL_RfHalSetRxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t error)

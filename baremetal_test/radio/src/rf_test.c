@@ -9,9 +9,6 @@
 uint32_t rfparamsfbuffer[20] = {};
 uint8_t testModeRegisterState;
 
-static const uint8_t nibblebits[] = { 0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4 };
-
-
 uint32_t berSkipBytesLeft;
 uint32_t berTotalBytesLeft;
 uint32_t berTotalErrors;

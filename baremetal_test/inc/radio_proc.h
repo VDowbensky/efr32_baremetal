@@ -11,7 +11,7 @@
 #include "rf_test.h"
 #include "pa.h"
 #include "phy.h"
-#include "rail_rf.h"
+//#include "rail_rf.h"
 
 #include "em_device.h"
 #include "em_cmu.h"
@@ -19,9 +19,9 @@
 #include "generic_seq.h"
 #include "protimer.h"
 #include "synth.h"
-#include "phy_utils.h"
+//#include "phy_utils.h"
 #include "mcu_memory.h"
-#include "rail_rx.h"
+//#include "rail_rx.h"
 
 void init_radio(void);
 

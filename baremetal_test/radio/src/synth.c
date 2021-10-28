@@ -10,6 +10,8 @@ uint32_t currIfFrequency;
 uint32_t currChSpacing;
 uint8_t vcoGainPte;
 
+uint8_t Channel = 0;
+
 uint32_t dcdcRetimeClkTarget;
 
 
