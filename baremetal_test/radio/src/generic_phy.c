@@ -8,13 +8,13 @@
 #include "protimer.h"
 #include "pa.h"
 #include "radio.h"
-#include "RADIO_pti.h"
+//#include "RADIO_pti.h"
 #include "generic_seq.h"
-#include "tempcal.h"
+//#include "tempcal.h"
 #include "synth.h"
-#include "rf_rand.h"
+//#include "rf_rand.h"
 #include "em_cmu.h"
-#include "radio_cmu.h"
+//#include "radio_cmu.h"
 
 
 uint32_t currentCallbacks[] = {};
@@ -723,7 +723,7 @@ void GENERIC_PHY_RACConfig(void)
   RAC->SR0 = 0;
   RAC->SR1 = 0;
   RAC->SR2 = 0;
-  TEMPCAL_Init();
+  //TEMPCAL_Init();
   RADIO_RxSearchTimeSet(0);
   RADIO_TxToRxSearchTimeSet(0);
   RADIO_RxWarmTimeSet(100);
@@ -751,7 +751,7 @@ void GENERIC_PHY_DirectModeConfig(uint8_t *param_1)
   
   if (param_1 != NULL)
   {
-    RADIOCMU_ClockEnable(0x67400,1);
+    CMU_ClockEnable(0x67400,1);
     CMU_ClockEnable(0x82500,1);
     uVar2 = (uint32_t)*param_1;
     uVar1 = MODEM->CTRL2;
@@ -954,7 +954,7 @@ void GENERIC_PHY_Init(void)
   GENERIC_PHY_RACConfig();
   FRC->TRAILRXDATA = 0x1b;
   FRC->RXCTRL = 0x60;
-  RADIO_PTI_Enable();
+  //RADIO_PTI_Enable();
   if (RAC->CTRL & 0x01) BUS_RegMaskedClear(&RAC->CTRL, 1);
   RADIO_RegisterIrqCallback(1,GENERIC_PHY_FRC_IRQCallback);
   RADIO_RegisterIrqCallback(2,GENERIC_PHY_MODEM_IRQCallback);

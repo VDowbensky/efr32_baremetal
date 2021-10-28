@@ -1,11 +1,12 @@
-#include "pti.h"
+//#include "pti.h"
 #include "protimer.h"
 #include <stdbool.h>
 #include "em_bus.h"
+#include "em_cmu.h"
 #include "em_assert.h"
 #include "em_int.h"
-#include "radio_cmu.h"
-#include "RADIO_pti.h"
+//#include "radio_cmu.h"
+//#include "RADIO_pti.h"
 #include "radio.h"
 
 
@@ -193,7 +194,7 @@ uint32_t PROTIMER_GetCCTime(int num)
 void PROTIMER_LBTStart(void)
 
 {
-  RADIO_PTI_AuxdataOutput(0x21);
+  //RADIO_PTI_AuxdataOutput(0x21);
 	BUS_RegMaskedSet(&PROTIMER->CMD, PROTIMER_CMD_LBTSTART_Msk); 
 }
 
@@ -201,7 +202,7 @@ void PROTIMER_LBTStart(void)
 void PROTIMER_LBTPause(void)
 
 {
-  RADIO_PTI_AuxdataOutput(0x23);
+  //RADIO_PTI_AuxdataOutput(0x23);
 	BUS_RegMaskedSet(&PROTIMER->CMD, 0x0200);
 }
 
@@ -212,7 +213,7 @@ void PROTIMER_LBTPause(void)
 void PROTIMER_LBTStop(void)
 
 {
-  RADIO_PTI_AuxdataOutput(0x22);
+  //RADIO_PTI_AuxdataOutput(0x22);
   INT_Disable();
 	PROTIMER->CMD |= PROTIMER_CMD_LBTSTOP_Msk;
 	BUS_RegMaskedSet(&PROTIMER->CMD, PROTIMER_CMD_LBTSTOP_Msk);
@@ -270,9 +271,9 @@ uint32_t PROTIMER_UsToPrecntOverflow(uint32_t us)
 void PROTIMER_Init(void)
 
 {
-  RADIOCMU_ClockEnable(0x60400, true);
+  CMU_ClockEnable(0x60400, true);
   PROTIMER->CTRL = 0x11100;
-  ratio = 2*((float)RADIOCMU_ClockFreqGet(0x60400))/1000000;
+  ratio = 2*((float)CMU_ClockFreqGet(0x60400))/1000000;
   precntRatioInt = (uint16_t)(ratio) - 1;
   precntRatioFrac = (uint8_t)((ratio - precntRatioInt - 1) * 256);
 	//PROTIMER->PRECNTTOP = 0x4bcc;

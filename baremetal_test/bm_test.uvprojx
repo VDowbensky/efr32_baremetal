@@ -580,34 +580,9 @@
               <FilePath>.\radio\src\generic_seq.c</FilePath>
             </File>
             <File>
-              <FileName>if_adc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\if_adc.c</FilePath>
-            </File>
-            <File>
-              <FileName>ir_cal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\ir_cal.c</FilePath>
-            </File>
-            <File>
-              <FileName>lna.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\lna.c</FilePath>
-            </File>
-            <File>
               <FileName>pa.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\radio\src\pa.c</FilePath>
-            </File>
-            <File>
-              <FileName>aux_pll.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\aux_pll.c</FilePath>
-            </File>
-            <File>
-              <FileName>phy.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\phy.c</FilePath>
             </File>
             <File>
               <FileName>phy_utils.c</FileName>
@@ -618,31 +593,6 @@
               <FileName>protimer.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\radio\src\protimer.c</FilePath>
-            </File>
-            <File>
-              <FileName>radio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\radio.c</FilePath>
-            </File>
-            <File>
-              <FileName>radio_cmu.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\radio_cmu.c</FilePath>
-            </File>
-            <File>
-              <FileName>RADIO_pti.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\RADIO_pti.c</FilePath>
-            </File>
-            <File>
-              <FileName>rail_calibration.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\rail_calibration.c</FilePath>
-            </File>
-            <File>
-              <FileName>rail_diagnostic.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\rail_diagnostic.c</FilePath>
             </File>
             <File>
               <FileName>rail_rf.c</FileName>
@@ -665,34 +615,14 @@
               <FilePath>.\radio\src\rail_tx.c</FilePath>
             </File>
             <File>
-              <FileName>rf_rand.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\rf_rand.c</FilePath>
-            </File>
-            <File>
               <FileName>rf_test.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\radio\src\rf_test.c</FilePath>
             </File>
             <File>
-              <FileName>rfsense.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\rfsense.c</FilePath>
-            </File>
-            <File>
-              <FileName>rtccsync.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\rtccsync.c</FilePath>
-            </File>
-            <File>
               <FileName>synth.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\radio\src\synth.c</FilePath>
-            </File>
-            <File>
-              <FileName>tempcal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\tempcal.c</FilePath>
             </File>
             <File>
               <FileName>rail_callbacks.c</FileName>
@@ -703,6 +633,11 @@
               <FileName>nibblebits.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\radio\src\nibblebits.c</FilePath>
+            </File>
+            <File>
+              <FileName>radio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\radio\src\radio.c</FilePath>
             </File>
           </Files>
         </Group>

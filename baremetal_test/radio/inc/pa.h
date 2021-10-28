@@ -101,13 +101,12 @@ typedef struct RADIO_PAInit {
 
 bool     RADIO_PA_Init(RADIO_PAInit_t * paInit);
 int32_t  PA_OutputPowerGet(void);
-int32_t  PA_OutputPowerSet(int32_t power);
-int32_t  PA_MaxOutputPowerSet(void);
+
+
 uint32_t PA_RampTimeGet(void);
 uint16_t PA_RampTimeSet(uint16_t ramptime);
 void     PA_CTuneSet(uint8_t txPaCtuneValue, uint8_t rxPaCtuneValue);
-void 		 PA_BandSelect(void);
-uint32_t PA_PowerLevelSet(uint32_t pwr);
+
 
 void PA_PeakDetectorHighRun(void);
 void PA_PeakDetectorLowRun(void);

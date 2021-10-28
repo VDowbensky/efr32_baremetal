@@ -4,7 +4,7 @@
 #include "em_assert.h"
 #include <stddef.h>
 #include "rail_rf_hal.h"
-#include "rail_calibration.h"
+//#include "rail_calibration.h"
 
 uint32_t channelConfig;
 uint32_t RAIL_DebugMode;
@@ -24,7 +24,7 @@ uint32_t RAIL_DebugMode;
 uint8_t RAIL_RfInit(const RAIL_Init_t *railInit)
 
 {
-  RAIL_RfHalCalibrationInit(*(uint32_t *)(railInit + 8) & 0x10001);
+  //RAIL_RfHalCalibrationInit(*(uint32_t *)(railInit + 8) & 0x10001);
   RAIL_RfHalInit(railInit);
   return 0; //dummy
 }

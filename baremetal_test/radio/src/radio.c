@@ -3,10 +3,11 @@
 #include <string.h>
 #include "em_bus.h"
 #include "em_int.h"
+#include "em_cmu.h"
 #include "em_assert.h"
-#include "tempcal.h"
+//#include "tempcal.h"
 #include "radio.h"
-#include "radio_cmu.h"
+//#include "radio_cmu.h"
 #include "phy_utils.h"
 #include "em_system.h"
 #include "pa.h"
@@ -70,8 +71,8 @@ uint32_t RADIO_UsToStimerTickCalc(uint32_t us)
 //  uint64_t lVar1;
 
 //  us = us & ~((int)us >> 0x1f);
-//  lVar1 = RADIOCMU_ClockFreqGet(0x75160) * (uint64_t)us;
-  return ((uint64_t)us * RADIOCMU_ClockFreqGet(0x75160))/8000000;
+//  lVar1 = CMU_ClockFreqGet(0x75160) * (uint64_t)us;
+  return ((uint64_t)us * CMU_ClockFreqGet(0x75160))/8000000;
   
  // __aeabi_uldivmod((int)lVar1,uVar2 * ((int)us >> 0x1f) + (int)((us)lVar1 >> 0x20),
  //                  8000000,0,param_4);
@@ -132,15 +133,15 @@ void RADIO_ModemConfigFixup(void)
 void RADIO_SetAndForgetWrite(void)
 
 {
-  SYSTEM_ChipRevision_TypeDef local_c;
+  SYSTEM_ChipRevision_TypeDef revision;
 
-  SYSTEM_ChipRevisionGet(&local_c);
+  SYSTEM_ChipRevisionGet(&revision);
   RAC->IFADCCTRL = 0x1153e6c0;
 	
   RAC->IFPGACTRL = 0x87e6;
   RAC->LNAMIXCTRL1 = 0x880;
   RAC->VCOCTRL = 0xf00277a;
-	if((local_c.major == 0x01) && (local_c.minor < 2)) SYNTH->VCOGAIN = 0x28;
+	if((revision.major == 0x01) && (revision.minor < 2)) SYNTH->VCOGAIN = 0x28;
   SYNTH->CTRL = 0xac3f;
   AGC->MANGAIN = 0x1800000;
   RAC->LNAMIXCTRL = 0;
@@ -178,17 +179,17 @@ void RADIO_SeqInit(void *src,uint32_t len)
 void RADIO_CLKEnable(void)
 
 {
-  RADIOCMU_ClockEnable(0x63400,1);
-  RADIOCMU_ClockEnable(0x60400,1); //PROTIMER
-  RADIOCMU_ClockEnable(0x64400,1);
-  RADIOCMU_ClockEnable(0x67400,1);
-  RADIOCMU_ClockEnable(0x66400,1);
-  RADIOCMU_ClockEnable(0x65400,1);
-  RADIOCMU_ClockEnable(0x62400,1);
-  RADIOCMU_ClockEnable(0x68400,1);
+  CMU_ClockEnable(0x63400,1);
+  CMU_ClockEnable(0x60400,1); //PROTIMER
+  CMU_ClockEnable(0x64400,1);
+  CMU_ClockEnable(0x67400,1);
+  CMU_ClockEnable(0x66400,1);
+  CMU_ClockEnable(0x65400,1);
+  CMU_ClockEnable(0x62400,1);
+  CMU_ClockEnable(0x68400,1);
 }
 
-
+/*
 
 void RADIO_Config(void *radioConfig) //omitted
 {
@@ -222,11 +223,11 @@ void RADIO_Config(void *radioConfig) //omitted
 //    }
     radioConfig = radioConfig + 8;
   }
-  PA_BandSelect();
+  //PA_BandSelect();
   return;
 }
 
-
+*/
 
 
 void RADIO_RegisterIrqCallback(int irqN,void *func)

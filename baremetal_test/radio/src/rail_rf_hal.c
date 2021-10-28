@@ -7,16 +7,16 @@
 #include "em_assert.h"
 #include "rail_rf_hal.h"
 #include "rf_test.h"
-#include "ir_cal.h"
+//#include "ir_cal.h"
 #include "generic_phy.h"
 #include "protimer.h"
-#include "tempcal.h"
-#include "rfsense.h"
+//#include "tempcal.h"
+//#include "rfsense.h"
 #include "pa.h"
 #include "radio.h"
-#include "radio_pti.h"
+//#include "radio_pti.h"
 #include "synth.h"
-#include "rail_calibration.h"
+//#include "rail_calibration.h"
 
 void pktTxDoneEvt(uint32_t param_1,RAIL_TxPacketInfo_t param_2,uint32_t param_3)
 
@@ -65,11 +65,11 @@ void sequencerInterrupt(int param_1)
 
 
 
-void RAIL_RFSENSE_Callback(void)
+//void RAIL_RFSENSE_Callback(void)
 
-{
-  RAILCb_RxRadioStatus(0x80);
-}
+//{
+//  RAILCb_RxRadioStatus(0x80);
+//}
 
 
 
@@ -102,7 +102,7 @@ void softwareTimerExpired(void)
 void racCalRequest(void)
 
 {
-  RAIL_RfHalCalibrationPend(1);
+  //RAIL_RfHalCalibrationPend(1);
 }
 
 
@@ -117,7 +117,7 @@ void protmrLbtEvt(int param_1)
   PROTIMER_CCTimerStop(4);
   if(param_1 & 0x00400000)
   {
-    RADIO_PTI_AuxdataOutput(0x27);
+    //RADIO_PTI_AuxdataOutput(0x27);
     GENERIC_PHY_FlushTxPacketBuffer();
     if ((SEQ->REG000 & 0xff000000) == 0x2000000)
     {
@@ -130,7 +130,7 @@ LAB_000100fc:
   //if (param_1 << 0xb < 0)
 	  if(param_1 & 0x00100000)
   {
-    RADIO_PTI_AuxdataOutput(0x28);
+    //RADIO_PTI_AuxdataOutput(0x28);
     return;
   }
   //if (param_1 << 0x13 < 0)
@@ -139,7 +139,7 @@ LAB_000100fc:
     PROTIMER_LBTStop();
     if ((PROTIMER->IF & 0x500000) == 0)
     {
-      RADIO_PTI_AuxdataOutput(0x2a);
+      //RADIO_PTI_AuxdataOutput(0x2a);
       GENERIC_PHY_FlushTxPacketBuffer();
       goto LAB_000100fc;
     }
@@ -258,8 +258,8 @@ uint8_t RAIL_RfHalInit(const RAIL_Init_t *railInit)
   GENERIC_PHY_Init();
   //_enabledCallbacks = _enabledCallbacks & 0xff000000 | (uint)(uint3)((uint3)_enabledCallbacks | 7) | 0x80000;
 	_enabledCallbacks = _enabledCallbacks & 0xff000000 | (uint32_t) (_enabledCallbacks | 7) | 0x80000;
-  iVar1 = RAIL_RfHalCalibrationEnableGet();
-  if (iVar1 << 0x1f < 0) _enabledCallbacks = _enabledCallbacks | 0x10000;
+  //iVar1 = RAIL_RfHalCalibrationEnableGet();
+  //if (iVar1 << 0x1f < 0) _enabledCallbacks = _enabledCallbacks | 0x10000;
 //  GENERIC_PHY_SetCallbacks(&_enabledCallbacks);
 //  GENERIC_PHY_ConfigureCallbacks(_enabledCallbacks);
   RAILCb_RfReady();
@@ -861,24 +861,24 @@ uint32_t RAIL_BitRateGet(void)
  *          85 degrees Celsius. RF Sense should be disabled
  *          outside this Temperature range.
  */
-uint32_t RAIL_RfSense(RAIL_RfSenseBand_t band, uint32_t senseTime, bool enableCb)
+//uint32_t RAIL_RfSense(RAIL_RfSenseBand_t band, uint32_t senseTime, bool enableCb)
 
-{
+//{
  // code *local_14;
   //undefined4 local_10;
   //uint local_c;
   
 //  local_14 = RAIL_RFSENSE_Callback;
-  if (enableCb == false)
-  {
+//  if (enableCb == false)
+//  {
 //    local_14 = NULL;
-  }
+//  }
   //local_c._0_2_ = CONCAT11(1,band);
   //local_c = param_4 & 0xffff0000 | (uint)(ushort)local_c;
   //local_10 = senseTime;
 //  RFSENSE_Init(&local_14);
-  return 0;
-}
+//  return 0;
+//}
 
 
 /**
@@ -891,11 +891,11 @@ uint32_t RAIL_RfSense(RAIL_RfSenseBand_t band, uint32_t senseTime, bool enableCb
  * set to false. It is generally used after EM4 reboot, but can be used any
  * time.
  */
-bool RAIL_RfSensed(void)
+//bool RAIL_RfSensed(void)
 
-{
-  return RFSENSE_Sensed();
-}
+//{
+//  return RFSENSE_Sensed();
+//}
 
 
 
@@ -917,7 +917,7 @@ void RAIL_DebugCbConfig(uint32_t cbToEnable)
 }
 
 
-
+/*
 void RAIL_RfHalCalibrationRun(int *param_1,int param_2)
 
 {
@@ -939,7 +939,7 @@ void RAIL_RfHalCalibrationRun(int *param_1,int param_2)
   return;
 }
 
-
+*/
 
 
 
