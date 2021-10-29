@@ -14,7 +14,7 @@
 #include "synth.h"
 //#include "rf_rand.h"
 #include "em_cmu.h"
-//#include "radio_cmu.h"
+#include "radio_proc.h"
 
 
 uint32_t currentCallbacks[] = {};
@@ -389,11 +389,11 @@ void GENERIC_PHY_SetCallbacks(int32_t param_1)
 
 
 
-void GENERIC_PHY_LoadTxPacketBuffer(uint8_t *buf)
+void GENERIC_PHY_LoadTxPacketBuffer(RAIL_TxData_t *txData)
 
 {
   INT_Disable();
- // RADIO_TxBufferSet(*(uint32_t *)(buf + 2),*buf,0,0); //!!!!!!!!!!!!!!!!!!!!!!!!!
+  //RADIO_TxBufferSet(*(uint32_t *)(txData + 2),*txData,0,0); //!!!!!!!!!!!!!!!!!!!!!!!!!
   INT_Enable();
 }
 
@@ -429,6 +429,7 @@ uint32_t GENERIC_PHY_PacketTx(void)
   if ((PROTIMER_CCTimerIsEnabled(3) == 0) && (PROTIMER_LBTIsActive() == 0)) 
 	{
     GENERIC_PHY_PacketTxCommon();
+		BUS_RegMaskedSet(&RAC->IFPGACTRL, RAC_IFPGACTRL_BANDSEL_Msk);
 		RAC->CMD = RAC_CMD_TXEN_Msk;
     INT_Enable();
     return 0;
@@ -633,10 +634,10 @@ void GENERIC_PHY_StartRx(int param_1)
 //  if ((RADIO_RxBufferGet() == 0) && (*(code **)(currentCallbacks + 0x48) != NULL) //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //		  {
 //	  	  	  (**(code **)(currentCallbacks + 0x48))();
-//	  	  	  	 RADIO_RxBufferSet();
+	  	  	  	 RADIO_RxBufferSet(RADIO_rxBuffer);
 //		  }
   *(uint32_t*)0x21000efc = *(uint32_t*)0x21000efc  & 0xffffffdf;
-//	BUS_RegMaskedSet(&RAC->RXENSRCEN, 2);
+	BUS_RegMaskedSet(&RAC->RXENSRCEN, 2);
 }
 
 

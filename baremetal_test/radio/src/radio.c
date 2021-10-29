@@ -7,7 +7,7 @@
 #include "em_assert.h"
 //#include "tempcal.h"
 #include "radio.h"
-//#include "radio_cmu.h"
+#include "radio_proc.h"
 //#include "phy_utils.h"
 #include "em_system.h"
 #include "pa.h"
@@ -138,7 +138,7 @@ void RADIO_SetAndForgetWrite(void)
   SYSTEM_ChipRevisionGet(&revision);
   RAC->IFADCCTRL = 0x1153e6c0;
 	
-  RAC->IFPGACTRL = 0x87e6;
+  RAC->IFPGACTRL = 0x87f6;
   RAC->LNAMIXCTRL1 = 0x880;
   RAC->VCOCTRL = 0xf00277a;
 	if((revision.major == 0x01) && (revision.minor < 2)) SYNTH->VCOGAIN = 0x28;
@@ -412,8 +412,7 @@ void RADIO_RxBufferSet(int param_1)
 uint32_t RADIO_RxBufferGet(void)
 
 {
-  //return DAT_00010b7c; //rx buffer address
-	return 0x20001000;
+	return (uint32_t)RADIO_rxBuffer;
 }
 
 

@@ -307,7 +307,13 @@ void cli_storepactune(int argc, char **argv)
 
 void cli_sendburst(int argc, char **argv)
 {
-	printf("SEND_PACKET: Not implemented\r\n");
+	printf("SEND_PACKET: Under development\r\n");
+	led0_on();
+	RADIO_SendPacket();
+	if(RADIO_SendPacket() == true) printf("SEND_PACKET: OK\r\n");
+	else printf("SEND_PACKET: ERROR\r\n");
+	led0_off();
+	
 }
 
 void cli_txstream(int argc, char **argv)
@@ -326,7 +332,6 @@ void cli_txstream(int argc, char **argv)
 		
 		case 1:
 			RAIL_RfHalIdleStart();
-			//SYNTH_Config(868000000, 100000);
 			PHY_UTILS_DelayUs(10);
 			RFTEST_SaveRadioConfiguration();
 			RFTEST_StartCwTx();
@@ -336,7 +341,6 @@ void cli_txstream(int argc, char **argv)
 		
 		case 2:
 			RAIL_RfHalIdleStart();
-			//SYNTH_Config(868000000, 100000);
 			PHY_UTILS_DelayUs(10);
 			RFTEST_SaveRadioConfiguration();
 			RFTEST_StartStreamTx();
