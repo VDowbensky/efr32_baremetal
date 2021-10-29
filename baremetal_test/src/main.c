@@ -47,7 +47,8 @@ int main(void)
 	init_radio();
 	printf("Starting. Idle mode\r\n");
 	//stert receiving
-	RAIL_RfHalRxStart(0);
+	//RAIL_RfHalRxStart(0);
+	//RFTEST_StartBerRx(1000000);
 	printf("Receiver on\r\n");
 	cli_init();
 

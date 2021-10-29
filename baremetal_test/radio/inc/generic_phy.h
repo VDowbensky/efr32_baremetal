@@ -37,7 +37,7 @@ bool GENERIC_PHY_TimerExpired(void);
 uint32_t GENERIC_PHY_TimerGetTimeout(void);
 void GENERIC_PHY_ConfigureCallbacks(uint32_t callbacks);
 void GENERIC_PHY_SetCallbacks(int param_1);
-void GENERIC_PHY_LoadTxPacketBuffer(uint8_t *buf);
+void GENERIC_PHY_LoadTxPacketBuffer(RAIL_TxData_t *txData);
 void GENERIC_PHY_FlushTxPacketBuffer(void);
 void GENERIC_PHY_PacketTxCommon(void);
 uint32_t GENERIC_PHY_PacketTx(void);

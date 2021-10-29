@@ -430,14 +430,14 @@ uint32_t RFHAL_HeadedToIdle(void)
 uint8_t RAIL_RfHalTxDataLoad(RAIL_TxData_t *txData)
 
 {
-  uint8_t *local_10;
-  uint32_t local_c;
-  uint32_t uStack8;
+//  uint8_t *local_10;
+//  uint32_t local_c;
+//  uint32_t uStack8;
   
 //  local_10 = ((uint16_t)*txData & 0xffff0000) | (uint16_t)txData[1]; //(uint)*(uint16_t *)(param_1 + 1);
 //  local_c = *txData;
 //  uStack8 = txData[2];
-  GENERIC_PHY_LoadTxPacketBuffer(local_10); //buffer address - ???
+  GENERIC_PHY_LoadTxPacketBuffer(&txData); //buffer address - ???
   return 0;
 }
 
@@ -679,7 +679,7 @@ uint8_t RAIL_RfHalRxStart(uint8_t channel)
     } while ((RAC->STATUS & 0xf000000) != 0);
     if ((RAC->STATUS & 0xf000000) != 0) return 2; 
   GENERIC_PHY_ChannelSet(channel);
-  GENERIC_PHY_StartRx(0);
+  GENERIC_PHY_StartRx(32);
   return 0;
 }
 

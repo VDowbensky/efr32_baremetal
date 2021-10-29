@@ -9,10 +9,13 @@ volatile uint8_t RADIO_rxLengthBuffer[RADIO_BUFFER_SIZE];
 uint8_t txpactune;
 uint8_t rxpactune;
 
-//const uint32_t generated_phyInfo[] = {
-//  0UL,
-//  0x00100000UL, // 16.0
-//};
+
+RAIL_TxData_t transmitPayload = {&tx_fifo[0], 32};
+
+const uint32_t generated_phyInfo[] = {
+  0UL,
+  0x00100000UL, // 16.0
+};
 
 void init_radio(void)
 {
@@ -43,7 +46,7 @@ void init_radio(void)
   RADIO_FrameControlDescrBufferIdSet(0,0);
   RADIO_FrameControlDescrBufferIdSet(1,0);
   RADIO_FrameControlDescrBufferIdSet(2,1);
-  RADIO_FrameControlDescrBufferIdSet(3,1);
+  //RADIO_FrameControlDescrBufferIdSet(3,1);
   FRC->CTRL &= 0xffffff0f; //reset TXFCDMODE, RXFCDMODE
   FRC->CTRL |= 0xa0; //5, 7 - TXFCDMODE, RXFCDMODE
 
@@ -113,7 +116,7 @@ void init_radio(void)
 //changeRadioConfig
 
 
-	//SEQ->PHYINFO = 	(uint32_t) &generated_phyInfo;
+	SEQ->PHYINFO = 	(uint32_t) &generated_phyInfo;
 	//misc.
 	//channel BW
 	SEQ->MISC = 0x00000000;
@@ -218,9 +221,9 @@ void init_radio(void)
 	//seed
   FRC->WHITEINIT = 0x0000FFFF;
 	//AGC
-  AGC->CTRL0 = 0x000270F8;
-  AGC->CTRL1 = 0x00000300;
-  AGC->CTRL2 = 0x82710060;
+  AGC->CTRL0 = 0x000270FE;
+  AGC->CTRL1 = 0x00001300;
+  AGC->CTRL2 = 0x81D10060;
   AGC->MANGAIN = 0x00000000;
   AGC->GAINRANGE = 0x0000383E;
   AGC->GAININDEX = 0x000025BC;
@@ -272,45 +275,7 @@ tmp = *(uint32_t *) (DEVID_ADDR + 0x104);
 }
 
 
-void BM_TxOn(void)
-{
-	//RAC->CTRL = RAC_CTRL_LNAENPOL_Msk | RAC_CTRL_PAENPOL_Msk | RAC_CTRL_ACTIVEPOL_Msk;
-	RAC->SYNTHENCTRL = RAC_SYNTHENCTRL_VCODIVEN_Msk | RAC_SYNTHENCTRL_VCOLDOEN_Msk | RAC_SYNTHENCTRL_MMDLDOEN_Msk | RAC_SYNTHENCTRL_LODIVSYNCCLKEN_Msk | RAC_SYNTHENCTRL_CHPLDOEN_Msk 
-	| RAC_SYNTHENCTRL_SYNTHSTARTREQ_Msk	| RAC_SYNTHENCTRL_SYNTHCLKEN_Msk | RAC_SYNTHENCTRL_LPFEN_Msk | RAC_SYNTHENCTRL_CHPEN_Msk | RAC_SYNTHENCTRL_LODIVEN_Msk | RAC_SYNTHENCTRL_VCOEN_Msk;
-	//At this point - normal current consumption !!!!!!
-	//while (1) {};
-	RAC->LPFCTRL = 0x0003C000;
-	SYNTH->CMD = SYNTH_CMD_SYNTHSTART_Msk;
-	//RAC->MMDCTRL = 0x0001147B;
-	//RAC->RFENCTRL = RAC_RFENCTRL_DEMEN_Msk; //???
-	//RAC->LNAMIXCTRL1 = 0x00000880;
-	//RAC->IFPGACTRL = 0x000087F6; //it's significant!
-	RAC->SGRFENCTRL0 = 0x000F0000;
-	RAC->PACTRL0 = 0;
-	RAC->PABIASCTRL0 = 0x0;
-	//RAC->SGPABIASCTRL0 = (0x07 << RAC_SGPABIASCTRL0_SGDACFILTBANDWIDTH_Pos) | RAC_SGPABIASCTRL0_TXPOWER_Msk | (1 << RAC_SGPABIASCTRL0_BUF0BIAS_Pos)
-	//| (1 << RAC_SGPABIASCTRL0_PABIAS_Pos) | (RAC_SGPABIASCTRL0_LDOBIAS_Msk) | (1 << RAC_SGPABIASCTRL0_BUF12BIAS_Pos); //no effect!!!
-	//RAC->SGPACTRL0 = RAC_SGPACTRL0_DACGLITCHCTRL_Msk | (Stripe << RAC_SGPACTRL0_STRIPE_Pos) | (Slice << RAC_SGPACTRL0_SLICE_Pos) | Cascode << RAC_SGPACTRL0_CASCODE_Pos); 
-	//RAC->SGPACTRL0 = 0x4801C1E0;	//no effect. Writed by sequencer???
-	RAC->PAENCTRL = RAC_PAENCTRL_PARAMP_Msk;
-	RAC->SGRFENCTRL0 = RAC_SGRFENCTRL0_TRSW_Msk | RAC_SGRFENCTRL0_PAOUTEN_Msk | RAC_SGRFENCTRL0_PAEN_Msk | RAC_SGRFENCTRL0_PASTANDBY_Msk;
-	RAC->SYNTHCTRL = RAC_SYNTHCTRL_LODIVTXEN_Msk;
-}
 
-void BM_TxOff(void)
-{
-	RAC->SGPACTRL0 = 0;
-	RAC->SGRFENCTRL0 = 0;
-	RAC->PAENCTRL = 0;
-	RAC->SGPABIASCTRL0 = 0;
-	//RAC->RFENCTRL = RAC_RFENCTRL_DEMEN_Msk;
-	//RAC->MMDCTRL = 0x0001147B;
-	SYNTH->CMD = SYNTH_CMD_SYNTHSTOP_Msk;
-	RAC->SYNTHCTRL = 0;
-	RAC->LPFCTRL = 0x0003C002;
-	RAC->SYNTHENCTRL = 0;
-	RAC->CTRL = 0;
-}
 
 void RAIL_SetTune(uint32_t tune)
 
@@ -328,5 +293,29 @@ uint32_t RAIL_GetTune(void)
 
 {
 	return (CMU->HFXOSTEADYSTATECTRL & _CMU_HFXOSTEADYSTATECTRL_CTUNE_MASK) >> _CMU_HFXOSTEADYSTATECTRL_CTUNE_SHIFT;
+}
+
+bool RADIO_SendPacket(void)
+{
+	RADIO_TxBufferReset();
+	RADIO_BUFCWriteContSync_constprop_3(tx_fifo ,32);
+	//RAIL_RfHalTxStart(Channel, NULL,NULL);	
+	  do 
+		{
+      if (RFHAL_HeadedToIdle() == 0) break;
+    } while ((RAC->STATUS & 0xf000000) != 0);
+    if ((RAC->STATUS & 0xf000000) != 0) return 2;
+      INT_Disable();
+  if ((PROTIMER_CCTimerIsEnabled(3) == 0) && (PROTIMER_LBTIsActive() == 0)) 
+	{
+  if ((FRC->DFLCTRL & FRC_DFLCTRL_DFLMODE_Msk) == 0) FRC->WCNTCMP0 = RADIO_TxBufferBytesAvailable() - 1; 
+  *(uint32_t*)0x21000efc &= ~0x20; //0xffffffdf;
+		BUS_RegMaskedSet(&RAC->IFPGACTRL, RAC_IFPGACTRL_BANDSEL_Msk);
+		RAC->CMD = RAC_CMD_TXEN_Msk;
+    INT_Enable();
+    return true;
+  }
+  INT_Enable();
+  return false;
 }
 
