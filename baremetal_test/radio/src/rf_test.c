@@ -181,7 +181,8 @@ void RFTEST_StopTx(void)
 //		} while(FRC->IF & 0x04);
 	BUS_RegMaskedSet(&FRC->IFC, FRC_IFC_TXABORTED_Msk);
   RAC->CMD = 0x20; //TXDIS
-	//BM_TxOff(); //for test only
+	RAC->IFPGACTRL = 0x000087F6; //!!!
+	RAIL_RfHalRxStart(Channel); //for test
 }
 
 

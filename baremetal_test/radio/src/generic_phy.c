@@ -634,10 +634,11 @@ void GENERIC_PHY_StartRx(int param_1)
 //  if ((RADIO_RxBufferGet() == 0) && (*(code **)(currentCallbacks + 0x48) != NULL) //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //		  {
 //	  	  	  (**(code **)(currentCallbacks + 0x48))();
-	  	  	  	 RADIO_RxBufferSet(RADIO_rxBuffer);
+//	  	  	  	 RADIO_RxBufferSet(RADIO_rxBuffer);
 //		  }
   *(uint32_t*)0x21000efc = *(uint32_t*)0x21000efc  & 0xffffffdf;
-	BUS_RegMaskedSet(&RAC->RXENSRCEN, 2);
+	//BUS_RegMaskedSet(&RAC->RXENSRCEN, 2);
+//	RAC->RXENSRCEN |= 1;
 }
 
 

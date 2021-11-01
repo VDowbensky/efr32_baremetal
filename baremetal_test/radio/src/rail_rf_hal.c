@@ -679,7 +679,7 @@ uint8_t RAIL_RfHalRxStart(uint8_t channel)
     } while ((RAC->STATUS & 0xf000000) != 0);
     if ((RAC->STATUS & 0xf000000) != 0) return 2; 
   GENERIC_PHY_ChannelSet(channel);
-  GENERIC_PHY_StartRx(32);
+	GENERIC_PHY_StartRx(0);
   return 0;
 }
 

@@ -272,6 +272,9 @@ tmp = *(uint32_t *) (DEVID_ADDR + 0x104);
 		PA_CTuneSet(txpactune, rxpactune); //default
 		//PA_PowerLevelSet(75);
 		PA_SetPowerLevel(50);
+		//RAIL_RfHalSetTxTransitions(RAIL_RF_STATE_RX,RAIL_RF_STATE_RX);
+		RAIL_RfHalSetTxTransitions(RAIL_RF_STATE_IDLE,RAIL_RF_STATE_IDLE);
+		RAIL_RfHalSetRxTransitions(RAIL_RF_STATE_RX,RAIL_RF_STATE_RX);
 }
 
 
