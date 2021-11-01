@@ -671,8 +671,8 @@ void RADIO_Init(void)
 	BUS_RegMaskedSet(&FRC->CTRL, 0xa0);
  // DAT_000109d8 = RADIO_BUFCIrqHandler; //!!!!!!!
 
-  NVIC_ClearPendingIRQ(FRC_IRQn);
-  NVIC_EnableIRQ(FRC_IRQn);
+  //NVIC_ClearPendingIRQ(FRC_IRQn);
+  //NVIC_EnableIRQ(FRC_IRQn);
 
   RADIO_BUFCClear(0);
   RADIO_BUFCClear(1);

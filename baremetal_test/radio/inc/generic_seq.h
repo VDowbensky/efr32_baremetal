@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define GENERIC_SEQPROG_SIZE 3041
+#define GENERIC_SEQPROG_SIZE 3000
 extern uint8_t genericSeqProg[];
 
 #endif
