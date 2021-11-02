@@ -15,6 +15,7 @@ uint32_t SYNTH_LoDivGet(void);
 bool SYNTH_VcoRangeIsValid(uint32_t freq);
 uint8_t SYNTH_Is2p4GHz(void);
 void SYNTH_RetimeClkConfig(void);
+void SYNTH_init(void);
 void SYNTH_Config(uint32_t base_freg, uint32_t spacing);
 
 void SYNTH_ChannelSet(uint16_t ch,int rxcal);

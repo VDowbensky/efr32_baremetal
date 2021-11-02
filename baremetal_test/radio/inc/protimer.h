@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "rail_types.h"
+#include "radio_proc.h"
 
 void PROTIMER_Start(void);
 void PROTIMER_Stop(void);

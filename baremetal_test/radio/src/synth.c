@@ -14,6 +14,27 @@ uint8_t Channel = 0;
 
 uint32_t dcdcRetimeClkTarget;
 
+void SYNTH_IRQHandler(void)
+{
+	SYNTH->IFC = SYNTH->IEN & SYNTH->IF;
+}
+
+void SYNTH_init(void)
+{
+	//RF freq.
+	//channel spacing
+	//IF frequency
+	//injection side
+  SYNTH->CTRL = 0x0000AC3F; //15,13,11,10,5,4,3,2,1,0 //trim values
+  SYNTH->IFFREQ = 0x00104000; //
+  SYNTH->DIVCTRL = 0x00000003; //3 for 868 MHz
+  SYNTH->CALOFFSET = 0x00000000;
+  SYNTH_DCDCRetimeEnable();	
+	SYNTH_Config(868000000, 100000);	
+	
+	NVIC_ClearPendingIRQ(SYNTH_IRQn);
+  NVIC_DisableIRQ(SYNTH_IRQn);
+}
 
 uint32_t SYNTH_RfFreqGet(void)
 

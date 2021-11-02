@@ -3,7 +3,6 @@
 
 #include "retargetserial.h"
 #include "command_interpreter.h"
-#include "rail_rf_hal.h"
 
 #define CLI_COMMAND_NOP           0
 #define CLI_COMMAND_SENDBURST     1
