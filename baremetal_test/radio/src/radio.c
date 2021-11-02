@@ -189,46 +189,6 @@ void RADIO_CLKEnable(void)
   CMU_ClockEnable(0x68400,1);
 }
 
-/*
-
-void RADIO_Config(void *radioConfig) //omitted
-{
-  uint32_t uVar1;
-  void *__dest;
-  uint32_t uVar2;
-  void *__src;
-  
-  radioConfig = radioConfig + 8;
-	//copy config parameters to RF registers
-  while( true )
-  {
-    uVar1 = *(uint32_t *)(radioConfig - 8);
-    if (uVar1 == 0xffffffff) break;
-    //uVar2 = (uVar1 << 8) >> 0x18;
-    uVar2 = uVar1 & 0xff;;
-//    __dest = (void *)((uVar1 & 0xffff) | *(uint *)(&regBases + ((uVar1 << 4) >> 0x1c) * 4));
-//    __dest = (void *)((uVar1 & 0xffff) | *(uint *)(&regBases + (uVar1 & 0x0f) * 4)); //!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//    if (uVar2 < 2)
-//    {
-//      (*(code *)(&EFRDRV_actionFunc)[uVar1 >> 0x1c])
-//                (__dest,*(uint32_t *)(radioConfig + -4),&EFRDRV_actionFunc,
-//                 (&EFRDRV_actionFunc)[uVar1 >> 0x1c],param_4);
-//    }
-//    else
-//    {
-//      __src = *(void **)(radioConfig + -4);
-//      INT_Disable();
-//      memcpy(__dest,__src,uVar2 << 2);
-//      INT_Enable();
-//    }
-    radioConfig = radioConfig + 8;
-  }
-  //PA_BandSelect();
-  return;
-}
-
-*/
-
 
 void RADIO_RegisterIrqCallback(int irqN,void *func)
 
@@ -711,8 +671,8 @@ void RADIO_Init(void)
 	BUS_RegMaskedSet(&FRC->CTRL, 0xa0);
  // DAT_000109d8 = RADIO_BUFCIrqHandler; //!!!!!!!
 
-  NVIC_ClearPendingIRQ(FRC_IRQn);
-  NVIC_EnableIRQ(FRC_IRQn);
+  //NVIC_ClearPendingIRQ(FRC_IRQn);
+  //NVIC_EnableIRQ(FRC_IRQn);
 
   RADIO_BUFCClear(0);
   RADIO_BUFCClear(1);

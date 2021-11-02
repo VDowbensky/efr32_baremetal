@@ -383,7 +383,7 @@ void GENERIC_PHY_SetCallbacks(int32_t param_1)
   }
   //currentCallbacks = param_1; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   GENERIC_PHY_ConfigureCallbacks(0xffffffff);
-  NVIC_EnableIRQ(PROTIMER_IRQn);
+  //NVIC_EnableIRQ(PROTIMER_IRQn);
   NVIC_ClearPendingIRQ(PROTIMER_IRQn);
 }
 
@@ -634,10 +634,11 @@ void GENERIC_PHY_StartRx(int param_1)
 //  if ((RADIO_RxBufferGet() == 0) && (*(code **)(currentCallbacks + 0x48) != NULL) //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //		  {
 //	  	  	  (**(code **)(currentCallbacks + 0x48))();
-	  	  	  	 RADIO_RxBufferSet(RADIO_rxBuffer);
+//	  	  	  	 RADIO_RxBufferSet(RADIO_rxBuffer);
 //		  }
   *(uint32_t*)0x21000efc = *(uint32_t*)0x21000efc  & 0xffffffdf;
-	BUS_RegMaskedSet(&RAC->RXENSRCEN, 2);
+//	BUS_RegMaskedSet(&RAC->RXENSRCEN, 2);
+	RAC->RXENSRCEN |= 1;
 }
 
 
@@ -717,8 +718,11 @@ uint32_t  GENERIC_PHY_PreviousTxTime(void)
 
 void GENERIC_PHY_RACConfig(void)
 
-{
+{ 
+	RAC->SEQCMD = RAC_SEQCMD_HALT_Msk;
+	memset((void*)0x21000000,0,0x1000);
   RADIO_SeqInit(&genericSeqProg, GENERIC_SEQPROG_SIZE);
+	//RAC->SEQCMD = RAC_SEQCMD_HALT_Msk;
   memset((void*)0x21000efc,0,0x70); //clear sequencer variables
   RAC->SR0 = 0;
   RAC->SR1 = 0;
@@ -731,6 +735,7 @@ void GENERIC_PHY_RACConfig(void)
   RADIO_TxToTxTimeSet(100);
   RADIO_RxToTxTimeSet(100);
   RADIO_TxWarmTimeSet(100);
+	//RAC->SEQCMD = RAC_SEQCMD_RESUME_Msk;
 }
 
 
@@ -956,11 +961,11 @@ void GENERIC_PHY_Init(void)
   FRC->RXCTRL = 0x60;
   //RADIO_PTI_Enable();
   if (RAC->CTRL & 0x01) BUS_RegMaskedClear(&RAC->CTRL, 1);
-  RADIO_RegisterIrqCallback(1,GENERIC_PHY_FRC_IRQCallback);
-  RADIO_RegisterIrqCallback(2,GENERIC_PHY_MODEM_IRQCallback);
-  RADIO_RegisterIrqCallback(5,GENERIC_PHY_RAC_IRQCallback);
-  RADIO_RegisterIrqCallback(7,GENERIC_PHY_PROTIMER_IRQCallback);
-  GENERIC_PHY_ResetAddressFiltering();
+  //RADIO_RegisterIrqCallback(1,GENERIC_PHY_FRC_IRQCallback);
+  //RADIO_RegisterIrqCallback(2,GENERIC_PHY_MODEM_IRQCallback);
+  //RADIO_RegisterIrqCallback(5,GENERIC_PHY_RAC_IRQCallback);
+  //RADIO_RegisterIrqCallback(7,GENERIC_PHY_PROTIMER_IRQCallback);
+  //GENERIC_PHY_ResetAddressFiltering();
   *(uint32_t*)0x21000efc = *(uint32_t*)0x21000efc | 8;
   PROTIMER_Init();
   PROTIMER_Start();

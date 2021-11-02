@@ -52,8 +52,8 @@ void init_radio(void)
 
  // DAT_000109d8 = RADIO_BUFCIrqHandler;
 
-  NVIC_ClearPendingIRQ(FRC_IRQn);
-  NVIC_EnableIRQ(FRC_IRQn);
+  //NVIC_ClearPendingIRQ(FRC_IRQn);
+  //NVIC_EnableIRQ(FRC_IRQn);
 
   RADIO_BUFCClear(0);
   RADIO_BUFCClear(1);
@@ -272,6 +272,9 @@ tmp = *(uint32_t *) (DEVID_ADDR + 0x104);
 		PA_CTuneSet(txpactune, rxpactune); //default
 		//PA_PowerLevelSet(75);
 		PA_SetPowerLevel(50);
+		//RAIL_RfHalSetTxTransitions(RAIL_RF_STATE_RX,RAIL_RF_STATE_RX);
+		//RAIL_RfHalSetTxTransitions(RAIL_RF_STATE_RX,RAIL_RF_STATE_RX);
+		//RAIL_RfHalSetRxTransitions(RAIL_RF_STATE_RX,RAIL_RF_STATE_RX);
 }
 
 
