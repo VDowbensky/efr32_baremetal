@@ -5,7 +5,6 @@
 #include "em_bus.h"
 #include "em_assert.h"
 #include "synth.h"
-#include "radio.h"
 //#include "radio_cmu.h"
 
 

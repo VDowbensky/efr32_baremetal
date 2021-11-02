@@ -595,29 +595,39 @@
               <FilePath>.\radio\src\synth.c</FilePath>
             </File>
             <File>
-              <FileName>radio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\radio.c</FilePath>
-            </File>
-            <File>
-              <FileName>generic_phy.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\generic_phy.c</FilePath>
-            </File>
-            <File>
-              <FileName>rail_rf_hal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\rail_rf_hal.c</FilePath>
-            </File>
-            <File>
-              <FileName>rail_callbacks.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\rail_callbacks.c</FilePath>
-            </File>
-            <File>
               <FileName>nibblebits.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\radio\src\nibblebits.c</FilePath>
+            </File>
+            <File>
+              <FileName>radio_init.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\radio\src\radio_init.c</FilePath>
+            </File>
+            <File>
+              <FileName>radio_timing.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\radio\src\radio_timing.c</FilePath>
+            </File>
+            <File>
+              <FileName>radio_bufc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\radio\src\radio_bufc.c</FilePath>
+            </File>
+            <File>
+              <FileName>radio_frc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\radio\src\radio_frc.c</FilePath>
+            </File>
+            <File>
+              <FileName>radio_modem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\radio\src\radio_modem.c</FilePath>
+            </File>
+            <File>
+              <FileName>radio_agc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\radio\src\radio_agc.c</FilePath>
             </File>
           </Files>
         </Group>

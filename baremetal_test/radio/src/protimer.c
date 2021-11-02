@@ -7,12 +7,18 @@
 #include "em_int.h"
 //#include "radio_cmu.h"
 //#include "RADIO_pti.h"
-#include "radio.h"
 
 
 float ratio;
 uint16_t precntRatioInt; 
 uint8_t precntRatioFrac;
+
+void PROTIMER_IRQHandler(void)
+{
+	uint32_t flags;
+	flags = PROTIMER->IF & PROTIMER->IEN;
+	PROTIMER->IFC = flags;		
+}
 
 void PROTIMER_Start(void)
 

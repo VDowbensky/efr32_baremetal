@@ -19,11 +19,11 @@ int32_t RAIL_TxPowerSet(int32_t powerLevel);
 int32_t RAIL_TxPowerGet(void);
 RAIL_Status_t RAIL_DebugFrequencyOverride(uint32_t freq);
 void RAIL_PacketLengthConfigFrameType(const RAIL_FrameType_t *frameType);
-int16_t RAIL_RxGetRSSI(void);
-void RAIL_SetTune(uint32_t tune);
-uint32_t RAIL_GetTune(void);
-uint32_t RAIL_GetTime(void);
-RAIL_Status_t RAIL_SetTime(uint32_t time);
+
+void RADIO_SetCtune(uint32_t tune);
+uint32_t RADIO_GetCtune(void);
+uint32_t RADIO_GetTime(void);
+RAIL_Status_t RADIO_SetTime(uint32_t time);
 
 RAIL_Status_t RAIL_SetStateTiming(RAIL_StateTiming_t *timings);
 bool RAIL_AddressFilterConfig(RAIL_AddrConfig_t *addrConfig);

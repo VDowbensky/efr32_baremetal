@@ -209,7 +209,7 @@ void cli_setpowerlevel(int argc, char **argv)
 	if(txmode != 0) 
 	{
 		RFTEST_StopTx();
-		PHY_UTILS_DelayUs(100);
+		Timing_DelayUs(100);
 	}
 	PA_Powerlevel = p;
 	PA_SetPowerLevel(PA_Powerlevel);
@@ -222,7 +222,7 @@ void cli_setpowerlevel(int argc, char **argv)
 void cli_getrssi(int argc, char **argv)
 {
 	printf("GET_RSSI: Under development\r\n");
-	printf("GET_RSSI: %.2f dBm\r\n",(float)RADIO_GetRSSI()/4);
+	printf("GET_RSSI: %.2f dBm\r\n",(float)AGC_GetRSSI()/4);
 }
 
 void cli_getrssioffset(int argc, char **argv)
@@ -249,7 +249,7 @@ void cli_getfreqoffset(int argc, char **argv)
 
 void cli_getctune(int argc, char **argv)
 {
-	printf("GET_CTUNE: %d\r\n",RAIL_GetTune());
+	printf("GET_CTUNE: %d\r\n",RADIO_GetCtune());
 }
 
 void cli_setctune(int argc, char **argv)
@@ -258,8 +258,9 @@ void cli_setctune(int argc, char **argv)
 	//printf("SET_CTUNE: Under development\r\n");
 	t = ciGetUnsigned(argv[1]);
 	if(t > 511) t = 511;
-	RAIL_RfHalIdleStart();
-	RAIL_SetTune(t);
+	//RAIL_RfHalIdleStart();
+	GENERIC_PHY_RadioEnable(0);
+	RADIO_SetCtune(t);
 	printf("SET_CTUNE: %d\r\n", t);
 }
 
@@ -271,7 +272,7 @@ void cli_calctune(int argc, char **argv)
 void cli_storectune(int argc, char **argv)
 {
 	uint16_t t;
-	t = RAIL_GetTune();
+	t = RADIO_GetCtune();
 	read_userpage();
   MSC_ErasePage((uint32_t*)USERDATA_BASE);
   userdata_buf[0x40] = t; // 0x100/4
@@ -324,15 +325,16 @@ void cli_txstream(int argc, char **argv)
 	{
 		case 0:
 			RFTEST_StopTx();
-			PHY_UTILS_DelayUs(10);
+			Timing_DelayUs(10);
 		  RFTEST_RestoreRadioConfiguration();
 		  txmode = 0;
 			printf("TX_STREAM: 0\r\n");
 		break;
 		
 		case 1:
-			RAIL_RfHalIdleStart();
-			PHY_UTILS_DelayUs(10);
+			//RAIL_RfHalIdleStart();
+		  GENERIC_PHY_RadioEnable(0);
+			Timing_DelayUs(10);
 			RFTEST_SaveRadioConfiguration();
 			RFTEST_StartCwTx();
 		  txmode = 1;
@@ -340,8 +342,9 @@ void cli_txstream(int argc, char **argv)
 		break;
 		
 		case 2:
-			RAIL_RfHalIdleStart();
-			PHY_UTILS_DelayUs(10);
+			//RAIL_RfHalIdleStart();
+		  GENERIC_PHY_RadioEnable(0);
+			Timing_DelayUs(10);
 			RFTEST_SaveRadioConfiguration();
 			RFTEST_StartStreamTx();
 		  txmode = 2;

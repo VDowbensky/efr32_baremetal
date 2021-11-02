@@ -2,7 +2,6 @@
 #include <stdbool.h>
 #include "em_bus.h"
 #include "em_assert.h"
-#include "radio.h"
 #include "radio_proc.h"
 
 
@@ -39,7 +38,7 @@ void RFTEST_StartRx(void)
 
 {
 	while (RAC->STATUS & RAC_STATUS_STATE_Msk) {};
-  RADIO_RxBufferReset();
+  BUFC_TxBufferReset();
 	BUS_RegMaskedSet(&RAC->RXENSRCEN, 0x02);
 }
 
@@ -50,13 +49,11 @@ void RFTEST_StopRx(void)
 {
 	BUS_RegMaskedClear(&RAC->RXENSRCEN, RAC_RXENSRCEN_SWRXEN_Msk);
   FRC->CMD = 1;
-
-  //if ((RAC->STATUS << 4) >> 0x1c == 6)
 	if((RAC->STATUS & RAC_STATUS_STATE_Msk) == 6)
   {
     RAC->CMD |= 0x40;
 		RAC->CMD = RAC_CMD_CLEARRXOVERFLOW_Msk;
-    RADIO_RxBufferReset();
+    BUFC_TxBufferReset();
   }
   while ((RAC->STATUS & RAC_STATUS_STATE_Msk) != 0);
 }
@@ -183,6 +180,15 @@ void RFTEST_StopTx(void)
   RAC->CMD = 0x20; //TXDIS
 	RAC->IFPGACTRL = 0x000087F6; //!!!
 	//RAIL_RfHalRxStart(Channel); //for test
+//	  if ((RAC->RXENSRCEN & 0xff) == 0) RADIO_RxBufferReset();
+//    do 
+//		{ 
+//      if (RFHAL_HeadedToIdle() == 0) break;
+//    } while ((RAC->STATUS & 0xf000000) != 0);
+	//GENERIC_PHY_StartRx(0);
+
+//  *(uint32_t*)0x21000efc = *(uint32_t*)0x21000efc  & 0xffffffdf;
+//  	BUS_RegMaskedSet(&RAC->RXENSRCEN, 2);
 }
 
 

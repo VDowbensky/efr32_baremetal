@@ -10,7 +10,9 @@
 #include "tempdrv.h"
 #include "adc.h"
 #include "leds.h"
+#include "radio_init.h"
 #include "radio_proc.h"
+
 
 
 void init_peripherals(void);
@@ -39,7 +41,7 @@ int main(void)
 	
 	uint16_t t;
   t = *(uint16_t *)CTUNE_ADDR; 
-	RAIL_SetTune(t);
+	RADIO_SetCtune(t);
 	
 	RETARGET_SerialInit();
 	printf("\r\nHello, Lamer!\r\n");

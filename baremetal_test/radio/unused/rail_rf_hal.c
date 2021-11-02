@@ -13,7 +13,6 @@
 //#include "tempcal.h"
 //#include "rfsense.h"
 #include "pa.h"
-#include "radio.h"
 //#include "radio_pti.h"
 #include "synth.h"
 //#include "rail_calibration.h"
@@ -150,7 +149,7 @@ LAB_000100fc:
 
 
 
-
+/*
 void pktRxDoneEvt(void)
 
 {
@@ -229,7 +228,7 @@ void pktRxDoneEvt(void)
   }
 }
 
-
+*/
 
 
 
@@ -401,25 +400,7 @@ int RFHAL_HeadedToIdle(void)
   return iVar1;
 }
 */
-uint32_t RFHAL_HeadedToIdle(void)
 
-{
-  uint32_t state;
-  
-  INT_Disable();
-  if ((PROTIMER_CCTimerIsEnabled(3) == false) && (PROTIMER_LBTIsActive() == false)) 
-  {
-	state = (RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos;
-  INT_Enable();
-	if ((RAC->STATUS & (RAC_STATUS_RXENS_Msk | RAC_STATUS_TXENS_Msk)) || (state == 0x3) || (state == 0x6) || (state == 0x9) || (state == 0xc)) return 0;
-	else return 1;
-  }
-  else 
-  {
-    INT_Enable();
-    return 0;
-  }
-}
 
 
 
@@ -437,7 +418,7 @@ uint8_t RAIL_RfHalTxDataLoad(RAIL_TxData_t *txData)
 //  local_10 = ((uint16_t)*txData & 0xffff0000) | (uint16_t)txData[1]; //(uint)*(uint16_t *)(param_1 + 1);
 //  local_c = *txData;
 //  uStack8 = txData[2];
-  GENERIC_PHY_LoadTxPacketBuffer(&txData); //buffer address - ???
+  GENERIC_PHY_LoadTxPacketBuffer(&txData->dataPtr); //buffer address - ???
   return 0;
 }
 
@@ -838,25 +819,7 @@ bool RAIL_TimerIsRunning(void)
   return GENERIC_PHY_TimerIsRunning();
 }
 
-void PHY_UTILS_DelayUs(uint32_t us)
 
-{
-  bool tmp; 
-	
-	tmp = PROTIMER_IsRunning();
-	if (tmp == false) 
-  {
-    PROTIMER_Init();
-    PROTIMER_Start();
-  }
-  PROTIMER_DelayUs(us);
-  if (tmp == false)
-  {
-    PROTIMER_Stop();
-    PROTIMER_Reset();
-    return;
-  }
-}
 /**
  * Return the symbol rate for the current PHY
  *
@@ -1000,20 +963,7 @@ void RAIL_RfHalCalibrationRun(int *param_1,int param_2)
 
 
 
-RAIL_Status_t RAIL_RfHalSetTxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t error)
 
-{
-  SEQ->REG000 = 1 << (success + 0x10U & 0xff) | (uint32_t)SEQ->REG000 | 1 << (error + 0x18U & 0xff);
-  return RAIL_STATUS_NO_ERROR;
-}
-
-
-RAIL_Status_t RAIL_RfHalSetRxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t error)
-
-{
-	SEQ->REG000 = 1 << (error + 8U & 0xff) | 1 << (success & 0xff) | SEQ->REG000 & 0xffff0000;
-  return RAIL_STATUS_NO_ERROR;
-}
 
 void RFHAL_SetBerConfig(RAIL_BerConfig_t *config)
 {

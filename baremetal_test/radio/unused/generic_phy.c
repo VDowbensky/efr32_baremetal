@@ -7,7 +7,6 @@
 #include "em_assert.h"
 #include "protimer.h"
 #include "pa.h"
-#include "radio.h"
 //#include "RADIO_pti.h"
 #include "generic_seq.h"
 //#include "tempcal.h"
@@ -173,7 +172,7 @@ void GENERIC_PHY_FRC_IRQCallback(void)
     }
     else
     {
-      RADIO_FRCErrorHandle();
+      //FRC_FRCErrorHandle();
       //_DAT_4308010c = 1;
       //_DAT_43080004 = _DAT_21000f00 & 0x200;
       //if (_DAT_43080004 != 0)
@@ -637,8 +636,8 @@ void GENERIC_PHY_StartRx(int param_1)
 //	  	  	  	 RADIO_RxBufferSet(RADIO_rxBuffer);
 //		  }
   *(uint32_t*)0x21000efc = *(uint32_t*)0x21000efc  & 0xffffffdf;
-//	BUS_RegMaskedSet(&RAC->RXENSRCEN, 2);
-	RAC->RXENSRCEN |= 1;
+  	BUS_RegMaskedSet(&RAC->RXENSRCEN, 2);
+	//RAC->RXENSRCEN |= 2;
 }
 
 
@@ -666,25 +665,7 @@ void GENERIC_PHY_SeqAtomicLock(void)
 }
 
 
-void GENERIC_PHY_RadioEnable(uint32_t enable)
 
-{
-  if (enable == 0)
-  {
-    GENERIC_PHY_SeqAtomicLock();
-    *(uint32_t*)0x21000efc = *(uint32_t*)0x21000efc | 0x20;
-		BUS_RegMaskedClear(&RAC->RXENSRCEN, RAC_RXENSRCEN_SWRXEN_Msk);
-		FRC->CMD = FRC_CMD_RXABORT_Msk; 
-		RAC->CTRL |= RAC_CTRL_PRSCLR_Msk;
-    //_DAT_43081104 = enable; //RAC->SR0 bit 2
-    //RAC->SR0 |= 0x04; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    BUS_RegMaskedClear(&RAC->SR0, 2);
-  }
-  else
-  {
-    if (RAC->CTRL & RAC_CTRL_FORCEDISABLE_Msk) BUS_RegMaskedClear(&RAC->CTRL, RAC_CTRL_FORCEDISABLE_Msk);
-  }
-}
 
 
 
@@ -715,12 +696,12 @@ uint32_t  GENERIC_PHY_PreviousTxTime(void)
 }
 
 
-
+/*
 void GENERIC_PHY_RACConfig(void)
 
 { 
-	RAC->SEQCMD = RAC_SEQCMD_HALT_Msk;
-	memset((void*)0x21000000,0,0x1000);
+	//RAC->SEQCMD = RAC_SEQCMD_HALT_Msk;
+	//memset((void*)0x21000000,0,0x0f00);
   RADIO_SeqInit(&genericSeqProg, GENERIC_SEQPROG_SIZE);
 	//RAC->SEQCMD = RAC_SEQCMD_HALT_Msk;
   memset((void*)0x21000efc,0,0x70); //clear sequencer variables
@@ -737,7 +718,7 @@ void GENERIC_PHY_RACConfig(void)
   RADIO_TxWarmTimeSet(100);
 	//RAC->SEQCMD = RAC_SEQCMD_RESUME_Msk;
 }
-
+*/
 
 
 void GENERIC_PHY_FrameConfig(void)
@@ -949,7 +930,7 @@ void GENERIC_PHY_ResetAddressFiltering(void)
 
 
 
-
+/*
 void GENERIC_PHY_Init(void)
 
 {
@@ -975,7 +956,7 @@ void GENERIC_PHY_Init(void)
   SYNTH_DCDCRetimeEnable();
   SEQ->REG070 = 0;
 }
-
+*/
 
 
 uint32_t GENERIC_PHY_ConfigureAddressFiltering(uint8_t *param_1)
