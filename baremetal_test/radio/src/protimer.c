@@ -279,7 +279,8 @@ void PROTIMER_Init(void)
 {
   CMU_ClockEnable(0x60400, true);
   PROTIMER->CTRL = 0x11100;
-  ratio = 2*((float)CMU_ClockFreqGet(0x60400))/1000000;
+  //ratio = 2*((float)CMU_ClockFreqGet(0x60400))/1000000;
+	ratio = 2*((float)SystemHFClockGet())/1000000;
   precntRatioInt = (uint16_t)(ratio) - 1;
   precntRatioFrac = (uint8_t)((ratio - precntRatioInt - 1) * 256);
 	//PROTIMER->PRECNTTOP = 0x4bcc;

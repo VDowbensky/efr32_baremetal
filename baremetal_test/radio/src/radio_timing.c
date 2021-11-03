@@ -91,8 +91,8 @@ uint32_t RADIO_UsToStimerTickCalc(uint32_t us)
 
 //  us = us & ~((int)us >> 0x1f);
 //  lVar1 = CMU_ClockFreqGet(0x75160) * (uint64_t)us;
-  return ((uint64_t)us * CMU_ClockFreqGet(0x75160))/8000000;
-  
+  //return ((uint64_t)us * CMU_ClockFreqGet(0x75160))/8000000;
+  return ((uint64_t)us * SystemHFClockGet())/8000000;
  // __aeabi_uldivmod((int)lVar1,uVar2 * ((int)us >> 0x1f) + (int)((us)lVar1 >> 0x20),
  //                  8000000,0,param_4);
 }
