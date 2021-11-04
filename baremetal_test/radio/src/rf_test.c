@@ -178,17 +178,27 @@ void RFTEST_StopTx(void)
 //		} while(FRC->IF & 0x04);
 	BUS_RegMaskedSet(&FRC->IFC, FRC_IFC_TXABORTED_Msk);
   RAC->CMD = 0x20; //TXDIS
-	RAC->IFPGACTRL = 0x000087F6; //!!!
+	//RAC->IFPGACTRL = 0x000087F6; //!!!
 	//RAIL_RfHalRxStart(Channel); //for test
-//	  if ((RAC->RXENSRCEN & 0xff) == 0) RADIO_RxBufferReset();
-//    do 
-//		{ 
-//      if (RFHAL_HeadedToIdle() == 0) break;
-//    } while ((RAC->STATUS & 0xf000000) != 0);
+	  if ((RAC->RXENSRCEN & 0xff) == 0) 
+		{
+			INT_Disable();
+			BUFC->BUF1_CMD = 1;
+			BUFC->BUF2_CMD = 1;
+			FRC->IFC = 0x10;
+			INT_Enable();
+		}
+			//RADIO_RxBufferReset();
+    do 
+		{ 
+      if (RFHAL_HeadedToIdle() == 0) break;
+    } while ((RAC->STATUS & 0xf000000) != 0);
 	//GENERIC_PHY_StartRx(0);
 
-//  *(uint32_t*)0x21000efc = *(uint32_t*)0x21000efc  & 0xffffffdf;
-//  	BUS_RegMaskedSet(&RAC->RXENSRCEN, 2);
+    INT_Disable();
+		*(uint32_t*)0x21000efc = *(uint32_t*)0x21000efc  & 0xffffffdf;
+		INT_Enable();
+  	BUS_RegMaskedSet(&RAC->RXENSRCEN, 2);
 }
 
 

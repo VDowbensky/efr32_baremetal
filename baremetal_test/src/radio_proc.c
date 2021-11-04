@@ -58,7 +58,7 @@ uint32_t RADIO_GetCtune(void)
 RAIL_Status_t RAIL_RfHalSetTxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t error)
 
 {
-  SEQ->REG000 = 1 << (success + 0x10U & 0xff) | (uint32_t)SEQ->REG000 | 1 << (error + 0x18U & 0xff);
+  RADIO_TRANSITIONS = 1 << (success + 0x10U & 0xff) | (uint32_t)RADIO_TRANSITIONS | 1 << (error + 0x18U & 0xff);
   return RAIL_STATUS_NO_ERROR;
 }
 
@@ -66,7 +66,7 @@ RAIL_Status_t RAIL_RfHalSetTxTransitions(RAIL_RadioState_t success,RAIL_RadioSta
 RAIL_Status_t RAIL_RfHalSetRxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t error)
 
 {
-	SEQ->REG000 = 1 << (error + 8U & 0xff) | 1 << (success & 0xff) | SEQ->REG000 & 0xffff0000;
+	RADIO_TRANSITIONS = 1 << (error + 8U & 0xff) | 1 << (success & 0xff) | RADIO_TRANSITIONS & 0xffff0000;
   return RAIL_STATUS_NO_ERROR;
 }
 

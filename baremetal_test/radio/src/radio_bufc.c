@@ -10,19 +10,19 @@ void BUFC_IRQHandler(void)
 void BUFC_init(void)
 {
 	BUFC->BUF1_CTRL = 2; //size
-	BUFC->BUF1_ADDR = (uint32_t)RADIO_rxBuffer;
+	BUFC->BUF1_ADDR = (uint32_t)&RADIO_rxBuffer;
   BUFC->BUF1_THRESHOLDCTRL = 0xaf;
   BUFC->BUF0_CTRL = 2; //size
-  BUFC->BUF0_ADDR = (uint32_t)RADIO_txBuffer;
+  BUFC->BUF0_ADDR = (uint32_t)&RADIO_txBuffer;
   BUFC->BUF0_THRESHOLDCTRL = 0x2020; //BUFC_BUF0_THRESHOLDCTRL_THRESHOLDMODE_Msk | THRESHOLD
   BUFC->BUF2_CTRL = 0; //size
-  BUFC->BUF2_ADDR = (uint32_t)RADIO_rxLengthBuffer;
+  BUFC->BUF2_ADDR = (uint32_t)&RADIO_rxLengthBuffer;
   BUFC->BUF2_THRESHOLDCTR = 0x3e; 
 	 // DAT_000109d8 = RADIO_BUFCIrqHandler;
   BUFC_Clear(0);
   BUFC_Clear(1);
   BUFC_Clear(2);
-  BUFC->IEN |= 0xb0a0b; //23,21,20,11,9,3,1,0 
+  //BUFC->IEN |= 0xb0a0b; //23,21,20,11,9,3,1,0 
   BUFC_RXBufferDisableThrInt();
 	
 }

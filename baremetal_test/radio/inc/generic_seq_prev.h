@@ -9,7 +9,7 @@
 #define RAIL_VER 12
 
 #if(RAIL_VER == 12)
-#define GENERIC_SEQPROG_SIZE 4096
+#define GENERIC_SEQPROG_SIZE 3000
 //sequencer variables
 #define RADIO_TRANSITIONS SEQ->REG000
 
