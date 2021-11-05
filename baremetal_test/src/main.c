@@ -23,8 +23,8 @@ int main(void)
 	EMU_DCDCInit_TypeDef dcdcInit = EMU_DCDCINIT_DEFAULT;
 		
 	dcdcInit.powerConfig = emuPowerConfig_DcdcToDvdd;
-	//dcdcInit.dcdcMode = emuDcdcMode_LowNoise;
-	dcdcInit.dcdcMode = emuDcdcMode_Bypass;
+	dcdcInit.dcdcMode = emuDcdcMode_LowNoise;
+	//dcdcInit.dcdcMode = emuDcdcMode_Bypass;
 	dcdcInit.mVout = 1800;
 	dcdcInit.em01LoadCurrent_mA = 100;
 	dcdcInit.em234LoadCurrent_uA = 10;
@@ -44,7 +44,9 @@ int main(void)
 	Timing_DelayUs(10000);
 	//print reset cause
 	printf("Reset cause: 0x%X\r\n", RMU->RSTCAUSE);
+	//printf("Reset cause: 0x%X\r\n", RMU_ResetCauseGet());
 	RMU->CMD = 1; //clear reset cause bit
+	//RMU_ResetCauseClear();
 	printf("\r\nHello, Lamer!\r\n");
 	init_peripherals();
 	init_radio();

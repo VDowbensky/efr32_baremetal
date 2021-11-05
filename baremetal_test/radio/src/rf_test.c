@@ -198,8 +198,7 @@ void RFTEST_StopTx(void)
     INT_Disable();
 		SEQ_CONTROL_REG &= ~0x20; //SEQ_CONTROL_REG  & 0xffffffdf;
 		INT_Enable();
-  	//BUS_RegMaskedSet(&RAC->RXENSRCEN, 2);
-		RAC->RXENSRCEN |= 2;
+  	BUS_RegMaskedSet(&RAC->RXENSRCEN, 2);
 }
 
 
