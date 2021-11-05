@@ -5,7 +5,7 @@
 #include "em_bus.h"
 #include "em_assert.h"
 #include "synth.h"
-//#include "radio_cmu.h"
+#include "generic_seq.h"
 
 
 #define MODEM_RAMPLEV0 (MODEM->RAMPLEV & MODEM_RAMPLEV_RAMPLEV0_Msk) >> MODEM_RAMPLEV_RAMPLEV0_Pos
@@ -44,9 +44,9 @@ void PA_SetPowerLevel(uint8_t level)
 	if(level == 0) level = 1;
 	if(level > 248) level = 248;
 	PA_CalcRegValues(level);
-	SEQ->REG0C0 &= 0xe0c03fff;
-  //SEQ->REG0C0 |= 0x3fc8 | (stripe << 0x18) | (slice  << 0xe);
-	SEQ->REG0C0 |= (bootstrap << 3) | (cascode << 6) | (stripe << 0x18) | (slice  << 0xe);
+	PA_SLICES &= 0xe0c03fff;
+  //PA_SLICES |= 0x3fc8 | (stripe << 0x18) | (slice  << 0xe);
+	PA_SLICES |= (bootstrap << 3) | (cascode << 6) | (stripe << 0x18) | (slice  << 0xe);
 	//apcConfigure(200);
 }
 
@@ -149,7 +149,7 @@ void PA_PeakDetectorHighRun(void)
 {
  uint32_t uVar3;
   
-  uVar3 = SEQ->REG0C0 >> 1 & 0x1fc000; //??? slice decrement;
+  uVar3 = PA_SLICES >> 1 & 0x1fc000; //??? slice decrement;
 
 		BUS_RegMaskedClear(&RAC->SGPACTRL0, 0xffc0); //14...21 SLICE
 		BUS_RegMaskedSet(&RAC->SGPACTRL0, uVar3);
@@ -163,7 +163,7 @@ void PA_PeakDetectorLowRun(void)
 {
   RAC->IEN &= 0xfbffffff; //bit 26 PAVLOW
 	BUS_RegMaskedClear(&RAC->IEN, RAC_IEN_PAVLOW_Msk);
-  //SEQ->REG0C0 = peakDetectorOldSlices; //!!!!!!!
+  //PA_SLICES = peakDetectorOldSlices; //!!!!!!!
 }
 
 void PA_BatHighRun(void)
@@ -236,8 +236,8 @@ uint16_t PA_RampTimeSet(uint16_t ramptime)
 void PA_CTuneSet(uint8_t txPaCtuneValue, uint8_t rxPaCtuneValue)
 
 {
-  SEQ->REG0C4 = rxPaCtuneValue & 7 | (rxPaCtuneValue & 0x1f) << 4;
-  SEQ->REG0C8 = txPaCtuneValue & 7 | (txPaCtuneValue & 0x1f) << 4;
+  RX_PA_CTUNE = rxPaCtuneValue & 7 | (rxPaCtuneValue & 0x1f) << 4;
+  TX_PA_CTUNE = txPaCtuneValue & 7 | (txPaCtuneValue & 0x1f) << 4;
 }
 
 

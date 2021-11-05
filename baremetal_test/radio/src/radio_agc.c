@@ -19,7 +19,7 @@ void AGC_init(void)
   AGC->LOOPDEL = 0x00000113;
   AGC->MININDEX	= 0x006D8480;	
 }
-
+/*
 int16_t AGC_GetRSSI(void)
 
 {
@@ -49,4 +49,29 @@ int16_t AGC_GetRSSI(void)
     }
   } while (!bVar6 && !bVar1);
   return (int)result;
+}
+*/
+
+int16_t AGC_GetRSSI(void)
+
+{
+  int16_t rssi;
+  CORE_irqState_t irqState;
+  uint32_t state_before;
+  uint32_t state_after;
+  
+  do 
+  {
+    INT_Disable();
+    state_before = (RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos;
+	  rssi = (int16_t)(AGC->RSSI);
+    state_after = (RAC->STATUS & RAC_STATUS_STATE_Msk) >> RAC_STATUS_STATE_Pos;
+    INT_Enable();
+    if (rssi != -0x200) 
+	  {
+      if ((state_after == 2 || state_after ==3) && (state_before == 2 || state_before == 3)) return rssi/64;
+      return -0x200;
+    }
+  } while ((state_after == 2 || state_after == 3) && (state_before == 2 || state_before == 3));
+  return -0x200;
 }

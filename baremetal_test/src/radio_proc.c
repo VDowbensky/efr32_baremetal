@@ -27,7 +27,7 @@ bool RADIO_SendPacket(void)
   if ((PROTIMER_CCTimerIsEnabled(3) == 0) && (PROTIMER_LBTIsActive() == 0)) 
 	{
   if ((FRC->DFLCTRL & FRC_DFLCTRL_DFLMODE_Msk) == 0) FRC->WCNTCMP0 = BUFC_TxBufferBytesAvailable() - 1; 
-  *(uint32_t*)0x21000efc &= ~0x20; //0xffffffdf;
+  SEQ_CONTROL_REG &= ~0x20; //0xffffffdf;
 		BUS_RegMaskedSet(&RAC->IFPGACTRL, RAC_IFPGACTRL_BANDSEL_Msk);
 		RAC->CMD = RAC_CMD_TXEN_Msk;
     INT_Enable();
@@ -58,7 +58,7 @@ uint32_t RADIO_GetCtune(void)
 RAIL_Status_t RAIL_RfHalSetTxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t error)
 
 {
-  SEQ->REG000 = 1 << (success + 0x10U & 0xff) | (uint32_t)SEQ->REG000 | 1 << (error + 0x18U & 0xff);
+  RADIO_TRANSITIONS = 1 << (success + 0x10U & 0xff) | (uint32_t)RADIO_TRANSITIONS | 1 << (error + 0x18U & 0xff);
   return RAIL_STATUS_NO_ERROR;
 }
 
@@ -66,7 +66,7 @@ RAIL_Status_t RAIL_RfHalSetTxTransitions(RAIL_RadioState_t success,RAIL_RadioSta
 RAIL_Status_t RAIL_RfHalSetRxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t error)
 
 {
-	SEQ->REG000 = 1 << (error + 8U & 0xff) | 1 << (success & 0xff) | SEQ->REG000 & 0xffff0000;
+	RADIO_TRANSITIONS = 1 << (error + 8U & 0xff) | 1 << (success & 0xff) | RADIO_TRANSITIONS & 0xffff0000;
   return RAIL_STATUS_NO_ERROR;
 }
 
@@ -96,7 +96,7 @@ void GENERIC_PHY_RadioEnable(uint32_t enable)
   if (enable == 0)
   {
     GENERIC_PHY_SeqAtomicLock();
-    *(uint32_t*)0x21000efc = *(uint32_t*)0x21000efc | 0x20;
+    SEQ_CONTROL_REG = SEQ_CONTROL_REG | 0x20;
 		BUS_RegMaskedClear(&RAC->RXENSRCEN, RAC_RXENSRCEN_SWRXEN_Msk);
 		FRC->CMD = FRC_CMD_RXABORT_Msk; 
 		//RAC->CTRL |= RAC_CTRL_PRSCLR_Msk;
@@ -127,4 +127,18 @@ void GENERIC_PHY_SeqAtomicLock(void)
   }
   //_DAT_43081104 = 1;
   BUS_RegMaskedSet(&RAC->SR0, 2);
+}
+
+void RAC_RSM_IRQHandler(void)
+{
+	uint32_t flags;
+	flags = RAC->IF & RAC->IEN;
+	RAC->IFC = flags;		
+}
+
+void RAC_SEQ_IRQHandler(void)
+{
+	uint32_t flags;
+	flags = RAC->IF & RAC->IEN;
+	RAC->IFC = flags;		
 }

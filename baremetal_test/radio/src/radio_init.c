@@ -28,13 +28,13 @@ void init_radio(void)
 
   RADIO_SetAndForgetWrite();
   RAC->SR3 = 0;
-  //BUS_RegMaskedSet(&RAC->CTRL, RAC_CTRL_ACTIVEPOL_Msk | RAC_CTRL_PAENPOL_Msk | 	RAC_CTRL_LNAENPOL_Msk);
+  BUS_RegMaskedSet(&RAC->CTRL, RAC_CTRL_ACTIVEPOL_Msk | RAC_CTRL_PAENPOL_Msk | 	RAC_CTRL_LNAENPOL_Msk);
 	
-  //RAC->SEQCMD = RAC_SEQCMD_HALT_Msk;
-	memset((void*)0x21000000,0,0x0f00);
+  RAC->SEQCMD = RAC_SEQCMD_HALT_Msk;
+	memset((void*)0x21000000,0,0x1000);
 	RADIO_SeqInit(&genericSeqProg, GENERIC_SEQPROG_SIZE);
-  memset((void*)0x21000efc,0,0x70); //clear sequencer variables
-	//RAC->SEQCMD = RAC_SEQCMD_RESUME_Msk;
+  //memset((void*)0x21000efc,0,0x70); //clear sequencer variables
+	RAC->SEQCMD = RAC_SEQCMD_RESUME_Msk;
   RAC->SR0 = 0;
   RAC->SR1 = 0;
   RAC->SR2 = 0;
@@ -45,7 +45,9 @@ void init_radio(void)
   RADIO_TxToRxTimeSet(100);
   RADIO_TxToTxTimeSet(100);
   RADIO_RxToTxTimeSet(100);
+	RADIO_RxFrameToTxTimeSet(100);
   RADIO_TxWarmTimeSet(100); //GENERIC_PHY_RACConfig
+	
 //  RADIO_PTI_Enable();
 	if (RAC->CTRL & RAC_CTRL_FORCEDISABLE_Msk) RAC->CTRL &= ~RAC_CTRL_FORCEDISABLE_Msk; //FORCEDISABLE
 //  RADIO_RegisterIrqCallback(1,GENERIC_PHY_FRC_IRQCallback);
@@ -53,8 +55,7 @@ void init_radio(void)
 //  RADIO_RegisterIrqCallback(5,GENERIC_PHY_RAC_IRQCallback);
 //  RADIO_RegisterIrqCallback(7,GENERIC_PHY_PROTIMER_IRQCallback);
 //  GENERIC_PHY_ResetAddressFiltering();
-  //_DAT_21000efc = _DAT_21000efc | 8;
-  *(uint32_t*)0x21000efc = *(uint32_t*)0x21000efc | 8;
+  SEQ_CONTROL_REG = SEQ_CONTROL_REG | 8;
   PROTIMER_Init();
   PROTIMER_Start();
   //PROTIMER_CCTimerCapture(0,0xc00000);
@@ -86,7 +87,7 @@ void init_radio(void)
   RAC->VCOCTRL = 0x0F00277A; //27,26,25,24,13,10,9,8,6,5,4,3,1
 	RAC->RFENCTRL = RAC_RFENCTRL_DEMEN_Msk | RAC_RFENCTRL_IFADCCAPRESET_Msk;
   RAC->LNAMIXCTRL1 = 0x00000880; //11,7 trim values
-  RAC->IFPGACTRL = 0x000087F6; //15,10,9,8,7,6,5,4,2,1 bandsel & trim values
+  //RAC->IFPGACTRL = 0x000087F6; //15,10,9,8,7,6,5,4,2,1 bandsel & trim values
   RAC->IFFILTCTRL = 0x008800E0; //
   RAC->IFADCCTRL = 0x1153E6C1;
 
@@ -115,11 +116,11 @@ void init_radio(void)
 RADIO_PAInit_t painit;
 painit.paSel = PA_SEL_SUBGIG;
 painit.voltMode = PA_VOLTMODE_DCDC;
-painit.power = 100; //100
+painit.power = 150; //100
 painit.offset = 0;
 painit.rampTime = 10;
 RADIO_PA_Init(&painit);
-PA_Powerlevel = 100;
+PA_Powerlevel = 150;
 PA_SetPowerLevel(PA_Powerlevel);
 
 uint32_t tmp;
@@ -138,8 +139,8 @@ tmp = *(uint32_t *) (DEVID_ADDR + 0x104);
     }
 		PA_CTuneSet(txpactune, rxpactune); //default
 		PA_SetPowerLevel(50);
-		RAIL_RfHalSetTxTransitions(RAIL_RF_STATE_RX,RAIL_RF_STATE_RX);
-		//RAIL_RfHalSetTxTransitions(RAIL_RF_STATE_IDLE,RAIL_RF_STATE_IDLE);
+		//RAIL_RfHalSetTxTransitions(RAIL_RF_STATE_RX,RAIL_RF_STATE_RX);
+		RAIL_RfHalSetTxTransitions(RAIL_RF_STATE_IDLE,RAIL_RF_STATE_IDLE);
 		RAIL_RfHalSetRxTransitions(RAIL_RF_STATE_RX,RAIL_RF_STATE_RX);
 		
 		//GENERIC_PHY_RadioEnable(1);
@@ -170,17 +171,16 @@ void RADIO_SeqInit(void *src,uint32_t len)
   RAC->VECTADDR = 0x21000000;
   RAC->SEQCTRL = RAC_SEQCTRL_COMPACT_Msk; //1;
   INT_Disable();
-  //memcpy((void *)0x21000000,src,len << 2);
   memcpy((void *)0x21000000,src,len);
   INT_Enable();
-  t3 = SEQ->REG0C8;
-  t2 = SEQ->REG0C4;
-  t1 = SEQ->REG0C0;
+  t3 = TX_PA_CTUNE;
+  t2 = RX_PA_CTUNE;
+  t1 = PA_SLICES;
   RAC->R6 = 0x21000fcc;
   memset((void *)0x21000f6c,0,0x94);
-  SEQ->REG0C0 = t1;
-  SEQ->REG0C4 = t2;
-  SEQ->REG0C8 = t3;
-  SEQ->REG0BC = -(RADIO_UsToStimerTickCalc(0x3c));
+  PA_SLICES = t1;
+  RX_PA_CTUNE = t2;
+  TX_PA_CTUNE = t3;
+  STIMER_VALUE = -(RADIO_UsToStimerTickCalc(0x3c));
 }
 

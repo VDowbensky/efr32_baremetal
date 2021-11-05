@@ -25,43 +25,43 @@ void Timing_DelayUs(uint32_t us)
 void RADIO_TxWarmTimeSet(uint16_t us)
 
 {
-  SEQ->REG0AC = RADIO_UsToStimerTickCalc(us - PA_RampTimeGet());
-  SEQ->REG0AC += (RADIO_UsToStimerTickCalc((us - PA_RampTimeGet()) -20)) << 16;
+  TX_WARMTIME = RADIO_UsToStimerTickCalc(us - PA_RampTimeGet());
+  TX_WARMTIME += (RADIO_UsToStimerTickCalc((us - PA_RampTimeGet()) - 20)) << 16;
 }
 
 void RADIO_RxToTxTimeSet(uint16_t us)
 
 {
-  SEQ->REG0A4 = RADIO_UsToStimerTickCalc(us - PA_RampTimeGet());
-  SEQ->REG0A4 += (RADIO_UsToStimerTickCalc((us - PA_RampTimeGet()) - 20)) << 16;
+  RX_TX_TIME  = RADIO_UsToStimerTickCalc(us - PA_RampTimeGet());
+  RX_TX_TIME  += (RADIO_UsToStimerTickCalc((us - PA_RampTimeGet()) - 20)) << 16;
 }
 
 
 void RADIO_RxFrameToTxTimeSet(uint16_t us)
 
 {
-  SEQ->REG0A8 = RADIO_UsToStimerTickCalc(us - PA_RampTimeGet());
-  SEQ->REG0A8 += (RADIO_UsToStimerTickCalc((us - PA_RampTimeGet()) - 20)) << 16;
+  RXFRAME_TX_TIME  = RADIO_UsToStimerTickCalc(us - PA_RampTimeGet());
+  RXFRAME_TX_TIME  += (RADIO_UsToStimerTickCalc((us - PA_RampTimeGet()) - 20)) << 16;
 }
 
 void RADIO_TxToTxTimeSet(uint16_t us)
 
 {
-  SEQ->REG0B8 = RADIO_UsToStimerTickCalc(us - PA_RampTimeGet());
-  SEQ->REG0B8 += (RADIO_UsToStimerTickCalc((us - PA_RampTimeGet()) - 20)) << 16;
+  TX_TX_TIME  = RADIO_UsToStimerTickCalc(us - PA_RampTimeGet());
+  TX_TX_TIME  += (RADIO_UsToStimerTickCalc((us - PA_RampTimeGet()) - 20)) << 16;
 }
 
 void RADIO_TxToRxTimeSet(uint16_t us)
 
 {
-  SEQ->REG0B0 = RADIO_UsToStimerTickCalc(us - 4);
+  TX_RX_TIME  = RADIO_UsToStimerTickCalc(us - 4);
 }
 
 void RADIO_RxWarmTimeSet(uint16_t us)
 
 {
   rxWarmTimeUs = us;
-  SEQ->REG09C = RADIO_UsToStimerTickCalc(us - 4);
+  RX_WARMTIME  = RADIO_UsToStimerTickCalc(us - 4);
 }
 
 uint16_t RADIO_RxWarmTimeGet(void)
@@ -74,14 +74,14 @@ uint16_t RADIO_RxWarmTimeGet(void)
 void RADIO_RxSearchTimeSet(uint32_t us)
 
 {
-  SEQ->REG0A0 = RADIO_UsToStimerTickCalc(us);
+  RX_SEARCHTIME = RADIO_UsToStimerTickCalc(us);
 }
 
 
 void RADIO_TxToRxSearchTimeSet(uint32_t us)
 
 {
-  SEQ->REG0B4 = RADIO_UsToStimerTickCalc(us);
+  TX_RX_SEARCHTIME = RADIO_UsToStimerTickCalc(us);
 }
 
 uint32_t RADIO_UsToStimerTickCalc(uint32_t us)

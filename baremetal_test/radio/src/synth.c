@@ -147,24 +147,13 @@ void SYNTH_RetimeClkConfig(void)
 
 {
   uint32_t rxfreq;
-  uint32_t uVar3;
-//  uint32_t local_1c;
-//  uint32_t uStack24;
-//  uint32_t local_14;
-//
-//  local_1c = 0x2010000;
-//  uStack24 = 0x3030302;
-  //local_14 = CONCAT31((int3)((uint)in_r3 >> 8),3);
-	//local_14 = 3;
+  //uint32_t uVar3;
   rxfreq = currChSpacing * SYNTH->CHCTRL + currIfFrequency + currRfFrequency;
-  uVar3 = 0x1c + rxfreq / 625000000 + 1;
-  rxfreq = rxfreq >> uVar3;
-//  RAC->MMDCTRL &= 0xffffc200;
-		BUS_RegMaskedClear(&RAC->MMDCTRL, 0x3dff);
-		//RAC->MMDCTRL |= uVar3 << 0xc | (rxfreq + (dcdcRetimeClkTarget >> 1)) / dcdcRetimeClkTarget - 1 |(uint32_t)*(uint8_t *)((int)&local_1c + rxfreq / 325000000 + 1) << 10;
-	RAC->MMDCTRL |= uVar3 << 0xc | (rxfreq + (dcdcRetimeClkTarget >> 1)) / dcdcRetimeClkTarget - 1 |(0x1c + rxfreq / 325000000 + 1) << 10;
-	//MMDDIVRSDIG, MMDDIVRSDCDC
-  //SYNTH_RetimeLimitsConfig(3); //unknown argument
+  //uVar3 = 0x1c + rxfreq / 625000000 + 1;
+  //rxfreq = rxfreq >> uVar3;
+	//BUS_RegMaskedClear(&RAC->MMDCTRL, 0x3dff);
+	//RAC->MMDCTRL |= uVar3 << 0xc | (rxfreq + (dcdcRetimeClkTarget >> 1)) / dcdcRetimeClkTarget - 1 |(0x1c + rxfreq / 325000000 + 1) << 10;
+	RAC->MMDCTRL = 0x1d47b; //1147b in tx and idle mode
 	SYNTH_RetimeLimitsConfig(rxfreq); //unknown argument
 }
 
