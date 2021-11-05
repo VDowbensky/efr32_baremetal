@@ -192,13 +192,14 @@ void RFTEST_StopTx(void)
     do 
 		{ 
       if (RFHAL_HeadedToIdle() == 0) break;
-    } while ((RAC->STATUS & 0xf000000) != 0);
+    } while (RAC->STATUS & RAC_STATUS_STATE_Msk);
 	//GENERIC_PHY_StartRx(0);
 
     INT_Disable();
-		*(uint32_t*)0x21000efc = *(uint32_t*)0x21000efc  & 0xffffffdf;
+		SEQ_CONTROL_REG &= ~0x20; //SEQ_CONTROL_REG  & 0xffffffdf;
 		INT_Enable();
-  	BUS_RegMaskedSet(&RAC->RXENSRCEN, 2);
+  	//BUS_RegMaskedSet(&RAC->RXENSRCEN, 2);
+		RAC->RXENSRCEN |= 2;
 }
 
 

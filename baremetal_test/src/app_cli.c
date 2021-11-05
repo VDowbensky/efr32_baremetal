@@ -222,7 +222,7 @@ void cli_setpowerlevel(int argc, char **argv)
 void cli_getrssi(int argc, char **argv)
 {
 	printf("GET_RSSI: Under development\r\n");
-	printf("GET_RSSI: %.2f dBm\r\n",(float)AGC_GetRSSI()/4);
+	printf("GET_RSSI: %.2f dBm\r\n",((float)AGC_GetRSSI())/4);
 }
 
 void cli_getrssioffset(int argc, char **argv)
