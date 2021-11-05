@@ -44,9 +44,7 @@ int main(void)
 	Timing_DelayUs(10000);
 	//print reset cause
 	printf("Reset cause: 0x%X\r\n", RMU->RSTCAUSE);
-	//printf("Reset cause: 0x%X\r\n", RMU_ResetCauseGet());
 	RMU->CMD = 1; //clear reset cause bit
-	//RMU_ResetCauseClear();
 	printf("\r\nHello, Lamer!\r\n");
 	init_peripherals();
 	init_radio();
