@@ -1,6 +1,6 @@
 #include "radio_crc.h"
 
-void crc_init(void)
+void CRC_init(void)
 {
 	CRC->POLY = 0x0000A001;
 	//seed

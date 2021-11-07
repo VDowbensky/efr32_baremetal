@@ -96,7 +96,7 @@ void init_radio(void)
 	FRC_init();
 	BUFC_init();
 	AGC_init();
-	//CRC_init);
+	CRC_init();
 
 
 //config callbacks here if needed
