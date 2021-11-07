@@ -99,18 +99,6 @@ void init_radio(void)
 	//CRC_init);
 
 
-	//CRC
-	//poly
-	CRC->POLY = 0x0000A001;
-	//seed
-	CRC->INIT = 0x00000000;
-	//input bit endian
-	//CRC input padding
-	//output byte endian
-	//output bit endian
-	//invert
-	CRC->CTRL = 0x00000744;
-	
 //config callbacks here if needed
 
 RADIO_PAInit_t painit;

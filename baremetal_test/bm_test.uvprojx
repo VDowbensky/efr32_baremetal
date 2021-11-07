@@ -629,6 +629,11 @@
               <FileType>1</FileType>
               <FilePath>.\radio\src\radio_agc.c</FilePath>
             </File>
+            <File>
+              <FileName>radio_crc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\radio\src\radio_crc.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
