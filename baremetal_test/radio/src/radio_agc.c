@@ -5,6 +5,31 @@ void AGC_IRQHandler(void)
 	uint32_t flags;
 	flags = AGC->IF & AGC->IEN;
 	AGC->IFC = flags;
+	
+	if(flags & AGC_IFS_RSSIVALID_Msk)
+	{
+		RxEvents |= RXEVENT_RSSIVALID;
+	}
+	
+	if(flags & AGC_IFS_CCA_Msk)
+	{
+		RxEvents |= RXEVENT_CCA;
+	}
+	
+	if(flags & AGC_IFS_RSSIPOSSTEP_Msk)
+	{
+		RxEvents |= RXEVENT_RSSIPOSSTEP;
+	}
+	
+	if(flags & AGC_IFS_RSSINEGSTEP_Msk)
+	{
+		RxEvents |= RXEVENT_RSSINEGSTEP;
+	}
+	
+	if(flags & AGC_IFS_RSSIDONE_Msk)
+	{
+		RxEvents |= RXEVENT_RSSIDONE;
+	}
 }
 
 void AGC_init(void)

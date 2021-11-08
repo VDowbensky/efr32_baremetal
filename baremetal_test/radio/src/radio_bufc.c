@@ -5,6 +5,91 @@ void BUFC_IRQHandler(void)
 	uint32_t flags;
 	flags = BUFC->IF & BUFC->IEN;
 	BUFC->IFC = flags;
+	
+	if(flags & BUFC_IF_BUF0OF_Msk)
+	{
+		
+	}
+	
+	if(flags & BUFC_IF_BUF0UF_Msk)
+	{
+		
+	}
+	
+	if(flags & BUFC_IF_BUF0THR_Msk)
+	{
+		
+	}
+	
+	if(flags & BUFC_IF_BUF0CORR_Msk)
+	{
+		
+	}
+	
+	if(flags & BUFC_IF_BUF1OF_Msk)
+	{
+		
+	}
+	
+	if(flags & BUFC_IF_BUF1UF_Msk)
+	{
+		
+	}
+	
+	if(flags & BUFC_IF_BUF1THR_Msk)
+	{
+		
+	}
+	
+	if(flags & BUFC_IF_BUF1CORR_Msk)
+	{
+		
+	}
+	
+	if(flags & BUFC_IF_BUF2OF_Msk)
+	{
+		
+	}
+	
+	if(flags & BUFC_IF_BUF2UF_Msk)
+	{
+		
+	}
+	
+	if(flags & BUFC_IF_BUF2THR_Msk)
+	{
+		
+	}
+	
+	if(flags & BUFC_IF_BUF2CORR_Msk)
+	{
+		
+	}
+	
+	if(flags & BUFC_IF_BUF3OF_Msk)
+	{
+		
+	}
+	
+	if(flags & BUFC_IF_BUF3UF_Msk)
+	{
+		
+	}
+	
+	if(flags & BUFC_IF_BUF3THR_Msk)
+	{
+		
+	}
+	
+	if(flags & BUFC_IF_BUF3CORR_Msk)
+	{
+		
+	}
+	
+	if(flags & BUFC_IF_BUSERROR_Msk)
+	{
+		
+	}
 }
 
 void BUFC_init(void)

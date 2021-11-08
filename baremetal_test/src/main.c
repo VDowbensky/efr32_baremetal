@@ -58,7 +58,7 @@ int main(void)
 	while(1)
 	{
 		process_cli();
-		//process_radio();
+		process_radio();
 	}
 }
 

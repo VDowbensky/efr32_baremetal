@@ -101,15 +101,15 @@ void init_radio(void)
 
 //config callbacks here if needed
 
-RADIO_PAInit_t painit;
-painit.paSel = PA_SEL_SUBGIG;
-painit.voltMode = PA_VOLTMODE_DCDC;
-painit.power = 150; //100
-painit.offset = 0;
-painit.rampTime = 10;
-RADIO_PA_Init(&painit);
-PA_Powerlevel = 150;
-PA_SetPowerLevel(PA_Powerlevel);
+//RADIO_PAInit_t painit;
+//painit.paSel = PA_SEL_SUBGIG;
+//painit.voltMode = PA_VOLTMODE_DCDC;
+//painit.power = 150; //100
+//painit.offset = 0;
+//PA_rampTime = 10;
+PA_Init(100,10);
+//PA_Powerlevel = 150;
+//PA_SetPowerLevel(PA_Powerlevel);
 
 uint32_t tmp;
 tmp = *(uint32_t *) (DEVID_ADDR + 0x104);
@@ -126,10 +126,10 @@ tmp = *(uint32_t *) (DEVID_ADDR + 0x104);
       rxpactune = (tmp >> 8) & 0x000000FF;
     }
 		PA_CTuneSet(txpactune, rxpactune); //default
-		PA_SetPowerLevel(50);
 		//RAIL_RfHalSetTxTransitions(RAIL_RF_STATE_RX,RAIL_RF_STATE_RX);
 		RAIL_RfHalSetTxTransitions(RAIL_RF_STATE_IDLE,RAIL_RF_STATE_IDLE);
-		RAIL_RfHalSetRxTransitions(RAIL_RF_STATE_RX,RAIL_RF_STATE_RX);
+		//RAIL_RfHalSetRxTransitions(RAIL_RF_STATE_RX,RAIL_RF_STATE_RX);
+		RAIL_RfHalSetRxTransitions(RAIL_RF_STATE_IDLE,RAIL_RF_STATE_IDLE);
 		
 		//GENERIC_PHY_RadioEnable(1);
 }

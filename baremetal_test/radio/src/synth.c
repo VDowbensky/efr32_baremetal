@@ -16,7 +16,49 @@ uint32_t dcdcRetimeClkTarget;
 
 void SYNTH_IRQHandler(void)
 {
-	SYNTH->IFC = SYNTH->IEN & SYNTH->IF;
+	uint32_t flags;
+	flags = SYNTH->IEN & SYNTH->IF;
+	SYNTH->IFC = flags;
+	
+	if(flags & SYNTH_IF_LOCKED_Msk)
+	{
+		
+	}
+	
+	if(flags & SYNTH_IF_UNLOCKED_Msk)
+	{
+		
+	}
+	
+	if(flags & SYNTH_IF_CAPCALDONE_Msk)
+	{
+		
+	}
+	
+	if(flags & SYNTH_IF_VCOHIGH_Msk)
+	{
+		
+	}
+	
+	if(flags & SYNTH_IF_VCOLOW_Msk)
+	{
+		
+	}
+	
+	if(flags & SYNTH_IF_AUXCAPCALDONE_Msk)
+	{
+		
+	}
+	
+	if(flags & SYNTH_IF_AUXLOCKED_Msk)
+	{
+		
+	}
+	
+	if(flags & SYNTH_IF_AUXUNLOCKED_Msk)
+	{
+		
+	}
 }
 
 void SYNTH_init(void)
@@ -178,7 +220,8 @@ void SYNTH_Config(uint32_t base_freg, uint32_t spacing)
   vcofreq = currRfFrequency * lodiv;
   SYNTH->FREQ = ((uint64_t)vcofreq * 524288)/xofreq;
   currIfFrequency = SYNTH_IfFreqCompute();
-  k_ifreq = ((uint64_t)currIfFrequency * lodiv * 524288)/xofreq;
+  //k_ifreq = ((uint64_t)currIfFrequency * lodiv * 524288)/xofreq;
+	k_ifreq = 0x04000;
   SYNTH->IFFREQ &= SYNTH_IFFREQ_LOSIDE_Msk;
   SYNTH->IFFREQ |= (k_ifreq & SYNTH_IFFREQ_IFFREQ_Msk);
 

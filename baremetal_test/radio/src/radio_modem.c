@@ -5,7 +5,62 @@ void MODEM_IRQHandler(void)
 {
 	uint32_t flags;
 	flags = MODEM->IF & MODEM->IEN;
-	MODEM->IFC = flags;	
+	MODEM->IFC = flags;
+
+	if(flags & MODEM_IF_TXFRAMESENT_Msk)
+	{
+		TxEvents |= TXEVENT_FRAMESENT;
+	}
+	
+	if(flags & MODEM_IF_TXSYNCSENT_Msk)
+	{
+		TxEvents |= TXEVENT_SYNCSENT;
+	}
+	
+	if(flags & MODEM_IF_TXPRESENT_Msk)
+	{
+		TxEvents |= TXEVENT_PRESENT;
+	}
+	
+	if(flags & MODEM_IF_RXTIMDET_Msk)
+	{
+		RxEvents |= RXEVENT_TIMDET;
+	}
+	
+	if(flags & MODEM_IF_RXPREDET_Msk)
+	{
+		RxEvents |= RXEVENT_PREDET;
+	}
+	
+	if(flags & MODEM_IF_RXFRAMEDET0_Msk)
+	{
+		RxEvents |= RXEVENT_RXFRAMEDET0;
+	}
+	
+	if(flags & MODEM_IF_RXFRAMEDET1_Msk)
+	{
+		RxEvents |= RXEVENT_RXFRAMEDET1;
+	}
+	
+	if(flags & MODEM_IF_RXTIMLOST_Msk)
+	{
+		RxEvents |= RXEVENT_TIMLOST;
+	}
+	
+	if(flags & MODEM_IF_RXPRELOST_Msk)
+	{
+		RxEvents |= RXEVENT_PRELOST;
+	}
+	
+	if(flags & MODEM_IF_RXFRAMEDETOF_Msk)
+	{
+		RxEvents |= RXEVENT_RXFRAMEDETOF;
+	}
+	
+	if(flags & MODEM_IF_RXTIMNF_Msk)
+	{
+		RxEvents |= RXEVENT_RXTIMNF;
+	}
 }
 
 void MODEM_init(void)

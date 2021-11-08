@@ -2,9 +2,10 @@
 
 void FRC_PRI_IRQHandler(void)
 {
-	uint32_t flags;
-	flags = FRC->IF & FRC->IEN;
-	FRC->IFC = flags;	
+	//uint32_t flags;
+	//flags = FRC->IF & FRC->IEN;
+	//FRC->IFC = flags;
+	FRC_IRQHandler();	
 }
 
 void FRC_IRQHandler(void)
@@ -12,6 +13,136 @@ void FRC_IRQHandler(void)
 	uint32_t flags;
 	flags = FRC->IF & FRC->IEN;
 	FRC->IFC = flags;	
+	
+	if(flags & FRC_IF_TXDONE_Msk)
+	{
+		TxEvents |= TXEVENT_DONE;
+	}
+	
+	if(flags & FRC_IF_TXAFTERFRAMEDONE_Msk)
+	{
+		TxEvents |= TXEVENT_AFTERFRAMEDONE;
+	}
+	
+	if(flags & FRC_IF_TXABORTED_Msk)
+	{
+		TxEvents |= TXEVENT_ABORTED;
+	}
+	
+	if(flags & FRC_IF_TXUF_Msk)
+	{
+		TxEvents |= TXEVENT_UNDERFLOW;
+	}
+	
+	if(flags & FRC_IF_RXDONE_Msk)
+	{
+		RxEvents |= RXEVENT_DONE;
+	}
+	
+	if(flags & FRC_IF_RXABORTED_Msk)
+	{
+		RxEvents |= RXEVENT_ABORTED;
+	}
+	
+	if(flags & FRC_IF_FRAMEERROR_Msk)
+	{
+		RxEvents |= RXEVENT_FRAMEERROR;
+	}
+	
+	if(flags & FRC_IF_BLOCKERROR_Msk)
+	{
+		RxEvents |= RXEVENT_BLOCKERROR;
+	}
+	
+	if(flags & FRC_IF_RXOF_Msk)
+	{
+		RxEvents |= RXEVENT_RXOVERFLOW;
+	}
+	
+	if(flags & FRC_IF_WCNTCMP0_Msk)
+	{
+		HardEvents |= HARDEVENT_WCNTCMP0;
+	}
+	
+	if(flags & FRC_IF_WCNTCMP1_Msk)
+	{
+		HardEvents |= HARDEVENT_WCNTCMP1;
+	}
+	
+	if(flags & FRC_IF_WCNTCMP2_Msk)
+	{
+		HardEvents |= HARDEVENT_WCNTCMP2;
+	}
+	
+	if(flags & FRC_IF_ADDRERROR_Msk)
+	{
+		HardEvents |= HARDEVENT_ADDRERROR;
+	}
+	
+	if(flags & FRC_IF_BUSERROR_Msk)
+	{
+		HardEvents |= HARDEVENT_FRCBUSERROR;
+	}
+	
+	if(flags & FRC_IF_RXRAWEVENT_Msk)
+	{
+		RxEvents |= RXEVENT_RAWEVENT;
+	}
+	
+	if(flags & FRC_IF_TXRAWEVENT_Msk)
+	{
+		TxEvents |= TXEVENT_RAWEVENT;
+	}
+	
+	if(flags & FRC_IF_SNIFFOF_Msk)
+	{
+		HardEvents |= HARDEVENT_SNIFFOF;
+	}
+	
+	if(flags & FRC_IF_LVDSWILLERROR_Msk)
+	{
+		HardEvents |= HARDEVENT_LVDSWILLERROR;
+	}
+	
+	if(flags & FRC_IF_LVDSERROR_Msk)
+	{
+		HardEvents |= HARDEVENT_LVDSERROR;
+	}
+	
+	if(flags & FRC_IF_FRAMEDETPAUSED_Msk)
+	{
+		RxEvents |= RXEVENT_FRAMEDETPAUSED;
+	}
+	
+	if(flags & FRC_IF_INTERLEAVEWRITEPAUSED_Msk)
+	{
+		HardEvents |= HARDEVENT_INTERLEAVEWRITEPAUSED;
+	}
+	
+	if(flags & FRC_IF_INTERLEAVEREADPAUSED_Msk)
+	{
+		HardEvents |= HARDEVENT_INTERLEAVEREADPAUSED;
+	}
+	
+	if(flags & FRC_IF_TXSUBFRAMEPAUSED_Msk)
+	{
+		TxEvents |= TXEVENT_TXSUBFRAMEPAUSED; 
+	}
+	
+	if(flags & FRC_IF_CONVPAUSED_Msk)
+	{
+		HardEvents |= HARDEVENT_CONVPAUSED;
+	}
+	
+	if(flags & FRC_IF_RXWORD_Msk)
+	{
+		RxEvents |= RXEVENT_RXWORD;
+	}
+	
+	if(flags & FRC_IF_TXWORD_Msk)
+	{
+		TxEvents |= TXEVENT_TXWORD;
+	}
 }
 
 void FRC_init(void)
@@ -56,8 +187,9 @@ void FRC_init(void)
   //FRC_FrameControlDescrBufferIdSet(3,1);
   FRC->CTRL &= 0xffffff0f; //reset TXFCDMODE, RXFCDMODE
   FRC->CTRL |= 0xa0; //5, 7 - TXFCDMODE, RXFCDMODE	
-	//NVIC_ClearPendingIRQ(FRC_IRQn);
-  //NVIC_EnableIRQ(FRC_IRQn);
+	FRC->IEN = FRC_IEN_TXDONE_Msk | FRC_IEN_RXDONE_Msk;
+	NVIC_ClearPendingIRQ(FRC_IRQn);
+  NVIC_EnableIRQ(FRC_IRQn);
 }
 
 void FRC_FrameControlDescrBufferIdSet(int buf,int fcd)

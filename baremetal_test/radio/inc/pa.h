@@ -99,7 +99,8 @@ typedef struct RADIO_PAInit {
  ******************************   PROTOTYPES   *********************************
  ******************************************************************************/
 
-bool     RADIO_PA_Init(RADIO_PAInit_t * paInit);
+//bool     RADIO_PA_Init(RADIO_PAInit_t * paInit);
+void 		 PA_Init(uint8_t level, uint16_t ramptime);
 int32_t  PA_OutputPowerGet(void);
 
 
@@ -116,6 +117,7 @@ void PA_SetPowerLevel(uint8_t level);
 
 
 extern uint8_t PA_Powerlevel;
+extern uint16_t PA_rampTime;
 extern uint32_t bootstrap;
 extern uint32_t cascode;
 extern uint32_t slice;

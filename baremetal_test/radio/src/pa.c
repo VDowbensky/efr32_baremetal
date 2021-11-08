@@ -17,17 +17,9 @@
 #define MODEM_RAMPRATE2 (MODEM->RAMPCTRL & MODEM_RAMPCTRL_RAMPRATE2_Msk) >> MODEM_RAMPCTRL_RAMPRATE2_Pos
 
 bool apcEnabled = false;
-struct
-{
-	uint8_t pasel;
-	uint8_t vm;
-	int32_t pwr;
-	int32_t offs;
-	uint16_t rt;
-	
-}gPaConfig;
 
 	uint8_t PA_Powerlevel;
+	uint16_t PA_rampTime;
 	
 	uint32_t bootstrap = 0;
 	uint32_t cascode = 0;
@@ -132,7 +124,7 @@ void PA_APCEnable(void)
 
 {
   apcEnabled = 1;
-	apcConfigure(gPaConfig.pwr);
+//	apcConfigure(gPaConfig.pwr);
 }
 
 
@@ -141,7 +133,7 @@ void PA_APCDisable(void)
 
 {
   apcEnabled = 0;
-	apcConfigure(gPaConfig.pwr);
+//	apcConfigure(gPaConfig.pwr);
 }
 
 void PA_PeakDetectorHighRun(void)
@@ -176,13 +168,13 @@ void PA_BatHighRun(void)
 int32_t PA_OutputPowerGet(void)
 
 {
-	return gPaConfig.pwr;
+	return PA_Powerlevel;
 }
 
 uint32_t PA_RampTimeGet(void)
 
 {
-  return gPaConfig.rt;
+  return PA_rampTime;;
 }
 
 
@@ -228,9 +220,9 @@ uint16_t PA_RampTimeSet(uint16_t ramptime)
   local_18 <<= 8;
   local_14 = uVar4 << 0x10;
 	PA_RampConfigSet(local_14, local_18);
-  gPaConfig.rt = (uint16_t)((uint32_t)(PA_RampTimeCalc() * 10000) / (SystemHFXOClockGet() / 100));
+  ramptime = (uint16_t)((uint32_t)(PA_RampTimeCalc() * 10000) / (SystemHFXOClockGet() / 100));
   //TIMING_RecalculateAll();
-  return gPaConfig.rt;
+  return ramptime;
 }
 
 void PA_CTuneSet(uint8_t txPaCtuneValue, uint8_t rxPaCtuneValue)
@@ -241,26 +233,14 @@ void PA_CTuneSet(uint8_t txPaCtuneValue, uint8_t rxPaCtuneValue)
 }
 
 
-bool RADIO_PA_Init(RADIO_PAInit_t * paInit) //power config structure
-
+void PA_Init(uint8_t level, uint16_t ramptime)
 {
-  if (paInit != NULL)
-	{
-			gPaConfig.pasel = paInit->paSel;
-			gPaConfig.vm = paInit->voltMode;
-			gPaConfig.rt = paInit->rampTime;
-			gPaConfig.pwr = paInit->power;
-			PA_RampTimeSet(gPaConfig.rt);
-			BUS_RegMaskedClear(&RAC->SGPABIASCTRL1, RAC_SGPABIASCTRL1_VCASCODELV_Msk | RAC_SGPABIASCTRL1_VCASCODEHV_Msk); //8...10,12...14 - VCASCODEHV, VCASCODELV
-			BUS_RegMaskedSet(&RAC->SGPABIASCTRL1, 0x4500); //8,10 VCASCODEHV 14 VCASCODELV
-			BUS_RegMaskedSet(&RAC->SGPABIASCTRL0, RAC_SGPABIASCTRL0_LDOBIAS_Msk); //LDO on
-			//PA_OutputPowerSet(gPaConfig.pwr);
-      //RAC->APC &= 0xfffffff8;
-			BUS_RegMaskedClear(&RAC->APC, RAC_APC_ENAPCSW_Msk  | RAC_APC_ENPASTATUSPKDVTH_Msk | RAC_APC_ENPASTATUSVDDPA_Msk);
-      //PA_BandSelect(); not needed. PA_Ctune will be set separately
-      return true;
-  }
-  return false; //PA not present
+	PA_RampTimeSet(ramptime);
+	BUS_RegMaskedClear(&RAC->SGPABIASCTRL1, RAC_SGPABIASCTRL1_VCASCODELV_Msk | RAC_SGPABIASCTRL1_VCASCODEHV_Msk); //8...10,12...14 - VCASCODEHV, VCASCODELV
+	BUS_RegMaskedSet(&RAC->SGPABIASCTRL1, 0x4500); //8,10 VCASCODEHV 14 VCASCODELV
+	BUS_RegMaskedSet(&RAC->SGPABIASCTRL0, RAC_SGPABIASCTRL0_LDOBIAS_Msk); //LDO on	
+	BUS_RegMaskedClear(&RAC->APC, RAC_APC_ENAPCSW_Msk  | RAC_APC_ENPASTATUSPKDVTH_Msk | RAC_APC_ENPASTATUSVDDPA_Msk);
+	PA_SetPowerLevel(level);
 }
 
 

@@ -17,7 +17,122 @@ void PROTIMER_IRQHandler(void)
 {
 	uint32_t flags;
 	flags = PROTIMER->IF & PROTIMER->IEN;
-	PROTIMER->IFC = flags;		
+	PROTIMER->IFC = flags;
+
+	if(flags & PROTIMER_IF_PRECNTOF_Msk)
+	{
+
+	}
+
+	if(flags & PROTIMER_IF_BASECNTOF_Msk)
+	{
+
+	}
+	
+	if(flags & PROTIMER_IF_WRAPCNTOF_Msk)
+	{
+		
+	}	
+	
+	if(flags & PROTIMER_IF_TOUT0_Msk)
+	{
+		
+	}
+	
+	if(flags & PROTIMER_IF_TOUT1_Msk)
+	{
+		
+	}
+	
+	if(flags & PROTIMER_IF_TOUT0MATCH_Msk)
+	{
+		
+	}
+	
+	if(flags & PROTIMER_IF_TOUT1MATCH_Msk)
+	{
+		
+	}
+	
+	if(flags & PROTIMER_IF_CC0_Msk)
+	{
+		
+	}
+	
+	if(flags & PROTIMER_IF_CC1_Msk)
+	{
+		
+	}
+	
+	if(flags & PROTIMER_IF_CC2_Msk)
+	{
+		
+	}
+	
+	if(flags & PROTIMER_IF_CC3_Msk)
+	{
+		
+	}
+	
+	if(flags & PROTIMER_IF_CC4_Msk)
+	{
+		
+	}
+	
+	if(flags & PROTIMER_IF_COF0_Msk)
+	{
+		
+	}
+	
+	if(flags & PROTIMER_IF_COF1_Msk)
+	{
+		
+	}
+	
+	if(flags & PROTIMER_IF_COF2_Msk)
+	{
+		
+	}
+	
+	if(flags & PROTIMER_IF_COF3_Msk)
+	{
+		
+	}
+	
+	if(flags & PROTIMER_IF_COF4_Msk)
+	{
+		
+	}
+	
+	if(flags & PROTIMER_IF_LBTSUCCESS_Msk)
+	{
+		
+	}
+	
+	if(flags & PROTIMER_IF_LBTFAILURE_Msk)
+	{
+		
+	}
+	
+	if(flags & PROTIMER_IF_LBTPAUSED_Msk)
+	{
+		
+	}
+	
+	if(flags & PROTIMER_IF_LBTRETRY_Msk)
+	{
+		
+	}
+	
+	if(flags & PROTIMER_IF_RTCCSYNCHED_Msk)
+	{
+		
+	}
+	
+	if(flags & PROTIMER_IF_TOUT0MATCHLBT_Msk)
+	{
+		
+	}
 }
 
 void PROTIMER_Start(void)

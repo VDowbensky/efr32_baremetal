@@ -6,11 +6,58 @@ volatile uint8_t RADIO_rxBuffer[RADIO_BUFFER_SIZE];
 volatile uint8_t RADIO_txBuffer[RADIO_BUFFER_SIZE];
 volatile uint8_t RADIO_rxLengthBuffer[RADIO_BUFFER_SIZE];
 
+uint8_t RxDatabuffer[RADIO_BUFFER_SIZE];
+
+volatile uint32_t RxEvents = 0;
+volatile uint32_t TxEvents = 0;
+volatile uint32_t HardEvents = 0;
+
+uint16_t rbytes;
+
 uint8_t txpactune;
 uint8_t rxpactune;
 
-
 RAIL_TxData_t transmitPayload = {&tx_fifo[0], 32};
+
+//Radio events handler
+void process_radio(void)
+{
+	processHardEvents();
+	processRxEvents();
+	processTxEvents();
+}
+
+void processHardEvents(void)
+{
+	
+}
+void processRxEvents(void)
+{
+	if(RxEvents & RXEVENT_DONE)
+	{
+		uint16_t i;
+		RxEvents &= ~RXEVENT_DONE;
+		rbytes = BUFC_RxBufferBytesAvailable();
+		INT_Disable();
+		for(i = 0; i < rbytes; i++) RxDatabuffer[i] = RADIO_rxBuffer[i];
+		BUFC_RxBufferReset();
+		INT_Enable();
+		printRxPacket();
+		
+		do 
+		{ 
+      if (RFHAL_HeadedToIdle() == 0) break;
+    } while (RAC->STATUS & RAC_STATUS_STATE_Msk);
+    INT_Disable();
+		SEQ_CONTROL_REG &= ~0x20; //SEQ_CONTROL_REG  & 0xffffffdf;
+		INT_Enable();
+  	BUS_RegMaskedSet(&RAC->RXENSRCEN, 2);
+	}
+}
+void processTxEvents(void)
+{
+	
+}
 
 
 bool RADIO_SendPacket(void)
@@ -36,6 +83,30 @@ bool RADIO_SendPacket(void)
   INT_Enable();
   return false;
 }
+
+void printRxPacket(void)
+{
+  uint8_t i = 0;
+  uint64_t mcuid;
+	uint32_t rpacknumber;
+	int16_t Rssi;
+	Rssi = (int16_t)AGC->FRAMERSSI/256;
+	rbytes -= 6;
+  rpacknumber = (*((int32_t*) RxDatabuffer));
+      rpacknumber = (*((int32_t*) RxDatabuffer));
+      //mcuid = (*((uint64_t*) rx_buffer[7]));
+      mcuid = ((uint64_t)RxDatabuffer[7]) + (((uint64_t)RxDatabuffer[8])<<8) + (((uint64_t)RxDatabuffer[9])<<16) + (((uint64_t)RxDatabuffer[10])<<24) + (((uint64_t)RxDatabuffer[11])<<32) + \
+          (((uint64_t)RxDatabuffer[12])<<40) + (((uint64_t)RxDatabuffer[13])<<48) + (((uint64_t)RxDatabuffer[14])<<56);
+      printf("RPCK: %d,%d,%d,%c,", rpacknumber, Rssi, (signed char)RxDatabuffer[4], RxDatabuffer[6]);
+      for (i = 15; i < rbytes; i++) 
+			{
+				if (RxDatabuffer[i] != 0) printf("%c", RxDatabuffer[i]);
+			}
+      printf("%llu", mcuid);
+      printf("\r\n");
+
+}
+
 
 void RADIO_SetCtune(uint32_t tune)
 
