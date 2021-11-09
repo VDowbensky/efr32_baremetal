@@ -114,6 +114,8 @@ void PA_PeakDetectorLowRun(void);
 void PA_BatHighRun(void);
 
 void PA_SetPowerLevel(uint8_t level);
+void PA_SetPowerDbm(int8_t dbm);
+int8_t PA_GetPowerDbm(void);
 
 
 extern uint8_t PA_Powerlevel;

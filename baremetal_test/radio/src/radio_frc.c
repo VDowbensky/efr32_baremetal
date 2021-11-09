@@ -12,7 +12,8 @@ void FRC_IRQHandler(void)
 {
 	uint32_t flags;
 	flags = FRC->IF & FRC->IEN;
-	FRC->IFC = flags;	
+	FRC->IFC = flags;
+	//FRC->IFC = FRC->IF;
 	
 	if(flags & FRC_IF_TXDONE_Msk)
 	{
@@ -187,7 +188,7 @@ void FRC_init(void)
   //FRC_FrameControlDescrBufferIdSet(3,1);
   FRC->CTRL &= 0xffffff0f; //reset TXFCDMODE, RXFCDMODE
   FRC->CTRL |= 0xa0; //5, 7 - TXFCDMODE, RXFCDMODE	
-	FRC->IEN = FRC_IEN_TXDONE_Msk | FRC_IEN_RXDONE_Msk;
+	FRC->IEN = FRC_IEN_TXDONE_Msk | FRC_IEN_RXDONE_Msk | FRC_IEN_FRAMEERROR_Msk;
 	NVIC_ClearPendingIRQ(FRC_IRQn);
   NVIC_EnableIRQ(FRC_IRQn);
 }

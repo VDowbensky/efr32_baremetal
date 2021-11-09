@@ -52,7 +52,7 @@
 	
 #endif
 
-extern uint8_t genericSeqProg[];
+extern const uint8_t genericSeqProg[];
 
 #endif
 

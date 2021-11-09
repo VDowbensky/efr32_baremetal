@@ -43,12 +43,11 @@ int main(void)
 	RETARGET_SerialInit();
 	Timing_DelayUs(10000);
 	//print reset cause
-	printf("Reset cause: 0x%X\r\n", RMU->RSTCAUSE);
+	printf("\r\nStarting. Reset cause: 0x%X\r\n", RMU->RSTCAUSE);
 	RMU->CMD = 1; //clear reset cause bit
-	printf("\r\nHello, Lamer!\r\n");
 	init_peripherals();
 	init_radio();
-	printf("Starting. Idle mode\r\n");
+	printf("RX on.\r\n");
 	//stert receiving
 	//RAIL_RfHalRxStart(0);
 	//printf("Receiver on\r\n");

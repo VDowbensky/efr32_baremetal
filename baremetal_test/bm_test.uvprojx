@@ -314,7 +314,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>2</Optim>
+            <Optim>6</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -585,11 +585,6 @@
               <FilePath>.\radio\src\protimer.c</FilePath>
             </File>
             <File>
-              <FileName>rf_test.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\radio\src\rf_test.c</FilePath>
-            </File>
-            <File>
               <FileName>synth.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\radio\src\synth.c</FilePath>
@@ -633,6 +628,16 @@
               <FileName>radio_crc.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\radio\src\radio_crc.c</FilePath>
+            </File>
+            <File>
+              <FileName>radio_rx.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\radio\src\radio_rx.c</FilePath>
+            </File>
+            <File>
+              <FileName>radio_tx.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\radio\src\radio_tx.c</FilePath>
             </File>
           </Files>
         </Group>

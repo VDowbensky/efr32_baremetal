@@ -6,7 +6,7 @@
 #include "em_assert.h"
 #include "synth.h"
 #include "generic_seq.h"
-
+#include "PA_powertable.h"
 
 #define MODEM_RAMPLEV0 (MODEM->RAMPLEV & MODEM_RAMPLEV_RAMPLEV0_Msk) >> MODEM_RAMPLEV_RAMPLEV0_Pos
 #define MODEM_RAMPLEV1 (MODEM->RAMPLEV & MODEM_RAMPLEV_RAMPLEV1_Msk) >> MODEM_RAMPLEV_RAMPLEV1_Pos
@@ -30,6 +30,27 @@ bool apcEnabled = false;
 
 
 void PA_CalcRegValues (uint8_t level);
+
+void PA_SetPowerDbm(int8_t dbm)
+{
+  if (dbm < MIN_PWR_LEVEL) dbm = MIN_PWR_LEVEL;
+  if (dbm > MAX_PWR_LEVEL) dbm = MAX_PWR_LEVEL;
+  PA_Powerlevel =  PA_powertable[dbm + 20];
+	PA_SetPowerLevel(PA_Powerlevel);
+}
+
+int8_t PA_GetPowerDbm(void)
+{
+    uint8_t i;
+    if (PA_Powerlevel < PA_powertable[0]) return MIN_PWR_LEVEL;
+    if (PA_Powerlevel > PA_powertable[40]) return MAX_PWR_LEVEL;
+    for( i= 0; i < 40; i++)
+    {
+      if (PA_Powerlevel == PA_powertable[i]) return i - 20;
+      if ((PA_Powerlevel > PA_powertable[i]) && (PA_Powerlevel < PA_powertable[i+1])) return (i+1) - 20;
+    }	
+}
+
 
 void PA_SetPowerLevel(uint8_t level)
 {

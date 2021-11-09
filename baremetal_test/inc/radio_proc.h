@@ -1,14 +1,13 @@
 #ifndef _RADIO_PROC_H_
 #define _RADIO_PROC_H_
 
-#define RADIO_BUFFER_SIZE 256
+#define RADIO_BUFFER_SIZE 64
 
 //#define TX_PACTUNE	8
 //#define RX_PACTUNE	8
 #include "em_int.h"
 #include "bsp.h"
 #include "synth.h"
-#include "rf_test.h"
 #include "pa.h"
 //#include "phy.h"
 //#include "rail_rf.h"
@@ -25,6 +24,8 @@
 #include "radio_agc.h"
 //#include "phy_utils.h"
 #include "mcu_memory.h"
+#include "radio_tx.h"
+#include "radio_rx.h"
 
 //RX events
 //MODEM

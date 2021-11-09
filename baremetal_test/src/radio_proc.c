@@ -1,4 +1,6 @@
 #include "radio_proc.h"
+#include "radio_rx.h"
+#include "radio_tx.h"
 #include <stdint.h>
 #include <string.h>
 
@@ -35,54 +37,38 @@ void processRxEvents(void)
 {
 	if(RxEvents & RXEVENT_DONE)
 	{
-		uint16_t i;
+  	uint16_t i;
 		RxEvents &= ~RXEVENT_DONE;
 		rbytes = BUFC_RxBufferBytesAvailable();
 		INT_Disable();
 		for(i = 0; i < rbytes; i++) RxDatabuffer[i] = RADIO_rxBuffer[i];
+		//for(i = 0; i < rbytes; i++) RxDatabuffer[i] = BUFC->BUF1_READDATA & 0xff;
 		BUFC_RxBufferReset();
 		INT_Enable();
 		printRxPacket();
-		
-		do 
-		{ 
-      if (RFHAL_HeadedToIdle() == 0) break;
-    } while (RAC->STATUS & RAC_STATUS_STATE_Msk);
-    INT_Disable();
-		SEQ_CONTROL_REG &= ~0x20; //SEQ_CONTROL_REG  & 0xffffffdf;
-		INT_Enable();
-  	BUS_RegMaskedSet(&RAC->RXENSRCEN, 2);
+		radio_startrx();
+		return;
+	}
+	if(RxEvents & (RXEVENT_FRAMEERROR | RXEVENT_BLOCKERROR | RXEVENT_RXOVERFLOW))
+	{
+		RxEvents &= ~(RXEVENT_DONE | RXEVENT_FRAMEERROR | RXEVENT_BLOCKERROR | RXEVENT_RXOVERFLOW);
+		FRC_ErrorHandle();
+		printf("RPCK: FERR\r\n");
+		radio_startrx();
 	}
 }
+
 void processTxEvents(void)
 {
-	
-}
-
-
-bool RADIO_SendPacket(void)
-{
-	BUFC_TxBufferReset();
-	BUFC_WriteContSync(tx_fifo ,32);
-	//RAIL_RfHalTxStart(Channel, NULL,NULL);	
-	  do 
-		{
-      if (RFHAL_HeadedToIdle() == 0) break;
-    } while ((RAC->STATUS & 0xf000000) != 0);
-    if ((RAC->STATUS & 0xf000000) != 0) return 2;
-      INT_Disable();
-  if ((PROTIMER_CCTimerIsEnabled(3) == 0) && (PROTIMER_LBTIsActive() == 0)) 
+	if(TxEvents & TXEVENT_DONE)
 	{
-  if ((FRC->DFLCTRL & FRC_DFLCTRL_DFLMODE_Msk) == 0) FRC->WCNTCMP0 = BUFC_TxBufferBytesAvailable() - 1; 
-  SEQ_CONTROL_REG &= ~0x20; //0xffffffdf;
-		BUS_RegMaskedSet(&RAC->IFPGACTRL, RAC_IFPGACTRL_BANDSEL_Msk);
-		RAC->CMD = RAC_CMD_TXEN_Msk;
-    INT_Enable();
-    return true;
-  }
-  INT_Enable();
-  return false;
+		TxEvents &= ~TXEVENT_DONE;
+		radio_startrx();
+	}
 }
+
+
+
 
 void printRxPacket(void)
 {

@@ -179,9 +179,8 @@ void cli_setchannel(int argc, char **argv)
 
 void cli_getpower(int argc, char **argv)
 {
-	int32_t p;
 	printf("GET_POWER: Under development\r\n");
-	printf("GET_POWER: 0 dBm\r\n");
+	printf("GET_POWER: %d dBm\r\n",PA_GetPowerDbm());
 }
 
 void cli_setpower(int argc, char **argv)
@@ -192,7 +191,8 @@ void cli_setpower(int argc, char **argv)
 	if(p < -20) p = -20;
 	if (p > 20) p = 20;
 	//set power here
-	printf("SET_POWER: %d dBm\r\n", p);
+	PA_SetPowerDbm(p);
+	printf("SET_POWER: %d dBm\r\n", PA_GetPowerDbm());
 }
 
 void cli_getpowerlevel(int argc, char **argv)
@@ -208,13 +208,13 @@ void cli_setpowerlevel(int argc, char **argv)
 	if(p > 248) p = 248;
 	if(txmode != 0) 
 	{
-		RFTEST_StopTx();
+		radio_stoptx();
 		Timing_DelayUs(100);
 	}
 	PA_Powerlevel = p;
 	PA_SetPowerLevel(PA_Powerlevel);
-	if(txmode == 1) RFTEST_StartCwTx();
-	if(txmode == 2) RFTEST_StartStreamTx();
+	if(txmode == 1) radio_startCW();
+	if(txmode == 2) radio_startPN9();
 	printf("SET_POWERLEVEL: %d\r\n", PA_Powerlevel);
 	
 }
@@ -310,8 +310,7 @@ void cli_sendburst(int argc, char **argv)
 {
 	printf("SEND_PACKET: Under development\r\n");
 	led0_on();
-	RADIO_SendPacket();
-	if(RADIO_SendPacket() == true) printf("SEND_PACKET: OK\r\n");
+	if(radio_sendpacket() == true) printf("SEND_PACKET: OK\r\n");
 	else printf("SEND_PACKET: ERROR\r\n");
 	led0_off();
 	
@@ -324,19 +323,25 @@ void cli_txstream(int argc, char **argv)
 	switch(t)
 	{
 		case 0:
-			RFTEST_StopTx();
-			Timing_DelayUs(10);
-		  RFTEST_RestoreRadioConfiguration();
-		  txmode = 0;
-			printf("TX_STREAM: 0\r\n");
+			if(txmode != 0)
+			{
+				radio_stoptx();
+				Timing_DelayUs(10);
+				txmode = 0;
+				printf("TX_STREAM: 0\r\n");
+				//radio_startrx();
+			}
+			else
+			{
+				printf("TX_STREAM: ERROR\r\n");
+			}
 		break;
 		
 		case 1:
 			//RAIL_RfHalIdleStart();
 		  GENERIC_PHY_RadioEnable(0);
 			Timing_DelayUs(10);
-			RFTEST_SaveRadioConfiguration();
-			RFTEST_StartCwTx();
+			radio_startCW();
 		  txmode = 1;
 			printf("TX_STREAM: 1\r\n");
 		break;
@@ -345,8 +350,7 @@ void cli_txstream(int argc, char **argv)
 			//RAIL_RfHalIdleStart();
 		  GENERIC_PHY_RadioEnable(0);
 			Timing_DelayUs(10);
-			RFTEST_SaveRadioConfiguration();
-			RFTEST_StartStreamTx();
+			radio_startPN9();
 		  txmode = 2;
 			printf("TX_STREAM: 2\r\n");
 		break;
@@ -390,11 +394,7 @@ void cli_getber(int argc, char **argv)
 
 void cli_getvt(int argc, char **argv)
 {
-#if XMOTION
-      printf("GET_VT: %d, %.1f, %.1f, %.1f, %.1f\r\n", TEMPDRV_GetTemp(), Temp, Vcc, Dvdd, Vref);
-#else
-      printf("GET_VT: %d, %.1f, %.1f, %.1f\r\n", TEMPDRV_GetTemp(), Temp, Vcc, Dvdd);
-#endif
+  printf("GET_VT: %d, %.1f, %.1f, %.1f\r\n", TEMPDRV_GetTemp(), Temp, Vcc, Dvdd);
 }
 
 void cli_setem(int argc, char **argv)
