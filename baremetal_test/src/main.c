@@ -48,9 +48,7 @@ int main(void)
 	init_peripherals();
 	init_radio();
 	printf("RX on.\r\n");
-	//stert receiving
-	//RAIL_RfHalRxStart(0);
-	//printf("Receiver on\r\n");
+
 	cli_init();
 
 
