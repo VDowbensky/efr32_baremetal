@@ -191,7 +191,14 @@ void cli_setpower(int argc, char **argv)
 	if(p < -20) p = -20;
 	if (p > 20) p = 20;
 	//set power here
+	if(txmode != 0) 
+	{
+		radio_stoptx();
+		Timing_DelayUs(100);
+	}
 	PA_SetPowerDbm(p);
+	if(txmode == 1) radio_startCW();
+	if(txmode == 2) radio_startPN9();
 	printf("SET_POWER: %d dBm\r\n", PA_GetPowerDbm());
 }
 
