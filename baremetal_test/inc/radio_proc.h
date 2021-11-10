@@ -3,17 +3,14 @@
 
 #define RADIO_BUFFER_SIZE 64
 
-//#define TX_PACTUNE	8
-//#define RX_PACTUNE	8
+
 #include "em_int.h"
 #include "bsp.h"
 #include "synth.h"
 #include "pa.h"
-//#include "phy.h"
-//#include "rail_rf.h"
-
 #include "em_device.h"
 #include "em_cmu.h"
+#include "adc.h"
 #include "generic_seq.h"
 #include "protimer.h"
 #include "synth.h"
@@ -24,8 +21,14 @@
 #include "radio_agc.h"
 //#include "phy_utils.h"
 #include "mcu_memory.h"
+#include "radio_phy.h"
 #include "radio_tx.h"
 #include "radio_rx.h"
+
+#define HIGH(x) ((x & 0xFF000000) >> 24)
+#define HIGL(x) ((x & 0x00FF0000) >> 16)
+#define LOWH(x) ((x & 0x0000FF00) >> 8)
+#define LOWL(x)  (x & 0x000000FF)
 
 //RX events
 //MODEM
@@ -110,30 +113,21 @@ void processHardEvents(void);
 void processRxEvents(void);
 void processTxEvents(void);
 void printRxPacket(void);
-
-bool RADIO_SendPacket(void);
-void RADIO_SetCtune(uint32_t tune);
-uint32_t RADIO_GetCtune(void);
-
-RAIL_Status_t RAIL_RfHalSetTxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t error);
-RAIL_Status_t RAIL_RfHalSetRxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t error);
-uint32_t RFHAL_HeadedToIdle(void);
-void GENERIC_PHY_RadioEnable(uint32_t enable);
-void GENERIC_PHY_SeqAtomicLock(void);
-
-extern uint8_t txpactune;
-extern uint8_t rxpactune;
+void prepareTxPacket(void);
+void prepareAnswerPacket(void);
 
 extern volatile uint8_t RADIO_rxBuffer[];
 extern volatile uint8_t RADIO_txBuffer[];
 extern volatile uint8_t RADIO_rxLengthBuffer[];
 
-extern uint8_t RxDatabuffer[];
+extern uint8_t rx_fifo[];
+extern uint8_t tx_fifo[];
+extern uint32_t packetnumber;
 
 extern volatile uint32_t RxEvents;
 extern volatile uint32_t TxEvents;
 extern volatile uint32_t HardEvents;
 
-extern RAIL_TxData_t transmitPayload;
+
 
 #endif

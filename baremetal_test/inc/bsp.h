@@ -14,9 +14,7 @@
 #define INITIAL_TX_POWER 10
 #define RSSI_OFFSET -6
 
-#define RAIL_FIFO_SIZE 32
-static uint8_t tx_fifo[RAIL_FIFO_SIZE] = {0, 0, 0, 0, -120, 0, 'T', 0, 0, 0, 0, 0, 0, 0, 0,'B', 'a', 'r', 'e', ' ','M','e','t','a','l',' ',' '};//max length of string - 16 bytes
-
+#define DEFAULT_TX_POWER 10
 
 // USART0 TX on PD14
 #define USART_TX_PORT           gpioPortD

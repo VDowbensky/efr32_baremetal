@@ -11,18 +11,12 @@ bool radio_sendpacket(void)
 {
 	BUFC_TxBufferReset();
 	BUFC_WriteContSync(tx_fifo ,32);
-	//RAIL_RfHalTxStart(Channel, NULL,NULL);	
-//	  do 
-//		{
-//      if (RFHAL_HeadedToIdle() == 0) break;
-//    } while ((RAC->STATUS & 0xf000000) != 0);
-//    if ((RAC->STATUS & 0xf000000) != 0) return false;
-      INT_Disable();
+  INT_Disable();
   if ((PROTIMER_CCTimerIsEnabled(3) == 0) && (PROTIMER_LBTIsActive() == 0)) 
 	{
   if ((FRC->DFLCTRL & FRC_DFLCTRL_DFLMODE_Msk) == 0) FRC->WCNTCMP0 = BUFC_TxBufferBytesAvailable() - 1; 
-		SEQ_CONTROL_REG &= ~0x20; //0xffffffdf;
-		BUS_RegMaskedSet(&RAC->IFPGACTRL, RAC_IFPGACTRL_BANDSEL_Msk);
+		SEQ_CONTROL_REG &= ~0x20; 
+		BUS_RegMaskedSet(&RAC->IFPGACTRL, RAC_IFPGACTRL_BANDSEL_Msk); //fix sequencer error
 		RAC->CMD = RAC_CMD_TXEN_Msk;
     INT_Enable();
     return true;
@@ -42,8 +36,8 @@ void radio_startCW(void)
 	BUS_RegMaskedSet(&MODEM->PRE, MODEM_PRE_TXBASES_Msk);
   FRC->DFLCTRL = 5;
 	BUS_RegMaskedSet(&FRC->CTRL, FRC_CTRL_RANDOMTX_Msk);
-	RAC->IFPGACTRL = 0x000087F6; //!!!
-	RAC->CMD = 0x01; //TXEN
+	BUS_RegMaskedSet(&RAC->IFPGACTRL, RAC_IFPGACTRL_BANDSEL_Msk);
+	RAC->CMD = RAC_CMD_TXEN_Msk; 
 }
 
 void radio_startPN9(void)
@@ -54,31 +48,20 @@ void radio_startPN9(void)
   FRC->SNIFFCTRL = 0;
   FRC->DFLCTRL = 5;
 	BUS_RegMaskedSet(&FRC->CTRL, FRC_CTRL_RANDOMTX_Msk);
-	RAC->IFPGACTRL = 0x000087F6; //!!!
-  RAC->CMD = 0x01; //TXEN
+	BUS_RegMaskedSet(&RAC->IFPGACTRL, RAC_IFPGACTRL_BANDSEL_Msk);
+  RAC->CMD = RAC_CMD_TXEN_Msk; 
 }
 
 void radio_stoptx(void)
 {
-//  do
-//	{
-//    if ((FRC->DFLCTRL & 7) != 5) 
-//		{
-//      RAC->CMD = RAC_CMD_TXDIS_Msk;
-//			radio_restoreconfig();
-//      return;
-//    }
-//  }
-
 	RAC->CMD = RAC_CMD_TXDIS_Msk;
 	while (!(FRC->IF & FRC_IF_TXABORTED_Msk)) {};
 	do 
 		{
-      if (RFHAL_HeadedToIdle() == 0) break;
+      if (radio_HeadedToIdle() == 0) break;
     } while ((RAC->STATUS & 0xf000000) != 0);
 // 	radio_restoreconfig();
   	init_radio();
-//	NVIC_SystemReset();
 }
 
 

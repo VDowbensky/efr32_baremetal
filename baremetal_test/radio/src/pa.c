@@ -26,6 +26,8 @@ bool apcEnabled = false;
 	uint32_t slice = 1;
 	uint32_t stripe = 1;
 	uint32_t peakDetectorOldSlices;
+	uint8_t txpactune;
+  uint8_t rxpactune;
 
 
 
@@ -49,6 +51,7 @@ int8_t PA_GetPowerDbm(void)
       if (PA_Powerlevel == PA_powertable[i]) return i - 20;
       if ((PA_Powerlevel > PA_powertable[i]) && (PA_Powerlevel < PA_powertable[i+1])) return (i+1) - 20;
     }	
+	return POWER_DBM_INVALID;
 }
 
 
@@ -58,7 +61,6 @@ void PA_SetPowerLevel(uint8_t level)
 	if(level > 248) level = 248;
 	PA_CalcRegValues(level);
 	PA_SLICES &= 0xe0c03fff;
-  //PA_SLICES |= 0x3fc8 | (stripe << 0x18) | (slice  << 0xe);
 	PA_SLICES |= (bootstrap << 3) | (cascode << 6) | (stripe << 0x18) | (slice  << 0xe);
 	//apcConfigure(200);
 }

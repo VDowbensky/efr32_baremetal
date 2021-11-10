@@ -1,6 +1,6 @@
 #include "bsp.h"
 
-#if (XPAD || XSHIFT || XMOTION)
+#if (I2C_USED)
 
 #include "myi2c.h"
 

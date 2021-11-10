@@ -19,10 +19,10 @@ void radio_startrx(void)
 	BUFC_RxBufferReset();	
 	do 
 		{ 
-      if (RFHAL_HeadedToIdle() == 0) break;
+      if (radio_HeadedToIdle() == 0) break;
     } while (RAC->STATUS & RAC_STATUS_STATE_Msk);
     INT_Disable();
-		//SEQ_CONTROL_REG &= ~0x20; //SEQ_CONTROL_REG  & 0xffffffdf;
+		SEQ_CONTROL_REG &= ~0x20; 
 		INT_Enable();
 		RAC->IFPGACTRL = 0x000087F6;
 		//RAC->CMD = RAC_CMD_DEMODENSET_Msk;
@@ -54,21 +54,6 @@ void radio_startberrx(uint32_t bytes)
 	BUS_RegMaskedSet(&RAC->RXENSRCEN, 0x02);
 }
 
-/*
-void RFTEST_StopRx(void)
-
-{
-	BUS_RegMaskedClear(&RAC->RXENSRCEN, RAC_RXENSRCEN_SWRXEN_Msk);
-  FRC->CMD = 1;
-	if((RAC->STATUS & RAC_STATUS_STATE_Msk) == 6)
-  {
-    RAC->CMD |= 0x40;
-		RAC->CMD = RAC_CMD_CLEARRXOVERFLOW_Msk;
-    BUFC_TxBufferReset();
-  }
-  while ((RAC->STATUS & RAC_STATUS_STATE_Msk) != 0);
-}
-*/
 
 void radio_stopberrx(void)
 {
@@ -96,12 +81,11 @@ void radio_stopberrx(void)
 			//RADIO_RxBufferReset();
     do 
 		{ 
-      if (RFHAL_HeadedToIdle() == 0) break;
+      if (radio_HeadedToIdle() == 0) break;
     } while (RAC->STATUS & RAC_STATUS_STATE_Msk);
-	//GENERIC_PHY_StartRx(0);
 
     INT_Disable();
-		SEQ_CONTROL_REG &= ~0x20; //SEQ_CONTROL_REG  & 0xffffffdf;
+		SEQ_CONTROL_REG &= ~0x20; 
 		INT_Enable();
   	BUS_RegMaskedSet(&RAC->RXENSRCEN, 2);	
 }

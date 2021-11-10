@@ -78,10 +78,7 @@ void cli_setem(int argc, char **argv);
 			COMMAND_ENTRY("GET_RSSIOFFSET", "", cli_getrssioffset, "Get power meter offset"),
 			COMMAND_ENTRY("SET_RSSIOFFSET", "v", cli_setrssioffset, "Set power meter offset"),
 			COMMAND_ENTRY("GET_FREQOFFSET", "", cli_getfreqoffset, "Get frequency error"),
-			//basic RF settings
-			//modem settings
-			//frame format settings etc.
-			//RF calibrations
+
 			COMMAND_ENTRY("GET_CTUNE", "", cli_getctune, "Get Ctune value"),
 			COMMAND_ENTRY("SET_CTUNE", "v", cli_setctune, "Set Ctune value"),
 			COMMAND_ENTRY("CAL_CTUNE", "", cli_calctune, "Ctune calibration"),
@@ -161,7 +158,6 @@ void cli_getver(int argc, char **argv)
 
 void cli_getchannel(int argc, char **argv)
 {
-	//printf("GET_CHANNEL: Under development\r\n");
 	printf("GET_CHANNEL: %d\r\n", Channel);
 }
 
@@ -170,28 +166,30 @@ void cli_setchannel(int argc, char **argv)
 	uint16_t ch;
 	ch = ciGetUnsigned(argv[1]);
 	if(ch > 63) ch = 63;
-	//printf("SET_CHANNEL: Under development\r\n");
-	//set  actual channel here. 
 	Channel = ch;
+	if(txmode != 0) 
+	{
+		radio_stoptx();
+		Timing_DelayUs(100);
+	}
 	SYNTH_ChannelSet(ch,0);
+	if(txmode == 1) radio_startCW();
+	if(txmode == 2) radio_startPN9();
 	printf("SET_CHANNEL: %d\r\n", Channel);
 }
 
 void cli_getpower(int argc, char **argv)
 {
-	printf("GET_POWER: Under development\r\n");
 	printf("GET_POWER: %d dBm\r\n",PA_GetPowerDbm());
 }
 
 void cli_setpower(int argc, char **argv)
 {
 	int32_t p;
-	printf("SET_POWER: Under development\r\n");
 	p = ciGetSigned(argv[1]);
 	if(p < -20) p = -20;
 	if (p > 20) p = 20;
-	//set power here
-	if(txmode != 0) 
+		if(txmode != 0) 
 	{
 		radio_stoptx();
 		Timing_DelayUs(100);
@@ -241,7 +239,6 @@ void cli_getrssioffset(int argc, char **argv)
 void cli_setrssioffset(int argc, char **argv)
 {
 	int32_t p;
-	//float f;
 	printf("SET_RSSIOFFSET: Under development\r\n");
 	p = ciGetSigned(argv[1]);
 	printf("SET_RSSIOFFSET: %.2f dB\r\n", ((float)p)/4);
@@ -256,7 +253,7 @@ void cli_getfreqoffset(int argc, char **argv)
 
 void cli_getctune(int argc, char **argv)
 {
-	printf("GET_CTUNE: %d\r\n",RADIO_GetCtune());
+	printf("GET_CTUNE: %d\r\n",radio_GetCtune());
 }
 
 void cli_setctune(int argc, char **argv)
@@ -265,9 +262,15 @@ void cli_setctune(int argc, char **argv)
 	//printf("SET_CTUNE: Under development\r\n");
 	t = ciGetUnsigned(argv[1]);
 	if(t > 511) t = 511;
-	//RAIL_RfHalIdleStart();
-	GENERIC_PHY_RadioEnable(0);
-	RADIO_SetCtune(t);
+	if(txmode != 0) 
+	{
+		radio_stoptx();
+		Timing_DelayUs(100);
+	}
+	radio_Enable(0);
+	radio_SetCtune(t);
+	if(txmode == 1) radio_startCW();
+	if(txmode == 2) radio_startPN9();
 	printf("SET_CTUNE: %d\r\n", t);
 }
 
@@ -279,7 +282,7 @@ void cli_calctune(int argc, char **argv)
 void cli_storectune(int argc, char **argv)
 {
 	uint16_t t;
-	t = RADIO_GetCtune();
+	t = radio_GetCtune();
 	read_userpage();
   MSC_ErasePage((uint32_t*)USERDATA_BASE);
   userdata_buf[0x40] = t; // 0x100/4
@@ -316,6 +319,8 @@ void cli_storepactune(int argc, char **argv)
 void cli_sendburst(int argc, char **argv)
 {
 	printf("SEND_PACKET: Under development\r\n");
+	packetnumber ++; //temporary
+	prepareTxPacket();
 	led0_on();
 	if(radio_sendpacket() == true) printf("SEND_PACKET: OK\r\n");
 	else printf("SEND_PACKET: ERROR\r\n");
@@ -346,7 +351,7 @@ void cli_txstream(int argc, char **argv)
 		
 		case 1:
 			//RAIL_RfHalIdleStart();
-		  GENERIC_PHY_RadioEnable(0);
+		  radio_Enable(0);
 			Timing_DelayUs(10);
 			radio_startCW();
 		  txmode = 1;
@@ -355,7 +360,7 @@ void cli_txstream(int argc, char **argv)
 		
 		case 2:
 			//RAIL_RfHalIdleStart();
-		  GENERIC_PHY_RadioEnable(0);
+		  radio_Enable(0);
 			Timing_DelayUs(10);
 			radio_startPN9();
 		  txmode = 2;

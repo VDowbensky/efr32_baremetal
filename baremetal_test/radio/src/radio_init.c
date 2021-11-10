@@ -11,12 +11,6 @@ const uint32_t generated_phyInfo[] = {
 
 void init_radio(void)
 {
-	//RAIL_RfHalCalibrationInit(uint32_t cal)
-	//INT_Disable();
-  //RAIL_CalPend = 0;
-  //RAIL_CalEnable = cal;
-  //INT_Enable();
-
 	CMU_ClockEnable(0x63400,true); //3
   CMU_ClockEnable(0x60400,true); //0 - PROTIMER
   CMU_ClockEnable(0x64400,true); //4
@@ -33,7 +27,7 @@ void init_radio(void)
   RAC->SEQCMD = RAC_SEQCMD_HALT_Msk;
 	memset((void*)0x21000000,0,0x1000);
 	RADIO_SeqInit(&genericSeqProg, GENERIC_SEQPROG_SIZE);
-  //memset((void*)0x21000efc,0,0x70); //clear sequencer variables
+  memset((void*)0x21000efc,0,0x70); //clear sequencer variables
 	RAC->SEQCMD = RAC_SEQCMD_RESUME_Msk;
   RAC->SR0 = 0;
   RAC->SR1 = 0;
@@ -46,40 +40,20 @@ void init_radio(void)
   RADIO_TxToTxTimeSet(100);
   RADIO_RxToTxTimeSet(100);
 	RADIO_RxFrameToTxTimeSet(100);
-  RADIO_TxWarmTimeSet(100); //GENERIC_PHY_RACConfig
+  RADIO_TxWarmTimeSet(100); 
 	
 //  RADIO_PTI_Enable();
 	if (RAC->CTRL & RAC_CTRL_FORCEDISABLE_Msk) RAC->CTRL &= ~RAC_CTRL_FORCEDISABLE_Msk; //FORCEDISABLE
-//  RADIO_RegisterIrqCallback(1,GENERIC_PHY_FRC_IRQCallback);
-//  RADIO_RegisterIrqCallback(2,GENERIC_PHY_MODEM_IRQCallback);
-//  RADIO_RegisterIrqCallback(5,GENERIC_PHY_RAC_IRQCallback);
-//  RADIO_RegisterIrqCallback(7,GENERIC_PHY_PROTIMER_IRQCallback);
 //  GENERIC_PHY_ResetAddressFiltering();
   SEQ_CONTROL_REG = SEQ_CONTROL_REG | 8;
   PROTIMER_Init();
   PROTIMER_Start();
-  //PROTIMER_CCTimerCapture(0,0xc00000);
-  //PROTIMER_CCTimerCapture(1,0x200000);
+  PROTIMER_CCTimerCapture(0,0xc00000);
+  PROTIMER_CCTimerCapture(1,0x200000);
 //  RFRAND_SeedProtimerRandom();
   
   SEQ->REG070 = 0; //GENERIC_PHY_Init
-	////
-//  _enabledCallbacks = _enabledCallbacks & 0xff000000 | (uint)(uint3)((uint3)_enabledCallbacks | 7) | 0x80000;
-//  iVar1 = RAIL_RfHalCalibrationEnableGet();
-//  if (iVar1 << 0x1f < 0)
-//  {
-//    _enabledCallbacks = _enabledCallbacks | 0x10000;
-//  }
-//  GENERIC_PHY_SetCallbacks(&_enabledCallbacks);
-//  GENERIC_PHY_ConfigureCallbacks(_enabledCallbacks);
-//  RAILCb_RfReady(); //RAIL_RfHalInit
-
-//changeRadioConfig
-
-
 	SEQ->PHYINFO = 	(uint32_t) &generated_phyInfo;
-	//misc.
-	//channel BW
 	SEQ->MISC = 0x00000000;
 	SEQ->SYNTHLPFCTRLRX = 0x0003C002;
 	SEQ->SYNTHLPFCTRLTX = 0x0003C002;	
@@ -101,16 +75,10 @@ void init_radio(void)
 
 //config callbacks here if needed
 
-//RADIO_PAInit_t painit;
-//painit.paSel = PA_SEL_SUBGIG;
-//painit.voltMode = PA_VOLTMODE_DCDC;
-//painit.power = 150; //100
-//painit.offset = 0;
 PA_rampTime = 10;
 PA_Powerlevel = 150;
 PA_Init(PA_Powerlevel,PA_rampTime);
-//
-//PA_SetPowerLevel(PA_Powerlevel);
+PA_SetPowerDbm(DEFAULT_TX_POWER);
 
 uint32_t tmp;
 tmp = *(uint32_t *) (DEVID_ADDR + 0x104);
@@ -127,10 +95,10 @@ tmp = *(uint32_t *) (DEVID_ADDR + 0x104);
       rxpactune = (tmp >> 8) & 0x000000FF;
     }
 		PA_CTuneSet(txpactune, rxpactune); //default
-		//RAIL_RfHalSetTxTransitions(RAIL_RF_STATE_RX,RAIL_RF_STATE_RX);
-		//RAIL_RfHalSetTxTransitions(RAIL_RF_STATE_IDLE,RAIL_RF_STATE_IDLE);
-		//RAIL_RfHalSetRxTransitions(RAIL_RF_STATE_RX,RAIL_RF_STATE_RX);
-		//RAIL_RfHalSetRxTransitions(RAIL_RF_STATE_IDLE,RAIL_RF_STATE_IDLE);
+		//radio_SetTxTransitions(RAIL_RF_STATE_RX,RAIL_RF_STATE_RX);
+		//radio_SetTxTransitions(RAIL_RF_STATE_IDLE,RAIL_RF_STATE_IDLE);
+		//radio_SetRxTransitions(RAIL_RF_STATE_RX,RAIL_RF_STATE_RX);
+		//radio_SetRxTransitions(RAIL_RF_STATE_IDLE,RAIL_RF_STATE_IDLE);
 		RxEvents = 0;
 		TxEvents = 0;
 		HardEvents = 0;
@@ -158,9 +126,9 @@ void RADIO_SeqInit(void *src,uint32_t len)
 
 {
   uint32_t t1, t2, t3;
-  t1 = RAC->STATUS & RAC_RXENSRCEN_SWRXEN_Msk; //???
+  t1 = RAC->STATUS & RAC_RXENSRCEN_SWRXEN_Msk; //dummy read
   RAC->VECTADDR = 0x21000000;
-  RAC->SEQCTRL = RAC_SEQCTRL_COMPACT_Msk; //1;
+  RAC->SEQCTRL = RAC_SEQCTRL_COMPACT_Msk; 
   INT_Disable();
   memcpy((void *)0x21000000,src,len);
   INT_Enable();

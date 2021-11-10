@@ -4,8 +4,9 @@
 
 #define MIN_PWR_LEVEL -20
 #define MAX_PWR_LEVEL 20
+#define POWER_DBM_INVALID -127
 
-const uint8_t PA_powertable[41] = 
+uint8_t PA_powertable[41] = 
 	{
 	  1, //-20
     2, //-19

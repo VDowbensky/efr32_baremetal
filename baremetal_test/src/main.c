@@ -33,24 +33,18 @@ int main(void)
 	dcdcInit.reverseCurrentControl = 160;
   EMU_DCDCInit(&dcdcInit);
 	//EMU_DCDCPowerOff();
-#if (MX || GN)
-//  EMU_DCDCPowerOff();
-#endif
   CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFXO);
-	uint16_t t;
-  t = *(uint16_t *)CTUNE_ADDR; 
-	RADIO_SetCtune(t);
+	radio_SetCtune(*(uint16_t *)CTUNE_ADDR);
 	RETARGET_SerialInit();
 	Timing_DelayUs(10000);
 	//print reset cause
 	printf("\r\nStarting. Reset cause: 0x%X\r\n", RMU->RSTCAUSE);
+	printf("EFR32FG1 bare metal test\r\n");
 	RMU->CMD = 1; //clear reset cause bit
 	init_peripherals();
 	init_radio();
-	printf("RX on.\r\n");
-
+	printf("RX on\r\n");
 	cli_init();
-
 
 	while(1)
 	{
@@ -61,10 +55,8 @@ int main(void)
 
 void init_peripherals(void)
 {
-//GPIO
-	CMU_ClockEnable(cmuClock_GPIO, true);
-	leds_init();
-
+	 CMU_ClockEnable(cmuClock_GPIO, true);
+	 leds_init();
    initLETIMER();
 	 initADC();	 
 	 TEMPDRV_Init();

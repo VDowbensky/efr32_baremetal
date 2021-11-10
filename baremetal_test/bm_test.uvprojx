@@ -639,6 +639,11 @@
               <FileType>1</FileType>
               <FilePath>.\radio\src\radio_tx.c</FilePath>
             </File>
+            <File>
+              <FileName>radio_phy.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\radio\src\radio_phy.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
