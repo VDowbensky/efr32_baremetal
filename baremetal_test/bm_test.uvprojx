@@ -410,16 +410,6 @@
               <FilePath>.\src\mcu_memory.c</FilePath>
             </File>
             <File>
-              <FileName>myspi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\myspi.c</FilePath>
-            </File>
-            <File>
-              <FileName>myi2c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\myi2c.c</FilePath>
-            </File>
-            <File>
               <FileName>adc.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\adc.c</FilePath>
@@ -463,16 +453,6 @@
               <FileName>mcu_memory.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\inc\mcu_memory.h</FilePath>
-            </File>
-            <File>
-              <FileName>myspi.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\myspi.h</FilePath>
-            </File>
-            <File>
-              <FileName>myi2c.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\myi2c.h</FilePath>
             </File>
             <File>
               <FileName>adc.h</FileName>
