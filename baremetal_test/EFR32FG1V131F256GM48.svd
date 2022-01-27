@@ -76154,7 +76154,7 @@
 					</fields>
 				</register>
 				<register>
-					<name>BUF2_THRESHOLDCTR</name>
+					<name>BUF2_THRESHOLDCTRL</name>
 					<description/>
 					<addressOffset>0x084</addressOffset>
 					<size>32</size>
