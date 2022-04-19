@@ -60591,7 +60591,7 @@
 					</fields>
 				</register>
 				<register>
-					<name>FREQOFFEST</name>
+					<name>FREQOFFSET</name>
 					<description/>
 					<addressOffset>0x008</addressOffset>
 					<size>32</size>
