@@ -17,13 +17,13 @@
 #define DEFAULT_TX_POWER 10
 
 // USART0 TX on PD14
-#define USART_TX_PORT           gpioPortD
-#define USART_TX_PIN            14
-#define USART_TX_LOC            22
+#define USART_TX_PORT           gpioPortA//gpioPortD
+#define USART_TX_PIN            0//14
+#define USART_TX_LOC            0//22
 // USART0 RX on PD13
-#define USART_RX_PORT           gpioPortD
-#define USART_RX_PIN            13
-#define USART_RX_LOC            20
+#define USART_RX_PORT           gpioPortA//gpioPortD
+#define USART_RX_PIN            1//13
+#define USART_RX_LOC            0//20
 
 #define I2C I2C0
 #define I2C_CLOCK 							cmuClock_I2C0
