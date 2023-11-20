@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include "mcu_memory.h"
 
-uint32_t userdata_buf[512];
+uint32_t userdata_buf[512] __attribute__((aligned (4)));
 
 
 uint32_t readmem(uint32_t addr)
@@ -21,11 +21,32 @@ void read_userpage(void)
 }
 void write_userpage(void)
 {
-  MSC_WriteWord(USERDATA_BASE, (uint8_t*)&userdata_buf, 2048);
+	MSC_ErasePage((uint32_t*)USERDATA_BASE);
+	MSC_WriteWord((uint32_t*)USERDATA_BASE, (uint8_t*)&userdata_buf, 2048);
 }
-
 
 void storedevid(uint32_t id)
 {
-	
+  read_userpage();
+  MSC_ErasePage((uint32_t*)USERDATA_BASE);
+  //userdata_buf[0x0] = (id << 16) | 0x0000FFFF; //(id >> 16) | 0xFFFF0000;
+  userdata_buf[0x0] &= 0x0000FFFF;//keep low halfword
+  userdata_buf[0x0] |= (id << 16);
+  //userdata_buf[0x1] = (id >> 16) | 0xFFFF0000;
+  userdata_buf[0x1] &= 0xFFFF0000; //keep high halfword
+  userdata_buf[0x1] |= (id >> 16);
+  write_userpage();
+}
+
+void store_config(void)
+{
+	read_userpage();
+	//memcpy((void *)(&userdata_buf + 0x108),(void*)&RadioConfig,sizeof(RadioConfig));
+	memcpy((void *)(&userdata_buf[0x42]),(uint8_t*)&RadioConfig,sizeof(RadioConfig));
+	write_userpage();
+}
+
+void read_config(void)
+{
+	memcpy((void *)&RadioConfig,(uint8_t*)(USERDATA_BASE + 0x108),sizeof(RadioConfig));
 }

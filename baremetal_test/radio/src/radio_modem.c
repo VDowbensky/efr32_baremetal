@@ -109,10 +109,10 @@ void MODEM_init(void)
 	//pattern length
 	//syncword length
 	//sync word tx skip
-	MODEM->CF = 0x020200F8; 
+	MODEM->CF = 0x020200F8; //!!! 
   MODEM->PRE = 0x00140012;
 	//syncword 0
-	MODEM->SYNC0 = 0x00002BB4;
+	MODEM->SYNC0 = SYNCWORD0; //0x00002BB4;
 	//syncword 1
 	MODEM->SYNC1 = 0x00000000;
 }

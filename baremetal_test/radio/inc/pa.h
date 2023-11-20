@@ -21,8 +21,8 @@ void PA_BatHighRun(void);
 
 extern uint8_t PA_Powerlevel;
 extern uint16_t PA_rampTime;
-extern uint8_t txpactune;
-extern uint8_t rxpactune;
+//extern uint8_t txpactune;
+//extern uint8_t rxpactune;
 
 
 #endif 

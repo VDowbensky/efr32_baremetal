@@ -31,7 +31,7 @@ void PROTIMER_IRQHandler(void)
 	
 	if(flags & PROTIMER_IF_WRAPCNTOF_Msk)
 	{
-		
+		HardEvents |= HARDEVENT_WRAPCNTOF;
 	}	
 	
 	if(flags & PROTIMER_IF_TOUT0_Msk)
@@ -71,7 +71,10 @@ void PROTIMER_IRQHandler(void)
 	
 	if(flags & PROTIMER_IF_CC3_Msk)
 	{
-		
+    //PROTIMER_CCTimerStop(3);
+    //BUS_RegMaskedClear(&PROTIMER->RXCTRL,0x1f1f);
+    //PROTIMER->IFC = PROTIMER_IFC_CC3_Msk;
+    //PROTIMER_ClearTxEnable();
 	}
 	
 	if(flags & PROTIMER_IF_CC4_Msk)
@@ -324,7 +327,7 @@ void PROTIMER_LBTPause(void)
 
 {
   //RADIO_PTI_AuxdataOutput(0x23);
-	BUS_RegMaskedSet(&PROTIMER->CMD, 0x0200);
+  BUS_RegMaskedSet(&PROTIMER->CMD, PROTIMER_CMD_LBTPAUSE_Msk);
 }
 
 
@@ -371,9 +374,7 @@ bool PROTIMER_LBTIsActive(void)
 uint32_t PROTIMER_PrecntOverflowToUs (uint32_t cnt)
 
 {
-  //return cnt/(PROTIMER->PRECNTTOP + 1);
-	//return 2 * cnt;
-	return (uint32_t)(2*cnt/ratio);
+  return cnt * 2;
 }
 
 
@@ -381,10 +382,7 @@ uint32_t PROTIMER_PrecntOverflowToUs (uint32_t cnt)
 
 uint32_t PROTIMER_UsToPrecntOverflow(uint32_t us)
 {
-  //return PROTIMER->PRECNTTOP * us; //???
-	//return us/2 + 1;
-	//return (uint64_t)((uint64_t)usRatioInt * us + ((uint64_t)usRatioFrac * us + 0x80000000 >> 0x20));
-	return (uint32_t)(us * ratio/2);
+	return (us & 1) + (us >> 1);
 }
 
 
@@ -392,16 +390,26 @@ uint32_t PROTIMER_UsToPrecntOverflow(uint32_t us)
 void PROTIMER_Init(void)
 
 {
-  CMU_ClockEnable(0x60400, true);
-  PROTIMER->CTRL = 0x11100;
+  uint32_t precnttop;
+	
+	CMU_ClockEnable(0x60400, true);
+  //PROTIMER->CTRL = 0x11100;
   //ratio = 2*((float)CMU_ClockFreqGet(0x60400))/1000000;
-	ratio = 2*((float)SystemHFClockGet())/1000000;
-  precntRatioInt = (uint16_t)(ratio) - 1;
-  precntRatioFrac = (uint8_t)((ratio - precntRatioInt - 1) * 256);
+	//ratio = 2*((float)SystemHFClockGet())/1000000;
+  //precntRatioInt = (uint16_t)(ratio) - 1;
+  //precntRatioFrac = (uint8_t)((ratio - precntRatioInt - 1) * 256);
 	//PROTIMER->PRECNTTOP = 0x4bcc;
-  PROTIMER->PRECNTTOP = precntRatioInt << 8;
-  PROTIMER->PRECNTTOP |= precntRatioFrac;
-  PROTIMER->WRAPCNTTOP = PROTIMER_UsToPrecntOverflow(0xffffffff) - 1;
+  //PROTIMER->PRECNTTOP = precntRatioInt << 8;
+  //PROTIMER->PRECNTTOP |= precntRatioFrac;
+	
+  PROTIMER->CTRL = 0x11100;
+  precnttop = ((SystemHFClockGet() / 1000) * 0x200 + 500) / 1000;
+  PROTIMER->PRECNTTOP = precnttop & 0xff | (precnttop & 0xffffff00) - 0x100;
+  //PROTIMER->WRAPCNTTOP = 0x7fffffff;
+
+  PROTIMER->WRAPCNTTOP = 0; //PROTIMER_UsToPrecntOverflow(0xffffffff) - 1;
+	PROTIMER->IEN |= PROTIMER_IEN_WRAPCNTOF_Msk;
+	PROTIMER_Stop();
 }
 
 
@@ -416,32 +424,38 @@ bool PROTIMER_SetTime(uint32_t time)
 	return true;
 }
 
+void PROTIMER_SetInterval(uint32_t us)
+{
+	if(PROTIMER_IsRunning()) PROTIMER_Stop();
+	PROTIMER_Reset();
+	PROTIMER->WRAPCNTTOP = PROTIMER_UsToPrecntOverflow(us) - 1;
+	PROTIMER_Start();	
+}
 
 
-void PROTIMER_LBTCfgSet(uint32_t param_1,int param_2,uint32_t param_3,int param_4,uint8_t param_5)
+
+void PROTIMER_LBTCfgSet(uint32_t startexp,uint32_t ccarepeat,uint32_t maxexp,uint32_t retrylimit,uint8_t ccadelay)
 
 {
-  //PROTIMER->CTRL &= 0xff0fffff;
-	BUS_RegMaskedClear(&PROTIMER->CTRL, 0x00f00000);
-  //PROTIMER->CTRL |= 0x900000;
-	BUS_RegMaskedSet(&PROTIMER->CTRL, 0x00900000);
-  if (param_3 == 0) 
+  PROTIMER->CTRL &= 0xff0fffff;
+  PROTIMER->CTRL |= 0x900000;
+  if (maxexp == 0) 
   {
     PROTIMER->RXCTRL = 0;
-    param_1 = param_3;
+    startexp = maxexp;
   }
-  PROTIMER->LBTCTRL = (uint32_t)param_5 << 8 | param_4 << 0x18 | param_2 << 4 | param_3 << 0x10 | param_1;
-  PROTIMER->TOUT0CNTTOP = PROTIMER->BASECNTTOP; 
-  if (param_3 != 0) 
+  PROTIMER->LBTCTRL = (uint32_t)ccadelay << 8 | retrylimit << 0x18 | ccarepeat << 4 | maxexp << 0x10 | startexp;
+  PROTIMER->TOUT0CNTTOP = PROTIMER->BASECNTTOP;
+  if (maxexp != 0) 
   {
-		PROTIMER->TOUT0COMP = PROTIMER_UsToPrecntOverflow(RADIO_RxWarmTimeGet());
+    PROTIMER->TOUT0COMP = PROTIMER_UsToPrecntOverflow(RADIO_RxWarmTimeGet());
     PROTIMER->RXCTRL = 0x18011b01;
   }
   PROTIMER->TXCTRL = 0x1401;
 }
 
 
-
+/*
 void PROTIMER_DelayUs(uint32_t us)
 
 {
@@ -472,5 +486,13 @@ void PROTIMER_DelayUs(uint32_t us)
     }
   }
 }
+*/
 
+void PROTIMER_DelayUs(uint32_t us)
+{
+	PROTIMER_SetInterval(us);
+	while(!(PROTIMER->IF & PROTIMER_IF_WRAPCNTOF_Msk));
+	PROTIMER->IFC |= PROTIMER_IFC_WRAPCNTOF_Msk;
+	PROTIMER_Stop();
+}
 

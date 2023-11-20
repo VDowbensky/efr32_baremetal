@@ -39,7 +39,7 @@
 static volatile int     rxReadIndex  = 0;       /**< Index in buffer to be read */
 static volatile int     rxWriteIndex = 0;       /**< Index in buffer to be written to */
 static volatile int     rxCount      = 0;       /**< Keeps track of how much data which are stored in the buffer */
-static volatile uint8_t rxBuffer[RXBUFSIZE];    /**< Buffer to store data */
+static volatile uint8_t 				rxBuffer[RXBUFSIZE];    /**< Buffer to store data */
 static uint8_t          LFtoCRLF    = 0;        /**< LF to CRLF conversion disabled */
 static bool             initialized = false;    /**< Initialize UART/LEUART */
 
@@ -133,6 +133,7 @@ void RETARGET_SerialInit(void)
 
   /* Enable RX interrupts */
   USART_IntEnable(RETARGET_UART, USART_IF_RXDATAV);
+	NVIC_SetPriority(RETARGET_IRQn,1);
   NVIC_EnableIRQ(RETARGET_IRQn);
 
   /* Finally enable it */

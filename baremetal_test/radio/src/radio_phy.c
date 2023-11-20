@@ -86,16 +86,31 @@ void radio_SeqAtomicLock(void)
   BUS_RegMaskedSet(&RAC->SR0, 2);
 }
 
+void radio_SeqAtomicUnlock(void)
+
+{
+	BUS_RegMaskedClear(&RAC->SR0, 2);
+}
+
 void RAC_RSM_IRQHandler(void)
 {
-	uint32_t flags;
-	flags = RAC->IF & RAC->IEN;
-	RAC->IFC = flags;		
+	RAC_SEQ_IRQHandler();
 }
 
 void RAC_SEQ_IRQHandler(void)
 {
 	uint32_t flags;
 	flags = RAC->IF & RAC->IEN;
-	RAC->IFC = flags;		
+	RAC->IFC = flags;	
+    //if (rac_flags & RAC_IF_PAVHIGH_Msk) phy_events |= 0x20;
+    //if (rac_flags & RAC_IF_PAVLOW_Msk) phy_events |= 0x40;
+    //if (rac_flags & RAC_IF_PABATHIGH_Msk) phy_events |= 0x80;
+    //if (rac_flags & 0x40000) uVar5 = 2;
+    //if (rac_flags & 0x10000) rail_events |= 0x400;
+    //if (rac_flags & 0x100000) rail_events |= 0x2000;
+    //if (rac_flags & 0x200000) rail_events |= 2;
+    //if (rac_flags & 0x80000) && (GENERIC_PHY_CanModifyAck() != false)) rail_events |= 0x10000;
+  if (flags & RAC_IF_PAVHIGH_Msk) PA_PeakDetectorHighRun();
+  if (flags & RAC_IF_PAVLOW_Msk) PA_PeakDetectorLowRun();
+  if (flags & RAC_IF_PABATHIGH_Msk) PA_BatHighRun();	
 }

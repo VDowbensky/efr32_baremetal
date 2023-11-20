@@ -34,8 +34,10 @@ void PROTIMER_CCTimerCapture(int num,uint32_t cnt);
 void PROTIMER_ScheduleTxEnable(int timer,uint32_t time,uint32_t mode);
 uint32_t PROTIMER_UsToPrecntOverflow(uint32_t us);
 
+void PROTIMER_SetInterval(uint32_t us);
+
 void PROTIMER_Init(void);
-void PROTIMER_LBTCfgSet(uint32_t param_1,int param_2,uint32_t param_3,int param_4,uint8_t param_5);
+void PROTIMER_LBTCfgSet(uint32_t startexp,uint32_t ccarepeat,uint32_t maxexp,uint32_t retrylimit,uint8_t ccadelay);
 
 
 

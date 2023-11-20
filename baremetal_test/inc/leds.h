@@ -14,6 +14,10 @@ void led1_on(void);
 void led1_off(void);
 #endif
 
+extern uint32_t blinkduration;
+extern bool blink;
+
+
 #endif
 
 

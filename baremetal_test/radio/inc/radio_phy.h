@@ -10,6 +10,7 @@ RAIL_Status_t radio_SetRxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t
 uint32_t radio_HeadedToIdle(void);
 void radio_Enable(uint32_t enable);
 void radio_SeqAtomicLock(void);
+void radio_SeqAtomicUnlock(void);
 
 #endif
 

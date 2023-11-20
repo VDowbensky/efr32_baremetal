@@ -1,4 +1,6 @@
 #include "radio_frc.h"
+#include "WHITE.h"
+#include "FRAME.h"
 
 void FRC_PRI_IRQHandler(void)
 {
@@ -11,135 +13,109 @@ void FRC_PRI_IRQHandler(void)
 void FRC_IRQHandler(void)
 {
 	uint32_t flags;
+	
 	flags = FRC->IF & FRC->IEN;
 	FRC->IFC = flags;
-	//FRC->IFC = FRC->IF;
-	
 	if(flags & FRC_IF_TXDONE_Msk)
 	{
 		TxEvents |= TXEVENT_DONE;
 	}
-	
 	if(flags & FRC_IF_TXAFTERFRAMEDONE_Msk)
 	{
 		TxEvents |= TXEVENT_AFTERFRAMEDONE;
 	}
-	
 	if(flags & FRC_IF_TXABORTED_Msk)
 	{
 		TxEvents |= TXEVENT_ABORTED;
 	}
-	
 	if(flags & FRC_IF_TXUF_Msk)
 	{
 		TxEvents |= TXEVENT_UNDERFLOW;
 	}
-	
 	if(flags & FRC_IF_RXDONE_Msk)
 	{
 		RxEvents |= RXEVENT_DONE;
 	}
-	
 	if(flags & FRC_IF_RXABORTED_Msk)
 	{
 		RxEvents |= RXEVENT_ABORTED;
 	}
-	
 	if(flags & FRC_IF_FRAMEERROR_Msk)
 	{
 		RxEvents |= RXEVENT_FRAMEERROR;
 	}
-	
 	if(flags & FRC_IF_BLOCKERROR_Msk)
 	{
 		RxEvents |= RXEVENT_BLOCKERROR;
 	}
-	
 	if(flags & FRC_IF_RXOF_Msk)
 	{
 		RxEvents |= RXEVENT_RXOVERFLOW;
 	}
-	
 	if(flags & FRC_IF_WCNTCMP0_Msk)
 	{
 		HardEvents |= HARDEVENT_WCNTCMP0;
 	}
-	
 	if(flags & FRC_IF_WCNTCMP1_Msk)
 	{
 		HardEvents |= HARDEVENT_WCNTCMP1;
 	}
-	
 	if(flags & FRC_IF_WCNTCMP2_Msk)
 	{
 		HardEvents |= HARDEVENT_WCNTCMP2;
 	}
-	
 	if(flags & FRC_IF_ADDRERROR_Msk)
 	{
 		HardEvents |= HARDEVENT_ADDRERROR;
 	}
-	
 	if(flags & FRC_IF_BUSERROR_Msk)
 	{
 		HardEvents |= HARDEVENT_FRCBUSERROR;
 	}
-	
 	if(flags & FRC_IF_RXRAWEVENT_Msk)
 	{
 		RxEvents |= RXEVENT_RAWEVENT;
 	}
-	
 	if(flags & FRC_IF_TXRAWEVENT_Msk)
 	{
 		TxEvents |= TXEVENT_RAWEVENT;
 	}
-	
 	if(flags & FRC_IF_SNIFFOF_Msk)
 	{
 		HardEvents |= HARDEVENT_SNIFFOF;
 	}
-	
 	if(flags & FRC_IF_LVDSWILLERROR_Msk)
 	{
 		HardEvents |= HARDEVENT_LVDSWILLERROR;
 	}
-	
 	if(flags & FRC_IF_LVDSERROR_Msk)
 	{
 		HardEvents |= HARDEVENT_LVDSERROR;
 	}
-	
 	if(flags & FRC_IF_FRAMEDETPAUSED_Msk)
 	{
 		RxEvents |= RXEVENT_FRAMEDETPAUSED;
 	}
-	
 	if(flags & FRC_IF_INTERLEAVEWRITEPAUSED_Msk)
 	{
 		HardEvents |= HARDEVENT_INTERLEAVEWRITEPAUSED;
 	}
-	
 	if(flags & FRC_IF_INTERLEAVEREADPAUSED_Msk)
 	{
 		HardEvents |= HARDEVENT_INTERLEAVEREADPAUSED;
 	}
-	
 	if(flags & FRC_IF_TXSUBFRAMEPAUSED_Msk)
 	{
 		TxEvents |= TXEVENT_TXSUBFRAMEPAUSED; 
 	}
-	
 	if(flags & FRC_IF_CONVPAUSED_Msk)
 	{
 		HardEvents |= HARDEVENT_CONVPAUSED;
 	}
-	
 	if(flags & FRC_IF_RXWORD_Msk)
 	{
 		RxEvents |= RXEVENT_RXWORD;
 	}
-	
 	if(flags & FRC_IF_TXWORD_Msk)
 	{
 		TxEvents |= TXEVENT_TXWORD;
@@ -148,51 +124,38 @@ void FRC_IRQHandler(void)
 
 void FRC_init(void)
 {
-	//FRC
-	//header enable
-	//frame coding method
-	//frame length algo
-	//bit endian
-	//fixed length
-	//variable length
-	//frame type
-	//insert/check CRC
+	FRAME_Init();
+
 	FRC->TRAILRXDATA = 0x1b;
-	FRC->RXCTRL = FRC_RXCTRL_BUFRESTORERXABORTED_Msk | FRC_RXCTRL_BUFRESTOREFRAMEERROR_Msk;
-	FRC->DFLCTRL = 0x00000000;
-  FRC->MAXLENGTH = 0x00000000;
-  FRC->WCNTCMP0 = 0x0000001F; //
-  FRC->WCNTCMP1 = 0x00000000;
-	//FEC algo
-  FRC->FECCTRL = 0x00000001; //BLOCKWHITEMODE
-  FRC->BLOCKRAMADDR = 0x00000000;
-  FRC->CONVRAMADDR = 0x00000000;
-  FRC->CTRL = 0x00000700; //BITSPERWORD
-  FRC->TRAILTXDATACTRL = 0x00000000;
-  FRC->CONVGENERATOR = 0x00000000;
-  FRC->PUNCTCTRL = 0x00000000;
-  FRC->FCD0 = 0x00000CFF; //FRC_FCD0_CALCCRC_Msk | FRC_FCD0_INCLUDECRC_Msk | FRC_FCD0_WORDS_Msk
-  FRC->FCD1 = 0x00000000;
-  FRC->FCD2 = 0x00000DFF; //FRC_FCD0_CALCCRC_Msk | FRC_FCD0_INCLUDECRC_Msk | 0x100 | FRC_FCD0_WORDS_Msk
-  FRC->FCD3 = 0x00000000;
-  //whitening
-	//whitening output bit
-	FRC->WHITECTRL = 0x00000000;
-	//whitening poly (algo)
-  FRC->WHITEPOLY = 0x00000108;
-	//seed
-  FRC->WHITEINIT = 0x0000FFFF;
-  FRC_FrameControlDescrBufferIdSet(0,0);
-  FRC_FrameControlDescrBufferIdSet(1,0);
-  FRC_FrameControlDescrBufferIdSet(2,1);
+	FRC->FECCTRL = 0x00000001; //BLOCKWHITEMODE
+	//FRC->RXCTRL = FRC_RXCTRL_BUFRESTORERXABORTED_Msk | FRC_RXCTRL_BUFRESTOREFRAMEERROR_Msk;
+	//FRC->DFLCTRL = 0x00000000;
+  //FRC->MAXLENGTH = 0x00000000;
+  //FRC->WCNTCMP0 = FIXEDPACKETLENGTH - 1; //0x0000001F; 
+  //FRC->WCNTCMP1 = 0x00000000;
+  //FRC->BLOCKRAMADDR = 0x00000000;
+  //FRC->CONVRAMADDR = 0x00000000;
+  //FRC->CTRL = 0x00000700; //BITSPERWORD
+  //FRC->TRAILTXDATACTRL = 0x00000000;
+  //FRC->CONVGENERATOR = 0x00000000;
+  //FRC->PUNCTCTRL = 0x00000000;
+  //FRC->FCD0 = 0x00000CFF; //FRC_FCD0_CALCCRC_Msk | FRC_FCD0_INCLUDECRC_Msk | FRC_FCD0_WORDS_Msk
+  //FRC->FCD1 = 0x00000000;
+  //FRC->FCD2 = 0x00000DFF; //FRC_FCD0_CALCCRC_Msk | FRC_FCD0_INCLUDECRC_Msk | 0x100 | FRC_FCD0_WORDS_Msk
+  //FRC->FCD3 = 0x00000000;
+  //FRC_FrameControlDescrBufferIdSet(0,0);
+  //FRC_FrameControlDescrBufferIdSet(1,0);
+  //FRC_FrameControlDescrBufferIdSet(2,1);
   //FRC_FrameControlDescrBufferIdSet(3,1);
-  FRC->CTRL &= 0xffffff0f; //reset TXFCDMODE, RXFCDMODE
-  FRC->CTRL |= 0xa0; //5, 7 - TXFCDMODE, RXFCDMODE	
+  //FRC->CTRL &= 0xffffff0f; //reset TXFCDMODE, RXFCDMODE
+  //FRC->CTRL |= 0xa0; //5, 7 - TXFCDMODE, RXFCDMODE	
+	
+	//FRC interrupts
 	FRC->IEN = FRC_IEN_TXDONE_Msk | FRC_IEN_RXDONE_Msk | FRC_IEN_FRAMEERROR_Msk;
 	NVIC_ClearPendingIRQ(FRC_IRQn);
   NVIC_EnableIRQ(FRC_IRQn);
 }
-
+/*
 void FRC_FrameControlDescrBufferIdSet(int buf,int fcd)
 
 {
@@ -220,7 +183,7 @@ void FRC_FrameDescsConfig (uint32_t param_1,uint32_t param_2,uint32_t param_3,ui
   FRC_FrameControlDescrConfigSet(2,0xff,param_1,param_2,param_3,param_4);
 }
 
-
+*/
 void FRC_ErrorHandle(void)
 
 {
@@ -228,7 +191,7 @@ void FRC_ErrorHandle(void)
   BUFC_Clear(1);
   BUFC_Clear(2);
 }
-
+/*
 int FRC_RxTrailDataLength(void)
 
 {
@@ -245,4 +208,4 @@ int FRC_RxTrailDataLength(void)
   if(t1 & 0x80000000) t2 += 1;
   return t2;
 }
-
+*/

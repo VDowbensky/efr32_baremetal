@@ -1,5 +1,8 @@
 #include "leds.h"
 
+uint32_t blinkduration;
+bool blink;
+
 void leds_init(void)
 {
 #if LED0

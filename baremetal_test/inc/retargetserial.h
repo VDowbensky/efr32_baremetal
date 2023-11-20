@@ -46,6 +46,7 @@ int  RETARGET_WriteChar(char c);
 void RETARGET_SerialCrLf(int on);
 void RETARGET_SerialInit(void);
 
+
 #ifdef __cplusplus
 }
 #endif

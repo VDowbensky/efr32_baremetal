@@ -6,9 +6,12 @@
 #include <stdbool.h>
 #include "radio_proc.h"
 
-#define RAIL_VER 12
+#define RAIL_VER 13
 
 #if(RAIL_VER == 12)
+
+//Attention! BER test is not working with this version!
+
 #define GENERIC_SEQPROG_SIZE 3000
 //sequencer variables
 #define SEQ_CONTROL_REG  *(uint32_t*)0x21000efc
@@ -49,6 +52,9 @@
 #define PA_SLICES SEQ->REG0C0
 #define RX_PA_CTUNE SEQ->REG0C4
 #define TX_PA_CTUNE SEQ->REG0C8	
+
+#else
+#error "Sequencer FW missing!"
 	
 #endif
 

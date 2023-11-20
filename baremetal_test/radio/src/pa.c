@@ -4,17 +4,17 @@
 #include <string.h>
 #include "em_bus.h"
 #include "em_assert.h"
-#include "synth.h"
+#include "SYNTH.h"
 #include "generic_seq.h"
 #include "PA_powertable.h"
 
-#define MODEM_RAMPLEV0 (MODEM->RAMPLEV & MODEM_RAMPLEV_RAMPLEV0_Msk) >> MODEM_RAMPLEV_RAMPLEV0_Pos
-#define MODEM_RAMPLEV1 (MODEM->RAMPLEV & MODEM_RAMPLEV_RAMPLEV1_Msk) >> MODEM_RAMPLEV_RAMPLEV1_Pos
-#define MODEM_RAMPLEV2 (MODEM->RAMPLEV & MODEM_RAMPLEV_RAMPLEV2_Msk) >> MODEM_RAMPLEV_RAMPLEV2_Pos
+#define MODEM_RAMPLEV0 ((MODEM->RAMPLEV & MODEM_RAMPLEV_RAMPLEV0_Msk) >> MODEM_RAMPLEV_RAMPLEV0_Pos)
+#define MODEM_RAMPLEV1 ((MODEM->RAMPLEV & MODEM_RAMPLEV_RAMPLEV1_Msk) >> MODEM_RAMPLEV_RAMPLEV1_Pos)
+#define MODEM_RAMPLEV2 ((MODEM->RAMPLEV & MODEM_RAMPLEV_RAMPLEV2_Msk) >> MODEM_RAMPLEV_RAMPLEV2_Pos)
 
-#define MODEM_RAMPRATE0 (MODEM->RAMPCTRL & MODEM_RAMPCTRL_RAMPRATE0_Msk) >> MODEM_RAMPCTRL_RAMPRATE0_Pos
-#define MODEM_RAMPRATE1 (MODEM->RAMPCTRL & MODEM_RAMPCTRL_RAMPRATE1_Msk) >> MODEM_RAMPCTRL_RAMPRATE1_Pos
-#define MODEM_RAMPRATE2 (MODEM->RAMPCTRL & MODEM_RAMPCTRL_RAMPRATE2_Msk) >> MODEM_RAMPCTRL_RAMPRATE2_Pos
+#define MODEM_RAMPRATE0 ((MODEM->RAMPCTRL & MODEM_RAMPCTRL_RAMPRATE0_Msk) >> MODEM_RAMPCTRL_RAMPRATE0_Pos)
+#define MODEM_RAMPRATE1 ((MODEM->RAMPCTRL & MODEM_RAMPCTRL_RAMPRATE1_Msk) >> MODEM_RAMPCTRL_RAMPRATE1_Pos)
+#define MODEM_RAMPRATE2 ((MODEM->RAMPCTRL & MODEM_RAMPCTRL_RAMPRATE2_Msk) >> MODEM_RAMPCTRL_RAMPRATE2_Pos)
 
 bool apcEnabled = false;
 
@@ -26,10 +26,6 @@ bool apcEnabled = false;
 	uint32_t slice = 1;
 	uint32_t stripe = 1;
 	uint32_t peakDetectorOldSlices;
-	uint8_t txpactune;
-  uint8_t rxpactune;
-
-
 
 void PA_CalcRegValues (uint8_t level);
 
@@ -62,7 +58,6 @@ void PA_SetPowerLevel(uint8_t level)
 	PA_CalcRegValues(level);
 	PA_SLICES &= 0xe0c03fff;
 	PA_SLICES |= (bootstrap << 3) | (cascode << 6) | (stripe << 0x18) | (slice  << 0xe);
-	//apcConfigure(200);
 }
 
 void PA_CalcRegValues (uint8_t level)

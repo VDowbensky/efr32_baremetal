@@ -1,91 +1,77 @@
 #include "radio_bufc.h"
 
+
 void BUFC_IRQHandler(void)
 {
 	uint32_t flags;
+	
 	flags = BUFC->IF & BUFC->IEN;
 	BUFC->IFC = flags;
-	
 	if(flags & BUFC_IF_BUF0OF_Msk)
 	{
 		
 	}
-	
 	if(flags & BUFC_IF_BUF0UF_Msk)
 	{
 		
 	}
-	
 	if(flags & BUFC_IF_BUF0THR_Msk)
 	{
 		
 	}
-	
 	if(flags & BUFC_IF_BUF0CORR_Msk)
 	{
 		
 	}
-	
-	if(flags & BUFC_IF_BUF1OF_Msk)
-	{
-		
-	}
-	
-	if(flags & BUFC_IF_BUF1UF_Msk)
-	{
-		
-	}
-	
 	if(flags & BUFC_IF_BUF1THR_Msk)
 	{
-		
+		//RxEvents |= RXEVENT_RXBUFTHR;
+		if(berRx) radio_emptybufandupdatestats();
 	}
-	
+	if(flags & BUFC_IF_BUF1OF_Msk)
+	{
+		BUFC_RxBufferReset();
+	}
+	if(flags & BUFC_IF_BUF1UF_Msk)
+	{
+		BUFC_RxBufferReset();
+	}
 	if(flags & BUFC_IF_BUF1CORR_Msk)
 	{
-		
+		BUFC_RxBufferReset();
 	}
-	
 	if(flags & BUFC_IF_BUF2OF_Msk)
 	{
 		
 	}
-	
 	if(flags & BUFC_IF_BUF2UF_Msk)
 	{
-		
+		//BUFC_RxBufferReset();
 	}
-	
 	if(flags & BUFC_IF_BUF2THR_Msk)
 	{
 		
 	}
-	
 	if(flags & BUFC_IF_BUF2CORR_Msk)
 	{
-		
+		//BUFC_RxBufferReset();
 	}
-	
 	if(flags & BUFC_IF_BUF3OF_Msk)
 	{
 		
 	}
-	
 	if(flags & BUFC_IF_BUF3UF_Msk)
 	{
 		
 	}
-	
 	if(flags & BUFC_IF_BUF3THR_Msk)
 	{
 		
 	}
-	
 	if(flags & BUFC_IF_BUF3CORR_Msk)
 	{
 		
 	}
-	
 	if(flags & BUFC_IF_BUSERROR_Msk)
 	{
 		
@@ -102,13 +88,16 @@ void BUFC_init(void)
   BUFC->BUF0_THRESHOLDCTRL = 0x2020; //BUFC_BUF0_THRESHOLDCTRL_THRESHOLDMODE_Msk | THRESHOLD
   BUFC->BUF2_CTRL = 0; //size
   BUFC->BUF2_ADDR = (uint32_t)&RADIO_rxLengthBuffer;
-  BUFC->BUF2_THRESHOLDCTR = 0x3e; 
+  BUFC->BUF2_THRESHOLDCTRL = 0x3e; 
 	 // DAT_000109d8 = RADIO_BUFCIrqHandler;
   BUFC_Clear(0);
   BUFC_Clear(1);
   BUFC_Clear(2);
-  //BUFC->IEN |= 0xb0a0b; //23,21,20,11,9,3,1,0 
+  BUFC->IEN = 0xb0a0b; //23,21,20,11,9,3,1,0 
+	//BUFC->IEN = 0;
   BUFC_RXBufferDisableThrInt();
+	NVIC_ClearPendingIRQ(BUFC_IRQn);
+	NVIC_EnableIRQ(BUFC_IRQn);
 	
 }
 
@@ -367,7 +356,7 @@ void BUFC_Clear(uint32_t buf)
   *(uint32_t*)((buf * 0x30 + 0x42181028) * 0x20) = 1; //using bit-banding C081
 }
 
-
+/*
 int BUFC_RxBufferFinalizeAndGet(int *param_1,uint32_t param_2,uint32_t param_3,uint32_t param_4)
 
 {
@@ -386,4 +375,4 @@ int BUFC_RxBufferFinalizeAndGet(int *param_1,uint32_t param_2,uint32_t param_3,u
  // }
   return iVar2;
 }
-
+*/

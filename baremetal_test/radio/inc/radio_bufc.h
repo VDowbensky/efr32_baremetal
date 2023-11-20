@@ -26,6 +26,8 @@ void BUFC_RxBufferReadBytes(uint8_t *dest,uint16_t len);
 void BUFC_RxBufferDropBytes(uint16_t bytes);
 uint32_t BUFC_RxLengthReadNext(uint32_t param_1,uint32_t param_2,uint32_t param_3,uint32_t param_4);
 void BUFC_Clear(uint32_t buf);
-int BUFC_RxBufferFinalizeAndGet(int *param_1,uint32_t param_2,uint32_t param_3,uint32_t param_4);
+//int BUFC_RxBufferFinalizeAndGet(int *param_1,uint32_t param_2,uint32_t param_3,uint32_t param_4);
+
+//extern uint32_t flags;
 
 #endif

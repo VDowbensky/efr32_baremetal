@@ -1,5 +1,6 @@
 #include <string.h>
 #include "radio_init.h"
+#include "RFIF.h"
 
 void RADIO_SeqInit(void *src,uint32_t len);
 void RADIO_SetAndForgetWrite(void);
@@ -21,10 +22,9 @@ void init_radio(void)
   CMU_ClockEnable(0x68400,true); //8
 
   RADIO_SetAndForgetWrite();
-  RAC->SR3 = 0;
-  BUS_RegMaskedSet(&RAC->CTRL, RAC_CTRL_ACTIVEPOL_Msk | RAC_CTRL_PAENPOL_Msk | 	RAC_CTRL_LNAENPOL_Msk);
 	
-  RAC->SEQCMD = RAC_SEQCMD_HALT_Msk;
+  //sequencer init
+	RAC->SEQCMD = RAC_SEQCMD_HALT_Msk;
 	memset((void*)0x21000000,0,0x1000);
 	RADIO_SeqInit(&genericSeqProg, GENERIC_SEQPROG_SIZE);
   memset((void*)0x21000efc,0,0x70); //clear sequencer variables
@@ -33,6 +33,7 @@ void init_radio(void)
   RAC->SR1 = 0;
   RAC->SR2 = 0;
   //TEMPCAL_Init();
+	//sequencer timing init
   RADIO_RxSearchTimeSet(0);
   RADIO_TxToRxSearchTimeSet(0);
   RADIO_RxWarmTimeSet(100);
@@ -47,38 +48,60 @@ void init_radio(void)
 //  GENERIC_PHY_ResetAddressFiltering();
   SEQ_CONTROL_REG = SEQ_CONTROL_REG | 8;
   PROTIMER_Init();
-  PROTIMER_Start();
-  PROTIMER_CCTimerCapture(0,0xc00000);
-  PROTIMER_CCTimerCapture(1,0x200000);
-//  RFRAND_SeedProtimerRandom();
-  
+  //PROTIMER_Start();
+  //PROTIMER_CCTimerCapture(0,0xc00000);
+  //PROTIMER_CCTimerCapture(1,0x200000);
+  //RFRAND_SeedProtimerRandom();
+   
+	//RAC configuration (TBD: using RFIF.c functions) 
   SEQ->REG070 = 0; //GENERIC_PHY_Init
 	SEQ->PHYINFO = 	(uint32_t) &generated_phyInfo;
 	SEQ->MISC = 0x00000000;
-	SEQ->SYNTHLPFCTRLRX = 0x0003C002;
-	SEQ->SYNTHLPFCTRLTX = 0x0003C002;	
-  //RAC
-  RAC->VCOCTRL = 0x0F00277A; //27,26,25,24,13,10,9,8,6,5,4,3,1
-	RAC->RFENCTRL = RAC_RFENCTRL_DEMEN_Msk | RAC_RFENCTRL_IFADCCAPRESET_Msk;
-  RAC->LNAMIXCTRL1 = 0x00000880; //11,7 trim values
-  //RAC->IFPGACTRL = 0x000087F6; //15,10,9,8,7,6,5,4,2,1 bandsel & trim values
+	RFIF_SetLpfBw(); //SEQ->SYNTHLPFCTRLRX = 0x0003C002;//SEQ->SYNTHLPFCTRLTX = 0x0003C002;	
   RAC->IFFILTCTRL = 0x008800E0; //
-  RAC->IFADCCTRL = 0x1153E6C1;
 
-  SYNTH_init();
 	MODEM_init();
+	
 	FRC_init();
+	
 	BUFC_init();
-	AGC_init();
-	CRC_init();
+	
+	//SYNTH init
+	SYNTH_Init_t synthinit;
+	synthinit.basefreq = 868000000;
+	synthinit.spacing = 100000;
+	synthinit.iffreq = 400000;
+	synthinit.loside = 0;
+	SYNTH_init(&synthinit);
+	
+	//AGC init
+	AGC_Init_t agcinit;
+	agcinit.speed = AGC_SPEED_NORMAL;
+	agcinit.powertarget = -2;
+	agcinit.period = 3;
+	agcinit.delay = 29;
+	agcinit.hyst = 3;
+	AGC_Init(&agcinit);
 
+	//CRC init
+	CRC_Init_t crcinit;
+	crcinit.poly = CRC_POLY_CRC_16;
+	crcinit.size = 2;
+	crcinit.seed = 0;
+	crcinit.byteendian = 0;
+	crcinit.inputbitorder = 1;
+	crcinit.outputbitorder = 0;
+	crcinit.bitreverse = 1;
+	crcinit.inputpadding = 0;
+	crcinit.invert = 0;
+	CRC_Init(&crcinit);
 
 //config callbacks here if needed
 
-PA_rampTime = 10;
-PA_Powerlevel = 150;
-PA_Init(PA_Powerlevel,PA_rampTime);
-PA_SetPowerDbm(DEFAULT_TX_POWER);
+	PA_rampTime = 10;
+	PA_Powerlevel = 150;
+	PA_Init(PA_Powerlevel,PA_rampTime);
+	PA_SetPowerDbm(DEFAULT_TX_POWER);
 
 uint32_t tmp;
 tmp = *(uint32_t *) (DEVID_ADDR + 0x104);
@@ -102,6 +125,7 @@ tmp = *(uint32_t *) (DEVID_ADDR + 0x104);
 		RxEvents = 0;
 		TxEvents = 0;
 		HardEvents = 0;
+		masterID = SYSTEM_GetUnique() & 0x0000000000ffffff;
 		radio_startrx();
 }
 
@@ -111,15 +135,17 @@ void RADIO_SetAndForgetWrite(void)
   SYSTEM_ChipRevision_TypeDef revision;
 
   SYSTEM_ChipRevisionGet(&revision);
-  RAC->IFADCCTRL = 0x1153e6c0;
-  RAC->IFPGACTRL = 0x87f6;
-  RAC->LNAMIXCTRL1 = 0x880;
-  RAC->VCOCTRL = 0xf00277a;
+	RFIF_SetIfadcCtrlReg(); //RAC->IFADCCTRL = 0x1153e6c0;
+	RFIF_SetIfpgaCtrlReg(); //RAC->IFPGACTRL = 0x87f6;
+	RFIF_SetlnaMixCtrl1Reg(); //RAC->LNAMIXCTRL1 = 0x880;
+	RFIF_SetVcoCtrlReg(); //RAC->VCOCTRL = 0xf00277a;
 	if((revision.major == 0x01) && (revision.minor < 2)) SYNTH->VCOGAIN = 0x28;
-  SYNTH->CTRL = 0xac3f;
-  AGC->MANGAIN = 0x1800000;
   RAC->LNAMIXCTRL = 0;
   RAC->SYNTHREGCTRL = 0x3636d80;
+	//RAC->SYNTHREGCTRL = (3 << RAC_SYNTHREGCTRL_CHPLDOVREFTRIM_Pos) | (6 << RAC_SYNTHREGCTRL_CHPLDOVREFTRIM_Pos) | (3 << RAC_SYNTHREGCTRL_VCOLDOVREFTRIM_Pos) |
+	//(6 << RAC_SYNTHREGCTRL_VCOLDOAMPCURR_Pos) | ()
+  RAC->SR3 = 0;
+  BUS_RegMaskedSet(&RAC->CTRL, RAC_CTRL_ACTIVEPOL_Msk | RAC_CTRL_PAENPOL_Msk | 	RAC_CTRL_LNAENPOL_Msk);
 }
 
 void RADIO_SeqInit(void *src,uint32_t len)

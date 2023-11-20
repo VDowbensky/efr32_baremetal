@@ -13,37 +13,32 @@
 #include "radio_init.h"
 #include "radio_proc.h"
 
-
-
 void init_peripherals(void);
 
 int main(void)
 {
   CHIP_Init();
-	EMU_DCDCInit_TypeDef dcdcInit = EMU_DCDCINIT_DEFAULT;
-		
-	dcdcInit.powerConfig = emuPowerConfig_DcdcToDvdd;
-	dcdcInit.dcdcMode = emuDcdcMode_LowNoise;
-	//dcdcInit.dcdcMode = emuDcdcMode_Bypass;
-	dcdcInit.mVout = 1800;
-	dcdcInit.em01LoadCurrent_mA = 100;
-	dcdcInit.em234LoadCurrent_uA = 10;
-	dcdcInit.maxCurrent_mA = 200;
-	dcdcInit.anaPeripheralPower = emuDcdcAnaPeripheralPower_DCDC;
-	dcdcInit.reverseCurrentControl = 160;
-  EMU_DCDCInit(&dcdcInit);
-	//EMU_DCDCPowerOff();
-  CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFXO);
-	radio_SetCtune(*(uint16_t *)CTUNE_ADDR);
+	init_power_clk(); //in bsp.c
 	RETARGET_SerialInit();
 	Timing_DelayUs(10000);
 	//print reset cause
 	printf("\r\nStarting. Reset cause: 0x%X\r\n", RMU->RSTCAUSE);
-	printf("EFR32FG1 bare metal test\r\n");
+	printf("\r\n%s\r\n", DEVICE_STRING_NAME);
+	printf("HW: %d SW: %d.%d\r\n", HW_VERSION, SW_VERSION, SW_SUBVERSION);
 	RMU->CMD = 1; //clear reset cause bit
 	init_peripherals();
-	init_radio();
-	printf("RX on\r\n");
+	read_userpage();
+	if(userdata_buf[0x42] != HW_MAGIC_NUMBER)
+	{
+		RADIO_InitConfigStructure();
+		printf("Init user memory.\r\n");
+	  store_config(); //this must be only one time!
+		printf("User memory written.\r\n");
+		NVIC_SystemReset();
+	}
+	read_config();
+	RADIO_Config();
+	init_radio_specific(); //in bsp.c
 	cli_init();
 
 	while(1)
@@ -60,5 +55,6 @@ void init_peripherals(void)
    initLETIMER();
 	 initADC();	 
 	 TEMPDRV_Init();
+	 init_board_specific(); //in bsp.c
 }
 
