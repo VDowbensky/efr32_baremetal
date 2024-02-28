@@ -10,7 +10,6 @@
 #include "tempdrv.h"
 #include "adc.h"
 #include "leds.h"
-#include "radio_init.h"
 #include "radio_proc.h"
 
 void init_peripherals(void);
