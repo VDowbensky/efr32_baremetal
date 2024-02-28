@@ -1,6 +1,5 @@
 #include "bsp.h"
 #include "radio_phy.h"
-#include "ITDS.h"
 
 void init_power_clk(void)
 {

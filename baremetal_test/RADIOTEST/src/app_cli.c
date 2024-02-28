@@ -7,7 +7,6 @@
 #include "leds.h"
 #include "radio_proc.h"
 #include "mcu_memory.h"
-#include "ITDS.h"
 #include "cli_common.h"
 
 CommandState_t state;
