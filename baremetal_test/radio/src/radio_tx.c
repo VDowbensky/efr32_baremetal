@@ -11,7 +11,8 @@ bool radio_sendpacket(void)
 #endif
 	//RADIO_CtuneCorrection();
 	BUFC_TxBufferReset();
-	BUFC_WriteContSync(tx_fifo ,32);
+	//BUFC_WriteContSync(tx_fifo,32); 
+	BUFC_WriteContSync(tx_fifo,RadioConfig.frame_fixed_length);
   INT_Disable();
 	PROTIMER->WRAPCNT = 0;
   if ((PROTIMER_CCTimerIsEnabled(3) == 0) && (PROTIMER_LBTIsActive() == 0)) 
