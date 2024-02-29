@@ -239,7 +239,7 @@ void PROTIMER_CCTimerStop(uint8_t num) //CC number
 
 
 
-RAIL_Status_t PROTIMER_CCTimerStart(int8_t timer,uint32_t time, RAIL_TimeMode_t mode)
+uint32_t PROTIMER_CCTimerStart(int8_t timer,uint32_t time, uint8_t mode)
 
 {
   uint32_t top;
@@ -264,11 +264,11 @@ LAB_0001013c:
   {
     (&PROTIMER->CC0_CTRL)[timer * 4] = 0x11;
     INT_Enable();
-    return RAIL_STATUS_INVALID_PARAMETER;
+    return 1;
   }
   *(uint32_t *)((timer + 0x10c28308) * 4) = 1; //!!!!!!!!!
   INT_Enable();
-  return RAIL_STATUS_NO_ERROR;
+  return 0;
 }
 
 

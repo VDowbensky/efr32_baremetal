@@ -18,19 +18,19 @@ uint32_t radio_GetCtune(void)
 	return (CMU->HFXOSTEADYSTATECTRL & _CMU_HFXOSTEADYSTATECTRL_CTUNE_MASK) >> _CMU_HFXOSTEADYSTATECTRL_CTUNE_SHIFT;
 }
 
-RAIL_Status_t radio_SetTxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t error)
+uint32_t radio_SetTxTransitions(uint32_t success,uint32_t error)
 
 {
   RADIO_TRANSITIONS = 1 << (success + 0x10U & 0xff) | (uint32_t)RADIO_TRANSITIONS | 1 << (error + 0x18U & 0xff);
-  return RAIL_STATUS_NO_ERROR;
+  return 0;
 }
 
 
-RAIL_Status_t radio_SetRxTransitions(RAIL_RadioState_t success,RAIL_RadioState_t error)
+uint32_t radio_SetRxTransitions(uint32_t success,uint32_t error)
 
 {
 	RADIO_TRANSITIONS = 1 << (error + 8U & 0xff) | 1 << (success & 0xff) | RADIO_TRANSITIONS & 0xffff0000;
-  return RAIL_STATUS_NO_ERROR;
+  return 0;
 }
 
 uint32_t radio_HeadedToIdle(void)

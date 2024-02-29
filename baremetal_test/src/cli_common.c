@@ -493,7 +493,7 @@ void common_stopber(void)
 
 void common_getber(void)
 {
-	RAIL_BerStatus_t berstatus;
+	BerStatus_t berstatus;
 	float ber_percent;
 	radio_reportberstats(&berstatus);
 	  

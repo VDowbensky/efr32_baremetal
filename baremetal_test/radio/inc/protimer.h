@@ -4,20 +4,20 @@
 #include "em_device.h"
 #include <stdint.h>
 #include <stdbool.h>
-#include "rail_types.h"
+//#include "rail_types.h"
 #include "radio_proc.h"
 
 void PROTIMER_Start(void);
 void PROTIMER_Stop(void);
 bool PROTIMER_IsRunning(void);
 void PROTIMER_Reset(void);
-RAIL_Status_t PROTIMER_CCTimerStart(int8_t timer,uint32_t time, RAIL_TimeMode_t mode);
+uint32_t PROTIMER_CCTimerStart(int8_t timer,uint32_t time, uint8_t mode);
 uint32_t PROTIMER_ElapsedTime(uint32_t time,uint32_t cnt);
 void PROTIMER_TOUTTimerStop(uint8_t num);
 void PROTIMER_TOUTTimerStart(uint32_t time,uint8_t num);
 uint32_t PROTIMER_TOUTTimerGet(uint8_t num);
 void PROTIMER_CCTimerStop(uint8_t num);
-RAIL_Status_t PROTIMER_CCTimerStart(int8_t timer,uint32_t time, RAIL_TimeMode_t mode);
+//RAIL_Status_t PROTIMER_CCTimerStart(int8_t timer,uint32_t time, RAIL_TimeMode_t mode);
 bool PROTIMER_CCTimerIsEnabled(int num);
 uint32_t PROTIMER_GetTime(void);
 uint32_t PROTIMER_GetCCTime(int num);

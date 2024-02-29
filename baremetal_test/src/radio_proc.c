@@ -209,7 +209,7 @@ void processRxEvents(void)
 	
 	if(RxEvents & RXEVENT_BERDONE)
 	{
-		RAIL_BerStatus_t berstatus;
+		BerStatus_t berstatus;
 		float ber_percent;
 		
 		RxEvents &= ~RXEVENT_BERDONE;

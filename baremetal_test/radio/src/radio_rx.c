@@ -12,7 +12,7 @@ uint32_t berTotalBytesLeft;
 uint32_t berTotalErrors;
 uint32_t berTotalBits;
 
-RAIL_BerStatus_t berStats;
+BerStatus_t berStats;
 
 void radio_startrx(void)
 {
@@ -100,7 +100,7 @@ typedef struct RAIL_BerStatus
   int8_t   rssi;
 } RAIL_BerStatus_t;
 */
-void radio_reportberstats(RAIL_BerStatus_t *berstatus)
+void radio_reportberstats(BerStatus_t *berstatus)
 
 {
   berstatus->bitsTotal = berStats.bitsTotal;
