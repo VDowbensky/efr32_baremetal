@@ -34,7 +34,7 @@
 	
 #define BROADCAST		1
 	
-#define UART_PA			0
+#define UART_PA			1
 
 #if UART_PA
 // USART0 TX on PA0
